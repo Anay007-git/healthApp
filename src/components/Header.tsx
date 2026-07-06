@@ -97,7 +97,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border-app glass">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 w-full max-w-full overflow-x-hidden">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex h-16 items-center justify-between gap-4">
           {/* Logo & Desktop Navigation */}
           <div className="flex items-center gap-4">
