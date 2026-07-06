@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cacheGet, cacheSet } from '@/lib/redis';
-import { ActowizQuickCommerceProvider, MockQuickCommerceProvider } from '@/lib/providers/providers';
+import { ActowizQuickCommerceProvider, OpenFoodFactsQuickCommerceProvider } from '@/lib/providers/providers';
 
 // Helper function to reverse geocode lat/lng to pincode
 async function getPincode(lat: number, lng: number): Promise<string> {
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
     const providerKey = process.env.QUICK_COMMERCE_API_KEY;
     const provider = providerKey 
       ? new ActowizQuickCommerceProvider(providerKey)
-      : new MockQuickCommerceProvider();
+      : new OpenFoodFactsQuickCommerceProvider();
 
     const products = await provider.searchProducts(query, lat, lng, category);
 

@@ -242,6 +242,99 @@ function getMockAddressDetails(lat: number, lng: number): { area1: string; area2
 }
 
 /**
+ * Live free Open Food Facts API implementation of QuickCommerceProvider.
+ */
+export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider {
+  async searchProducts(query: string, lat: number, lng: number, category?: string): Promise<QCProduct[]> {
+    try {
+      console.log(`OpenFoodFactsQCProvider: searching products for "${query}" (category: ${category})`);
+      
+      const searchTerms = encodeURIComponent(query);
+      const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerms}&search_simple=1&action=process&json=1&page_size=8`;
+      
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)'
+        },
+        signal: AbortSignal.timeout(5000)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Open Food Facts API error: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      const products = data.products || [];
+      
+      if (products.length === 0) {
+        if (category) {
+          const catUrl = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(category)}&search_simple=1&action=process&json=1&page_size=5`;
+          const catRes = await fetch(catUrl, {
+            headers: { 'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)' },
+            signal: AbortSignal.timeout(4000)
+          });
+          if (catRes.ok) {
+            const catData = await catRes.json();
+            if (catData.products && catData.products.length > 0) {
+              return this.mapProducts(catData.products);
+            }
+          }
+        }
+        return [];
+      }
+      
+      return this.mapProducts(products);
+    } catch (e) {
+      console.error('Open Food Facts search failed:', e);
+      return [];
+    }
+  }
+
+  private mapProducts(products: any[]): QCProduct[] {
+    return products.map((p: any, idx: number) => {
+      const nutriments = p.nutriments || {};
+      const calories = Math.round(nutriments['energy-kcal_100g'] || nutriments['energy-kcal'] || 120);
+      const protein = parseFloat(nutriments.proteins_100g || nutriments.proteins || 0) || 2.5;
+      const fiber = parseFloat(nutriments.fiber_100g || nutriments.fiber || 0) || 1.5;
+      const fat = parseFloat(nutriments.fat_100g || nutriments.fat || 0) || 3.0;
+      const sugar = parseFloat(nutriments.sugars_100g || nutriments.sugars || 0) || 0.5;
+      const sodium = Math.round(parseFloat(nutriments.sodium_100g || nutriments.sodium || 0) * 1000) || 150;
+
+      const platforms: ('blinkit' | 'zepto' | 'instamart')[] = ['zepto', 'blinkit', 'instamart'];
+      const platform = platforms[idx % platforms.length];
+      const name = p.product_name || p.product_name_en || 'Healthy Swap Option';
+
+      let brand = p.brands || 'Natural Brand';
+      if (brand.includes(',')) {
+        brand = brand.split(',')[0].trim();
+      }
+
+      let deepLink = `https://blinkit.com/s/?q=${encodeURIComponent(name)}`;
+      if (platform === 'zepto') {
+        deepLink = `https://www.zeptonow.com/search?q=${encodeURIComponent(name)}`;
+      } else if (platform === 'instamart') {
+        deepLink = `https://www.swiggy.com/instamart/search?query=${encodeURIComponent(name)}`;
+      }
+
+      return {
+        id: p.code || `off-${idx}`,
+        name: name,
+        brand: brand,
+        price: p.price || (100 + (idx * 25) % 150),
+        calories: calories,
+        protein: parseFloat(protein.toFixed(1)),
+        fiber: parseFloat(fiber.toFixed(1)),
+        image_url: p.image_front_small_url || p.image_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150',
+        platform: platform,
+        deep_link: deepLink,
+        available: true,
+        tags: p.categories_tags || []
+      };
+    });
+  }
+}
+
+/**
  * Mock implementation of QuickCommerceProvider.
  * Returns relevant healthy packaged goods depending on the search query.
  */
