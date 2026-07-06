@@ -246,8 +246,10 @@ function getMockAddressDetails(lat: number, lng: number): { area1: string; area2
  */
 export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider {
   async searchProducts(query: string, lat: number, lng: number, category?: string): Promise<QCProduct[]> {
+    let products: QCProduct[] = [];
+    
+    // 1. Try Indian Open Food Facts Subdomain
     try {
-      // Clean query of weights (100g, 400g, 330ml), pack constraints (pack of 3), and parentheticals
       let cleaned = query
         .replace(/\s*\([^)]*\)/g, '')
         .replace(/\s*\b\d+\s*(g|ml|kg|l)\b/gi, '')
@@ -262,58 +264,81 @@ export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider
       const searchTerms = encodeURIComponent(searchQuery);
       const url = `https://in.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerms}&search_simple=1&action=process&json=1&page_size=8`;
       
-      let response = await fetch(url, {
+      const response = await fetch(url, {
         headers: {
           'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)'
         },
-        signal: AbortSignal.timeout(5000)
+        signal: AbortSignal.timeout(4000)
       });
       
-      if (!response.ok) {
-        throw new Error(`Open Food Facts API error: ${response.status}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.products && data.products.length > 0) {
+          products = this.mapProducts(data.products);
+        }
       }
-      
-      let data = await response.json();
-      let products = data.products || [];
-      
-      // Fallback: If Indian subdomain returned 0 results, query the global database
-      if (products.length === 0) {
-        console.log(`OpenFoodFactsQCProvider: Indian subdomain returned 0 results. Falling back to global Open Food Facts database...`);
+    } catch (e) {
+      console.warn('Open Food Facts India search failed, trying global:', e);
+    }
+
+    // 2. Try Global Open Food Facts Subdomain
+    if (products.length === 0) {
+      try {
+        let cleaned = query
+          .replace(/\s*\([^)]*\)/g, '')
+          .replace(/\s*\b\d+\s*(g|ml|kg|l)\b/gi, '')
+          .replace(/\s*\bpack\s*of\s*\d+\b/gi, '')
+          .replace(/[^a-zA-Z0-9\s]+/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+        const searchTerms = encodeURIComponent(cleaned.length > 2 ? cleaned : query);
         const globalUrl = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerms}&search_simple=1&action=process&json=1&page_size=8`;
-        const globalRes = await fetch(globalUrl, {
+        
+        const response = await fetch(globalUrl, {
           headers: {
             'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)'
           },
-          signal: AbortSignal.timeout(5000)
+          signal: AbortSignal.timeout(4000)
         });
-        if (globalRes.ok) {
-          const globalData = await globalRes.json();
-          products = globalData.products || [];
-        }
-      }
-      
-      if (products.length === 0) {
-        if (category) {
-          const catUrl = `https://in.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(category)}&search_simple=1&action=process&json=1&page_size=5`;
-          const catRes = await fetch(catUrl, {
-            headers: { 'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)' },
-            signal: AbortSignal.timeout(4000)
-          });
-          if (catRes.ok) {
-            const catData = await catRes.json();
-            if (catData.products && catData.products.length > 0) {
-              return this.mapProducts(catData.products);
-            }
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.products && data.products.length > 0) {
+            products = this.mapProducts(data.products);
           }
         }
-        return [];
+      } catch (e) {
+        console.warn('Open Food Facts global search failed:', e);
       }
-      
-      return this.mapProducts(products);
-    } catch (e) {
-      console.error('Open Food Facts search failed:', e);
-      return [];
     }
+
+    // 3. Try Category search on Indian/Global if still empty
+    if (products.length === 0 && category) {
+      try {
+        const catUrl = `https://in.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(category)}&search_simple=1&action=process&json=1&page_size=5`;
+        const response = await fetch(catUrl, {
+          headers: { 'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)' },
+          signal: AbortSignal.timeout(3000)
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.products && data.products.length > 0) {
+            products = this.mapProducts(data.products);
+          }
+        }
+      } catch (e) {
+        console.warn('Category search failed:', e);
+      }
+    }
+
+    // 4. FINAL BULLETPROOF FALLBACK: If both APIs failed/returned 0, return local Mock Products!
+    if (products.length === 0) {
+      console.log(`OpenFoodFactsQCProvider: API returned 0 results. Falling back to local MockQuickCommerceProvider...`);
+      const mockProvider = new MockQuickCommerceProvider();
+      return mockProvider.searchProducts(query, lat, lng, category);
+    }
+
+    return products;
   }
 
   private mapProducts(products: any[]): QCProduct[] {
@@ -382,7 +407,7 @@ export class MockQuickCommerceProvider implements QuickCommerceProvider {
         platform: 'blinkit',
         deep_link: 'https://blinkit.com/s/?q=slurrp+farm+millet+noodles',
         available: true,
-        tags: ['noodle', 'noodles', 'maggi', 'breakfast', 'fastfood']
+        tags: ['noodle', 'noodles', 'maggi', 'maggi\'s', 'maggie', 'breakfast', 'fastfood']
       },
       {
         id: 'qc-2',
