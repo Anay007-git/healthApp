@@ -1,0 +1,113 @@
+-- Seed script for Healthy Food Alternatives Platform
+-- Seeds 20 common junk food items with healthy swaps
+
+-- Clean tables (optional, for re-seeding)
+TRUNCATE alternative_mappings CASCADE;
+TRUNCATE junk_items CASCADE;
+TRUNCATE healthy_alternatives CASCADE;
+
+-- Insert Junk Items
+INSERT INTO junk_items (id, name, slug, category, calories, fat, sugar, sodium, image_url) VALUES
+('a1b1c1d1-1111-1111-1111-111111111111', 'Maggi Instant Noodles', 'maggi-instant-noodles', 'snacks', 380, 13.5, 2.0, 1100, '/images/junk/maggi.jpg'),
+('a1b1c1d1-2222-2222-2222-222222222222', 'Samosa (Fried)', 'samosa-fried', 'snacks', 260, 17.0, 1.0, 450, '/images/junk/samosa.jpg'),
+('a1b1c1d1-3333-3333-3333-333333333333', 'Coca-Cola Cola', 'coca-cola-cola', 'drinks', 140, 0.0, 39.0, 45, '/images/junk/coke.jpg'),
+('a1b1c1d1-4444-4444-4444-444444444444', 'Potato Chips (Lays)', 'potato-chips-lays', 'snacks', 530, 35.0, 1.0, 520, '/images/junk/chips.jpg'),
+('a1b1c1d1-5555-5555-5555-555555555555', 'Dairy Milk Chocolate', 'dairy-milk-chocolate', 'desserts', 530, 30.0, 56.0, 80, '/images/junk/chocolate.jpg'),
+('a1b1c1d1-6666-6666-6666-666666666666', 'French Fries', 'french-fries', 'fastfood', 312, 15.0, 0.3, 210, '/images/junk/fries.jpg'),
+('a1b1c1d1-7777-7777-7777-777777777777', 'White Bread', 'white-bread', 'breakfast', 265, 3.2, 5.0, 490, '/images/junk/white-bread.jpg'),
+('a1b1c1d1-8888-8888-8888-888888888888', 'Vanilla Ice Cream', 'vanilla-ice-cream', 'desserts', 207, 11.0, 21.0, 80, '/images/junk/ice-cream.jpg'),
+('a1b1c1d1-9999-9999-9999-999999999999', 'Cheese Loaded Pizza', 'cheese-loaded-pizza', 'fastfood', 285, 12.0, 3.5, 640, '/images/junk/pizza.jpg'),
+('a1b1c1d1-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Jalebi (Fried in Ghee)', 'jalebi-fried-ghee', 'desserts', 350, 12.0, 50.0, 150, '/images/junk/jalebi.jpg'),
+('a1b1c1d1-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Fried Momos (Maida)', 'fried-momos-maida', 'fastfood', 320, 14.0, 1.5, 620, '/images/junk/momos.jpg'),
+('a1b1c1d1-cccc-cccc-cccc-cccccccccccc', 'Butter Paneer Masala', 'butter-paneer-masala', 'fastfood', 380, 32.0, 6.0, 780, '/images/junk/butter-paneer.jpg'),
+('a1b1c1d1-dddd-dddd-dddd-dddddddddddd', 'Gulab Jamun (Sugar Syrup)', 'gulab-jamun', 'desserts', 300, 10.0, 42.0, 120, '/images/junk/gulab-jamun.jpg'),
+('a1b1c1d1-eeee-eeee-eeee-eeeeeeeeeeee', 'Loaded Nachos & Cheese', 'loaded-nachos-cheese', 'snacks', 480, 25.0, 3.0, 810, '/images/junk/nachos.jpg'),
+('a1b1c1d1-ffff-ffff-ffff-ffffffffffff', 'Double Cheese Chicken Burger', 'chicken-burger', 'fastfood', 540, 28.0, 7.0, 980, '/images/junk/burger.jpg'),
+('a1b1c1d1-0000-0000-0000-000000000000', 'Chole Bhature', 'chole-bhature', 'breakfast', 450, 22.0, 2.0, 850, '/images/junk/chole-bhature.jpg'),
+('a1b1c1d1-0001-0000-0000-000000000000', 'Cutting Masala Chai (Sugary)', 'sugary-masala-chai', 'drinks', 120, 4.0, 18.0, 40, '/images/junk/chai.jpg'),
+('a1b1c1d1-0003-0000-0000-000000000000', 'Fried Fish Tikka', 'fried-fish-tikka', 'fastfood', 290, 18.0, 0.0, 720, '/images/junk/fried-fish.jpg'),
+('a1b1c1d1-0004-0000-0000-000000000000', 'Sugary Frosted Flakes Cereal', 'frosted-flakes-cereal', 'breakfast', 375, 1.0, 37.0, 729, '/images/junk/cereal.jpg'),
+('a1b1c1d1-0005-0000-0000-000000000000', 'Pav Bhaji (Excess Butter)', 'butter-pav-bhaji', 'breakfast', 400, 18.0, 4.0, 890, '/images/junk/pav-bhaji.jpg');
+
+-- Insert Healthy Alternatives
+INSERT INTO healthy_alternatives (id, name, slug, category, calories, protein, fiber, fat, sugar, sodium, image_url, description) VALUES
+('e1f1a1b1-1111-1111-1111-111111111111', 'Foxtail Millet Noodles', 'foxtail-millet-noodles', 'snacks', 290, 11.5, 8.0, 2.5, 0.5, 120, '/images/healthy/millet-noodles.jpg', 'Air-dried, high-protein millet noodles that satisfy instant noodle cravings without the deep-fried trans fat and refined maida flour.'),
+('e1f1a1b1-2222-2222-2222-222222222222', 'Air-Baked Whole Wheat Samosa', 'air-baked-samosa', 'snacks', 130, 4.5, 4.0, 3.5, 0.8, 180, '/images/healthy/baked-samosa.jpg', 'Crisp samosas baked in an air-fryer using a thin whole wheat crust. Saves over 50% fat and 130 calories per piece.'),
+('e1f1a1b1-2223-2222-2222-222222222222', 'Roasted Mint Makhana (Foxnuts)', 'roasted-mint-makhana', 'snacks', 95, 3.0, 2.5, 2.0, 0.1, 95, '/images/healthy/makhana.jpg', 'Crunchy lotus seeds dry-roasted and lightly tossed in olive oil and mint spice. Low GI, high fiber snack.'),
+('e1f1a1b1-3333-3333-3333-333333333333', 'Fresh Tender Coconut Water', 'tender-coconut-water', 'drinks', 19, 0.7, 1.1, 0.2, 3.5, 25, '/images/healthy/coconut-water.jpg', 'Naturally refreshing, zero-sugar-added hydration packed with essential potassium, magnesium, and active enzymes.'),
+('e1f1a1b1-3334-3333-3333-333333333333', 'Organic Lemon Ginger Kombucha', 'lemon-ginger-kombucha', 'drinks', 30, 0.2, 0.5, 0.0, 4.0, 10, '/images/healthy/kombucha.jpg', 'Fermented sparkling tea rich in live probiotics to boost gut health. Naturally carbonated swap for sugary sodas.'),
+('e1f1a1b1-4444-4444-4444-444444444444', 'Spiced Roasted Chickpeas', 'roasted-chickpeas', 'snacks', 160, 7.5, 6.0, 3.5, 0.8, 140, '/images/healthy/chickpeas.jpg', 'Bengal gram dry roasted until crispy and seasoned with chaat masala. Low fat, high protein, and high fiber snack.'),
+('e1f1a1b1-4445-4444-4444-444444444444', 'Air-Baked Banana Chips', 'baked-banana-chips', 'snacks', 190, 2.0, 3.5, 4.0, 12.0, 90, '/images/healthy/banana-chips.jpg', 'Thin plantain slices baked with a dash of turmeric and sea salt. Crisp crunch without coconut oil deep frying.'),
+('e1f1a1b1-5555-5555-5555-555555555555', 'Sugar-Free Dark Chocolate (85%)', 'dark-chocolate-85', 'desserts', 510, 8.5, 11.0, 43.0, 8.0, 20, '/images/healthy/dark-chocolate.jpg', 'Rich dark chocolate loaded with healthy cocoa solids and antioxidants. Satisfies sweet tooth with minimal impact on blood sugar.'),
+('e1f1a1b1-6666-6666-6666-666666666666', 'Baked Sweet Potato Fries', 'baked-sweet-potato-fries', 'fastfood', 140, 2.0, 3.8, 3.0, 6.0, 110, '/images/healthy/sweet-potato-fries.jpg', 'Sweet potato wedges seasoned with herbs and baked with a touch of olive oil. High in Vitamin A and dietary fiber.'),
+('e1f1a1b1-7777-7777-7777-777777777777', 'Artisanal Whole Wheat Sourdough', 'wheat-sourdough', 'breakfast', 210, 8.0, 4.5, 1.5, 1.2, 380, '/images/healthy/sourdough.jpg', 'Slow-fermented sourdough made with whole wheat. Easier on gut digestion, has a lower glycemic index than commercial white bread.'),
+('e1f1a1b1-7778-7777-7777-777777777777', '100% Sprouted Ragi Bread', 'sprouted-ragi-bread', 'breakfast', 180, 6.5, 6.0, 2.0, 2.0, 290, '/images/healthy/ragi-bread.jpg', 'Dense, nutrient-dense sprouted finger millet bread. Naturally high in calcium and fiber, completely refined flour-free.'),
+('e1f1a1b1-8888-8888-8888-888888888888', 'Mango Chia Seed Pudding', 'mango-chia-pudding', 'desserts', 130, 4.0, 7.0, 5.0, 11.0, 30, '/images/healthy/chia-pudding.jpg', 'Creamy almond milk chia pudding layered with fresh Alphonso mango purée. High in Omega-3 fatty acids and soluble fiber.'),
+('e1f1a1b1-8889-8888-8888-888888888888', 'Fresh Raspberry Banana Sorbet', 'raspberry-banana-sorbet', 'desserts', 95, 1.5, 4.2, 0.4, 15.0, 5, '/images/healthy/sorbet.jpg', 'Chilled blended raspberries and ripe bananas with a splash of lime. Creamy, dairy-free ice cream swap with no added processed sugar.'),
+('e1f1a1b1-9999-9999-9999-999999999999', 'Cauliflower Crust Veggie Pizza', 'cauliflower-crust-pizza', 'fastfood', 180, 12.0, 4.5, 6.5, 2.0, 390, '/images/healthy/cauli-pizza.jpg', 'Low-carb, gluten-free crust made from grated cauliflower and herbs, topped with home-cooked marinara sauce and light mozzarella.'),
+('e1f1a1b1-9998-9999-9999-999999999999', 'Whole Wheat Pesto Garden Pizza', 'pesto-wheat-pizza', 'fastfood', 210, 10.5, 5.0, 8.0, 1.8, 410, '/images/healthy/pesto-pizza.jpg', 'Stone-baked whole wheat flatbread base spread with fresh basil pine nut pesto and loaded with seasonal bell peppers, zucchini, and mushrooms.'),
+('e1f1a1b1-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Cinnamon Honey Apple Jalebi (Baked)', 'baked-apple-jalebi', 'desserts', 140, 1.5, 3.0, 2.5, 22.0, 40, '/images/healthy/apple-jalebi.jpg', 'Baked fresh apple rings dipped in a light batter and glazed with organic raw honey and cinnamon. Avoids ghee deep-frying.'),
+('e1f1a1b1-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Steamed Beetroot & Oats Wheat Momos', 'steamed-beetroot-momos', 'fastfood', 160, 6.5, 3.8, 2.0, 1.5, 310, '/images/healthy/beetroot-momos.jpg', 'Steamed momos made with a whole wheat flour wrapper, stuffed with high-protein paneer, carrots, and fiber-rich rolled oats.'),
+('e1f1a1b1-bbbc-bbbb-bbbb-bbbbbbbbbbbb', 'Crunchy Cabbage Wrap Steamed Dumplings', 'cabbage-wrap-dumplings', 'fastfood', 110, 8.0, 3.5, 1.0, 1.0, 240, '/images/healthy/cabbage-dumplings.jpg', 'Gluten-free, wrapperless steamed dumplings wrapped in local cabbage leaves. Stuffed with minced mushrooms, beans, and sprouts.'),
+('e1f1a1b1-cccc-cccc-cccc-cccccccccccc', 'Tandoori Grilled Paneer Tikka', 'tandoori-paneer-tikka', 'fastfood', 190, 15.0, 1.8, 12.0, 1.5, 410, '/images/healthy/paneer-tikka.jpg', 'Cottage cheese cubes marinated in spiced yogurt and roasted in a clay oven. Low fat, high protein swap for gravy-heavy paneer.'),
+('e1f1a1b1-cccd-cccc-cccc-cccccccccccc', 'Grilled Garlic Herb Tofu Tikka', 'garlic-tofu-tikka', 'fastfood', 140, 14.5, 2.2, 7.5, 0.5, 290, '/images/healthy/tofu-tikka.jpg', 'Organic firm tofu marinated in a mustard garlic green herb paste and grilled. High plant protein, low saturated fat.'),
+('e1f1a1b1-dddd-dddd-dddd-dddddddddddd', 'Baked Cardamom Date Oats Bites', 'date-oats-bites', 'desserts', 85, 2.0, 3.0, 1.5, 9.0, 15, '/images/healthy/date-bites.jpg', 'Sweet treats made with pureed organic dates, rolled oats, and cardamom. Baked to a chewy perfection, rich in iron, zero added sugar.'),
+('e1f1a1b1-eeee-eeee-eeee-eeeeeeeeeeee', 'Air-Baked Corn Tortillas & Fresh Guac', 'baked-nachos-guac', 'snacks', 220, 4.0, 6.5, 10.0, 1.0, 210, '/images/healthy/nachos-guac.jpg', 'Baked yellow corn tortilla triangles served with freshly mashed avocado, tomatoes, lime, and cilantro. Filled with healthy fats and fiber.'),
+('e1f1a1b1-eeef-eeee-eeee-eeeeeeeeeeee', 'Dehydrated Spicy Sea Salt Beet Chips', 'beet-chips', 'snacks', 110, 2.5, 4.0, 0.8, 14.0, 180, '/images/healthy/beet-chips.jpg', 'Crisp beetroot slices slow-dehydrated or baked with a pinch of sea salt and pepper. Rich in dietary nitrates and natural fiber.'),
+('e1f1a1b1-ffff-ffff-ffff-ffffffffffff', 'Grilled Chicken Breast Wheat Burger', 'grilled-chicken-burger', 'fastfood', 340, 32.0, 5.0, 9.5, 3.0, 480, '/images/healthy/chicken-burger.jpg', 'Juicy grilled chicken breast fillet on a whole wheat bun, topped with lettuce, tomato, and greek yogurt spread instead of mayonnaise.'),
+('e1f1a1b1-fffe-ffff-ffff-ffffffffffff', 'Lettuce-Wrapped Spicy Black Bean Burger', 'black-bean-lettuce-burger', 'fastfood', 210, 12.0, 7.5, 4.5, 2.0, 390, '/images/healthy/lettuce-burger.jpg', 'Flavorful roasted black bean and quinoa patty wrapped in fresh iceberg lettuce leaves, served with tomato salsa. Low carb, high fiber.'),
+('e1f1a1b1-0000-0000-0000-000000000000', 'Spiced Chole with Baked Oats Roti', 'chole-oats-roti', 'breakfast', 240, 9.0, 8.5, 4.5, 1.5, 390, '/images/healthy/chole-oats.jpg', 'Traditional spicy chickpeas cooked in 1 tsp olive oil, served with 2 baked whole wheat and oats flour rotis.'),
+('e1f1a1b1-0001-0000-0000-000000000000', 'Cardamom Ginger Green Tea (Stevia)', 'ginger-green-tea', 'drinks', 5, 0.1, 0.0, 0.0, 0.0, 5, '/images/healthy/green-tea.jpg', 'Freshly brewed loose leaf green tea infused with real ginger roots and cardamom pods, lightly sweetened with natural stevia extract.'),
+('e1f1a1b1-0002-0000-0000-000000000000', 'Masala Oats Chai (Jaggery Glazed)', 'oats-milk-chai', 'drinks', 45, 1.5, 0.8, 1.0, 5.0, 15, '/images/healthy/oats-chai.jpg', 'Authentic Indian spiced chai made with creamy, unsweetened oat milk, sweetened lightly with 1 tsp of organic liquid jaggery.'),
+('e1f1a1b1-0003-0000-0000-000000000000', 'Clay-Oven Roasted Tandoori Fish Tikka', 'tandoori-fish-tikka', 'fastfood', 160, 24.0, 0.5, 6.0, 0.0, 380, '/images/healthy/tandoori-fish.jpg', 'Lean fish fillets (Basa/Surmai) marinated in lemon-yogurt spices and charred in an oven. Super high protein, low carb, low fat.'),
+('e1f1a1b1-0004-0000-0000-000000000000', 'Steel Cut Oats with Berries & Seeds', 'berry-seeds-oats', 'breakfast', 220, 7.0, 6.5, 4.5, 6.0, 10, '/images/healthy/oats-breakfast.jpg', 'Hot steel cut oats prepared with water or skimmed milk, topped with local blueberries, raspberries, and chia/pumpkin seeds.'),
+('e1f1a1b1-0005-0000-0000-000000000000', 'Oats Pav & Loaded Veggie Bhaji (1 tsp Butter)', 'oats-pav-bhaji', 'breakfast', 220, 6.0, 7.5, 5.0, 3.5, 490, '/images/healthy/healthy-pav-bhaji.jpg', 'Bhaji cooked with high amounts of cauliflower, peas, and carrots using minimal oil, served with 2 high-fiber baked oats and wheat pavs.');
+
+-- Insert Alternative Mappings
+INSERT INTO alternative_mappings (junk_item_id, alternative_id, similarity_reason) VALUES
+('a1b1c1d1-1111-1111-1111-111111111111', 'e1f1a1b1-1111-1111-1111-111111111111', 'Provides the same savory masala noodle taste and hot texture, but uses air-dried foxtail millet, reducing calories by 90 kcal, cutting fat by 80%, and providing 8g of prebiotic fiber.'),
+('a1b1c1d1-2222-2222-2222-222222222222', 'e1f1a1b1-2222-2222-2222-222222222222', 'Retains the iconic crunchy potato-pea crust feel but is baked in an air-fryer, saving over 130 calories and 80% of saturated oil fat per piece.'),
+('a1b1c1d1-2222-2222-2222-222222222222', 'e1f1a1b1-2223-2222-2222-222222222222', 'Replaces the deep-fried, carb-heavy snack with dry-roasted foxnuts, offering a low glycemic index, high fiber alternative with a crisp crunch.'),
+('a1b1c1d1-3333-3333-3333-333333333333', 'e1f1a1b1-3333-3333-3333-333333333333', 'Swaps high-fructose corn syrup soda with pure coconut water, replacing 39g of refined sugar with natural minerals and electrolytes for natural hydration.'),
+('a1b1c1d1-3333-3333-3333-333333333333', 'e1f1a1b1-3334-3333-3333-333333333333', 'Replaces carbonic acid and sugary sodas with a probiotic sparkling kombucha, delivering fizz and gut-health benefits with only 4g of sugar.'),
+('a1b1c1d1-4444-4444-4444-444444444444', 'e1f1a1b1-4444-4444-4444-444444444444', 'Swaps oil-soaked processed potato starch with fiber-rich roasted chickpeas, boosting protein by 7x while cutting fat by 90%.'),
+('a1b1c1d1-4444-4444-4444-444444444444', 'e1f1a1b1-4445-4444-4444-444444444444', 'Keeps the sweet-savory chip crunch but uses air-baked plantain slices, slashing high-calorie trans-fats from deep frying.'),
+('a1b1c1d1-5555-5555-5555-555555555555', 'e1f1a1b1-5555-5555-5555-555555555555', 'Replaces processed milk solids and 56g of sugar with antioxidant-rich cocoa solids, keeping the sweet craving checked with minimal insulin spikes.'),
+('a1b1c1d1-6666-6666-6666-666666666666', 'e1f1a1b1-6666-6666-6666-666666666666', 'Swaps double-fried white potato strips with baked sweet potato wedges, boosting vitamin A/fiber and cutting fat by 80%.'),
+('a1b1c1d1-7777-7777-7777-777777777777', 'e1f1a1b1-7777-7777-7777-777777777777', 'Swaps chemically bleached white flour with slow-fermented wheat sourdough, which contains prebiotic-like compounds that ease gut digestion.'),
+('a1b1c1d1-7777-7777-7777-777777777777', 'e1f1a1b1-7778-7777-7777-777777777777', 'Replaces high GI empty-calorie white bread with finger millet (Ragi) bread, increasing calcium intake and doubling fiber content.'),
+('a1b1c1d1-8888-8888-8888-888888888888', 'e1f1a1b1-8888-8888-8888-888888888888', 'Provides a cold, thick, sweet dessert experience using high-fiber chia seeds and almond milk, packed with healthy omega-3 fatty acids.'),
+('a1b1c1d1-8888-8888-8888-888888888888', 'e1f1a1b1-8889-8888-8888-888888888888', 'Replaces processed sugar/cream-based ice cream with blended frozen raspberries and bananas, supplying active vitamins and zero added sweeteners.'),
+('a1b1c1d1-9999-9999-9999-999999999999', 'e1f1a1b1-9999-9999-9999-999999999999', 'Swaps high-carbohydrate refined flour dough with a vitamin-dense cauliflower crust, reducing calories by 100+ and carbs by 70%.'),
+('a1b1c1d1-9999-9999-9999-999999999999', 'e1f1a1b1-9998-9999-9999-999999999999', 'Replaces grease-laden processed cheese and meats with whole wheat dough topped with olive-oil basil pesto and raw, fiber-rich vegetables.'),
+('a1b1c1d1-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'e1f1a1b1-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Replaces oil-soaked deep-fried batter with sweet baked apple rings glazed in raw honey, cutting processed sugars and heavy ghee saturates.'),
+('a1b1c1d1-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'e1f1a1b1-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Swaps oil-fried white flour momos with steamed whole wheat momos containing lean paneer and fiber-rich oats, lowering fat by 85%.'),
+('a1b1c1d1-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'e1f1a1b1-bbbc-bbbb-bbbb-bbbbbbbbbbbb', 'Replaces starch wrappers with crisp steamed cabbage leaves, lowering overall carbs to near-zero while keeping the savory dumpling experience.'),
+('a1b1c1d1-cccc-cccc-cccc-cccccccccccc', 'e1f1a1b1-cccc-cccc-cccc-cccccccccccc', 'Swaps heavy cream-and-butter tomato gravy with spiced tandoor-charred cottage cheese skewers, lowering calories by 50% and doubling protein absorption.'),
+('a1b1c1d1-cccc-cccc-cccc-cccccccccccc', 'e1f1a1b1-cccd-cccc-cccc-cccccccccccc', 'Offers a dairy-free, low cholesterol option using grilled firm organic tofu skewers marinated in heart-healthy mustard oil and garlic.'),
+('a1b1c1d1-dddd-dddd-dddd-dddddddddddd', 'e1f1a1b1-dddd-dddd-dddd-dddddddddddd', 'Swaps deep-fried milk powder balls soaked in sugar syrup with baked date and oat balls, replacing empty calories with dietary iron and fiber.'),
+('a1b1c1d1-eeee-eeee-eeee-eeeeeeeeeeee', 'e1f1a1b1-eeee-eeee-eeee-eeeeeeeeeeee', 'Replaces fried corn flour chips and processed cheese sauce with oven-baked tortillas and fresh, heart-healthy monounsaturated fat from avocados.'),
+('a1b1c1d1-eeee-eeee-eeee-eeeeeeeeeeee', 'e1f1a1b1-eeef-eeee-eeee-eeeeeeeeeeee', 'A dry crunchy snack alternative using dehydrated beet slices, containing natural nitrates that support cardiovascular blood flow.'),
+('a1b1c1d1-ffff-ffff-ffff-ffffffffffff', 'e1f1a1b1-ffff-ffff-ffff-ffffffffffff', 'Replaces fried chicken patties and heavy mayo with grilled chicken breast and protein-rich Greek yogurt dressing on whole wheat buns.'),
+('a1b1c1d1-ffff-ffff-ffff-ffffffffffff', 'e1f1a1b1-fffe-ffff-ffff-ffffffffffff', 'Swaps beef/processed patties and white buns with high-fiber black bean patties wrapped in fresh crunchy iceberg lettuce leaf cups.'),
+('a1b1c1d1-0000-0000-0000-000000000000', 'e1f1a1b1-0000-0000-0000-000000000000', 'Swaps deep-fried refined flour bhatura bread with fiber-rich baked whole-wheat oats roti, and reduces gravy oil fat.'),
+('a1b1c1d1-0001-0000-0000-000000000000', 'e1f1a1b1-0001-0000-0000-000000000000', 'Avoids processed white sugar and high fat buffalo milk, substituting antioxidant green tea infused with warm, gut-soothing spices.'),
+('a1b1c1d1-0001-0000-0000-000000000000', 'e1f1a1b1-0002-0000-0000-000000000000', 'Replaces regular sugary milk tea with low-glycemic oat milk chai, flavored with ginger and a dash of raw minerals from organic liquid jaggery.'),
+('a1b1c1d1-0003-0000-0000-000000000000', 'e1f1a1b1-0003-0000-0000-000000000000', 'Swaps oil-fried fish batter with tandoori grilled fish, preserving lean proteins and healthy Omega-3 fats while eliminating trans-fats.'),
+('a1b1c1d1-0004-0000-0000-000000000000', 'e1f1a1b1-0004-0000-0000-000000000000', 'Replaces high GI sugar-coated corn flakes with steel cut oats, stabilizing blood sugar and providing long-lasting energy from complex carbs.'),
+('a1b1c1d1-0005-0000-0000-000000000000', 'e1f1a1b1-0005-0000-0000-000000000000', 'Swaps heavily buttered white pav bread and oily bhaji with high-fiber baked oats-wheat pav and a veggie-loaded bhaji made in minimal fat.');
+
+-- Insert healthy cuisine tags
+INSERT INTO healthy_cuisine_tags (cuisine_type, health_score, category) VALUES
+('Salads', 95, 'Green'),
+('South Indian', 75, 'Balanced'),
+('Juices', 85, 'Liquid Health'),
+('Keto', 90, 'Low Carb'),
+('Millet Specials', 90, 'Superfoods'),
+('Vegan', 92, 'Plant Based'),
+('Tandoori', 80, 'High Protein'),
+('Continental', 70, 'Standard'),
+('Healthy Food', 95, 'Superfoods'),
+('Organic', 90, 'Clean Eating'),
+('North Indian', 65, 'Balanced'),
+('Mediterranean', 85, 'Heart Healthy');
