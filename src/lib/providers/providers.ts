@@ -611,6 +611,34 @@ export class MockQuickCommerceProvider implements QuickCommerceProvider {
         deep_link: 'https://www.zeptonow.com/search?q=paneer+tikka',
         available: true,
         tags: ['paneer', 'tikka', 'tandoori', 'grilled', 'fastfood']
+      },
+      {
+        id: 'qc-17',
+        name: 'Organic White Quinoa 500g',
+        brand: 'India Gate',
+        price: 220,
+        calories: 120,
+        protein: 4.4,
+        fiber: 2.8,
+        image_url: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=150',
+        platform: 'blinkit',
+        deep_link: 'https://blinkit.com/s/?q=india+gate+quinoa',
+        available: true,
+        tags: ['quinoa', 'biryani', 'biriyani', 'fastfood']
+      },
+      {
+        id: 'qc-18',
+        name: 'Unpolished Brown Rice 1kg',
+        brand: 'Daawat',
+        price: 135,
+        calories: 110,
+        protein: 3.2,
+        fiber: 1.8,
+        image_url: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=150',
+        platform: 'zepto',
+        deep_link: 'https://www.zeptonow.com/search?q=brown+rice',
+        available: true,
+        tags: ['rice', 'brown', 'biryani', 'biriyani', 'fastfood']
       }
     ];
 

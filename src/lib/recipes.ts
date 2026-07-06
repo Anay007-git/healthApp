@@ -9,6 +9,75 @@ export interface Recipe {
 }
 
 export const RECIPES: Record<string, Recipe> = {
+  'quinoa-veg-biryani': {
+    title: 'Healthy Quinoa & Brown Rice Veg Biryani',
+    prepTime: '15 mins',
+    cookTime: '25 mins',
+    servings: '3 servings',
+    ingredients: [
+      '1/2 cup Organic Quinoa, washed',
+      '1/2 cup Unpolished Brown Rice, soaked for 30 mins',
+      '1 cup Mixed vegetables (carrots, French beans, green peas)',
+      '1 Onion, sliced thin',
+      '1 tbsp Ghee or olive oil',
+      '1/2 cup Low-fat Curd (yogurt)',
+      '1 tsp Biryani masala & 1/2 tsp Turmeric',
+      'Fresh mint and coriander leaves'
+    ],
+    instructions: [
+      'In a pot, boil quinoa and soaked brown rice separately with a pinch of salt until 80% cooked. Drain and set aside.',
+      'Heat oil/ghee in a pressure cooker or deep pan. Sauté the sliced onions until caramelized (brown). Save half for garnish.',
+      'Add ginger-garlic paste and the mixed vegetables. Stir-fry for 3 minutes.',
+      'Reduce heat, add biryani masala, yogurt, salt, and half of the mint-coriander leaves. Mix well.',
+      'Layer the semi-cooked quinoa and brown rice over the vegetables. Scatter the saved caramelized onions, mint, and coriander on top.',
+      'Cover tightly (dum) and cook on low heat for 10-12 minutes until the rice and quinoa are fully tender and fluffy.'
+    ],
+    tip: 'Caramelizing onions slowly on low heat is key to getting that authentic biryani aroma without frying them in excess oil!'
+  },
+  'wheat-kathi-roll': {
+    title: 'Baked Whole Wheat Kathi Roll',
+    prepTime: '15 mins',
+    cookTime: '15 mins',
+    servings: '2 rolls',
+    ingredients: [
+      '2 Whole wheat rotis (or parathas cooked with 1/2 tsp oil)',
+      '100g Low-fat Paneer or tofu cubes, sautéed',
+      '1/2 cup Sliced bell peppers and onions',
+      '1 Egg (optional, beaten for egg roll base)',
+      '1 tbsp Green coriander-mint chutney',
+      '1 tsp Chaat masala & lime juice'
+    ],
+    instructions: [
+      'If making an egg roll, pour the beaten egg onto a hot pan, place the wheat roti on top immediately, and cook until the egg sticks and is cooked.',
+      'In a separate pan, sauté paneer/tofu cubes, peppers, and onions with 1/2 tsp oil and chaat masala for 3 minutes.',
+      'Lay the roti flat (egg side up if using egg). Spread green chutney down the middle.',
+      'Layer the sautéed paneer/tofu and vegetables on top. Drizzle lime juice.',
+      'Roll tightly, wrap the bottom in foil or greaseproof paper, and serve warm.'
+    ],
+    tip: 'Skip the mayo or cheese! Homemade mint-coriander chutney provides a vibrant, zero-fat tangy kick.'
+  },
+  'baked-oats-chicken': {
+    title: 'Baked Oats-Crusted Chicken Strips',
+    prepTime: '15 mins',
+    cookTime: '15 mins',
+    servings: '2 servings',
+    ingredients: [
+      '250g Chicken breast, cut into strips',
+      '1/2 cup Rolled oats, crushed coarse',
+      '1 Egg white, whisked',
+      '1/2 tsp Kashmiri red chili powder',
+      '1/2 tsp Garlic powder & 1/2 tsp Oregano',
+      'Salt and black pepper to taste'
+    ],
+    instructions: [
+      'Preheat your oven to 200°C (or air-fryer to 190°C) and line a tray with baking paper.',
+      'Season chicken strips with salt, black pepper, garlic powder, and red chili powder.',
+      'In a bowl, place the whisked egg white. In another shallow plate, mix the crushed oats and oregano.',
+      'Dip each chicken strip into the egg white, then roll it in the oats mixture, pressing gently so the oats coat the chicken evenly.',
+      'Arrange on the baking tray. Bake for 12-15 minutes, flipping halfway, until golden-brown and crispy.'
+    ],
+    tip: 'To get a super crunchy crust, spray a tiny mist of oil over the oats-coated strips right before baking.'
+  },
   'foxtail-millet-noodles': {
     title: 'Healthy Homemade Millet Noodles',
     prepTime: '10 mins',
