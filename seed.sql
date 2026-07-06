@@ -5,6 +5,7 @@
 TRUNCATE alternative_mappings CASCADE;
 TRUNCATE junk_items CASCADE;
 TRUNCATE healthy_alternatives CASCADE;
+TRUNCATE healthy_cuisine_tags CASCADE;
 
 -- Insert Junk Items
 INSERT INTO junk_items (id, name, slug, category, calories, fat, sugar, sodium, image_url) VALUES
@@ -111,3 +112,82 @@ INSERT INTO healthy_cuisine_tags (cuisine_type, health_score, category) VALUES
 ('Organic', 90, 'Clean Eating'),
 ('North Indian', 65, 'Balanced'),
 ('Mediterranean', 85, 'Heart Healthy');
+
+-- Clean gyms & supplements tables
+TRUNCATE gyms CASCADE;
+TRUNCATE supplements CASCADE;
+
+-- Insert Gyms Data
+INSERT INTO gyms (name, rating, monthly_fee, distance_text, latitude, longitude, address, amenities, is_value_pick, image_url) VALUES
+-- Indiranagar, Bengaluru
+('Cult.fit Elite Indiranagar', 4.8, 3000, '0.5 km', 12.971891, 77.641151, '12th Main Road, HAL 2nd Stage, Indiranagar, Bengaluru', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'], false, '/images/gyms/cult_indiranagar.jpg'),
+('Gold''s Gym Indiranagar', 4.5, 4500, '0.9 km', 12.975000, 77.643000, 'Double Road, Indiranagar, Bengaluru', ARRAY['Strength Training', 'Cardio Machines', 'Personal Training', 'Steam Room'], false, '/images/gyms/golds_indiranagar.jpg'),
+('Snap Fitness 24/7 Indiranagar', 4.2, 2500, '1.2 km', 12.969000, 77.638000, '100 Feet Road, Indiranagar, Bengaluru', ARRAY['24/7 Access', 'Cardio Machines', 'Strength Training', 'Free Wi-Fi'], false, '/images/gyms/snap_indiranagar.jpg'),
+('Peak Iron Fitness Gym', 4.4, 1500, '0.7 km', 12.973000, 77.640000, 'Lashkar Road, HAL 2nd Stage, Indiranagar, Bengaluru', ARRAY['Strength Training', 'Free Weights', 'Cardio Area'], true, '/images/gyms/peak_indiranagar.jpg'),
+
+-- Bandra West, Mumbai
+('Gold''s Gym Bandra', 4.7, 6000, '0.6 km', 19.060691, 72.836250, 'Carter Road, Bandra West, Mumbai', ARRAY['Strength Training', 'Cardio Machines', 'Personal Training', 'Valet Parking', 'Steam Room'], false, '/images/gyms/golds_bandra.jpg'),
+('Waves Gym Bandra', 4.6, 5000, '0.8 km', 19.058000, 72.838000, 'Linking Road, Bandra West, Mumbai', ARRAY['Spin Classes', 'Strength Training', 'Cardio Area', 'Steam Bath', 'Juice Bar'], false, '/images/gyms/waves_bandra.jpg'),
+('Cult.fit Bandra West', 4.5, 3500, '1.1 km', 19.063000, 72.834000, 'Pali Hill, Bandra West, Mumbai', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing'], false, '/images/gyms/cult_bandra.jpg'),
+('Iron Temple Bodybuilding Gym', 4.3, 1800, '0.5 km', 19.061000, 72.835000, 'Juhu Tara Road, Bandra, Mumbai', ARRAY['Free Weights', 'Strength Training', 'Personal Training'], true, '/images/gyms/irontemple_bandra.jpg'),
+
+-- Connaught Place, New Delhi
+('Gold''s Gym Connaught Place', 4.6, 5000, '0.4 km', 28.630400, 77.217700, 'Outer Circle, Connaught Place, New Delhi', ARRAY['Strength Training', 'Cardio Machines', 'Spa', 'Personal Training'], false, '/images/gyms/golds_cp.jpg'),
+('Anytime Fitness CP', 4.5, 3500, '0.8 km', 28.632000, 77.215000, 'Inner Circle, Connaught Place, New Delhi', ARRAY['24/7 Access', 'Cardio Machines', 'Strength Training', 'Private Showers'], false, '/images/gyms/anytime_cp.jpg'),
+('Cult.fit Connaught Place', 4.7, 3200, '1.0 km', 28.628000, 77.220000, 'Khan Market, Near CP, New Delhi', ARRAY['Group Workouts', 'Boxing', 'Strength Training', 'Yoga'], false, '/images/gyms/cult_cp.jpg'),
+('Delhi Fitness Club CP', 4.1, 1200, '0.5 km', 28.631000, 77.218000, 'M-Block, Connaught Place, New Delhi', ARRAY['Cardio Machines', 'Strength Training', 'Free Weights'], true, '/images/gyms/delhifitness_cp.jpg'),
+
+-- Gachibowli, Hyderabad
+('Cult.fit Gachibowli', 4.7, 2800, '0.7 km', 17.440081, 78.348915, 'DLF Cybercity Road, Gachibowli, Hyderabad', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'], false, '/images/gyms/cult_gachibowli.jpg'),
+('Nitro Gym Gachibowli', 4.5, 4000, '1.2 km', 17.438000, 78.352000, 'Hitech City Road, Gachibowli, Hyderabad', ARRAY['Jacuzzi', 'Steam Room', 'Cardio Area', 'Strength Training', 'Zumba'], false, '/images/gyms/nitro_gachibowli.jpg'),
+('Anytime Fitness Gachibowli', 4.4, 3200, '1.5 km', 17.443000, 78.345000, 'Kondapur Main Road, Near Gachibowli, Hyderabad', ARRAY['24/7 Access', 'Cardio Machines', 'Strength Training', 'Personal Training'], false, '/images/gyms/anytime_gachibowli.jpg'),
+('Fit-Life Iron Gym Gachibowli', 4.2, 1200, '0.6 km', 17.441000, 78.349000, 'Gachibowli X Roads, Hyderabad', ARRAY['Free Weights', 'Strength Training', 'Cardio Area'], true, '/images/gyms/fitlife_gachibowli.jpg'),
+
+-- Koregaon Park, Pune
+('Gold''s Gym Koregaon Park', 4.8, 5500, '0.6 km', 18.536200, 73.893000, 'North Main Road, Koregaon Park, Pune', ARRAY['Swimming Pool', 'Spa', 'Strength Training', 'Cardio Machines', 'Personal Training'], false, '/images/gyms/golds_kp.jpg'),
+('Absolute Fitness KP', 4.4, 3500, '1.0 km', 18.538000, 73.895000, 'Lane 7, Koregaon Park, Pune', ARRAY['Zumba', 'Cardio Machines', 'Strength Training', 'Shower Area'], false, '/images/gyms/absolute_kp.jpg'),
+('Cult.fit Koregaon Park', 4.6, 3000, '1.3 km', 18.534000, 73.890000, 'Kalyani Nagar Main Road, Near KP, Pune', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'], false, '/images/gyms/cult_kp.jpg'),
+('Muscle Garage Gym KP', 4.3, 1400, '0.4 km', 18.537000, 73.892000, 'Jogger''s Park Road, Koregaon Park, Pune', ARRAY['Strength Training', 'Free Weights', 'Personal Training'], true, '/images/gyms/musclegarage_kp.jpg');
+
+-- Insert Supplements Data
+INSERT INTO supplements (name, brand, category, price, servings, dose_per_serving, price_per_serving, rating, tier, buy_links, image_url, benefits) VALUES
+-- Whey Protein
+('Gold Standard 100% Whey', 'Optimum Nutrition', 'protein', 6899, 60, '24g Whey Protein', 114.9, 4.8, 'market_leader', 
+ '{"amazon": "https://www.amazon.in/s?k=Optimum+Nutrition+Gold+Standard+Whey", "blinkit": "https://blinkit.com/s?q=optimum+nutrition+whey", "zepto": "https://www.zeptonow.com/search?q=optimum+nutrition+whey", "healthkart": "https://www.healthkart.com/search?q=ON+Gold+Standard+100+Whey"}',
+ '/images/supps/on_whey.jpg', 'Premium micro-filtered whey isolate & concentrate blend. Ultra-pure protein sources, low carbs, fast absorption, third-party tested for safety.'),
+('Gold Whey Protein 100%', 'Nakpro', 'protein', 2999, 60, '24g Whey Protein', 49.9, 4.4, 'value_pick', 
+ '{"amazon": "https://www.amazon.in/s?k=Nakpro+Gold+Whey+Protein", "blinkit": "https://blinkit.com/s?q=nakpro+whey", "zepto": "https://www.zeptonow.com/search?q=nakpro+whey", "healthkart": "https://www.healthkart.com/search?q=Nakpro+Gold+Whey"}',
+ '/images/supps/nakpro_whey.jpg', 'Highly affordable 100% whey protein concentrate. Zero added sugar, naturally rich in BCAAs, lab-verified protein content.'),
+
+-- Creatine
+('Creatine Monohydrate (Creapure)', 'MuscleBlaze', 'creatine', 1199, 83, '3g Creapure Creatine', 14.4, 4.7, 'market_leader', 
+ '{"amazon": "https://www.amazon.in/s?k=MuscleBlaze+Creatine+Creapure", "blinkit": "https://blinkit.com/s?q=creatine+muscleblaze", "zepto": "https://www.zeptonow.com/search?q=creatine+muscleblaze", "healthkart": "https://www.healthkart.com/search?q=MuscleBlaze+Creapure"}',
+ '/images/supps/mb_creatine.jpg', 'Uses 100% pure imported German Creapure. Superfine micronized particles for instant solubility. Maximizes muscle ATP production & strength.'),
+('Pure Creatine Monohydrate', 'Asitis Nutrition', 'creatine', 499, 100, '3g Creatine Monohydrate', 4.9, 4.3, 'value_pick', 
+ '{"amazon": "https://www.amazon.in/s?k=Asitis+Creatine+Monohydrate", "blinkit": "https://blinkit.com/s?q=creatine+asitis", "zepto": "https://www.zeptonow.com/search?q=creatine+asitis", "healthkart": "https://www.healthkart.com/search?q=Asitis+Creatine"}',
+ '/images/supps/asitis_creatine.jpg', 'Pure unflavored, additive-free creatine monohydrate. Provides maximum cost efficiency, aids in muscle gains, volumization, and recovery.'),
+
+-- Pre-workout
+('C4 Original Pre-Workout', 'Cellucor', 'preworkout', 2499, 30, '1.6g Beta-Alanine, 150mg Caffeine', 83.3, 4.6, 'market_leader', 
+ '{"amazon": "https://www.amazon.in/s?k=Cellucor+C4+Original", "blinkit": "https://blinkit.com/s?q=c4+preworkout", "zepto": "https://www.zeptonow.com/search?q=c4+preworkout", "healthkart": "https://www.healthkart.com/search?q=Cellucor+C4"}',
+ '/images/supps/c4_preworkout.jpg', 'Industry-standard clinical blend of explosive energy booster, CarnoSyn Beta-Alanine for endurance, and Arginine Nitrate for intense pumps.'),
+('Pre-Workout WrathX', 'MuscleBlaze', 'preworkout', 1399, 30, '3g Citrulline, 200mg Caffeine', 46.6, 4.4, 'value_pick', 
+ '{"amazon": "https://www.amazon.in/s?k=MuscleBlaze+WrathX+Preworkout", "blinkit": "https://blinkit.com/s?q=muscleblaze+preworkout", "zepto": "https://www.zeptonow.com/search?q=muscleblaze+preworkout", "healthkart": "https://www.healthkart.com/search?q=MuscleBlaze+WrathX"}',
+ '/images/supps/mb_preworkout.jpg', 'Affordable performance blend featuring L-Citrulline Malate, Caffeine, and Beta-Alanine for focus, endurance, and extreme vascularity.'),
+
+-- Multivitamins
+('Mega Men One Daily', 'GNC', 'multivitamin', 1499, 60, '39 Active Nutrients per Tablet', 24.9, 4.5, 'market_leader', 
+ '{"amazon": "https://www.amazon.in/s?k=GNC+Mega+Men+One+Daily", "blinkit": "https://blinkit.com/s?q=gnc+multivitamin", "zepto": "https://www.zeptonow.com/search?q=gnc+multivitamin", "healthkart": "https://www.healthkart.com/search?q=GNC+Mega+Men"}',
+ '/images/supps/gnc_multi.jpg', 'Premium comprehensive multivitamin tailored for active men. Contains essential vitamins, muscle support blends, and brain/heart health boosters.'),
+('Multivitamin with Probiotics', 'Carbamide Forte', 'multivitamin', 429, 180, '45 Ingredients per Tablet', 2.3, 4.3, 'value_pick', 
+ '{"amazon": "https://www.amazon.in/s?k=Carbamide+Forte+Multivitamin+Probiotics", "blinkit": "https://blinkit.com/s?q=carbamide+multivitamin", "zepto": "https://www.zeptonow.com/search?q=carbamide+multivitamin", "healthkart": "https://www.healthkart.com/search?q=Carbamide+Forte+Multivitamin"}',
+ '/images/supps/carbamide_multi.jpg', 'Extremely budget-friendly. Packed with 45 vitamins, minerals, and superfoods, combined with direct gut probiotics for maximum absorption.'),
+
+-- Omega 3
+('Triple Strength Omega 3', 'TrueBasics', 'omega3', 1199, 60, '1250mg Fish Oil (560mg EPA / 400mg DHA)', 19.9, 4.7, 'market_leader', 
+ '{"amazon": "https://www.amazon.in/s?k=TrueBasics+Triple+Strength+Omega+3", "blinkit": "https://blinkit.com/s?q=omega+3+truebasics", "zepto": "https://www.zeptonow.com/search?q=omega+3+truebasics", "healthkart": "https://www.healthkart.com/search?q=TrueBasics+Omega+3"}',
+ '/images/supps/truebasics_omega.jpg', 'Triple strength refined fish oil. Molecularly distilled, cholesterol-free softgels with high concentration of active EPA and DHA fatty acids.'),
+('Premium Salmon Fish Oil', 'Carbamide Forte', 'omega3', 449, 120, '1000mg Fish Oil (180mg EPA / 120mg DHA)', 3.7, 4.2, 'value_pick', 
+ '{"amazon": "https://www.amazon.in/s?k=Carbamide+Forte+Salmon+Fish+Oil", "blinkit": "https://blinkit.com/s?q=omega+3+carbamide", "zepto": "https://www.zeptonow.com/search?q=omega+3+carbamide", "healthkart": "https://www.healthkart.com/search?q=Carbamide+Forte+Fish+Oil"}',
+ '/images/supps/carbamide_omega.jpg', 'High affordability per capsule. Sourced from cold-water salmon, supports heart, joint, and skin health with baseline macro Omega-3 ratios.');
+

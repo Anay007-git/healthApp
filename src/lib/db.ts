@@ -4,7 +4,11 @@ import {
   HealthyAlternative,
   mockJunkItems,
   mockHealthyAlternatives,
-  mockAlternativeMappings
+  mockAlternativeMappings,
+  Gym,
+  Supplement,
+  mockGyms,
+  mockSupplements
 } from './mockData';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
@@ -158,3 +162,47 @@ export async function getHealthyCuisineTags(): Promise<CuisineTag[]> {
   }
   return mockCuisineTags;
 }
+
+/**
+ * Fetch all gyms available in the system
+ */
+export async function getGyms(): Promise<Gym[]> {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('gyms')
+        .select('*')
+        .order('rating', { ascending: false });
+      if (!error && data) return data as Gym[];
+      console.warn('Error fetching gyms from database, falling back to mock:', error);
+    } catch (e) {
+      console.warn('Exception fetching gyms, falling back to mock:', e);
+    }
+  }
+  return mockGyms;
+}
+
+/**
+ * Fetch all supplements available in the system
+ */
+export async function getSupplements(category?: string): Promise<Supplement[]> {
+  if (supabase) {
+    try {
+      let query = supabase.from('supplements').select('*');
+      if (category && category !== 'all') {
+        query = query.eq('category', category);
+      }
+      const { data, error } = await query.order('rating', { ascending: false });
+      if (!error && data) return data as Supplement[];
+      console.warn('Error fetching supplements from database, falling back to mock:', error);
+    } catch (e) {
+      console.warn('Exception fetching supplements, falling back to mock:', e);
+    }
+  }
+  
+  if (category && category !== 'all') {
+    return mockSupplements.filter((s) => s.category === category);
+  }
+  return mockSupplements;
+}
+

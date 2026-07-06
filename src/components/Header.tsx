@@ -122,6 +122,9 @@ export default function Header() {
               <Link href="/diet-chart" className="text-xs font-bold text-text-app hover:text-brand-primary transition-colors">
                 Diet Planner
               </Link>
+              <Link href="/gyms-supplements" className="text-xs font-bold text-text-app hover:text-brand-primary transition-colors">
+                Gyms & Supps
+              </Link>
             </nav>
           </div>
 

@@ -131,3 +131,524 @@ export const mockAlternativeMappings: AlternativeMapping[] = [
   { junk_item_id: 'a1b1c1d1-0004-0000-0000-000000000000', alternative_id: 'e1f1a1b1-0004-0000-0000-000000000000', similarity_reason: 'Replaces high GI sugar-coated corn flakes with steel cut oats, stabilizing blood sugar and providing long-lasting energy from complex carbs.' },
   { junk_item_id: 'a1b1c1d1-0005-0000-0000-000000000000', alternative_id: 'e1f1a1b1-0005-0000-0000-000000000000', similarity_reason: 'Swaps heavily buttered white pav bread and oily bhaji with high-fiber baked oats-wheat pav and a veggie-loaded bhaji made in minimal fat.' }
 ];
+
+export interface Gym {
+  id: string;
+  name: string;
+  rating: number;
+  monthly_fee: number;
+  distance_text: string;
+  latitude: number;
+  longitude: number;
+  address: string;
+  amenities: string[];
+  is_value_pick: boolean;
+  image_url?: string;
+}
+
+export interface Supplement {
+  id: string;
+  name: string;
+  brand: string;
+  category: string; // 'protein' | 'creatine' | 'preworkout' | 'multivitamin' | 'omega3'
+  price: number;
+  servings: number;
+  dose_per_serving: string;
+  price_per_serving: number;
+  rating: number;
+  tier: 'market_leader' | 'value_pick';
+  buy_links: {
+    amazon?: string;
+    blinkit?: string;
+    zepto?: string;
+    instamart?: string;
+    healthkart?: string;
+  };
+  image_url?: string;
+  benefits: string;
+}
+
+export const mockGyms: Gym[] = [
+  // Indiranagar, Bengaluru
+  {
+    id: 'g-1',
+    name: 'Cult.fit Elite Indiranagar',
+    rating: 4.8,
+    monthly_fee: 3000,
+    distance_text: '0.5 km',
+    latitude: 12.971891,
+    longitude: 77.641151,
+    address: '12th Main Road, HAL 2nd Stage, Indiranagar, Bengaluru',
+    amenities: ['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'],
+    is_value_pick: false,
+    image_url: '/images/gyms/cult_indiranagar.jpg'
+  },
+  {
+    id: 'g-2',
+    name: "Gold's Gym Indiranagar",
+    rating: 4.5,
+    monthly_fee: 4500,
+    distance_text: '0.9 km',
+    latitude: 12.975000,
+    longitude: 77.643000,
+    address: 'Double Road, Indiranagar, Bengaluru',
+    amenities: ['Strength Training', 'Cardio Machines', 'Personal Training', 'Steam Room'],
+    is_value_pick: false,
+    image_url: '/images/gyms/golds_indiranagar.jpg'
+  },
+  {
+    id: 'g-3',
+    name: 'Snap Fitness 24/7 Indiranagar',
+    rating: 4.2,
+    monthly_fee: 2500,
+    distance_text: '1.2 km',
+    latitude: 12.969000,
+    longitude: 77.638000,
+    address: '100 Feet Road, Indiranagar, Bengaluru',
+    amenities: ['24/7 Access', 'Cardio Machines', 'Strength Training', 'Free Wi-Fi'],
+    is_value_pick: false,
+    image_url: '/images/gyms/snap_indiranagar.jpg'
+  },
+  {
+    id: 'g-4',
+    name: 'Peak Iron Fitness Gym',
+    rating: 4.4,
+    monthly_fee: 1500,
+    distance_text: '0.7 km',
+    latitude: 12.973000,
+    longitude: 77.640000,
+    address: 'Lashkar Road, HAL 2nd Stage, Indiranagar, Bengaluru',
+    amenities: ['Strength Training', 'Free Weights', 'Cardio Area'],
+    is_value_pick: true,
+    image_url: '/images/gyms/peak_indiranagar.jpg'
+  },
+
+  // Bandra West, Mumbai
+  {
+    id: 'g-5',
+    name: "Gold's Gym Bandra",
+    rating: 4.7,
+    monthly_fee: 6000,
+    distance_text: '0.6 km',
+    latitude: 19.060691,
+    longitude: 72.836250,
+    address: 'Carter Road, Bandra West, Mumbai',
+    amenities: ['Strength Training', 'Cardio Machines', 'Personal Training', 'Valet Parking', 'Steam Room'],
+    is_value_pick: false,
+    image_url: '/images/gyms/golds_bandra.jpg'
+  },
+  {
+    id: 'g-6',
+    name: 'Waves Gym Bandra',
+    rating: 4.6,
+    monthly_fee: 5000,
+    distance_text: '0.8 km',
+    latitude: 19.058000,
+    longitude: 72.838000,
+    address: 'Linking Road, Bandra West, Mumbai',
+    amenities: ['Spin Classes', 'Strength Training', 'Cardio Area', 'Steam Bath', 'Juice Bar'],
+    is_value_pick: false,
+    image_url: '/images/gyms/waves_bandra.jpg'
+  },
+  {
+    id: 'g-7',
+    name: 'Cult.fit Bandra West',
+    rating: 4.5,
+    monthly_fee: 3500,
+    distance_text: '1.1 km',
+    latitude: 19.063000,
+    longitude: 72.834000,
+    address: 'Pali Hill, Bandra West, Mumbai',
+    amenities: ['Group Workouts', 'Strength Training', 'Yoga', 'Boxing'],
+    is_value_pick: false,
+    image_url: '/images/gyms/cult_bandra.jpg'
+  },
+  {
+    id: 'g-8',
+    name: 'Iron Temple Bodybuilding Gym',
+    rating: 4.3,
+    monthly_fee: 1800,
+    distance_text: '0.5 km',
+    latitude: 19.061000,
+    longitude: 72.835000,
+    address: 'Juhu Tara Road, Bandra, Mumbai',
+    amenities: ['Free Weights', 'Strength Training', 'Personal Training'],
+    is_value_pick: true,
+    image_url: '/images/gyms/irontemple_bandra.jpg'
+  },
+
+  // Connaught Place, New Delhi
+  {
+    id: 'g-9',
+    name: "Gold's Gym Connaught Place",
+    rating: 4.6,
+    monthly_fee: 5000,
+    distance_text: '0.4 km',
+    latitude: 28.630400,
+    longitude: 77.217700,
+    address: 'Outer Circle, Connaught Place, New Delhi',
+    amenities: ['Strength Training', 'Cardio Machines', 'Spa', 'Personal Training'],
+    is_value_pick: false,
+    image_url: '/images/gyms/golds_cp.jpg'
+  },
+  {
+    id: 'g-10',
+    name: 'Anytime Fitness CP',
+    rating: 4.5,
+    monthly_fee: 3500,
+    distance_text: '0.8 km',
+    latitude: 28.632000,
+    longitude: 77.215000,
+    address: 'Inner Circle, Connaught Place, New Delhi',
+    amenities: ['24/7 Access', 'Cardio Machines', 'Strength Training', 'Private Showers'],
+    is_value_pick: false,
+    image_url: '/images/gyms/anytime_cp.jpg'
+  },
+  {
+    id: 'g-11',
+    name: 'Cult.fit Connaught Place',
+    rating: 4.7,
+    monthly_fee: 3200,
+    distance_text: '1.0 km',
+    latitude: 28.628000,
+    longitude: 77.220000,
+    address: 'Khan Market, Near CP, New Delhi',
+    amenities: ['Group Workouts', 'Boxing', 'Strength Training', 'Yoga'],
+    is_value_pick: false,
+    image_url: '/images/gyms/cult_cp.jpg'
+  },
+  {
+    id: 'g-12',
+    name: 'Delhi Fitness Club CP',
+    rating: 4.1,
+    monthly_fee: 1200,
+    distance_text: '0.5 km',
+    latitude: 28.631000,
+    longitude: 77.218000,
+    address: 'M-Block, Connaught Place, New Delhi',
+    amenities: ['Cardio Machines', 'Strength Training', 'Free Weights'],
+    is_value_pick: true,
+    image_url: '/images/gyms/delhifitness_cp.jpg'
+  },
+
+  // Gachibowli, Hyderabad
+  {
+    id: 'g-13',
+    name: 'Cult.fit Gachibowli',
+    rating: 4.7,
+    monthly_fee: 2800,
+    distance_text: '0.7 km',
+    latitude: 17.440081,
+    longitude: 78.348915,
+    address: 'DLF Cybercity Road, Gachibowli, Hyderabad',
+    amenities: ['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'],
+    is_value_pick: false,
+    image_url: '/images/gyms/cult_gachibowli.jpg'
+  },
+  {
+    id: 'g-14',
+    name: 'Nitro Gym Gachibowli',
+    rating: 4.5,
+    monthly_fee: 4000,
+    distance_text: '1.2 km',
+    latitude: 17.438000,
+    longitude: 78.352000,
+    address: 'Hitech City Road, Gachibowli, Hyderabad',
+    amenities: ['Jacuzzi', 'Steam Room', 'Cardio Area', 'Strength Training', 'Zumba'],
+    is_value_pick: false,
+    image_url: '/images/gyms/nitro_gachibowli.jpg'
+  },
+  {
+    id: 'g-15',
+    name: 'Anytime Fitness Gachibowli',
+    rating: 4.4,
+    monthly_fee: 3200,
+    distance_text: '1.5 km',
+    latitude: 17.443000,
+    longitude: 78.345000,
+    address: 'Kondapur Main Road, Near Gachibowli, Hyderabad',
+    amenities: ['24/7 Access', 'Cardio Machines', 'Strength Training', 'Personal Training'],
+    is_value_pick: false,
+    image_url: '/images/gyms/anytime_gachibowli.jpg'
+  },
+  {
+    id: 'g-16',
+    name: 'Fit-Life Iron Gym Gachibowli',
+    rating: 4.2,
+    monthly_fee: 1200,
+    distance_text: '0.6 km',
+    latitude: 17.441000,
+    longitude: 78.349000,
+    address: 'Gachibowli X Roads, Hyderabad',
+    amenities: ['Free Weights', 'Strength Training', 'Cardio Area'],
+    is_value_pick: true,
+    image_url: '/images/gyms/fitlife_gachibowli.jpg'
+  },
+
+  // Koregaon Park, Pune
+  {
+    id: 'g-17',
+    name: "Gold's Gym Koregaon Park",
+    rating: 4.8,
+    monthly_fee: 5500,
+    distance_text: '0.6 km',
+    latitude: 18.536200,
+    longitude: 73.893000,
+    address: 'North Main Road, Koregaon Park, Pune',
+    amenities: ['Swimming Pool', 'Spa', 'Strength Training', 'Cardio Machines', 'Personal Training'],
+    is_value_pick: false,
+    image_url: '/images/gyms/golds_kp.jpg'
+  },
+  {
+    id: 'g-18',
+    name: 'Absolute Fitness KP',
+    rating: 4.4,
+    monthly_fee: 3500,
+    distance_text: '1.0 km',
+    latitude: 18.538000,
+    longitude: 73.895000,
+    address: 'Lane 7, Koregaon Park, Pune',
+    amenities: ['Zumba', 'Cardio Machines', 'Strength Training', 'Shower Area'],
+    is_value_pick: false,
+    image_url: '/images/gyms/absolute_kp.jpg'
+  },
+  {
+    id: 'g-19',
+    name: 'Cult.fit Koregaon Park',
+    rating: 4.6,
+    monthly_fee: 3000,
+    distance_text: '1.3 km',
+    latitude: 18.534000,
+    longitude: 73.890000,
+    address: 'Kalyani Nagar Main Road, Near KP, Pune',
+    amenities: ['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'],
+    is_value_pick: false,
+    image_url: '/images/gyms/cult_kp.jpg'
+  },
+  {
+    id: 'g-20',
+    name: 'Muscle Garage Gym KP',
+    rating: 4.3,
+    monthly_fee: 1400,
+    distance_text: '0.4 km',
+    latitude: 18.537000,
+    longitude: 73.892000,
+    address: "Jogger's Park Road, Koregaon Park, Pune",
+    amenities: ['Strength Training', 'Free Weights', 'Personal Training'],
+    is_value_pick: true,
+    image_url: '/images/gyms/musclegarage_kp.jpg'
+  }
+];
+
+export const mockSupplements: Supplement[] = [
+  // Whey Protein
+  {
+    id: 's-1',
+    name: 'Gold Standard 100% Whey',
+    brand: 'Optimum Nutrition',
+    category: 'protein',
+    price: 6899,
+    servings: 60,
+    dose_per_serving: '24g Whey Protein',
+    price_per_serving: 114.9,
+    rating: 4.8,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Optimum+Nutrition+Gold+Standard+Whey',
+      blinkit: 'https://blinkit.com/s?q=optimum+nutrition+whey',
+      zepto: 'https://www.zeptonow.com/search?q=optimum+nutrition+whey',
+      healthkart: 'https://www.healthkart.com/search?q=ON+Gold+Standard+100+Whey'
+    },
+    image_url: '/images/supps/on_whey.jpg',
+    benefits: 'Premium micro-filtered whey isolate & concentrate blend. Ultra-pure protein sources, low carbs, fast absorption, third-party tested for safety.'
+  },
+  {
+    id: 's-2',
+    name: 'Gold Whey Protein 100%',
+    brand: 'Nakpro',
+    category: 'protein',
+    price: 2999,
+    servings: 60,
+    dose_per_serving: '24g Whey Protein',
+    price_per_serving: 49.9,
+    rating: 4.4,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Nakpro+Gold+Whey+Protein',
+      blinkit: 'https://blinkit.com/s?q=nakpro+whey',
+      zepto: 'https://www.zeptonow.com/search?q=nakpro+whey',
+      healthkart: 'https://www.healthkart.com/search?q=Nakpro+Gold+Whey'
+    },
+    image_url: '/images/supps/nakpro_whey.jpg',
+    benefits: 'Highly affordable 100% whey protein concentrate. Zero added sugar, naturally rich in BCAAs, lab-verified protein content.'
+  },
+
+  // Creatine
+  {
+    id: 's-3',
+    name: 'Creatine Monohydrate (Creapure)',
+    brand: 'MuscleBlaze',
+    category: 'creatine',
+    price: 1199,
+    servings: 83,
+    dose_per_serving: '3g Creapure Creatine',
+    price_per_serving: 14.4,
+    rating: 4.7,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=MuscleBlaze+Creatine+Creapure',
+      blinkit: 'https://blinkit.com/s?q=creatine+muscleblaze',
+      zepto: 'https://www.zeptonow.com/search?q=creatine+muscleblaze',
+      healthkart: 'https://www.healthkart.com/search?q=MuscleBlaze+Creapure'
+    },
+    image_url: '/images/supps/mb_creatine.jpg',
+    benefits: 'Uses 100% pure imported German Creapure. Superfine micronized particles for instant solubility. Maximizes muscle ATP production & strength.'
+  },
+  {
+    id: 's-4',
+    name: 'Pure Creatine Monohydrate',
+    brand: 'Asitis Nutrition',
+    category: 'creatine',
+    price: 499,
+    servings: 100,
+    dose_per_serving: '3g Creatine Monohydrate',
+    price_per_serving: 4.9,
+    rating: 4.3,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Asitis+Creatine+Monohydrate',
+      blinkit: 'https://blinkit.com/s?q=creatine+asitis',
+      zepto: 'https://www.zeptonow.com/search?q=creatine+asitis',
+      healthkart: 'https://www.healthkart.com/search?q=Asitis+Creatine'
+    },
+    image_url: '/images/supps/asitis_creatine.jpg',
+    benefits: 'Pure unflavored, additive-free creatine monohydrate. Provides maximum cost efficiency, aids in muscle gains, volumization, and recovery.'
+  },
+
+  // Pre-workout
+  {
+    id: 's-5',
+    name: 'C4 Original Pre-Workout',
+    brand: 'Cellucor',
+    category: 'preworkout',
+    price: 2499,
+    servings: 30,
+    dose_per_serving: '1.6g Beta-Alanine, 150mg Caffeine',
+    price_per_serving: 83.3,
+    rating: 4.6,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Cellucor+C4+Original',
+      blinkit: 'https://blinkit.com/s?q=c4+preworkout',
+      zepto: 'https://www.zeptonow.com/search?q=c4+preworkout',
+      healthkart: 'https://www.healthkart.com/search?q=Cellucor+C4'
+    },
+    image_url: '/images/supps/c4_preworkout.jpg',
+    benefits: 'Industry-standard clinical blend of explosive energy booster, CarnoSyn Beta-Alanine for endurance, and Arginine Nitrate for intense pumps.'
+  },
+  {
+    id: 's-6',
+    name: 'Pre-Workout WrathX',
+    brand: 'MuscleBlaze',
+    category: 'preworkout',
+    price: 1399,
+    servings: 30,
+    dose_per_serving: '3g Citrulline, 200mg Caffeine',
+    price_per_serving: 46.6,
+    rating: 4.4,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=MuscleBlaze+WrathX+Preworkout',
+      blinkit: 'https://blinkit.com/s?q=muscleblaze+preworkout',
+      zepto: 'https://www.zeptonow.com/search?q=muscleblaze+preworkout',
+      healthkart: 'https://www.healthkart.com/search?q=MuscleBlaze+WrathX'
+    },
+    image_url: '/images/supps/mb_preworkout.jpg',
+    benefits: 'Affordable performance blend featuring L-Citrulline Malate, Caffeine, and Beta-Alanine for focus, endurance, and extreme vascularity.'
+  },
+
+  // Multivitamin
+  {
+    id: 's-7',
+    name: 'Mega Men One Daily',
+    brand: 'GNC',
+    category: 'multivitamin',
+    price: 1499,
+    servings: 60,
+    dose_per_serving: '39 Active Nutrients per Tablet',
+    price_per_serving: 24.9,
+    rating: 4.5,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=GNC+Mega+Men+One+Daily',
+      blinkit: 'https://blinkit.com/s?q=gnc+multivitamin',
+      zepto: 'https://www.zeptonow.com/search?q=gnc+multivitamin',
+      healthkart: 'https://www.healthkart.com/search?q=GNC+Mega+Men'
+    },
+    image_url: '/images/supps/gnc_multi.jpg',
+    benefits: 'Premium comprehensive multivitamin tailored for active men. Contains essential vitamins, muscle support blends, and brain/heart health boosters.'
+  },
+  {
+    id: 's-8',
+    name: 'Multivitamin with Probiotics',
+    brand: 'Carbamide Forte',
+    category: 'multivitamin',
+    price: 429,
+    servings: 180,
+    dose_per_serving: '45 Ingredients per Tablet',
+    price_per_serving: 2.3,
+    rating: 4.3,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Carbamide+Forte+Multivitamin+Probiotics',
+      blinkit: 'https://blinkit.com/s?q=carbamide+multivitamin',
+      zepto: 'https://www.zeptonow.com/search?q=carbamide+multivitamin',
+      healthkart: 'https://www.healthkart.com/search?q=Carbamide+Forte+Multivitamin'
+    },
+    image_url: '/images/supps/carbamide_multi.jpg',
+    benefits: 'Extremely budget-friendly. Packed with 45 vitamins, minerals, and superfoods, combined with direct gut probiotics for maximum absorption.'
+  },
+
+  // Omega 3
+  {
+    id: 's-9',
+    name: 'Triple Strength Omega 3',
+    brand: 'TrueBasics',
+    category: 'omega3',
+    price: 1199,
+    servings: 60,
+    dose_per_serving: '1250mg Fish Oil (560mg EPA / 400mg DHA)',
+    price_per_serving: 19.9,
+    rating: 4.7,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=TrueBasics+Triple+Strength+Omega+3',
+      blinkit: 'https://blinkit.com/s?q=omega+3+truebasics',
+      zepto: 'https://www.zeptonow.com/search?q=omega+3+truebasics',
+      healthkart: 'https://www.healthkart.com/search?q=TrueBasics+Omega+3'
+    },
+    image_url: '/images/supps/truebasics_omega.jpg',
+    benefits: 'Triple strength refined fish oil. Molecularly distilled, cholesterol-free softgels with high concentration of active EPA and DHA fatty acids.'
+  },
+  {
+    id: 's-10',
+    name: 'Premium Salmon Fish Oil',
+    brand: 'Carbamide Forte',
+    category: 'omega3',
+    price: 449,
+    servings: 120,
+    dose_per_serving: '1000mg Fish Oil (180mg EPA / 120mg DHA)',
+    price_per_serving: 3.7,
+    rating: 4.2,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Carbamide+Forte+Salmon+Fish+Oil',
+      blinkit: 'https://blinkit.com/s?q=omega+3+carbamide',
+      zepto: 'https://www.zeptonow.com/search?q=omega+3+carbamide',
+      healthkart: 'https://www.healthkart.com/search?q=Carbamide+Forte+Fish+Oil'
+    },
+    image_url: '/images/supps/carbamide_omega.jpg',
+    benefits: 'High affordability per capsule. Sourced from cold-water salmon, supports heart, joint, and skin health with baseline macro Omega-3 ratios.'
+  }
+];
+

@@ -54,3 +54,38 @@ CREATE TABLE IF NOT EXISTS healthy_cuisine_tags (
     health_score INT NOT NULL,
     category VARCHAR(100) NOT NULL
 );
+
+-- Table for Gym Locator
+CREATE TABLE IF NOT EXISTS gyms (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) NOT NULL,
+    rating FLOAT NOT NULL,
+    monthly_fee INT NOT NULL,
+    distance_text VARCHAR(100) NOT NULL,
+    latitude FLOAT NOT NULL,
+    longitude FLOAT NOT NULL,
+    address TEXT NOT NULL,
+    amenities TEXT[] NOT NULL,
+    is_value_pick BOOLEAN DEFAULT false,
+    image_url TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table for Supplement Guide
+CREATE TABLE IF NOT EXISTS supplements (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) NOT NULL,
+    brand VARCHAR(255) NOT NULL,
+    category VARCHAR(100) NOT NULL, -- e.g., 'protein', 'creatine', 'preworkout', 'multivitamin', 'omega3'
+    price INT NOT NULL,
+    servings INT NOT NULL,
+    dose_per_serving VARCHAR(100) NOT NULL,
+    price_per_serving FLOAT NOT NULL,
+    rating FLOAT NOT NULL,
+    tier VARCHAR(50) NOT NULL, -- 'market_leader' or 'value_pick'
+    buy_links JSONB NOT NULL,
+    image_url TEXT,
+    benefits TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+

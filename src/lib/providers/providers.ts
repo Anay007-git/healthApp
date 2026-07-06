@@ -1,3 +1,5 @@
+import { Gym } from '../mockData';
+
 export interface QCProduct {
   id: string;
   name: string;
@@ -191,6 +193,83 @@ export class GooglePlacesRestaurantProvider implements RestaurantProvider {
     }
   }
 }
+
+export interface GymProvider {
+  searchGyms(lat: number, lng: number): Promise<Gym[]>;
+}
+
+export class GooglePlacesGymProvider implements GymProvider {
+  private apiKey: string;
+
+  constructor(apiKey: string) {
+    this.apiKey = apiKey;
+  }
+
+  async searchGyms(lat: number, lng: number): Promise<Gym[]> {
+    try {
+      console.log(`GooglePlacesGymProvider: fetching gyms near coordinates ${lat}, ${lng}`);
+      const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=3000&type=gym&key=${this.apiKey}`;
+      
+      const response = await fetch(url, { signal: AbortSignal.timeout(4000) });
+      if (!response.ok) {
+        throw new Error(`Google Places Gym API HTTP error: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      if (data.status !== 'OK' && data.status !== 'ZERO_RESULTS') {
+        throw new Error(`Google Places Gym API returned status: ${data.status}`);
+      }
+
+      const results = data.results || [];
+      const gyms: Gym[] = results.map((place: any, idx: number) => {
+        const nameLower = place.name.toLowerCase();
+        
+        const facilities = ['Strength Training', 'Cardio Machines'];
+        if (nameLower.includes('crossfit') || nameLower.includes('box') || nameLower.includes('functional')) {
+          facilities.push('CrossFit');
+        }
+        if (nameLower.includes('yoga') || nameLower.includes('stretch') || nameLower.includes('mind')) {
+          facilities.push('Yoga');
+        }
+        if (nameLower.includes('box') || nameLower.includes('mma') || nameLower.includes('fight')) {
+          facilities.push('Boxing');
+        }
+        if (nameLower.includes('cult') || nameLower.includes('group') || nameLower.includes('studio')) {
+          facilities.push('Group Workouts');
+        }
+        if (nameLower.includes('24') || nameLower.includes('anytime') || nameLower.includes('snap')) {
+          facilities.push('24/7 Access');
+        }
+
+        let fee = 2500;
+        if (nameLower.includes('gold') || nameLower.includes('elite') || nameLower.includes('premium')) {
+          fee = 4500;
+        } else if (nameLower.includes('local') || nameLower.includes('fitness club') || nameLower.includes('association') || nameLower.includes('den')) {
+          fee = 1200;
+        }
+
+        return {
+          id: place.place_id || `google-gym-${idx}`,
+          name: place.name,
+          rating: place.rating || 4.2,
+          monthly_fee: fee,
+          distance_text: 'Nearby',
+          latitude: place.geometry.location.lat,
+          longitude: place.geometry.location.lng,
+          address: place.vicinity || 'Local Area, City',
+          amenities: facilities,
+          is_value_pick: fee < 2000
+        };
+      });
+
+      return gyms;
+    } catch (e) {
+      console.warn('GooglePlacesGymProvider search failed:', e);
+      throw e;
+    }
+  }
+}
+
 
 /**
  * Helper function to generate localized simulated street addresses depending on coordinates
