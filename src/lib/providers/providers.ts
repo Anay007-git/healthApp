@@ -260,7 +260,7 @@ export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider
       console.log(`OpenFoodFactsQCProvider: searching products for cleaned query: "${searchQuery}" (original: "${query}")`);
       
       const searchTerms = encodeURIComponent(searchQuery);
-      const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerms}&search_simple=1&action=process&json=1&page_size=8`;
+      const url = `https://in.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerms}&search_simple=1&action=process&json=1&page_size=8`;
       
       const response = await fetch(url, {
         headers: {
@@ -278,7 +278,7 @@ export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider
       
       if (products.length === 0) {
         if (category) {
-          const catUrl = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(category)}&search_simple=1&action=process&json=1&page_size=5`;
+          const catUrl = `https://in.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(category)}&search_simple=1&action=process&json=1&page_size=5`;
           const catRes = await fetch(catUrl, {
             headers: { 'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)' },
             signal: AbortSignal.timeout(4000)
