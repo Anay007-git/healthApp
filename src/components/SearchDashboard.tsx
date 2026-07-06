@@ -31,6 +31,8 @@ const CATEGORIES = [
   { id: 'breakfast', name: 'Breakfast', icon: Coffee },
 ];
 
+import { getDynamicSwap } from '@/lib/dynamicSwaps';
+
 export default function SearchDashboard({ initialJunkItems }: SearchDashboardProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -44,6 +46,13 @@ export default function SearchDashboard({ initialJunkItems }: SearchDashboardPro
       return matchesSearch && matchesCategory;
     });
   }, [initialJunkItems, searchQuery, selectedCategory]);
+
+  // Dynamic swap preview if there are no database matches
+  const dynamicSwap = useMemo(() => {
+    if (!searchQuery.trim() || filteredItems.length > 0) return null;
+    const cleanSlug = searchQuery.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    return getDynamicSwap(cleanSlug);
+  }, [searchQuery, filteredItems]);
 
   // Autocomplete suggestions (up to 5 items)
   const suggestions = useMemo(() => {
@@ -229,12 +238,46 @@ export default function SearchDashboard({ initialJunkItems }: SearchDashboardPro
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 rounded-3xl border border-dashed border-border-app bg-card-app/25">
-            <HelpCircle className="mx-auto h-12 w-12 text-text-muted opacity-60 mb-3" />
-            <h4 className="text-base font-bold text-text-app">No match found</h4>
-            <p className="text-xs text-text-muted mt-1 max-w-sm mx-auto">
-              We couldn't find a matching craving. Try typing 'Maggi', 'Pizza', 'Samosa', or filter by another category.
-            </p>
+          <div className="space-y-6">
+            {dynamicSwap ? (
+              <div className="p-6 rounded-3xl border border-brand-primary/20 bg-brand-primary/[0.02] shadow-md animate-in fade-in slide-in-from-top-4 duration-300">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-primary/10 text-brand-primary">
+                    <Sparkles className="h-5 w-5 animate-pulse" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-brand-primary">Unlisted Swap Matcher</span>
+                    <h3 className="text-sm font-extrabold text-text-app mt-1">
+                      Craving &quot;<span className="italic">{searchQuery}</span>&quot;?
+                    </h3>
+                    <p className="text-[11px] text-text-muted mt-1 leading-relaxed">
+                      We found a healthy swap for you! Swap with <span className="font-bold text-brand-primary">{dynamicSwap.alternative.name}</span>.
+                    </p>
+                    <div className="mt-3 flex flex-wrap items-center gap-3 text-[10px] font-bold text-emerald-800 bg-emerald-500/10 px-3 py-1.5 rounded-lg w-fit">
+                      <span>📉 Calorie Drop: -{Math.round(((dynamicSwap.junkItem.calories - dynamicSwap.alternative.calories) / dynamicSwap.junkItem.calories) * 100)}% calories</span>
+                      <span>💪 +{Math.round(((dynamicSwap.alternative.fiber - (dynamicSwap.junkItem.fiber || 0)) / ((dynamicSwap.junkItem.fiber || 0) || 1)) * 100)}% fiber boost</span>
+                    </div>
+                    <div className="mt-4">
+                      <Link 
+                        href={`/alternatives/${dynamicSwap.junkItem.slug}`}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-brand-primary hover:bg-brand-primary-hover px-4 py-2 rounded-xl transition-all shadow-md shadow-brand-primary/15"
+                      >
+                        View Healthy Swap Details &amp; Recipe
+                        <ChevronRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            <div className="text-center py-16 rounded-3xl border border-dashed border-border-app bg-card-app/25">
+              <HelpCircle className="mx-auto h-12 w-12 text-text-muted opacity-60 mb-3" />
+              <h4 className="text-base font-bold text-text-app">No match found</h4>
+              <p className="text-xs text-text-muted mt-1 max-w-sm mx-auto">
+                We couldn't find a matching craving. Try typing 'Maggi', 'Pizza', 'Samosa', or filter by another category.
+              </p>
+            </div>
           </div>
         )}
       </div>

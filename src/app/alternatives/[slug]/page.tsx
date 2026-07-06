@@ -22,6 +22,7 @@ import {
 
 import { getJunkItemBySlug, getAlternativesForJunkItem } from '@/lib/db';
 import NearbyLivePanel from '@/components/NearbyLivePanel';
+import { getDynamicSwap } from '@/lib/dynamicSwaps';
 
 interface PageProps {
   params: Promise<{ slug: string }> | { slug: string };
@@ -31,13 +32,25 @@ export default async function AlternativePage({ params }: PageProps) {
   const resolvedParams = await params;
   const { slug } = resolvedParams;
 
-  const junkItem = await getJunkItemBySlug(slug);
+  let junkItem = await getJunkItemBySlug(slug);
+  let alternatives: any[] = [];
+  let similarityReason = '';
+
+  if (junkItem) {
+    alternatives = await getAlternativesForJunkItem(junkItem.id);
+  } else {
+    // If not in database, attempt to classify and construct a dynamic swap on the fly!
+    const dynamicData = getDynamicSwap(slug);
+    if (dynamicData) {
+      junkItem = dynamicData.junkItem;
+      alternatives = [dynamicData.alternative];
+      similarityReason = dynamicData.similarityReason;
+    }
+  }
 
   if (!junkItem) {
     notFound();
   }
-
-  const alternatives = await getAlternativesForJunkItem(junkItem.id);
 
   const getDiffPercent = (junkVal: number, altVal: number) => {
     if (junkVal === 0) return altVal > 0 ? `+${(altVal * 100).toFixed(0)}%` : '0%';
@@ -97,7 +110,7 @@ export default async function AlternativePage({ params }: PageProps) {
         <div className="rounded-xl border border-border-app/30 bg-emerald-500/[0.04] p-4 flex gap-3 items-start">
           <ShieldCheck className="h-5 w-5 text-emerald-600 fill-emerald-100 shrink-0 mt-0.5" />
           <div className="text-xs text-text-app leading-relaxed">
-            <span className="font-bold text-emerald-800">Why swap?</span> {alternatives.map(alt => alt.similarity_reason).join(' ')}
+            <span className="font-bold text-emerald-800">Why swap?</span> {similarityReason || alternatives.map(alt => alt.similarity_reason).join(' ')}
           </div>
         </div>
 
