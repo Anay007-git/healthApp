@@ -57,6 +57,7 @@ export async function GET(request: NextRequest) {
     const lngStr = searchParams.get('lng');
     const query = searchParams.get('query') || '';
     const category = searchParams.get('category') || '';
+    const refresh = searchParams.get('refresh') === 'true';
 
     if (!latStr || !lngStr) {
       return NextResponse.json({ error: 'Latitude and Longitude are required' }, { status: 400 });
@@ -74,10 +75,12 @@ export async function GET(request: NextRequest) {
     const cacheKey = `products:${pincode}:${query.toLowerCase().trim().replace(/\s+/g, '_')}:${category.toLowerCase().trim()}`;
 
     // 2. Cache Lookup
-    const cachedProducts = await cacheGet<any[]>(cacheKey);
-    if (cachedProducts) {
-      console.log(`Cache HIT for key: ${cacheKey}`);
-      return NextResponse.json({ products: cachedProducts, pincode, cached: true });
+    if (!refresh) {
+      const cachedProducts = await cacheGet<any[]>(cacheKey);
+      if (cachedProducts) {
+        console.log(`Cache HIT for key: ${cacheKey}`);
+        return NextResponse.json({ products: cachedProducts, pincode, cached: true });
+      }
     }
 
     console.log(`Cache MISS for key: ${cacheKey}. Fetching from provider...`);

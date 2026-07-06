@@ -26,11 +26,11 @@ export default function NearbyLivePanel({ alternativeName, alternativeCategory }
   const [activeLocName, setActiveLocName] = useState('Indiranagar, Bengaluru');
 
   // Trigger loading when name changes or location in localStorage changes
-  const loadNearbyData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  const loadNearbyData = async (forceRefresh = false) => {
+    setLoading(true);
+    setError(null);
 
+    try {
       // Read coordinates from localStorage (populated by Header component)
       const lat = localStorage.getItem('user_lat') || '12.971891';
       const lng = localStorage.getItem('user_lng') || '77.641151';
@@ -38,11 +38,11 @@ export default function NearbyLivePanel({ alternativeName, alternativeCategory }
       setActiveLocName(savedLocName);
 
       // Fetch products and restaurants in parallel
-      const productsUrl = `/api/location/products?lat=${lat}&lng=${lng}&location=${encodeURIComponent(savedLocName)}&query=${encodeURIComponent(alternativeName)}&category=${encodeURIComponent(alternativeCategory)}`;
+      const productsUrl = `/api/location/products?lat=${lat}&lng=${lng}&location=${encodeURIComponent(savedLocName)}&query=${encodeURIComponent(alternativeName)}&category=${encodeURIComponent(alternativeCategory)}${forceRefresh ? '&refresh=true' : ''}`;
       const tags = alternativeCategory === 'fastfood' 
         ? 'Keto,Healthy Food,Tandoori,Mediterranean' 
         : 'Organic,Vegan,Millet Specials,Salads,Juices';
-      const restaurantsUrl = `/api/location/restaurants?lat=${lat}&lng=${lng}&location=${encodeURIComponent(savedLocName)}&tags=${encodeURIComponent(tags)}`;
+      const restaurantsUrl = `/api/location/restaurants?lat=${lat}&lng=${lng}&location=${encodeURIComponent(savedLocName)}&tags=${encodeURIComponent(tags)}${forceRefresh ? '&refresh=true' : ''}`;
 
       const [prodRes, restRes] = await Promise.all([
         fetch(productsUrl),
@@ -100,9 +100,9 @@ export default function NearbyLivePanel({ alternativeName, alternativeCategory }
         </div>
 
         <button 
-          onClick={loadNearbyData}
+          onClick={() => loadNearbyData(true)}
           disabled={loading}
-          className="inline-flex items-center gap-1 rounded-lg border border-border-app/40 bg-card-app/40 px-2.5 py-1 text-[10px] font-bold transition-all hover:bg-border-app/20 disabled:opacity-50"
+          className="inline-flex items-center gap-1 rounded-lg border border-border-app/40 bg-card-app/40 px-2.5 py-1 text-[10px] font-bold transition-all hover:bg-border-app/20 disabled:opacity-50 cursor-pointer"
         >
           <RefreshCw className={`h-3 w-3 ${loading ? 'animate-spin' : ''}`} />
           Refresh
