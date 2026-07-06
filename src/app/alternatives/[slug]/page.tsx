@@ -165,6 +165,7 @@ export default async function AlternativePage({ params }: PageProps) {
           <NearbyLivePanel 
             alternativeName={primaryAlt.name} 
             alternativeCategory={primaryAlt.category} 
+            alternativeSlug={primaryAlt.slug}
           />
         )}
 

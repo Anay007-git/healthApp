@@ -262,7 +262,7 @@ export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider
       const searchTerms = encodeURIComponent(searchQuery);
       const url = `https://in.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerms}&search_simple=1&action=process&json=1&page_size=8`;
       
-      const response = await fetch(url, {
+      let response = await fetch(url, {
         headers: {
           'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)'
         },
@@ -273,8 +273,24 @@ export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider
         throw new Error(`Open Food Facts API error: ${response.status}`);
       }
       
-      const data = await response.json();
-      const products = data.products || [];
+      let data = await response.json();
+      let products = data.products || [];
+      
+      // Fallback: If Indian subdomain returned 0 results, query the global database
+      if (products.length === 0) {
+        console.log(`OpenFoodFactsQCProvider: Indian subdomain returned 0 results. Falling back to global Open Food Facts database...`);
+        const globalUrl = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerms}&search_simple=1&action=process&json=1&page_size=8`;
+        const globalRes = await fetch(globalUrl, {
+          headers: {
+            'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)'
+          },
+          signal: AbortSignal.timeout(5000)
+        });
+        if (globalRes.ok) {
+          const globalData = await globalRes.json();
+          products = globalData.products || [];
+        }
+      }
       
       if (products.length === 0) {
         if (category) {

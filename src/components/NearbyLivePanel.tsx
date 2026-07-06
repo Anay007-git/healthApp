@@ -10,20 +10,23 @@ import {
   RefreshCw,
   AlertCircle
 } from 'lucide-react';
-import { QCProduct, Restaurant } from '@/lib/providers/providers';
+import { QCProduct } from '@/lib/providers/providers';
+import { getRecipeBySlug } from '@/lib/recipes';
 
 interface NearbyLivePanelProps {
   alternativeName: string;
   alternativeCategory: string;
+  alternativeSlug: string;
 }
 
-export default function NearbyLivePanel({ alternativeName, alternativeCategory }: NearbyLivePanelProps) {
+export default function NearbyLivePanel({ alternativeName, alternativeCategory, alternativeSlug }: NearbyLivePanelProps) {
   const [products, setProducts] = useState<QCProduct[]>([]);
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [pincode, setPincode] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeLocName, setActiveLocName] = useState('Indiranagar, Bengaluru');
+
+  const recipe = getRecipeBySlug(alternativeSlug);
 
   // Trigger loading when name changes or location in localStorage changes
   const loadNearbyData = async (forceRefresh = false) => {
@@ -37,27 +40,17 @@ export default function NearbyLivePanel({ alternativeName, alternativeCategory }
       const savedLocName = localStorage.getItem('user_location') || 'Indiranagar, Bengaluru';
       setActiveLocName(savedLocName);
 
-      // Fetch products and restaurants in parallel
+      // Fetch products
       const productsUrl = `/api/location/products?lat=${lat}&lng=${lng}&location=${encodeURIComponent(savedLocName)}&query=${encodeURIComponent(alternativeName)}&category=${encodeURIComponent(alternativeCategory)}${forceRefresh ? '&refresh=true' : ''}`;
-      const tags = alternativeCategory === 'fastfood' 
-        ? 'Keto,Healthy Food,Tandoori,Mediterranean' 
-        : 'Organic,Vegan,Millet Specials,Salads,Juices';
-      const restaurantsUrl = `/api/location/restaurants?lat=${lat}&lng=${lng}&location=${encodeURIComponent(savedLocName)}&tags=${encodeURIComponent(tags)}${forceRefresh ? '&refresh=true' : ''}`;
 
-      const [prodRes, restRes] = await Promise.all([
-        fetch(productsUrl),
-        fetch(restaurantsUrl)
-      ]);
+      const prodRes = await fetch(productsUrl);
 
-      if (!prodRes.ok || !restRes.ok) {
-        throw new Error('Failed to load local quick-commerce or restaurant data');
+      if (!prodRes.ok) {
+        throw new Error('Failed to load local quick-commerce data');
       }
 
       const prodData = await prodRes.json();
-      const restData = await restRes.json();
-
       setProducts(prodData.products || []);
-      setRestaurants(restData.restaurants || []);
       setPincode(prodData.pincode || '');
     } catch (e: any) {
       console.warn('Error loading live nearby data, showing mock database options:', e);
@@ -189,71 +182,75 @@ export default function NearbyLivePanel({ alternativeName, alternativeCategory }
                 ))
               ) : (
                 <div className="py-6 text-xs text-text-muted">
-                  No packaged products currently found near you.
+                  No packaged products currently found near you. Try clicking Refresh to bypass the cache.
                 </div>
               )}
             </div>
           </div>
 
-          {/* Restaurant Swaps (Food Delivery Platforms) */}
-          <div className="space-y-4">
-            <h4 className="text-[11px] font-bold uppercase tracking-wider text-text-muted border-b border-border-app/20 pb-2 flex items-center gap-1">
-              <Utensils className="h-3.5 w-3.5" />
-              Restaurant Swaps
+          {/* Alternative Healthy Recipe Section */}
+          <div className="space-y-4 bg-card-app border border-border-app/40 rounded-xl p-4.5 shadow-sm">
+            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-brand-primary border-b border-border-app/20 pb-2 flex items-center gap-1.5">
+              <Utensils className="h-3.5 w-3.5 text-brand-primary" />
+              🍳 Cook It At Home
             </h4>
 
-            <div className="divide-y divide-border-app/20">
-              {restaurants.length > 0 ? (
-                restaurants.map((restaurant) => (
-                  <div 
-                    key={restaurant.id}
-                    className="py-3 first:pt-0 last:pb-0 flex justify-between items-start gap-4"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <h5 className="text-xs font-bold text-text-app">
-                          {restaurant.name}
-                        </h5>
-                        <span className="text-[9px] font-extrabold text-brand-primary bg-brand-primary/10 px-1.5 py-0.5 rounded">
-                          H: {restaurant.health_score}
-                        </span>
-                        <span className="text-[9px] text-text-muted font-bold">★ {restaurant.rating}</span>
-                      </div>
-                      <p className="text-[10px] text-text-muted mt-1 leading-relaxed truncate">
-                        {restaurant.address} &bull; {restaurant.distance_text}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-col min-[380px]:flex-row gap-1.5 shrink-0 mt-0.5">
-                      <a 
-                        href={restaurant.zomato_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[10px] font-bold text-text-app hover:underline bg-card-app border border-border-app/40 px-2 py-1 rounded transition-colors flex items-center justify-center gap-1"
-                      >
-                        <span className="flex items-center justify-center w-3.5 h-3.5 rounded-full bg-[#cb202d] text-white text-[8px] font-black shrink-0">Z</span>
-                        Zomato
-                        <ExternalLink className="h-2.5 w-2.5" />
-                      </a>
-                      <a 
-                        href={restaurant.swiggy_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[10px] font-bold text-text-app hover:underline bg-card-app border border-border-app/40 px-2 py-1 rounded transition-colors flex items-center justify-center gap-1"
-                      >
-                        <span className="flex items-center justify-center w-3.5 h-3.5 rounded-full bg-[#fc8019] text-white text-[8px] font-black shrink-0">S</span>
-                        Swiggy
-                        <ExternalLink className="h-2.5 w-2.5" />
-                      </a>
-                    </div>
+            {recipe ? (
+              <div className="space-y-4">
+                <div>
+                  <h5 className="text-xs font-bold text-text-app">{recipe.title}</h5>
+                  <div className="flex gap-2.5 mt-1.5 text-[10px] text-text-muted font-bold flex-wrap">
+                    <span className="bg-border-app/20 px-2 py-0.5 rounded">⏱️ Prep: {recipe.prepTime}</span>
+                    <span className="bg-border-app/20 px-2 py-0.5 rounded">🔥 Cook: {recipe.cookTime}</span>
+                    <span className="bg-border-app/20 px-2 py-0.5 rounded">🍽️ {recipe.servings}</span>
                   </div>
-                ))
-              ) : (
-                <div className="py-6 text-xs text-text-muted">
-                  No nearby healthy restaurants found matching this swap.
                 </div>
-              )}
-            </div>
+
+                {/* Ingredients */}
+                <div className="space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted block">Ingredients:</span>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 text-[11px] text-text-app font-medium">
+                    {recipe.ingredients.map((ingredient, i) => (
+                      <li key={i} className="flex items-start gap-1.5">
+                        <span className="text-brand-primary mt-0.5 shrink-0">•</span>
+                        <span>{ingredient}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Instructions */}
+                <div className="space-y-2 pt-2 border-t border-border-app/10">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted block">Instructions:</span>
+                  <ol className="space-y-2 text-[11px] text-text-app font-medium leading-relaxed">
+                    {recipe.instructions.map((step, i) => (
+                      <li key={i} className="flex gap-2 items-start">
+                        <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary text-[9px] font-extrabold">{i + 1}</span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                {/* Chef Pro Tip */}
+                {recipe.tip && (
+                  <div className="rounded-lg border border-amber-500/20 bg-amber-500/[0.03] p-3 text-[10px] text-amber-800 leading-relaxed font-bold">
+                    💡 <span className="font-extrabold text-amber-900">Chef Pro-Tip:</span> {recipe.tip}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <h5 className="text-xs font-bold text-text-app">Simple Healthy Preparation</h5>
+                <p className="text-[11px] text-text-muted leading-relaxed">
+                  To cook this alternative at home, steam or air-bake the ingredients with minimal oil (such as cold-pressed olive or coconut oil). Season with fresh herbs, cumin, turmeric, and garlic, keeping sodium additions minimal to maintain a healthy profile.
+                </p>
+                <div className="flex gap-3 text-[10px] text-text-muted font-bold">
+                  <span className="bg-border-app/20 px-2 py-0.5 rounded">⏱️ Prep: 5 mins</span>
+                  <span className="bg-border-app/20 px-2 py-0.5 rounded">🔥 Cook: 10 mins</span>
+                </div>
+              </div>
+            )}
           </div>
 
         </div>
