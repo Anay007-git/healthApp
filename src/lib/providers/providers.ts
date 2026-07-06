@@ -247,9 +247,19 @@ function getMockAddressDetails(lat: number, lng: number): { area1: string; area2
 export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider {
   async searchProducts(query: string, lat: number, lng: number, category?: string): Promise<QCProduct[]> {
     try {
-      console.log(`OpenFoodFactsQCProvider: searching products for "${query}" (category: ${category})`);
+      // Clean query of weights (100g, 400g, 330ml), pack constraints (pack of 3), and parentheticals
+      let cleaned = query
+        .replace(/\s*\([^)]*\)/g, '')
+        .replace(/\s*\b\d+\s*(g|ml|kg|l)\b/gi, '')
+        .replace(/\s*\bpack\s*of\s*\d+\b/gi, '')
+        .replace(/[^a-zA-Z0-9\s]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      const searchQuery = cleaned.length > 2 ? cleaned : query;
+      console.log(`OpenFoodFactsQCProvider: searching products for cleaned query: "${searchQuery}" (original: "${query}")`);
       
-      const searchTerms = encodeURIComponent(query);
+      const searchTerms = encodeURIComponent(searchQuery);
       const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${searchTerms}&search_simple=1&action=process&json=1&page_size=8`;
       
       const response = await fetch(url, {
