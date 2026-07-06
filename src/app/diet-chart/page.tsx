@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   ClipboardList, 
   Activity, 
@@ -16,7 +16,10 @@ import {
   Sparkles,
   Candy,
   Wheat,
-  Zap
+  Zap,
+  Share2,
+  Download,
+  Printer
 } from 'lucide-react';
 
 interface NutrientProfile {
@@ -32,8 +35,22 @@ interface NutrientProfile {
   description: string;
 }
 
+export interface WorkoutExercise {
+  name: string;
+  sets: number;
+  reps: string;
+  form: string;
+}
+
+export interface WorkoutDay {
+  dayName: string;
+  focus: string;
+  exercises: WorkoutExercise[];
+}
+
 export default function DietChartPage() {
   // Form state inputs
+  const [workoutRoutine, setWorkoutRoutine] = useState<WorkoutDay[]>([]);
   const [age, setAge] = useState<string>('28');
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [weight, setWeight] = useState<string>('70');
@@ -60,6 +77,37 @@ export default function DietChartPage() {
   const [lunch, setLunch] = useState<NutrientProfile | null>(null);
   const [snack, setSnack] = useState<NutrientProfile | null>(null);
   const [dinner, setDinner] = useState<NutrientProfile | null>(null);
+
+  // Dynamic BMI Calculation helper for instant feedback
+  const dynamicBmi = useMemo(() => {
+    const w = parseFloat(weight);
+    const h = parseFloat(height);
+    if (!w || !h || w <= 0 || h <= 0) return null;
+    const bmiValue = w / ((h / 100) * (h / 100));
+    let recGoal: 'loss' | 'gain' | 'maintain' = 'maintain';
+    let recLabel = '';
+    let category = '';
+
+    if (bmiValue < 18.5) {
+      recGoal = 'gain';
+      recLabel = 'Muscle Gain (Bulking)';
+      category = 'Underweight';
+    } else if (bmiValue >= 18.5 && bmiValue < 25) {
+      recGoal = 'maintain';
+      recLabel = 'Maintain / Clean Bulk';
+      category = 'Healthy Weight';
+    } else if (bmiValue >= 25 && bmiValue < 30) {
+      recGoal = 'loss';
+      recLabel = 'Weight Loss (Cutting)';
+      category = 'Overweight';
+    } else {
+      recGoal = 'loss';
+      recLabel = 'Weight Loss (Cutting)';
+      category = 'Obese';
+    }
+
+    return { value: bmiValue, recGoal, recLabel, category };
+  }, [weight, height]);
 
   const calculateDiet = (e: React.FormEvent) => {
     e.preventDefault();
@@ -271,6 +319,139 @@ export default function DietChartPage() {
       dn.sodium = Math.round(dn.sodium * 0.7);
     }
 
+    // Generate workout routine based on target goal
+    let routine: WorkoutDay[] = [];
+    if (goal === 'loss') {
+      routine = [
+        {
+          dayName: 'Day 1',
+          focus: 'Upper Body (Cutting/Strength Preservation)',
+          exercises: [
+            { name: 'Incline Dumbbell Press', sets: 3, reps: '8-10 reps', form: 'Arch lower back slightly, retract shoulder blades, lower dumbbells to upper chest slowly.' },
+            { name: 'Barbell Lat Rows', sets: 3, reps: '8-10 reps', form: 'Hinge at hips, pull barbell towards belly button, squeeze shoulder blades at the top.' },
+            { name: 'Seated Dumbbell Shoulder Press', sets: 3, reps: '10 reps', form: 'Keep core tight, press DBs vertically overhead without locking elbows.' },
+            { name: 'Assisted Pull-ups or Lat Pulldowns', sets: 3, reps: '10 reps', form: 'Pull elbow points down towards your pockets, squeeze lats fully.' }
+          ]
+        },
+        {
+          dayName: 'Day 2',
+          focus: 'Lower Body & Core (Strength & Definition)',
+          exercises: [
+            { name: 'Barbell Back Squats', sets: 3, reps: '8 reps', form: 'Spine neutral, push hips back, descend until thighs are parallel, drive up from heels.' },
+            { name: 'Romanian Deadlifts (DB/Barbell)', sets: 3, reps: '10 reps', form: 'Soft bend in knees, push hips backward until hamstrings stretch, squeeze glutes to stand.' },
+            { name: 'Walking Lunges', sets: 3, reps: '12 steps total', form: 'Keep torso upright, descend until rear knee is 1 inch off the ground.' },
+            { name: 'Hanging Leg Raises or Reverse Crunches', sets: 3, reps: '15 reps', form: 'Control the descent, do not swing, use lower abs to pull pelvis up.' }
+          ]
+        },
+        {
+          dayName: 'Day 3',
+          focus: 'High Intensity Interval Training (HIIT)',
+          exercises: [
+            { name: 'Treadmill Sprints (Intervals)', sets: 10, reps: '30s sprint / 30s walk', form: 'Warm up first. Run at 85% max effort during sprints, walk/jog to recover.' },
+            { name: 'Kettlebell Swings', sets: 3, reps: '45 seconds work', form: 'Hinge at hips, drive pelvis forward explosively to swing kettlebell to shoulder height.' },
+            { name: 'Mountain Climbers', sets: 3, reps: '45 seconds work', form: 'Maintain a flat plank position, bring knees to chest rapidly without lifting hips.' },
+            { name: 'Plank Hold (Elbows)', sets: 3, reps: '60 seconds hold', form: 'Engage core, squeeze glutes, maintain straight line from head to heels.' }
+          ]
+        },
+        {
+          dayName: 'Day 4',
+          focus: 'Active Recovery & Steady Cardio',
+          exercises: [
+            { name: 'Brisk Walk or Incline Treadmill Walk', sets: 1, reps: '40 minutes', form: 'Set incline to 6-8%, maintain moderate pace, keep heart rate in Zone 2.' },
+            { name: 'Yoga / Flexibility Flow', sets: 1, reps: '15 minutes', form: 'Focus on breathing, execute deep hamstring, hip flexor, and chest openers.' }
+          ]
+        }
+      ];
+    } else if (goal === 'gain') {
+      routine = [
+        {
+          dayName: 'Day 1',
+          focus: 'Push Hypertrophy (Bulking/Muscle Gain)',
+          exercises: [
+            { name: 'Flat Barbell Bench Press', sets: 4, reps: '8-10 reps', form: 'Retract shoulder blades, lower bar to mid-chest, push explosively. Squeeze chest.' },
+            { name: 'Standing Overhead Press', sets: 4, reps: '8-10 reps', form: 'Core tight, squeeze glutes, press bar straight up, clear chin.' },
+            { name: 'Incline Dumbbell Flyes', sets: 3, reps: '10-12 reps', form: 'Slight bend in elbows, stretch chest at the bottom, hug a tree motion at the top.' },
+            { name: 'Dumbbell Lateral Raises', sets: 4, reps: '12-15 reps', form: 'Lead with elbows, raise to shoulder height, slowly lower. Keep traps relaxed.' },
+            { name: 'Overhead Tricep Extensions', sets: 3, reps: '12 reps', form: 'Keep elbows tucked in close to ears, extend overhead to isolate triceps.' }
+          ]
+        },
+        {
+          dayName: 'Day 2',
+          focus: 'Pull Hypertrophy (Back Width & Thickness)',
+          exercises: [
+            { name: 'Conventional Deadlifts', sets: 3, reps: '5-8 reps', form: 'Flat back, bar close to shins, push legs through floor, pull shoulders back at top.' },
+            { name: 'Weighted Pull-ups or Lat Pulldowns', sets: 4, reps: '8-10 reps', form: 'Chest up, pull chest to bar, do not round shoulders forward.' },
+            { name: 'Chest Supported Rows', sets: 3, reps: '10 reps', form: 'Rest chest on bench, pull with elbows, squeeze shoulder blades together.' },
+            { name: 'Face Pulls (Cables)', sets: 4, reps: '15 reps', form: 'Pull rope towards nose/ears, flare elbows, rotate shoulders to show double biceps.' },
+            { name: 'Incline Dumbbell Bicep Curls', sets: 3, reps: '10-12 reps', form: 'Sit back on incline bench, let arms hang, curl upwards fully keeping elbows back.' }
+          ]
+        },
+        {
+          dayName: 'Day 3',
+          focus: 'Legs Hypertrophy (Quads, Glutes & Hamstrings)',
+          exercises: [
+            { name: 'Barbell Back Squats', sets: 4, reps: '6-8 reps', form: 'Spine neutral, push hips back, descend below parallel if flexible, drive up.' },
+            { name: 'Leg Press (Hypertrophy volume)', sets: 3, reps: '10-12 reps', form: 'Keep lower back pressed flat into pad, do not lock knees at the top.' },
+            { name: 'Lying Leg Curls', sets: 3, reps: '12 reps', form: 'Contract hamstrings fully, slow 3-second negative descent.' },
+            { name: 'Standing Calf Raises', sets: 4, reps: '15 reps', form: 'Full stretch at bottom, push to tip-toes, hold contraction for 1 second.' },
+            { name: 'Hanging Leg Raises', sets: 3, reps: '12-15 reps', form: 'Hang from pull-up bar, raise legs past 90 degrees using lower abdominal control.' }
+          ]
+        },
+        {
+          dayName: 'Day 4',
+          focus: 'Arms & Shoulders Pump',
+          exercises: [
+            { name: 'Close-Grip Bench Press', sets: 3, reps: '10 reps', form: 'Hands shoulder-width apart, lower bar to lower chest, keep elbows tucked to target triceps.' },
+            { name: 'Barbell Bicep Curls', sets: 3, reps: '10 reps', form: 'Do not swing, keep elbows pinned to ribs, squeeze biceps at top.' },
+            { name: 'Dumbbell Hammer Curls', sets: 3, reps: '12 reps', form: 'Neutral grip (palms facing), curls to target brachialis and forearm muscles.' },
+            { name: 'Dips (Triceps focused)', sets: 3, reps: '12 reps', form: 'Torso upright, bend elbows to 90 degrees, push up lock out.' },
+            { name: 'Seated Lateral Raises', sets: 4, reps: '15 reps', form: 'Strict form, raises dumbbell using lateral deltoid without body swing.' }
+          ]
+        }
+      ];
+    } else {
+      routine = [
+        {
+          dayName: 'Day 1',
+          focus: 'Full Body Strength & Mobility (Maintenance/Fitness)',
+          exercises: [
+            { name: 'Goblet Squats (Kettlebell/DB)', sets: 3, reps: '10-12 reps', form: 'Hold weight at chest height, sit deep into squat, press back up.' },
+            { name: 'Push-Ups (Strict)', sets: 3, reps: '12-15 reps', form: 'Body in straight line, hands slightly wider than shoulders, touch chest to floor.' },
+            { name: 'Cable Face Pulls', sets: 3, reps: '15 reps', form: 'Keep posture straight, pull rope to eye level, squeeze rear delts.' },
+            { name: 'Bird Dog & Cat-Cow Stretch', sets: 3, reps: '10 reps each', form: 'Perform slowly, extend opposite arm and leg, stabilize core, flow spine.' }
+          ]
+        },
+        {
+          dayName: 'Day 2',
+          focus: 'Active Recovery & Cardio (Zone 2)',
+          exercises: [
+            { name: 'Jogging or Cycling', sets: 1, reps: '35 minutes', form: 'Maintain a steady, conversational pace. Heart rate should be moderate.' },
+            { name: 'Static Stretching Routine', sets: 1, reps: '15 minutes', form: 'Deep static stretch for hamstrings, quads, calves, shoulders and neck.' }
+          ]
+        },
+        {
+          dayName: 'Day 3',
+          focus: 'Functional Training Split (Core & Balance)',
+          exercises: [
+            { name: 'Kettlebell Romanian Deadlifts', sets: 3, reps: '12 reps', form: 'Hinge hips, pull shoulder blades back, slide weight down legs, contract glutes.' },
+            { name: 'Dumbbell Single-Arm Rows', sets: 3, reps: '12 reps', form: 'Place one knee/hand on bench, pull dumbbell to hip keeping elbow close.' },
+            { name: 'Dumbbell Step-Ups', sets: 3, reps: '10 reps per leg', form: 'Step onto a secure bench, push down through heel, step down slowly.' },
+            { name: 'Plank Hold & Side Planks', sets: 3, reps: '45s center / 30s side', form: 'Keep hips aligned, do not sag. Maintain clean breathing.' }
+          ]
+        },
+        {
+          dayName: 'Day 4',
+          focus: 'Cardio Intervals & Core Strength',
+          exercises: [
+            { name: 'Rowing Machine or Elliptical', sets: 1, reps: '30 minutes', form: 'Push through legs, pull handle to chest, slide back with control.' },
+            { name: 'Abdominal Crunches (Strict)', sets: 3, reps: '15 reps', form: 'Lower back flat on floor, lift shoulder blades off ground, squeeze abs.' },
+            { name: 'Side Plank Hip Dips', sets: 3, reps: '10 reps per side', form: 'Lower hips to floor from side plank and lift them back high.' }
+          ]
+        }
+      ];
+    }
+    setWorkoutRoutine(routine);
+
     setBreakfast(bf);
     setLunch(ln);
     setSnack(sn);
@@ -297,6 +478,116 @@ export default function DietChartPage() {
     setHighProteinMode(false);
   };
 
+  const downloadPlan = () => {
+    const divider = '='.repeat(40);
+    const content = `YOUR HEALTH PROFILE & PERSONALIZED DIET & WORKOUT CHART
+${divider}
+Age: ${age} years
+Gender: ${gender.toUpperCase()}
+Weight: ${weight} kg
+Height: ${height} cm
+BMI: ${bmi.toFixed(1)} (${bmiCategory})
+Recommended Target Intake: ${Math.round(dailyCalorieNeeds)} kcal/day
+Dietary Preference: ${dietType === 'veg' ? 'Vegetarian' : 'Non-Vegetarian'}
+High-Protein Boost: ${highProteinMode ? 'ENABLED' : 'DISABLED'}
+Allergies/Conditions: ${[
+      diabetes ? 'Diabetes (Sugar Restricted)' : null,
+      hypertension ? 'Hypertension (Sodium Restricted)' : null,
+      glutenAllergy ? 'Gluten Allergy (Celiac Mode)' : null,
+      lactoseIntolerant ? 'Lactose Intolerant' : null
+    ].filter(Boolean).join(', ') || 'None'}
+
+${divider}
+DAILY HEALTHY SWAP DIET CHART
+${divider}
+
+[BREAKFAST]
+Healthy Meal: ${breakfast?.name}
+Swapped Out: ${breakfast?.originalName}
+Nutrition Profile: ${breakfast?.calories} kcal | ${breakfast?.protein}g P | ${breakfast?.carbs}g C | ${breakfast?.fat}g F
+Description: ${breakfast?.description}
+
+[LUNCH]
+Healthy Meal: ${lunch?.name}
+Swapped Out: ${lunch?.originalName}
+Nutrition Profile: ${lunch?.calories} kcal | ${lunch?.protein}g P | ${lunch?.carbs}g C | ${lunch?.fat}g F
+Description: ${lunch?.description}
+
+[SNACK]
+Healthy Meal: ${snack?.name}
+Swapped Out: ${snack?.originalName}
+Nutrition Profile: ${snack?.calories} kcal | ${snack?.protein}g P | ${snack?.carbs}g C | ${snack?.fat}g F
+Description: ${snack?.description}
+
+[DINNER]
+Healthy Meal: ${dinner?.name}
+Swapped Out: ${dinner?.originalName}
+Nutrition Profile: ${dinner?.calories} kcal | ${dinner?.protein}g P | ${dinner?.carbs}g C | ${dinner?.fat}g F
+Description: ${dinner?.description}
+
+${divider}
+TOTAL NUTRITION AGGREGATE
+${divider}
+Calories: ${totalCalories} kcal
+Carbohydrates: ${totalCarbs}g
+Protein: ${totalProtein}g
+Fat: ${totalFat}g
+Fiber: ${totalFiber}g
+Sugar: ${totalSugar}g
+Sodium: ${totalSodium}mg
+
+${divider}
+SCIENTIFIC WORKOUT ROUTINE (${goal.toUpperCase()})
+${divider}
+${workoutRoutine.map(day => `
+${day.dayName} - Focus: ${day.focus}
+${'-'.repeat(30)}
+${day.exercises.map((ex, i) => `${i + 1}. ${ex.name}
+   Sets: ${ex.sets} | Reps: ${ex.reps}
+   Scientific Form: ${ex.form}`).join('\n\n')}
+`).join('\n')}
+
+${divider}
+Generated scientifically by AnaySwap Health Planner. Keep hydrated and train safe!
+`;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `AnaySwap_Diet_Workout_Plan.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const sharePlan = async () => {
+    const text = `Here is my personalized AnaySwap Diet & Workout Chart!\n\nGoal: ${goal === 'loss' ? 'Weight Loss (Cutting)' : goal === 'gain' ? 'Muscle Gain (Bulking)' : 'Maintenance'}\nBMI: ${bmi.toFixed(1)} (${bmiCategory})\nTarget: ${Math.round(dailyCalorieNeeds)} kcal/day\n\nDaily Diet Swaps:\n- Breakfast: ${breakfast?.name}\n- Lunch: ${lunch?.name}\n- Snack: ${snack?.name}\n- Dinner: ${dinner?.name}\n\nWorkout Focus:\n${workoutRoutine.map(d => `- ${d.dayName}: ${d.focus}`).join('\n')}\n\nDownload the full chart at AnaySwap!`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'My AnaySwap Diet & Workout Chart',
+          text: text,
+          url: window.location.href
+        });
+      } catch (err) {
+        console.warn('Share cancelled or failed:', err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(text);
+        alert('Plan summary copied to clipboard! You can paste it into WhatsApp or Notes.');
+      } catch (err) {
+        alert('Sharing not supported on this browser.');
+      }
+    }
+  };
+
+  const printPlan = () => {
+    window.print();
+  };
+
   // Aggregated totals
   const totalCalories = (breakfast?.calories || 0) + (lunch?.calories || 0) + (snack?.calories || 0) + (dinner?.calories || 0);
   const totalCarbs = (breakfast?.carbs || 0) + (lunch?.carbs || 0) + (snack?.carbs || 0) + (dinner?.carbs || 0);
@@ -310,7 +601,7 @@ export default function DietChartPage() {
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 flex-grow flex flex-col justify-start">
       
       {/* Header Info */}
-      <div className="mb-8 border-b border-border-app/20 pb-6">
+      <div className="mb-8 border-b border-border-app/20 pb-6 print:hidden">
         <span className="text-[10px] font-bold text-brand-primary uppercase tracking-widest">
           Personalized Nutrition
         </span>
@@ -325,7 +616,7 @@ export default function DietChartPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* Left Side: Parameters input form */}
-        <div className="lg:col-span-5 rounded-xl border border-border-app p-5 bg-card-app/10">
+        <div className="lg:col-span-5 rounded-xl border border-border-app p-5 bg-card-app/10 print:hidden">
           <h3 className="text-xs font-bold uppercase tracking-wider text-text-app mb-4 flex items-center gap-1.5 border-b border-border-app/10 pb-2">
             <ClipboardList className="h-4 w-4 text-brand-primary" />
             Your Health Profile
@@ -449,9 +740,23 @@ export default function DietChartPage() {
                 className="w-full text-xs font-semibold p-2 border border-border-app/60 rounded bg-card-app text-text-app outline-none focus:border-brand-primary"
               >
                 <option value="maintain">Maintain Health</option>
-                <option value="loss">Weight Loss (Caloric Deficit)</option>
-                <option value="gain">Muscle Gain (Caloric Surplus)</option>
+                <option value="loss">Weight Loss (Caloric Deficit / Cutting)</option>
+                <option value="gain">Muscle Gain (Caloric Surplus / Bulking)</option>
               </select>
+              {dynamicBmi && (
+                <div className="mt-1.5 px-2.5 py-1.5 rounded-lg bg-brand-primary/5 border border-brand-primary/10 flex items-center justify-between text-[10px] font-bold text-text-app">
+                  <span>
+                    BMI: <span className="text-brand-primary">{dynamicBmi.value.toFixed(1)}</span> ({dynamicBmi.category})
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setGoal(dynamicBmi.recGoal)}
+                    className="text-brand-primary hover:underline flex items-center gap-0.5 ml-auto"
+                  >
+                    Recommend: {dynamicBmi.recLabel}
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Medical Conditions & Allergies */}
@@ -514,9 +819,34 @@ export default function DietChartPage() {
         </div>
 
         {/* Right Side: Generated Planner Results */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-7 print:col-span-12">
           {calculated ? (
             <div className="space-y-6 animate-fade-in">
+
+              {/* Action Buttons (Download, Print, Share) - Hidden when printing */}
+              <div className="flex flex-wrap gap-2 justify-end print:hidden">
+                <button
+                  onClick={downloadPlan}
+                  className="inline-flex items-center gap-1 text-[10px] font-bold text-text-app bg-card-app hover:bg-border-app/10 border border-border-app/60 px-3 py-1.5 rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer"
+                >
+                  <Download className="h-3.5 w-3.5 text-brand-primary" />
+                  Download (.txt)
+                </button>
+                <button
+                  onClick={printPlan}
+                  className="inline-flex items-center gap-1 text-[10px] font-bold text-text-app bg-card-app hover:bg-border-app/10 border border-border-app/60 px-3 py-1.5 rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer"
+                >
+                  <Printer className="h-3.5 w-3.5 text-brand-primary" />
+                  Save PDF / Print
+                </button>
+                <button
+                  onClick={sharePlan}
+                  className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-brand-primary hover:bg-neutral-800 px-3 py-1.5 rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer"
+                >
+                  <Share2 className="h-3.5 w-3.5 text-brand-primary-fg" />
+                  Share Plan
+                </button>
+              </div>
               
               {/* BMI and Energy Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -814,8 +1144,42 @@ export default function DietChartPage() {
                 </div>
               </div>
 
+              {/* Scientific Workout Routine (Dynamic based on goal) */}
+              <div className="space-y-3">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-text-app border-b border-border-app/20 pb-2 flex items-center gap-1.5">
+                  <Dumbbell className="h-4.5 w-4.5 text-brand-primary" />
+                  Scientific Workout Schedule ({goal === 'loss' ? 'Cutting' : goal === 'gain' ? 'Bulking' : 'Fitness'})
+                </h4>
+
+                <div className="grid grid-cols-1 gap-4">
+                  {workoutRoutine.map((day) => (
+                    <div key={day.dayName} className="border border-border-app rounded-xl bg-card-app/30 overflow-hidden">
+                      <div className="bg-border-app/20 px-3.5 py-2 border-b border-border-app/20 flex items-center justify-between">
+                        <span className="text-[10px] font-black text-brand-primary uppercase tracking-wider">{day.dayName}</span>
+                        <span className="text-[10px] font-bold text-text-app">{day.focus}</span>
+                      </div>
+                      <div className="p-3.5 divide-y divide-border-app/10 space-y-3">
+                        {day.exercises.map((ex, idx) => (
+                          <div key={ex.name} className={`${idx > 0 ? 'pt-3' : ''} space-y-1.5`}>
+                            <div className="flex justify-between items-center text-xs font-bold text-text-app">
+                              <span>{ex.name}</span>
+                              <span className="text-[10px] bg-brand-primary/10 text-brand-primary px-2 py-0.5 rounded font-black uppercase tracking-wider">
+                                {ex.sets} sets x {ex.reps}
+                              </span>
+                            </div>
+                            <p className="text-[10px] text-text-muted leading-relaxed font-semibold">
+                              <span className="text-brand-secondary font-black">Execution Form:</span> {ex.form}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* Action options */}
-              <div className="flex gap-2 justify-end">
+              <div className="flex gap-2 justify-end print:hidden">
                 <button 
                   type="button"
                   onClick={resetForm}
