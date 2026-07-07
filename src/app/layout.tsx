@@ -23,8 +23,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "AnaySwap - Find Healthier Indian Food Swaps",
-  description: "Identify healthier, lower-calorie, high-protein, and fiber-rich alternatives to junk foods, snacks, and sweet cravings instantly.",
+  title: "NutriFit Swap - Healthy Swaps, Diet Planner & Gym Locator",
+  description: "Identify healthier, lower-calorie, high-protein, and fiber-rich alternatives to junk foods, sweet cravings, calculate BMI, get workout splits, and find local gyms.",
 };
 
 export default function RootLayout({
@@ -62,7 +62,7 @@ export default function RootLayout({
 
           <footer className="border-t border-border-app bg-card-app/30 py-6 text-center text-xs text-text-muted mt-auto mb-16 sm:mb-0">
             <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-              <p className="font-semibold">&copy; {new Date().getFullYear()} AnaySwap. Promoting cleaner eating in India.</p>
+              <p className="font-semibold">&copy; {new Date().getFullYear()} NutriFit Swap. Promoting cleaner eating and fitness in India.</p>
               <p className="mt-1 text-[10px] opacity-75">
                 Nutrition comparison values are per 100g or standard restaurant serving size references.
               </p>

@@ -54,7 +54,7 @@ export default function Header() {
           // Attempt client-side reverse geocoding using OSM Nominatim for a premium feel
           const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18`;
           const response = await fetch(url, {
-            headers: { 'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)' }
+            headers: { 'User-Agent': 'NutriFitSwapApp/1.0 (contact@nutrifitswap.in)' }
           });
           if (response.ok) {
             const data = await response.json();
@@ -125,10 +125,10 @@ export default function Header() {
               </div>
               <div className="flex flex-col">
                 <span className="text-sm sm:text-base font-bold tracking-tight bg-gradient-to-r from-brand-primary via-emerald-500 to-teal-500 bg-clip-text text-transparent hidden min-[370px]:block">
-                  AnaySwap
+                  NutriFit Swap
                 </span>
                 <span className="text-[10px] font-medium text-text-muted leading-none hidden sm:block">
-                  Healthy Swaps
+                  Healthy Swaps & Fitness
                 </span>
               </div>
             </Link>

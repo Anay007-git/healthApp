@@ -33,7 +33,7 @@ async function getPincode(lat: number, lng: number): Promise<string> {
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)' // User-Agent required by OSM TOS
+        'User-Agent': 'NutriFitSwapApp/1.0 (contact@nutrifitswap.in)' // User-Agent required by OSM TOS
       },
       signal: AbortSignal.timeout(3000)
     });

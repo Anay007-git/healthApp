@@ -345,7 +345,7 @@ export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider
       
       const response = await fetch(url, {
         headers: {
-          'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)'
+          'User-Agent': 'NutriFitSwapApp/1.0 (contact@nutrifitswap.in)'
         },
         signal: AbortSignal.timeout(4000)
       });
@@ -375,7 +375,7 @@ export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider
         
         const response = await fetch(globalUrl, {
           headers: {
-            'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)'
+            'User-Agent': 'NutriFitSwapApp/1.0 (contact@nutrifitswap.in)'
           },
           signal: AbortSignal.timeout(4000)
         });
@@ -396,7 +396,7 @@ export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider
       try {
         const catUrl = `https://in.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(category)}&search_simple=1&action=process&json=1&page_size=5`;
         const response = await fetch(catUrl, {
-          headers: { 'User-Agent': 'AnaySwapApp/1.0 (contact@anayswap.in)' },
+          headers: { 'User-Agent': 'NutriFitSwapApp/1.0 (contact@nutrifitswap.in)' },
           signal: AbortSignal.timeout(3000)
         });
         if (response.ok) {

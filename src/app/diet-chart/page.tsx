@@ -548,26 +548,26 @@ ${day.exercises.map((ex, i) => `${i + 1}. ${ex.name}
 `).join('\n')}
 
 ${divider}
-Generated scientifically by AnaySwap Health Planner. Keep hydrated and train safe!
+Generated scientifically by NutriFit Swap Health & Fitness Planner. Keep hydrated and train safe!
 `;
 
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `AnaySwap_Diet_Workout_Plan.txt`;
+    link.download = `NutriFit_Swap_Diet_Workout_Plan.txt`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
   const sharePlan = async () => {
-    const text = `Here is my personalized AnaySwap Diet & Workout Chart!\n\nGoal: ${goal === 'loss' ? 'Weight Loss (Cutting)' : goal === 'gain' ? 'Muscle Gain (Bulking)' : 'Maintenance'}\nBMI: ${bmi.toFixed(1)} (${bmiCategory})\nTarget: ${Math.round(dailyCalorieNeeds)} kcal/day\n\nDaily Diet Swaps:\n- Breakfast: ${breakfast?.name}\n- Lunch: ${lunch?.name}\n- Snack: ${snack?.name}\n- Dinner: ${dinner?.name}\n\nWorkout Focus:\n${workoutRoutine.map(d => `- ${d.dayName}: ${d.focus}`).join('\n')}\n\nDownload the full chart at AnaySwap!`;
+    const text = `Here is my personalized NutriFit Swap Diet & Workout Chart!\n\nGoal: ${goal === 'loss' ? 'Weight Loss (Cutting)' : goal === 'gain' ? 'Muscle Gain (Bulking)' : 'Maintenance'}\nBMI: ${bmi.toFixed(1)} (${bmiCategory})\nTarget: ${Math.round(dailyCalorieNeeds)} kcal/day\n\nDaily Diet Swaps:\n- Breakfast: ${breakfast?.name}\n- Lunch: ${lunch?.name}\n- Snack: ${snack?.name}\n- Dinner: ${dinner?.name}\n\nWorkout Focus:\n${workoutRoutine.map(d => `- ${d.dayName}: ${d.focus}`).join('\n')}\n\nDownload the full chart at NutriFit Swap!`;
 
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'My AnaySwap Diet & Workout Chart',
+          title: 'My NutriFit Swap Diet & Workout Chart',
           text: text,
           url: window.location.href
         });
