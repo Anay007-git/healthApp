@@ -499,15 +499,27 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                           Google Maps
                           <ExternalLink className="h-2.5 w-2.5" />
                         </a>
-                        <a 
-                          href={`https://wa.me/919876543210?text=${encodeURIComponent(`Hi, I'm interested in inquiring about membership plans, rates, and discounts for ${gym.name} located at ${gym.address}. Could you please share the pricing?`)}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-2.5 py-1.5 rounded-xl transition-all shadow-sm active:scale-95"
-                        >
-                          WhatsApp Inquiry
-                          <ChevronRight className="h-3.5 w-3.5" />
-                        </a>
+                        {gym.contact_number ? (
+                          <a 
+                            href={`https://wa.me/${gym.contact_number}?text=${encodeURIComponent(`Hi, I'm interested in inquiring about membership plans, rates, and discounts for ${gym.name} located at ${gym.address}. Could you please share the pricing?`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-2.5 py-1.5 rounded-xl transition-all shadow-sm active:scale-95"
+                          >
+                            WhatsApp Inquiry
+                            <ChevronRight className="h-3.5 w-3.5" />
+                          </a>
+                        ) : (
+                          <a 
+                            href={`https://www.google.com/search?q=${encodeURIComponent(gym.name + ' ' + gym.address + ' contact number')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[10px] font-bold text-text-app bg-card-app border border-border-app/50 hover:bg-border-app/20 px-2.5 py-1.5 rounded-xl transition-all shadow-sm active:scale-95"
+                          >
+                            Call / Inquire
+                            <ChevronRight className="h-3.5 w-3.5" />
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>

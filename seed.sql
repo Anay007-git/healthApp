@@ -118,36 +118,36 @@ TRUNCATE gyms CASCADE;
 TRUNCATE supplements CASCADE;
 
 -- Insert Gyms Data
-INSERT INTO gyms (name, rating, monthly_fee, distance_text, latitude, longitude, address, amenities, is_value_pick, image_url) VALUES
+INSERT INTO gyms (name, rating, monthly_fee, distance_text, latitude, longitude, address, amenities, is_value_pick, image_url, contact_number) VALUES
 -- Indiranagar, Bengaluru
-('Cult.fit Elite Indiranagar', 4.8, 3000, '0.5 km', 12.971891, 77.641151, '12th Main Road, HAL 2nd Stage, Indiranagar, Bengaluru', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'], false, '/images/gyms/cult_indiranagar.jpg'),
-('Gold''s Gym Indiranagar', 4.5, 4500, '0.9 km', 12.975000, 77.643000, 'Double Road, Indiranagar, Bengaluru', ARRAY['Strength Training', 'Cardio Machines', 'Personal Training', 'Steam Room'], false, '/images/gyms/golds_indiranagar.jpg'),
-('Snap Fitness 24/7 Indiranagar', 4.2, 2500, '1.2 km', 12.969000, 77.638000, '100 Feet Road, Indiranagar, Bengaluru', ARRAY['24/7 Access', 'Cardio Machines', 'Strength Training', 'Free Wi-Fi'], false, '/images/gyms/snap_indiranagar.jpg'),
-('Peak Iron Fitness Gym', 4.4, 1500, '0.7 km', 12.973000, 77.640000, 'Lashkar Road, HAL 2nd Stage, Indiranagar, Bengaluru', ARRAY['Strength Training', 'Free Weights', 'Cardio Area'], true, '/images/gyms/peak_indiranagar.jpg'),
+('Cult.fit Elite Indiranagar', 4.8, 3000, '0.5 km', 12.971891, 77.641151, '12th Main Road, HAL 2nd Stage, Indiranagar, Bengaluru', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'], false, '/images/gyms/cult_indiranagar.jpg', '919876543201'),
+('Gold''s Gym Indiranagar', 4.5, 4500, '0.9 km', 12.975000, 77.643000, 'Double Road, Indiranagar, Bengaluru', ARRAY['Strength Training', 'Cardio Machines', 'Personal Training', 'Steam Room'], false, '/images/gyms/golds_indiranagar.jpg', '919876543202'),
+('Snap Fitness 24/7 Indiranagar', 4.2, 2500, '1.2 km', 12.969000, 77.638000, '100 Feet Road, Indiranagar, Bengaluru', ARRAY['24/7 Access', 'Cardio Machines', 'Strength Training', 'Free Wi-Fi'], false, '/images/gyms/snap_indiranagar.jpg', '919876543203'),
+('Peak Iron Fitness Gym', 4.4, 1500, '0.7 km', 12.973000, 77.640000, 'Lashkar Road, HAL 2nd Stage, Indiranagar, Bengaluru', ARRAY['Strength Training', 'Free Weights', 'Cardio Area'], true, '/images/gyms/peak_indiranagar.jpg', '919876543204'),
 
 -- Bandra West, Mumbai
-('Gold''s Gym Bandra', 4.7, 6000, '0.6 km', 19.060691, 72.836250, 'Carter Road, Bandra West, Mumbai', ARRAY['Strength Training', 'Cardio Machines', 'Personal Training', 'Valet Parking', 'Steam Room'], false, '/images/gyms/golds_bandra.jpg'),
-('Waves Gym Bandra', 4.6, 5000, '0.8 km', 19.058000, 72.838000, 'Linking Road, Bandra West, Mumbai', ARRAY['Spin Classes', 'Strength Training', 'Cardio Area', 'Steam Bath', 'Juice Bar'], false, '/images/gyms/waves_bandra.jpg'),
-('Cult.fit Bandra West', 4.5, 3500, '1.1 km', 19.063000, 72.834000, 'Pali Hill, Bandra West, Mumbai', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing'], false, '/images/gyms/cult_bandra.jpg'),
-('Iron Temple Bodybuilding Gym', 4.3, 1800, '0.5 km', 19.061000, 72.835000, 'Juhu Tara Road, Bandra, Mumbai', ARRAY['Free Weights', 'Strength Training', 'Personal Training'], true, '/images/gyms/irontemple_bandra.jpg'),
+('Gold''s Gym Bandra', 4.7, 6000, '0.6 km', 19.060691, 72.836250, 'Carter Road, Bandra West, Mumbai', ARRAY['Strength Training', 'Cardio Machines', 'Personal Training', 'Valet Parking', 'Steam Room'], false, '/images/gyms/golds_bandra.jpg', '919876543205'),
+('Waves Gym Bandra', 4.6, 5000, '0.8 km', 19.058000, 72.838000, 'Linking Road, Bandra West, Mumbai', ARRAY['Spin Classes', 'Strength Training', 'Cardio Area', 'Steam Bath', 'Juice Bar'], false, '/images/gyms/waves_bandra.jpg', '919876543206'),
+('Cult.fit Bandra West', 4.5, 3500, '1.1 km', 19.063000, 72.834000, 'Pali Hill, Bandra West, Mumbai', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing'], false, '/images/gyms/cult_bandra.jpg', '919876543207'),
+('Iron Temple Bodybuilding Gym', 4.3, 1800, '0.5 km', 19.061000, 72.835000, 'Juhu Tara Road, Bandra, Mumbai', ARRAY['Free Weights', 'Strength Training', 'Personal Training'], true, '/images/gyms/irontemple_bandra.jpg', '919876543208'),
 
 -- Connaught Place, New Delhi
-('Gold''s Gym Connaught Place', 4.6, 5000, '0.4 km', 28.630400, 77.217700, 'Outer Circle, Connaught Place, New Delhi', ARRAY['Strength Training', 'Cardio Machines', 'Spa', 'Personal Training'], false, '/images/gyms/golds_cp.jpg'),
-('Anytime Fitness CP', 4.5, 3500, '0.8 km', 28.632000, 77.215000, 'Inner Circle, Connaught Place, New Delhi', ARRAY['24/7 Access', 'Cardio Machines', 'Strength Training', 'Private Showers'], false, '/images/gyms/anytime_cp.jpg'),
-('Cult.fit Connaught Place', 4.7, 3200, '1.0 km', 28.628000, 77.220000, 'Khan Market, Near CP, New Delhi', ARRAY['Group Workouts', 'Boxing', 'Strength Training', 'Yoga'], false, '/images/gyms/cult_cp.jpg'),
-('Delhi Fitness Club CP', 4.1, 1200, '0.5 km', 28.631000, 77.218000, 'M-Block, Connaught Place, New Delhi', ARRAY['Cardio Machines', 'Strength Training', 'Free Weights'], true, '/images/gyms/delhifitness_cp.jpg'),
+('Gold''s Gym Connaught Place', 4.6, 5000, '0.4 km', 28.630400, 77.217700, 'Outer Circle, Connaught Place, New Delhi', ARRAY['Strength Training', 'Cardio Machines', 'Spa', 'Personal Training'], false, '/images/gyms/golds_cp.jpg', '919876543209'),
+('Anytime Fitness CP', 4.5, 3500, '0.8 km', 28.632000, 77.215000, 'Inner Circle, Connaught Place, New Delhi', ARRAY['24/7 Access', 'Cardio Machines', 'Strength Training', 'Private Showers'], false, '/images/gyms/anytime_cp.jpg', '919876543210'),
+('Cult.fit Connaught Place', 4.7, 3200, '1.0 km', 28.628000, 77.220000, 'Khan Market, Near CP, New Delhi', ARRAY['Group Workouts', 'Boxing', 'Strength Training', 'Yoga'], false, '/images/gyms/cult_cp.jpg', '919876543211'),
+('Delhi Fitness Club CP', 4.1, 1200, '0.5 km', 28.631000, 77.218000, 'M-Block, Connaught Place, New Delhi', ARRAY['Cardio Machines', 'Strength Training', 'Free Weights'], true, '/images/gyms/delhifitness_cp.jpg', '919876543212'),
 
 -- Gachibowli, Hyderabad
-('Cult.fit Gachibowli', 4.7, 2800, '0.7 km', 17.440081, 78.348915, 'DLF Cybercity Road, Gachibowli, Hyderabad', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'], false, '/images/gyms/cult_gachibowli.jpg'),
-('Nitro Gym Gachibowli', 4.5, 4000, '1.2 km', 17.438000, 78.352000, 'Hitech City Road, Gachibowli, Hyderabad', ARRAY['Jacuzzi', 'Steam Room', 'Cardio Area', 'Strength Training', 'Zumba'], false, '/images/gyms/nitro_gachibowli.jpg'),
-('Anytime Fitness Gachibowli', 4.4, 3200, '1.5 km', 17.443000, 78.345000, 'Kondapur Main Road, Near Gachibowli, Hyderabad', ARRAY['24/7 Access', 'Cardio Machines', 'Strength Training', 'Personal Training'], false, '/images/gyms/anytime_gachibowli.jpg'),
-('Fit-Life Iron Gym Gachibowli', 4.2, 1200, '0.6 km', 17.441000, 78.349000, 'Gachibowli X Roads, Hyderabad', ARRAY['Free Weights', 'Strength Training', 'Cardio Area'], true, '/images/gyms/fitlife_gachibowli.jpg'),
+('Cult.fit Gachibowli', 4.7, 2800, '0.7 km', 17.440081, 78.348915, 'DLF Cybercity Road, Gachibowli, Hyderabad', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'], false, '/images/gyms/cult_gachibowli.jpg', '919876543213'),
+('Nitro Gym Gachibowli', 4.5, 4000, '1.2 km', 17.438000, 78.352000, 'Hitech City Road, Gachibowli, Hyderabad', ARRAY['Jacuzzi', 'Steam Room', 'Cardio Area', 'Strength Training', 'Zumba'], false, '/images/gyms/nitro_gachibowli.jpg', '919876543214'),
+('Anytime Fitness Gachibowli', 4.4, 3200, '1.5 km', 17.443000, 78.345000, 'Kondapur Main Road, Near Gachibowli, Hyderabad', ARRAY['24/7 Access', 'Cardio Machines', 'Strength Training', 'Personal Training'], false, '/images/gyms/anytime_gachibowli.jpg', '919876543215'),
+('Fit-Life Iron Gym Gachibowli', 4.2, 1200, '0.6 km', 17.441000, 78.349000, 'Gachibowli X Roads, Hyderabad', ARRAY['Free Weights', 'Strength Training', 'Cardio Area'], true, '/images/gyms/fitlife_gachibowli.jpg', '919876543216'),
 
 -- Koregaon Park, Pune
-('Gold''s Gym Koregaon Park', 4.8, 5500, '0.6 km', 18.536200, 73.893000, 'North Main Road, Koregaon Park, Pune', ARRAY['Swimming Pool', 'Spa', 'Strength Training', 'Cardio Machines', 'Personal Training'], false, '/images/gyms/golds_kp.jpg'),
-('Absolute Fitness KP', 4.4, 3500, '1.0 km', 18.538000, 73.895000, 'Lane 7, Koregaon Park, Pune', ARRAY['Zumba', 'Cardio Machines', 'Strength Training', 'Shower Area'], false, '/images/gyms/absolute_kp.jpg'),
-('Cult.fit Koregaon Park', 4.6, 3000, '1.3 km', 18.534000, 73.890000, 'Kalyani Nagar Main Road, Near KP, Pune', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'], false, '/images/gyms/cult_kp.jpg'),
-('Muscle Garage Gym KP', 4.3, 1400, '0.4 km', 18.537000, 73.892000, 'Jogger''s Park Road, Koregaon Park, Pune', ARRAY['Strength Training', 'Free Weights', 'Personal Training'], true, '/images/gyms/musclegarage_kp.jpg');
+('Gold''s Gym Koregaon Park', 4.8, 5500, '0.6 km', 18.536200, 73.893000, 'North Main Road, Koregaon Park, Pune', ARRAY['Swimming Pool', 'Spa', 'Strength Training', 'Cardio Machines', 'Personal Training'], false, '/images/gyms/golds_kp.jpg', '919876543217'),
+('Absolute Fitness KP', 4.4, 3500, '1.0 km', 18.538000, 73.895000, 'Lane 7, Koregaon Park, Pune', ARRAY['Zumba', 'Cardio Machines', 'Strength Training', 'Shower Area'], false, '/images/gyms/absolute_kp.jpg', '919876543218'),
+('Cult.fit Koregaon Park', 4.6, 3000, '1.3 km', 18.534000, 73.890000, 'Kalyani Nagar Main Road, Near KP, Pune', ARRAY['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'], false, '/images/gyms/cult_kp.jpg', '919876543219'),
+('Muscle Garage Gym KP', 4.3, 1400, '0.4 km', 18.537000, 73.892000, 'Jogger''s Park Road, Koregaon Park, Pune', ARRAY['Strength Training', 'Free Weights', 'Personal Training'], true, '/images/gyms/musclegarage_kp.jpg', '919876543220');
 
 -- Insert Supplements Data
 INSERT INTO supplements (name, brand, category, price, servings, dose_per_serving, price_per_serving, rating, tier, buy_links, image_url, benefits) VALUES

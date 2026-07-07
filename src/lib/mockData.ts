@@ -144,6 +144,7 @@ export interface Gym {
   amenities: string[];
   is_value_pick: boolean;
   image_url?: string;
+  contact_number?: string;
 }
 
 export interface Supplement {
@@ -181,7 +182,8 @@ export const mockGyms: Gym[] = [
     address: '12th Main Road, HAL 2nd Stage, Indiranagar, Bengaluru',
     amenities: ['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'],
     is_value_pick: false,
-    image_url: '/images/gyms/cult_indiranagar.jpg'
+    image_url: '/images/gyms/cult_indiranagar.jpg',
+    contact_number: '919876543201'
   },
   {
     id: 'g-2',
@@ -194,7 +196,8 @@ export const mockGyms: Gym[] = [
     address: 'Double Road, Indiranagar, Bengaluru',
     amenities: ['Strength Training', 'Cardio Machines', 'Personal Training', 'Steam Room'],
     is_value_pick: false,
-    image_url: '/images/gyms/golds_indiranagar.jpg'
+    image_url: '/images/gyms/golds_indiranagar.jpg',
+    contact_number: '919876543202'
   },
   {
     id: 'g-3',
@@ -207,7 +210,8 @@ export const mockGyms: Gym[] = [
     address: '100 Feet Road, Indiranagar, Bengaluru',
     amenities: ['24/7 Access', 'Cardio Machines', 'Strength Training', 'Free Wi-Fi'],
     is_value_pick: false,
-    image_url: '/images/gyms/snap_indiranagar.jpg'
+    image_url: '/images/gyms/snap_indiranagar.jpg',
+    contact_number: '919876543203'
   },
   {
     id: 'g-4',
@@ -220,7 +224,8 @@ export const mockGyms: Gym[] = [
     address: 'Lashkar Road, HAL 2nd Stage, Indiranagar, Bengaluru',
     amenities: ['Strength Training', 'Free Weights', 'Cardio Area'],
     is_value_pick: true,
-    image_url: '/images/gyms/peak_indiranagar.jpg'
+    image_url: '/images/gyms/peak_indiranagar.jpg',
+    contact_number: '919876543204'
   },
 
   // Bandra West, Mumbai
@@ -235,7 +240,8 @@ export const mockGyms: Gym[] = [
     address: 'Carter Road, Bandra West, Mumbai',
     amenities: ['Strength Training', 'Cardio Machines', 'Personal Training', 'Valet Parking', 'Steam Room'],
     is_value_pick: false,
-    image_url: '/images/gyms/golds_bandra.jpg'
+    image_url: '/images/gyms/golds_bandra.jpg',
+    contact_number: '919876543205'
   },
   {
     id: 'g-6',
@@ -248,7 +254,8 @@ export const mockGyms: Gym[] = [
     address: 'Linking Road, Bandra West, Mumbai',
     amenities: ['Spin Classes', 'Strength Training', 'Cardio Area', 'Steam Bath', 'Juice Bar'],
     is_value_pick: false,
-    image_url: '/images/gyms/waves_bandra.jpg'
+    image_url: '/images/gyms/waves_bandra.jpg',
+    contact_number: '919876543206'
   },
   {
     id: 'g-7',
@@ -261,7 +268,8 @@ export const mockGyms: Gym[] = [
     address: 'Pali Hill, Bandra West, Mumbai',
     amenities: ['Group Workouts', 'Strength Training', 'Yoga', 'Boxing'],
     is_value_pick: false,
-    image_url: '/images/gyms/cult_bandra.jpg'
+    image_url: '/images/gyms/cult_bandra.jpg',
+    contact_number: '919876543207'
   },
   {
     id: 'g-8',
@@ -274,7 +282,8 @@ export const mockGyms: Gym[] = [
     address: 'Juhu Tara Road, Bandra, Mumbai',
     amenities: ['Free Weights', 'Strength Training', 'Personal Training'],
     is_value_pick: true,
-    image_url: '/images/gyms/irontemple_bandra.jpg'
+    image_url: '/images/gyms/irontemple_bandra.jpg',
+    contact_number: '919876543208'
   },
 
   // Connaught Place, New Delhi
@@ -289,7 +298,8 @@ export const mockGyms: Gym[] = [
     address: 'Outer Circle, Connaught Place, New Delhi',
     amenities: ['Strength Training', 'Cardio Machines', 'Spa', 'Personal Training'],
     is_value_pick: false,
-    image_url: '/images/gyms/golds_cp.jpg'
+    image_url: '/images/gyms/golds_cp.jpg',
+    contact_number: '919876543209'
   },
   {
     id: 'g-10',
@@ -302,7 +312,8 @@ export const mockGyms: Gym[] = [
     address: 'Inner Circle, Connaught Place, New Delhi',
     amenities: ['24/7 Access', 'Cardio Machines', 'Strength Training', 'Private Showers'],
     is_value_pick: false,
-    image_url: '/images/gyms/anytime_cp.jpg'
+    image_url: '/images/gyms/anytime_cp.jpg',
+    contact_number: '919876543210'
   },
   {
     id: 'g-11',
@@ -315,7 +326,8 @@ export const mockGyms: Gym[] = [
     address: 'Khan Market, Near CP, New Delhi',
     amenities: ['Group Workouts', 'Boxing', 'Strength Training', 'Yoga'],
     is_value_pick: false,
-    image_url: '/images/gyms/cult_cp.jpg'
+    image_url: '/images/gyms/cult_cp.jpg',
+    contact_number: '919876543211'
   },
   {
     id: 'g-12',
@@ -328,7 +340,8 @@ export const mockGyms: Gym[] = [
     address: 'M-Block, Connaught Place, New Delhi',
     amenities: ['Cardio Machines', 'Strength Training', 'Free Weights'],
     is_value_pick: true,
-    image_url: '/images/gyms/delhifitness_cp.jpg'
+    image_url: '/images/gyms/delhifitness_cp.jpg',
+    contact_number: '919876543212'
   },
 
   // Gachibowli, Hyderabad
@@ -343,7 +356,8 @@ export const mockGyms: Gym[] = [
     address: 'DLF Cybercity Road, Gachibowli, Hyderabad',
     amenities: ['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'],
     is_value_pick: false,
-    image_url: '/images/gyms/cult_gachibowli.jpg'
+    image_url: '/images/gyms/cult_gachibowli.jpg',
+    contact_number: '919876543213'
   },
   {
     id: 'g-14',
@@ -356,7 +370,8 @@ export const mockGyms: Gym[] = [
     address: 'Hitech City Road, Gachibowli, Hyderabad',
     amenities: ['Jacuzzi', 'Steam Room', 'Cardio Area', 'Strength Training', 'Zumba'],
     is_value_pick: false,
-    image_url: '/images/gyms/nitro_gachibowli.jpg'
+    image_url: '/images/gyms/nitro_gachibowli.jpg',
+    contact_number: '919876543214'
   },
   {
     id: 'g-15',
@@ -369,7 +384,8 @@ export const mockGyms: Gym[] = [
     address: 'Kondapur Main Road, Near Gachibowli, Hyderabad',
     amenities: ['24/7 Access', 'Cardio Machines', 'Strength Training', 'Personal Training'],
     is_value_pick: false,
-    image_url: '/images/gyms/anytime_gachibowli.jpg'
+    image_url: '/images/gyms/anytime_gachibowli.jpg',
+    contact_number: '919876543215'
   },
   {
     id: 'g-16',
@@ -382,7 +398,8 @@ export const mockGyms: Gym[] = [
     address: 'Gachibowli X Roads, Hyderabad',
     amenities: ['Free Weights', 'Strength Training', 'Cardio Area'],
     is_value_pick: true,
-    image_url: '/images/gyms/fitlife_gachibowli.jpg'
+    image_url: '/images/gyms/fitlife_gachibowli.jpg',
+    contact_number: '919876543216'
   },
 
   // Koregaon Park, Pune
@@ -397,7 +414,8 @@ export const mockGyms: Gym[] = [
     address: 'North Main Road, Koregaon Park, Pune',
     amenities: ['Swimming Pool', 'Spa', 'Strength Training', 'Cardio Machines', 'Personal Training'],
     is_value_pick: false,
-    image_url: '/images/gyms/golds_kp.jpg'
+    image_url: '/images/gyms/golds_kp.jpg',
+    contact_number: '919876543217'
   },
   {
     id: 'g-18',
@@ -410,7 +428,8 @@ export const mockGyms: Gym[] = [
     address: 'Lane 7, Koregaon Park, Pune',
     amenities: ['Zumba', 'Cardio Machines', 'Strength Training', 'Shower Area'],
     is_value_pick: false,
-    image_url: '/images/gyms/absolute_kp.jpg'
+    image_url: '/images/gyms/absolute_kp.jpg',
+    contact_number: '919876543218'
   },
   {
     id: 'g-19',
@@ -423,7 +442,8 @@ export const mockGyms: Gym[] = [
     address: 'Kalyani Nagar Main Road, Near KP, Pune',
     amenities: ['Group Workouts', 'Strength Training', 'Yoga', 'Boxing', 'Shower'],
     is_value_pick: false,
-    image_url: '/images/gyms/cult_kp.jpg'
+    image_url: '/images/gyms/cult_kp.jpg',
+    contact_number: '919876543219'
   },
   {
     id: 'g-20',
@@ -436,7 +456,8 @@ export const mockGyms: Gym[] = [
     address: "Jogger's Park Road, Koregaon Park, Pune",
     amenities: ['Strength Training', 'Free Weights', 'Personal Training'],
     is_value_pick: true,
-    image_url: '/images/gyms/musclegarage_kp.jpg'
+    image_url: '/images/gyms/musclegarage_kp.jpg',
+    contact_number: '919876543220'
   }
 ];
 

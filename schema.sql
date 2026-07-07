@@ -68,6 +68,7 @@ CREATE TABLE IF NOT EXISTS gyms (
     amenities TEXT[] NOT NULL,
     is_value_pick BOOLEAN DEFAULT false,
     image_url TEXT,
+    contact_number VARCHAR(50),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
