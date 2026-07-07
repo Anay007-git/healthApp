@@ -649,6 +649,206 @@ export const mockSupplements: Supplement[] = [
     },
     image_url: '/images/supps/carbamide_omega.jpg',
     benefits: 'High affordability per capsule. Sourced from cold-water salmon, supports heart, joint, and skin health with baseline macro Omega-3 ratios.'
+  },
+  {
+    id: 's-11',
+    name: 'Impact Whey Protein',
+    brand: 'Myprotein',
+    category: 'protein',
+    price: 3499,
+    servings: 40,
+    dose_per_serving: '21g Whey Protein',
+    price_per_serving: 87.4,
+    rating: 4.6,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Myprotein+Impact+Whey',
+      blinkit: 'https://blinkit.com/s?q=myprotein+whey',
+      zepto: 'https://www.zeptonow.com/search?q=myprotein+whey',
+      healthkart: 'https://www.healthkart.com/search?q=Myprotein+Impact+Whey'
+    },
+    image_url: '/images/supps/myprotein_whey.jpg',
+    benefits: 'Premium quality grass-fed whey concentrate. Exceptionally high grade, rich in essential amino acids, fast digesting, and widely trusted worldwide.'
+  },
+  {
+    id: 's-12',
+    name: 'Atom Whey Protein',
+    brand: 'Asitis Nutrition',
+    category: 'protein',
+    price: 1899,
+    servings: 33,
+    dose_per_serving: '27g Whey Protein',
+    price_per_serving: 57.5,
+    rating: 4.3,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Asitis+Atom+Whey+Protein',
+      blinkit: 'https://blinkit.com/s?q=asitis+atom+whey',
+      zepto: 'https://www.zeptonow.com/search?q=asitis+atom+whey',
+      healthkart: 'https://www.healthkart.com/search?q=Asitis+Atom+Whey'
+    },
+    image_url: '/images/supps/asitis_atom_whey.jpg',
+    benefits: 'High protein yield per serving at an extremely competitive price. Fortified with digestive enzymes, zero soy, fast recovery support.'
+  },
+  {
+    id: 's-13',
+    name: 'Micronized Creatine Powder',
+    brand: 'Optimum Nutrition',
+    category: 'creatine',
+    price: 1499,
+    servings: 83,
+    dose_per_serving: '3g Micronized Creatine',
+    price_per_serving: 18.0,
+    rating: 4.8,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Optimum+Nutrition+Creatine+Powder',
+      blinkit: 'https://blinkit.com/s?q=on+creatine',
+      zepto: 'https://www.zeptonow.com/search?q=on+creatine',
+      healthkart: 'https://www.healthkart.com/search?q=ON+Micronized+Creatine'
+    },
+    image_url: '/images/supps/on_creatine.jpg',
+    benefits: 'Industry gold standard pure micronized creatine. Zero fillers, tasteless, mixes effortlessly in any beverage, highly clinically supported for power output.'
+  },
+  {
+    id: 's-14',
+    name: 'Pure Wellcore Creatine',
+    brand: 'Wellcore',
+    category: 'creatine',
+    price: 649,
+    servings: 83,
+    dose_per_serving: '3g Pure Creatine',
+    price_per_serving: 7.8,
+    rating: 4.5,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Wellcore+Creatine',
+      blinkit: 'https://blinkit.com/s?q=wellcore+creatine',
+      zepto: 'https://www.zeptonow.com/search?q=wellcore+creatine',
+      healthkart: 'https://www.healthkart.com/search?q=Wellcore+Creatine'
+    },
+    image_url: '/images/supps/wellcore_creatine.jpg',
+    benefits: '100% pure micronized creatine monohydrate. No sugar, no artificial colors, ultra-solubility, popular budget-friendly staple for cellular hydration.'
+  },
+  {
+    id: 's-15',
+    name: 'Psychotic Pre-Workout',
+    brand: 'Insane Labz',
+    category: 'preworkout',
+    price: 2999,
+    servings: 35,
+    dose_per_serving: '3.2g Beta-Alanine, 400mg Caffeine',
+    price_per_serving: 85.6,
+    rating: 4.5,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Insane+Labz+Psychotic',
+      blinkit: 'https://blinkit.com/s?q=psychotic+preworkout',
+      zepto: 'https://www.zeptonow.com/search?q=psychotic+preworkout',
+      healthkart: 'https://www.healthkart.com/search?q=Insane+Labz+Psychotic'
+    },
+    image_url: '/images/supps/psychotic_preworkout.jpg',
+    benefits: 'Ultra-high stimulant formula featuring trademarked AMPiberry to prolong energy curve and focus. For advanced trainees looking for intense pumps.'
+  },
+  {
+    id: 's-16',
+    name: 'Pre-Workout Pre-XP',
+    brand: 'Doctors Choice',
+    category: 'preworkout',
+    price: 1599,
+    servings: 30,
+    dose_per_serving: '3g Citrulline, 250mg Caffeine',
+    price_per_serving: 53.3,
+    rating: 4.3,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Doctors+Choice+Pre+XP',
+      blinkit: 'https://blinkit.com/s?q=doctors+choice+preworkout',
+      zepto: 'https://www.zeptonow.com/search?q=doctors+choice+preworkout',
+      healthkart: 'https://www.healthkart.com/search?q=Doctors+Choice+Pre+XP'
+    },
+    image_url: '/images/supps/dc_preworkout.jpg',
+    benefits: 'Excellent value pre-workout. Provides a strong energy kick, hydration electrolytes, and blood flow enhancers at a budget-friendly price point.'
+  },
+  {
+    id: 's-17',
+    name: 'MB-Vite Daily Multivitamin',
+    brand: 'MuscleBlaze',
+    category: 'multivitamin',
+    price: 649,
+    servings: 60,
+    dose_per_serving: '25 Key Ingredients & Enzymes',
+    price_per_serving: 10.8,
+    rating: 4.6,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=MuscleBlaze+MB+Vite',
+      blinkit: 'https://blinkit.com/s?q=mb+vite',
+      zepto: 'https://www.zeptonow.com/search?q=mb+vite',
+      healthkart: 'https://www.healthkart.com/search?q=MuscleBlaze+MB+Vite'
+    },
+    image_url: '/images/supps/mb_multi.jpg',
+    benefits: 'Top-selling daily multivitamin with specific digestive enzyme blends, energy support extracts, and baseline micro-minerals for active lifestyles.'
+  },
+  {
+    id: 's-18',
+    name: 'Revital H Daily Health',
+    brand: 'Revital',
+    category: 'multivitamin',
+    price: 350,
+    servings: 60,
+    dose_per_serving: '10 Vitamins, 9 Minerals & Ginseng',
+    price_per_serving: 5.8,
+    rating: 4.2,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Revital+H+Capsules',
+      blinkit: 'https://blinkit.com/s?q=revital+h',
+      zepto: 'https://www.zeptonow.com/search?q=revital+h',
+      healthkart: 'https://www.healthkart.com/search?q=Revital+H'
+    },
+    image_url: '/images/supps/revital_multi.jpg',
+    benefits: 'Classic, widely available daily health supplement formulated with natural Ginseng extract to enhance energy, stamina, and mental alertness on a budget.'
+  },
+  {
+    id: 's-19',
+    name: 'Premium Fish Oil Gold',
+    brand: 'MuscleBlaze',
+    category: 'omega3',
+    price: 799,
+    servings: 60,
+    dose_per_serving: '1000mg Fish Oil (460mg EPA / 380mg DHA)',
+    price_per_serving: 13.3,
+    rating: 4.6,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=MuscleBlaze+Fish+Oil+Gold',
+      blinkit: 'https://blinkit.com/s?q=muscleblaze+fish+oil',
+      zepto: 'https://www.zeptonow.com/search?q=muscleblaze+fish+oil',
+      healthkart: 'https://www.healthkart.com/search?q=MuscleBlaze+Fish+Oil'
+    },
+    image_url: '/images/supps/mb_omega.jpg',
+    benefits: 'High potency enteric-coated fish oil softgels. Zero fishy aftertaste, refined to eliminate heavy metals, high concentration of active fatty acids.'
+  },
+  {
+    id: 's-20',
+    name: 'Premium Omega 3 Fish Oil',
+    brand: 'Wow Life Science',
+    category: 'omega3',
+    price: 499,
+    servings: 60,
+    dose_per_serving: '1000mg Fish Oil (350mg EPA / 250mg DHA)',
+    price_per_serving: 8.3,
+    rating: 4.3,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Wow+Life+Science+Omega+3',
+      blinkit: 'https://blinkit.com/s?q=wow+omega+3',
+      zepto: 'https://www.zeptonow.com/search?q=wow+omega+3',
+      healthkart: 'https://www.healthkart.com/search?q=Wow+Life+Science+Omega+3'
+    },
+    image_url: '/images/supps/wow_omega.jpg',
+    benefits: 'Budget-friendly, highly popular clean fish oil capsules. Enteric-coated, premium marine source, supports heart, eye, joint, and brain function.'
   }
 ];
 

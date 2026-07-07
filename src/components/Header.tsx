@@ -26,10 +26,16 @@ export default function Header() {
 
   const selectLocation = (locName: string, lat: number, lng: number) => {
     setLocation(locName);
-    localStorage.setItem('user_location', locName);
-    localStorage.setItem('user_lat', lat.toString());
-    localStorage.setItem('user_lng', lng.toString());
-    window.dispatchEvent(new Event('locationChanged'));
+    try {
+      localStorage.setItem('user_location', locName);
+      localStorage.setItem('user_lat', lat.toString());
+      localStorage.setItem('user_lng', lng.toString());
+    } catch (e) {
+      console.warn('localStorage set failed:', e);
+    }
+    window.dispatchEvent(new CustomEvent('locationChanged', {
+      detail: { lat, lng, name: locName }
+    }));
     setDropdownOpen(false);
   };
 
@@ -57,10 +63,16 @@ export default function Header() {
             const matchedName = `${streetName}, ${cityName}`;
             
             setLocation(matchedName);
-            localStorage.setItem('user_location', matchedName);
-            localStorage.setItem('user_lat', latitude.toString());
-            localStorage.setItem('user_lng', longitude.toString());
-            window.dispatchEvent(new Event('locationChanged'));
+            try {
+              localStorage.setItem('user_location', matchedName);
+              localStorage.setItem('user_lat', latitude.toString());
+              localStorage.setItem('user_lng', longitude.toString());
+            } catch (e) {
+              console.warn(e);
+            }
+            window.dispatchEvent(new CustomEvent('locationChanged', {
+              detail: { lat: latitude, lng: longitude, name: matchedName }
+            }));
             setLoadingGeoloc(false);
             setDropdownOpen(false);
             return;
@@ -71,10 +83,16 @@ export default function Header() {
 
         const matchedName = `Near Sector 4 (Coords: ${latitude.toFixed(3)}, ${longitude.toFixed(3)})`;
         setLocation(matchedName);
-        localStorage.setItem('user_location', matchedName);
-        localStorage.setItem('user_lat', latitude.toString());
-        localStorage.setItem('user_lng', longitude.toString());
-        window.dispatchEvent(new Event('locationChanged'));
+        try {
+          localStorage.setItem('user_location', matchedName);
+          localStorage.setItem('user_lat', latitude.toString());
+          localStorage.setItem('user_lng', longitude.toString());
+        } catch (e) {
+          console.warn(e);
+        }
+        window.dispatchEvent(new CustomEvent('locationChanged', {
+          detail: { lat: latitude, lng: longitude, name: matchedName }
+        }));
         setLoadingGeoloc(false);
         setDropdownOpen(false);
       },

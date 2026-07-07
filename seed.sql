@@ -158,6 +158,12 @@ INSERT INTO supplements (name, brand, category, price, servings, dose_per_servin
 ('Gold Whey Protein 100%', 'Nakpro', 'protein', 2999, 60, '24g Whey Protein', 49.9, 4.4, 'value_pick', 
  '{"amazon": "https://www.amazon.in/s?k=Nakpro+Gold+Whey+Protein", "blinkit": "https://blinkit.com/s?q=nakpro+whey", "zepto": "https://www.zeptonow.com/search?q=nakpro+whey", "healthkart": "https://www.healthkart.com/search?q=Nakpro+Gold+Whey"}',
  '/images/supps/nakpro_whey.jpg', 'Highly affordable 100% whey protein concentrate. Zero added sugar, naturally rich in BCAAs, lab-verified protein content.'),
+('Impact Whey Protein', 'Myprotein', 'protein', 3499, 40, '21g Whey Protein', 87.4, 4.6, 'market_leader',
+ '{"amazon": "https://www.amazon.in/s?k=Myprotein+Impact+Whey", "blinkit": "https://blinkit.com/s?q=myprotein+whey", "zepto": "https://www.zeptonow.com/search?q=myprotein+whey", "healthkart": "https://www.healthkart.com/search?q=Myprotein+Impact+Whey"}',
+ '/images/supps/myprotein_whey.jpg', 'Premium quality grass-fed whey concentrate. Exceptionally high grade, rich in essential amino acids, fast digesting, and widely trusted worldwide.'),
+('Atom Whey Protein', 'Asitis Nutrition', 'protein', 1899, 33, '27g Whey Protein', 57.5, 4.3, 'value_pick',
+ '{"amazon": "https://www.amazon.in/s?k=Asitis+Atom+Whey+Protein", "blinkit": "https://blinkit.com/s?q=asitis+atom+whey", "zepto": "https://www.zeptonow.com/search?q=asitis+atom+whey", "healthkart": "https://www.healthkart.com/search?q=Asitis+Atom+Whey"}',
+ '/images/supps/asitis_atom_whey.jpg', 'High protein yield per serving at an extremely competitive price. Fortified with digestive enzymes, zero soy, fast recovery support.'),
 
 -- Creatine
 ('Creatine Monohydrate (Creapure)', 'MuscleBlaze', 'creatine', 1199, 83, '3g Creapure Creatine', 14.4, 4.7, 'market_leader', 
@@ -166,6 +172,12 @@ INSERT INTO supplements (name, brand, category, price, servings, dose_per_servin
 ('Pure Creatine Monohydrate', 'Asitis Nutrition', 'creatine', 499, 100, '3g Creatine Monohydrate', 4.9, 4.3, 'value_pick', 
  '{"amazon": "https://www.amazon.in/s?k=Asitis+Creatine+Monohydrate", "blinkit": "https://blinkit.com/s?q=creatine+asitis", "zepto": "https://www.zeptonow.com/search?q=creatine+asitis", "healthkart": "https://www.healthkart.com/search?q=Asitis+Creatine"}',
  '/images/supps/asitis_creatine.jpg', 'Pure unflavored, additive-free creatine monohydrate. Provides maximum cost efficiency, aids in muscle gains, volumization, and recovery.'),
+('Micronized Creatine Powder', 'Optimum Nutrition', 'creatine', 1499, 83, '3g Micronized Creatine', 18.0, 4.8, 'market_leader',
+ '{"amazon": "https://www.amazon.in/s?k=Optimum+Nutrition+Creatine+Powder", "blinkit": "https://blinkit.com/s?q=on+creatine", "zepto": "https://www.zeptonow.com/search?q=on+creatine", "healthkart": "https://www.healthkart.com/search?q=ON+Micronized+Creatine"}',
+ '/images/supps/on_creatine.jpg', 'Industry gold standard pure micronized creatine. Zero fillers, tasteless, mixes effortlessly in any beverage, highly clinically supported for power output.'),
+('Pure Wellcore Creatine', 'Wellcore', 'creatine', 649, 83, '3g Pure Creatine', 7.8, 4.5, 'value_pick',
+ '{"amazon": "https://www.amazon.in/s?k=Wellcore+Creatine", "blinkit": "https://blinkit.com/s?q=wellcore+creatine", "zepto": "https://www.zeptonow.com/search?q=wellcore+creatine", "healthkart": "https://www.healthkart.com/search?q=Wellcore+Creatine"}',
+ '/images/supps/wellcore_creatine.jpg', '100% pure micronized creatine monohydrate. No sugar, no artificial colors, ultra-solubility, popular budget-friendly staple for cellular hydration.'),
 
 -- Pre-workout
 ('C4 Original Pre-Workout', 'Cellucor', 'preworkout', 2499, 30, '1.6g Beta-Alanine, 150mg Caffeine', 83.3, 4.6, 'market_leader', 
@@ -174,6 +186,12 @@ INSERT INTO supplements (name, brand, category, price, servings, dose_per_servin
 ('Pre-Workout WrathX', 'MuscleBlaze', 'preworkout', 1399, 30, '3g Citrulline, 200mg Caffeine', 46.6, 4.4, 'value_pick', 
  '{"amazon": "https://www.amazon.in/s?k=MuscleBlaze+WrathX+Preworkout", "blinkit": "https://blinkit.com/s?q=muscleblaze+preworkout", "zepto": "https://www.zeptonow.com/search?q=muscleblaze+preworkout", "healthkart": "https://www.healthkart.com/search?q=MuscleBlaze+WrathX"}',
  '/images/supps/mb_preworkout.jpg', 'Affordable performance blend featuring L-Citrulline Malate, Caffeine, and Beta-Alanine for focus, endurance, and extreme vascularity.'),
+('Psychotic Pre-Workout', 'Insane Labz', 'preworkout', 2999, 35, '3.2g Beta-Alanine, 400mg Caffeine', 85.6, 4.5, 'market_leader',
+ '{"amazon": "https://www.amazon.in/s?k=Insane+Labz+Psychotic", "blinkit": "https://blinkit.com/s?q=psychotic+preworkout", "zepto": "https://www.zeptonow.com/search?q=psychotic+preworkout", "healthkart": "https://www.healthkart.com/search?q=Insane+Labz+Psychotic"}',
+ '/images/supps/psychotic_preworkout.jpg', 'Ultra-high stimulant formula featuring trademarked AMPiberry to prolong energy curve and focus. For advanced trainees looking for intense pumps.'),
+('Pre-Workout Pre-XP', 'Doctors Choice', 'preworkout', 1599, 30, '3g Citrulline, 250mg Caffeine', 53.3, 4.3, 'value_pick',
+ '{"amazon": "https://www.amazon.in/s?k=Doctors+Choice+Pre+XP", "blinkit": "https://blinkit.com/s?q=doctors+choice+preworkout", "zepto": "https://www.zeptonow.com/search?q=doctors+choice+preworkout", "healthkart": "https://www.healthkart.com/search?q=Doctors+Choice+Pre+XP"}',
+ '/images/supps/dc_preworkout.jpg', 'Excellent value pre-workout. Provides a strong energy kick, hydration electrolytes, and blood flow enhancers at a budget-friendly price point.'),
 
 -- Multivitamins
 ('Mega Men One Daily', 'GNC', 'multivitamin', 1499, 60, '39 Active Nutrients per Tablet', 24.9, 4.5, 'market_leader', 
@@ -182,6 +200,12 @@ INSERT INTO supplements (name, brand, category, price, servings, dose_per_servin
 ('Multivitamin with Probiotics', 'Carbamide Forte', 'multivitamin', 429, 180, '45 Ingredients per Tablet', 2.3, 4.3, 'value_pick', 
  '{"amazon": "https://www.amazon.in/s?k=Carbamide+Forte+Multivitamin+Probiotics", "blinkit": "https://blinkit.com/s?q=carbamide+multivitamin", "zepto": "https://www.zeptonow.com/search?q=carbamide+multivitamin", "healthkart": "https://www.healthkart.com/search?q=Carbamide+Forte+Multivitamin"}',
  '/images/supps/carbamide_multi.jpg', 'Extremely budget-friendly. Packed with 45 vitamins, minerals, and superfoods, combined with direct gut probiotics for maximum absorption.'),
+('MB-Vite Daily Multivitamin', 'MuscleBlaze', 'multivitamin', 649, 60, '25 Key Ingredients & Enzymes', 10.8, 4.6, 'market_leader',
+ '{"amazon": "https://www.amazon.in/s?k=MuscleBlaze+MB+Vite", "blinkit": "https://blinkit.com/s?q=mb+vite", "zepto": "https://www.zeptonow.com/search?q=mb+vite", "healthkart": "https://www.healthkart.com/search?q=MuscleBlaze+MB+Vite"}',
+ '/images/supps/mb_multi.jpg', 'Top-selling daily multivitamin with specific digestive enzyme blends, energy support extracts, and baseline micro-minerals for active lifestyles.'),
+('Revital H Daily Health', 'Revital', 'multivitamin', 350, 60, '10 Vitamins, 9 Minerals & Ginseng', 5.8, 4.2, 'value_pick',
+ '{"amazon": "https://www.amazon.in/s?k=Revital+H+Capsules", "blinkit": "https://blinkit.com/s?q=revital+h", "zepto": "https://www.zeptonow.com/search?q=revital+h", "healthkart": "https://www.healthkart.com/search?q=Revital+H"}',
+ '/images/supps/revital_multi.jpg', 'Classic, widely available daily health supplement formulated with natural Ginseng extract to enhance energy, stamina, and mental alertness on a budget.'),
 
 -- Omega 3
 ('Triple Strength Omega 3', 'TrueBasics', 'omega3', 1199, 60, '1250mg Fish Oil (560mg EPA / 400mg DHA)', 19.9, 4.7, 'market_leader', 
@@ -189,5 +213,10 @@ INSERT INTO supplements (name, brand, category, price, servings, dose_per_servin
  '/images/supps/truebasics_omega.jpg', 'Triple strength refined fish oil. Molecularly distilled, cholesterol-free softgels with high concentration of active EPA and DHA fatty acids.'),
 ('Premium Salmon Fish Oil', 'Carbamide Forte', 'omega3', 449, 120, '1000mg Fish Oil (180mg EPA / 120mg DHA)', 3.7, 4.2, 'value_pick', 
  '{"amazon": "https://www.amazon.in/s?k=Carbamide+Forte+Salmon+Fish+Oil", "blinkit": "https://blinkit.com/s?q=omega+3+carbamide", "zepto": "https://www.zeptonow.com/search?q=omega+3+carbamide", "healthkart": "https://www.healthkart.com/search?q=Carbamide+Forte+Fish+Oil"}',
- '/images/supps/carbamide_omega.jpg', 'High affordability per capsule. Sourced from cold-water salmon, supports heart, joint, and skin health with baseline macro Omega-3 ratios.');
-
+ '/images/supps/carbamide_omega.jpg', 'High affordability per capsule. Sourced from cold-water salmon, supports heart, joint, and skin health with baseline macro Omega-3 ratios.'),
+('Premium Fish Oil Gold', 'MuscleBlaze', 'omega3', 799, 60, '1000mg Fish Oil (460mg EPA / 380mg DHA)', 13.3, 4.6, 'market_leader',
+ '{"amazon": "https://www.amazon.in/s?k=MuscleBlaze+Fish+Oil+Gold", "blinkit": "https://blinkit.com/s?q=muscleblaze+fish+oil", "zepto": "https://www.zeptonow.com/search?q=muscleblaze+fish+oil", "healthkart": "https://www.healthkart.com/search?q=MuscleBlaze+Fish+Oil"}',
+ '/images/supps/mb_omega.jpg', 'High potency enteric-coated fish oil softgels. Zero fishy aftertaste, refined to eliminate heavy metals, high concentration of active fatty acids.'),
+('Premium Omega 3 Fish Oil', 'Wow Life Science', 'omega3', 499, 60, '1000mg Fish Oil (350mg EPA / 250mg DHA)', 8.3, 4.3, 'value_pick',
+ '{"amazon": "https://www.amazon.in/s?k=Wow+Life+Science+Omega+3", "blinkit": "https://blinkit.com/s?q=wow+omega+3", "zepto": "https://www.zeptonow.com/search?q=wow+omega+3", "healthkart": "https://www.healthkart.com/search?q=Wow+Life+Science+Omega+3"}',
+ '/images/supps/wow_omega.jpg', 'Budget-friendly, highly popular clean fish oil capsules. Enteric-coated, premium marine source, supports heart, eye, joint, and brain function.');

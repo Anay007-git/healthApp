@@ -93,8 +93,16 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
   useEffect(() => {
     syncLocation();
 
-    const handleLocationChange = () => {
-      syncLocation();
+    const handleLocationChange = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (customEvent.detail && customEvent.detail.lat && customEvent.detail.lng) {
+        setCoordinates({ lat: customEvent.detail.lat, lng: customEvent.detail.lng });
+        if (customEvent.detail.name) {
+          setLocationName(customEvent.detail.name);
+        }
+      } else {
+        syncLocation();
+      }
     };
 
     window.addEventListener('locationChanged', handleLocationChange);
@@ -492,12 +500,12 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                           <ExternalLink className="h-2.5 w-2.5" />
                         </a>
                         <a 
-                          href={`https://www.zomato.com/search?q=${encodeURIComponent(gym.name)}`}
+                          href={`https://wa.me/919876543210?text=${encodeURIComponent(`Hi, I'm interested in inquiring about membership plans, rates, and discounts for ${gym.name} located at ${gym.address}. Could you please share the pricing?`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-brand-primary hover:bg-neutral-800 px-2.5 py-1.5 rounded-xl transition-all shadow-sm active:scale-95"
+                          className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-2.5 py-1.5 rounded-xl transition-all shadow-sm active:scale-95"
                         >
-                          Find Rates
+                          WhatsApp Inquiry
                           <ChevronRight className="h-3.5 w-3.5" />
                         </a>
                       </div>
