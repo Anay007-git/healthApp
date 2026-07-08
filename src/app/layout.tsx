@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Home, ClipboardList, Dumbbell } from 'lucide-react';
 import "./globals.css";
 import Header from "@/components/Header";
+import AiChatbot from "@/components/AiChatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,6 +44,8 @@ export default function RootLayout({
           <main className="flex-grow flex flex-col pb-16 sm:pb-0 w-full">
             {children}
           </main>
+          
+          <AiChatbot />
           
           {/* Mobile Bottom Navigation Bar */}
           <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border-app bg-card-app/90 backdrop-blur-md py-2.5 px-6 sm:hidden flex justify-around items-center shadow-lg">

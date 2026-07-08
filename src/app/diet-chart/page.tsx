@@ -162,42 +162,42 @@ export default function DietChartPage() {
     let bf: NutrientProfile;
     if (glutenAllergy) {
       bf = {
-        name: 'High-Fiber Oats Pav & Sprouts Salad',
+        name: 'Sprouted Moong & Oats Chilla (2) filled with Paneer, served with Mint Chutney',
         originalName: 'Butter Toast & Sugary Chai',
-        calories: 240,
-        carbs: 34,
-        protein: 8,
-        fat: 6,
-        fiber: 8,
-        sugar: 2,
-        sodium: 320,
-        description: 'Gluten-free oats pav served with direct nutrient sprouts and herbal ginger infusion.'
+        calories: 230,
+        carbs: 22,
+        protein: 12,
+        fat: 8,
+        fiber: 7,
+        sugar: 1.5,
+        sodium: 290,
+        description: 'Gluten-free, fiber-rich moong dal & oats savory pancakes stuffed with low-fat paneer, served with fresh mint chutney.'
       };
     } else if (dietType === 'nonveg') {
       bf = {
-        name: 'Scrambled Egg Whites (3) & Sourdough Toast',
+        name: 'Egg White Bhurji (3 egg whites, 1 whole egg) with 1 Multi-grain Roti',
         originalName: 'Butter Toast & Fried Eggs',
-        calories: 220,
-        carbs: 24,
-        protein: 20,
-        fat: 2.5,
-        fiber: 2,
-        sugar: 1.5,
-        sodium: 380,
-        description: 'Lean high-protein egg whites paired with sourdough bread toast to bound empty fats.'
+        calories: 240,
+        carbs: 20,
+        protein: 22,
+        fat: 6,
+        fiber: 4,
+        sugar: 1.0,
+        sodium: 340,
+        description: 'High protein scramble prepared with minimal oil (1 tsp ghee), paired with a fiber-rich multi-grain flatbread.'
       };
     } else {
       bf = {
-        name: 'Whole Wheat Sourdough Toast & Avocado Sprouts',
+        name: 'Besan Paneer Chilla (2) filled with Grated Paneer, served with Coriander Chutney',
         originalName: 'Butter Toast & Sugary Chai',
-        calories: 260,
-        carbs: 38,
-        protein: 9,
-        fat: 7,
+        calories: 250,
+        carbs: 24,
+        protein: 14,
+        fat: 8,
         fiber: 6,
-        sugar: 2,
-        sodium: 350,
-        description: 'Complex carbohydrate rich sourdough slices paired with good heart-healthy fats.'
+        sugar: 1.5,
+        sodium: 320,
+        description: 'Gram flour pancakes stuffed with fresh paneer. High protein, rich in zinc and folate, low GI option.'
       };
     }
 
@@ -205,48 +205,48 @@ export default function DietChartPage() {
     let ln: NutrientProfile;
     if (lactoseIntolerant) {
       ln = {
-        name: 'Tandoori Grilled Tofu Tikka & Spiced Green Salad',
+        name: 'Tandoori Grilled Tofu Tikka (150g) with Cucumber Tomato Salad & Mint Chutney',
         originalName: 'Butter Paneer Masala & Naan',
         calories: 210,
-        carbs: 10,
-        protein: 16,
-        fat: 11,
+        carbs: 8,
+        protein: 18,
+        fat: 10,
         fiber: 4,
-        sugar: 2,
-        sodium: 390,
-        description: 'Lactose-free soy tofu cubes marinated in direct spices and charcoal grilled.'
+        sugar: 1.5,
+        sodium: 360,
+        description: 'Lactose-free firm tofu marinated in mustard oil spice paste and grilled, served with fresh greens.'
       };
     } else if (dietType === 'nonveg') {
       ln = {
-        name: 'Tandoori Grilled Chicken Tikka & Cucumber Salad',
+        name: 'Tandoori Grilled Chicken Tikka (150g) with Onion Cucumber Salad & 1 Oats Roti',
         originalName: 'Butter Chicken & Butter Naan',
-        calories: 240,
-        carbs: 6,
-        protein: 32,
-        fat: 8,
-        fiber: 3,
-        sugar: 1,
-        sodium: 450,
-        description: 'Lean high-protein chicken breast strips charcoal grilled without heavy saturated gravies.'
+        calories: 320,
+        carbs: 22,
+        protein: 34,
+        fat: 9,
+        fiber: 5,
+        sugar: 1.0,
+        sodium: 410,
+        description: 'Juicy skewered chicken breast marinated in skimmed yogurt spices, grilled, and served with a high-fiber oats flatbread.'
       };
     } else {
       ln = {
-        name: 'Tandoori Grilled Paneer Tikka & Cucumber Salad',
+        name: 'Tandoori Grilled Paneer Tikka (150g) with Spiced Onion Salad & 1 Multi-grain Roti',
         originalName: 'Butter Paneer Masala & Naan',
-        calories: 320,
-        carbs: 12,
-        protein: 18,
-        fat: 22,
-        fiber: 4,
-        sugar: 3,
-        sodium: 420,
-        description: 'Fresh grilled low-fat paneer cubes pairing robust protein and dietary calcium.'
+        calories: 380,
+        carbs: 24,
+        protein: 20,
+        fat: 18,
+        fiber: 5,
+        sugar: 2.0,
+        sodium: 390,
+        description: 'Cottage cheese skewers charred in spices, paired with a high-fiber multi-grain flatbread for complete proteins.'
       };
     }
 
     // Snack selection
     const sn: NutrientProfile = {
-      name: 'Roasted Mint Makhana (100g) & Cardamom Green Tea',
+      name: 'Roasted Mint Makhana (30g) & Cardamom Green Tea',
       originalName: 'Deep Fried Samosa & Sweet Coffee',
       calories: 100,
       carbs: 15,
@@ -262,29 +262,29 @@ export default function DietChartPage() {
     let dn: NutrientProfile;
     if (dietType === 'nonveg') {
       dn = {
-        name: 'Cauliflower Crust Chicken Pizza & Coconut Water 200ml',
+        name: 'Clay-Oven Tandoori Fish Tikka (150g) with 1 bowl Yellow Moong Dal Tadka & Steamed Brown Rice (1 cup)',
         originalName: 'Heavy Cheese Chicken Pizza & Coca-Cola',
-        calories: 390,
-        carbs: 38,
-        protein: 26,
-        fat: 10,
-        fiber: 8,
-        sugar: 8,
-        sodium: 540,
-        description: 'Lower-carb crust swap topped with shredded chicken strips and mineral-rich coconut water.'
+        calories: 380,
+        carbs: 36,
+        protein: 28,
+        fat: 8,
+        fiber: 6,
+        sugar: 0.5,
+        sodium: 490,
+        description: 'Light tandoori fish tikka paired with fiber-rich yellow moong dal and low-GI steamed brown rice.'
       };
     } else {
       dn = {
-        name: 'Cauliflower Crust Veg Pizza & Coconut Water 200ml',
+        name: 'Yellow Moong Dal Tadka (1 bowl) with Steamed Brown Rice (1 cup) & Stir-fried Broccoli/Beans',
         originalName: 'Heavy Cheese Pizza & Coca-Cola',
-        calories: 380,
-        carbs: 44,
-        protein: 14,
-        fat: 12,
-        fiber: 9,
-        sugar: 9,
-        sodium: 510,
-        description: 'Lower-carb veggie crust alternative paired with low calorie, high-potassium hydrator.'
+        calories: 340,
+        carbs: 42,
+        protein: 12,
+        fat: 6,
+        fiber: 8,
+        sugar: 1.0,
+        sodium: 450,
+        description: 'Traditional comforting yellow lentils cooked in 1 tsp olive oil, served with low-GI brown rice and loaded high-fiber veggies.'
       };
     }
 

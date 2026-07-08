@@ -394,7 +394,20 @@ export class OpenFoodFactsQuickCommerceProvider implements QuickCommerceProvider
     // 3. Try Category search on Indian/Global if still empty
     if (products.length === 0 && category) {
       try {
-        const catUrl = `https://in.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(category)}&search_simple=1&action=process&json=1&page_size=5`;
+        let searchCategory = category.toLowerCase().trim();
+        if (searchCategory === 'breakfast') {
+          searchCategory = 'whole wheat bread';
+        } else if (searchCategory === 'drinks') {
+          searchCategory = 'coconut water';
+        } else if (searchCategory === 'desserts') {
+          searchCategory = 'dark chocolate';
+        } else if (searchCategory === 'snacks') {
+          searchCategory = 'makhana';
+        } else if (searchCategory === 'fastfood') {
+          searchCategory = 'tofu';
+        }
+
+        const catUrl = `https://in.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(searchCategory)}&search_simple=1&action=process&json=1&page_size=5`;
         const response = await fetch(catUrl, {
           headers: { 'User-Agent': 'NutriFitSwapApp/1.0 (contact@nutrifitswap.in)' },
           signal: AbortSignal.timeout(3000)
