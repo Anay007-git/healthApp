@@ -131,6 +131,8 @@ JSON Structure:
 
 function getLocalFallbackSupplement(query: string): any {
   const q = query.toLowerCase();
+  
+  // Default values
   let brand = 'Generic';
   let name = query;
   let category = 'multivitamin';
@@ -140,47 +142,64 @@ function getLocalFallbackSupplement(query: string): any {
   let rating = 4.4;
   let tier = 'value_pick';
   let benefits = 'Supports overall health, immunity, and daily fitness routines.';
-  
+
+  // Detect brand dynamically from query keywords
+  if (q.includes('muscletech')) brand = 'MuscleTech';
+  else if (q.includes('muscleblaze')) brand = 'MuscleBlaze';
+  else if (q.includes('gnc')) brand = 'GNC';
+  else if (q.includes('optimum') || q.includes(' on ')) brand = 'Optimum Nutrition';
+  else if (q.includes('myprotein')) brand = 'Myprotein';
+  else if (q.includes('nakpro')) brand = 'Nakpro';
+  else if (q.includes('asitis') || q.includes('as-it-is')) brand = 'Asitis Nutrition';
+  else if (q.includes('wellcore')) brand = 'Wellcore';
+  else if (q.includes('himalaya')) brand = 'Himalaya';
+  else if (q.includes('fast&up') || q.includes('fast and up')) brand = 'Fast&Up';
+  else if (q.includes('carbamide')) brand = 'Carbamide Forte';
+  else if (q.includes('wow')) brand = 'Wow Life Science';
+  else if (q.includes('truebasics')) brand = 'TrueBasics';
+  else if (q.includes('hk vitals') || q.includes('healthkart')) brand = 'HealthKart';
+  else if (q.includes('doctor')) brand = "Doctors Choice";
+
   if (q.includes('protein') || q.includes('whey') || q.includes('isolate')) {
     category = 'protein';
-    brand = q.includes('muscleblaze') ? 'MuscleBlaze' : q.includes('on') || q.includes('optimum') ? 'Optimum Nutrition' : 'Nakpro';
     name = q.includes('isolate') ? 'Isolate Whey Protein' : '100% Pure Whey Protein';
     price = 2499;
     servings = 30;
     dose = '24g Protein';
     benefits = 'High-purity whey protein concentrate designed to stimulate muscle protein synthesis and accelerate recovery.';
+    if (brand === 'Generic') brand = 'Nakpro';
   } else if (q.includes('creatine') || q.includes('monohydrate')) {
     category = 'creatine';
-    brand = q.includes('wellcore') ? 'Wellcore' : q.includes('asitis') ? 'Asitis Nutrition' : 'MuscleBlaze';
     name = 'Pure Micronized Creatine Monohydrate';
     price = 599;
     servings = 83;
     dose = '3g Creatine';
     benefits = '100% pure micronized creatine helps hydrate muscle cells, increasing ATP energy synthesis for strength training.';
+    if (brand === 'Generic') brand = 'Wellcore';
   } else if (q.includes('preworkout') || q.includes('c4') || q.includes('pre-workout')) {
     category = 'preworkout';
-    brand = q.includes('cellucor') ? 'Cellucor' : 'MuscleBlaze';
     name = 'Explosive Pre-Workout Drink';
     price = 1499;
     servings = 30;
     dose = '200mg Caffeine, 2g Beta-Alanine';
     benefits = 'Formulated to amplify training stamina, energy, and muscle pump vascularity during high-intensity workouts.';
+    if (brand === 'Generic') brand = 'MuscleBlaze';
   } else if (q.includes('omega') || q.includes('fish oil') || q.includes('salmon')) {
     category = 'omega3';
-    brand = q.includes('gnc') ? 'GNC' : 'Wow Life Science';
     name = 'Triple Strength Fish Oil Softgels';
     price = 899;
     servings = 60;
     dose = '1000mg Fish Oil (EPA 550mg / DHA 350mg)';
     benefits = 'Refined marine source rich in active EPA and DHA essential fatty acids to support brain, heart, and joints health.';
-  } else if (q.includes('ashwagandha') || q.includes('himalaya')) {
-    brand = 'Himalaya';
-    name = 'Organic Ashwagandha Tablets';
+    if (brand === 'Generic') brand = 'Wow Life Science';
+  } else if (q.includes('ashwagandha') || q.includes('kSM-66') || q.includes('stress')) {
     category = 'multivitamin';
-    price = 250;
+    name = 'Organic Ashwagandha Tablets';
+    price = 399;
     servings = 60;
-    dose = '250mg Pure Extract';
+    dose = '500mg Pure Extract';
     benefits = 'Clinically proven herbal adaptogen that helps lower cortisol stress levels, enhances deep sleep, and supports stamina.';
+    if (brand === 'Generic') brand = 'Himalaya';
   }
 
   // Construct links

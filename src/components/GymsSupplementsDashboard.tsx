@@ -401,7 +401,7 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
       // Step 1: Filter categories matching the goal
       let targetCategories: string[] = [];
       if (advisorGoal === 'muscle') {
-        targetCategories = ['protein', 'creatine'];
+        targetCategories = ['protein', 'creatine', 'multivitamin'];
       } else if (advisorGoal === 'health') {
         targetCategories = ['multivitamin', 'omega3'];
       } else if (advisorGoal === 'joints') {
