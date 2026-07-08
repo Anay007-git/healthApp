@@ -86,10 +86,23 @@ JSON Structure:
       healthkart: `https://www.healthkart.com/search?q=${searchParam}`
     };
 
+    let finalName = supplementDetails.name || query;
+    const finalBrand = supplementDetails.brand || 'Generic';
+
+    // Clean duplicate brand name prefix
+    if (finalName.toLowerCase().startsWith(finalBrand.toLowerCase())) {
+      finalName = finalName.substring(finalBrand.length).trim();
+      if (finalName.length > 0) {
+        finalName = finalName.charAt(0).toUpperCase() + finalName.slice(1);
+      } else {
+        finalName = supplementDetails.name || query;
+      }
+    }
+
     const newSupplement: Supplement = {
       id: cleanId,
-      name: supplementDetails.name || query,
-      brand: supplementDetails.brand || 'Generic',
+      name: finalName,
+      brand: finalBrand,
       category: supplementDetails.category || 'multivitamin',
       price: price,
       servings: servings,

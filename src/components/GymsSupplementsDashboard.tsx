@@ -385,14 +385,18 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
   };
 
   // Formulate personalized supplement recommendation stack based on Goal, Budget and Purity
-  const solveAdvisorStack = () => {
+  const solveAdvisorStack = (customList?: Supplement[]) => {
     setLoadingAdvisor(true);
     setImportSuccess(null);
     setImportError(null);
     
     // Simulate a brief analysis delay for high aesthetic feel
     setTimeout(() => {
-      let filtered = [...supplementsList];
+      const filtered = customList || supplementsList;
+      if (!filtered || filtered.length === 0) {
+        setLoadingAdvisor(false);
+        return;
+      }
 
       // Step 1: Filter categories matching the goal
       let targetCategories: string[] = [];
@@ -411,7 +415,11 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
 
       // Step 2: Filter by budget
       if (advisorBudget === 'budget') {
-        matched = matched.filter(s => s.price < 1500 || s.price_per_serving < 40);
+        matched = matched.filter(s => {
+          // Protein powders in India are naturally more expensive, so we relax the limit to ₹3000
+          if (s.category === 'protein') return s.price <= 3000;
+          return s.price < 1500 || s.price_per_serving < 40;
+        });
       } else if (advisorBudget === 'balanced') {
         matched = matched.filter(s => s.price < 3500 || s.price_per_serving < 85);
       }
@@ -442,19 +450,21 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
           } else {
             catItems.sort((a, b) => b.rating - a.rating);
           }
-          finalStack.push(catItems[0]); // top match
-          
-          // If goal is muscle and we have a secondary protein or creatine pick, we can add it
-          if (catItems[1] && finalStack.length < 3 && advisorGoal === 'muscle') {
-            finalStack.push(catItems[1]);
-          }
+          finalStack.push(catItems[0]); // top match for each target category
         }
       });
 
       setAdvisorStack(finalStack.slice(0, 3));
       setLoadingAdvisor(false);
-    }, 1200);
+    }, 500);
   };
+
+  // Automatically formulate stack whenever advisor selections or the supplements catalog list change
+  useEffect(() => {
+    if (supplementsList.length > 0) {
+      solveAdvisorStack();
+    }
+  }, [advisorGoal, advisorBudget, advisorPurity, supplementsList]);
 
   // Handle client-side search and import from external platforms
   const handleSearchAndImport = async (e: React.FormEvent) => {
@@ -484,6 +494,12 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
             const updated = [newSupp, ...prev];
             // Save to LocalStorage so it persists in offline/mock mode
             localStorage.setItem('dyn_supplements', JSON.stringify(updated.filter(s => s.id.startsWith('s-dyn-'))));
+            
+            // Automatically solve the advisor stack using the updated list so the result refreshes instantly
+            setTimeout(() => {
+              solveAdvisorStack(updated);
+            }, 50);
+
             return updated;
           });
 
@@ -1105,7 +1121,7 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
 
                   {/* Trigger Button */}
                   <button
-                    onClick={solveAdvisorStack}
+                    onClick={() => solveAdvisorStack()}
                     disabled={loadingAdvisor}
                     type="button"
                     className="w-full py-3 bg-brand-primary text-brand-primary-fg hover:opacity-90 active:scale-[0.98] font-black tracking-widest uppercase text-[10px] rounded-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-1.5"
