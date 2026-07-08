@@ -870,6 +870,408 @@ export const mockSupplements: Supplement[] = [
     },
     image_url: '/images/supps/wow_omega.jpg',
     benefits: 'Budget-friendly, highly popular clean fish oil capsules. Enteric-coated, premium marine source, supports heart, eye, joint, and brain function.'
+  },
+  
+  // 20 More Best Selling Indian Supplements (s-21 to s-40)
+  {
+    id: 's-21',
+    name: 'Biozyme Performance Whey',
+    brand: 'MuscleBlaze',
+    category: 'protein',
+    price: 3299,
+    servings: 33,
+    dose_per_serving: '25g Whey Protein',
+    price_per_serving: 99.9,
+    rating: 4.8,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=MuscleBlaze+Biozyme+Performance+Whey',
+      blinkit: 'https://blinkit.com/s?q=muscleblaze+biozyme',
+      zepto: 'https://www.zeptonow.com/search?q=muscleblaze+biozyme',
+      healthkart: 'https://www.healthkart.com/search?q=MuscleBlaze+Biozyme'
+    },
+    image_url: '/images/supps/mb_biozyme.jpg',
+    benefits: 'Clinically tested and customized for Indian absorption rates. Features proprietary Enhanced Absorption Formula (EAF) to limit bloating.'
+  },
+  {
+    id: 's-22',
+    name: 'Pro Performance 100% Whey',
+    brand: 'GNC',
+    category: 'protein',
+    price: 2999,
+    servings: 30,
+    dose_per_serving: '24g Whey Protein',
+    price_per_serving: 99.9,
+    rating: 4.5,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=GNC+Pro+Performance+Whey',
+      blinkit: 'https://blinkit.com/s?q=gnc+protein',
+      zepto: 'https://www.zeptonow.com/search?q=gnc+protein',
+      healthkart: 'https://www.healthkart.com/search?q=GNC+Pro+Performance'
+    },
+    image_url: '/images/supps/gnc_protein.jpg',
+    benefits: 'High quality instantized whey compound, low fat and gluten-free. Extremely popular benchmark entry-level protein drink.'
+  },
+  {
+    id: 's-23',
+    name: 'Nitro-Tech Whey Protein',
+    brand: 'MuscleTech',
+    category: 'protein',
+    price: 3899,
+    servings: 30,
+    dose_per_serving: '30g Whey Protein & 3g Creatine',
+    price_per_serving: 129.9,
+    rating: 4.7,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=MuscleTech+Nitro+Tech',
+      blinkit: 'https://blinkit.com/s?q=muscletech+protein',
+      zepto: 'https://www.zeptonow.com/search?q=muscletech+protein',
+      healthkart: 'https://www.healthkart.com/search?q=MuscleTech+Nitro+Tech'
+    },
+    image_url: '/images/supps/muscletech_protein.jpg',
+    benefits: 'Fortified with 3g of strength-enhancing creatine monohydrate and recovery-boosting amino acids. Engineered for lean muscle gains.'
+  },
+  {
+    id: 's-24',
+    name: 'Prostar 100% Whey',
+    brand: 'Ultimate Nutrition',
+    category: 'protein',
+    price: 4299,
+    servings: 80,
+    dose_per_serving: '25g Whey Protein',
+    price_per_serving: 53.7,
+    rating: 4.6,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Ultimate+Nutrition+Prostar',
+      blinkit: 'https://blinkit.com/s?q=ultimate+nutrition+prostar',
+      zepto: 'https://www.zeptonow.com/search?q=ultimate+nutrition+prostar',
+      healthkart: 'https://www.healthkart.com/search?q=Ultimate+Nutrition+Prostar'
+    },
+    image_url: '/images/supps/prostar_whey.jpg',
+    benefits: 'Low-temperature processing preserves maximum active immunoglobulins and micro-fractions. Massive volume size and high serving efficiency.'
+  },
+  {
+    id: 's-25',
+    name: 'Platinum Pure Creatine',
+    brand: 'MuscleTech',
+    category: 'creatine',
+    price: 999,
+    servings: 83,
+    dose_per_serving: '3g Creatine Monohydrate',
+    price_per_serving: 12.0,
+    rating: 4.7,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=MuscleTech+Platinum+Creatine',
+      blinkit: 'https://blinkit.com/s?q=muscletech+creatine',
+      zepto: 'https://www.zeptonow.com/search?q=muscletech+creatine',
+      healthkart: 'https://www.healthkart.com/search?q=MuscleTech+Platinum+Creatine'
+    },
+    image_url: '/images/supps/muscletech_creatine.jpg',
+    benefits: 'HPLC-tested micronized creatine powder. Delivers pure strength monohydrate directly to muscles for explosive output.'
+  },
+  {
+    id: 's-26',
+    name: 'AMP Creatine HCl',
+    brand: 'GNC',
+    category: 'creatine',
+    price: 1699,
+    servings: 60,
+    dose_per_serving: '2g Creatine Hydrochloride',
+    price_per_serving: 28.3,
+    rating: 4.6,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=GNC+AMP+Creatine+HCl',
+      blinkit: 'https://blinkit.com/s?q=gnc+creatine',
+      zepto: 'https://www.zeptonow.com/search?q=gnc+creatine',
+      healthkart: 'https://www.healthkart.com/search?q=GNC+AMP+Creatine+HCl'
+    },
+    image_url: '/images/supps/gnc_creatine.jpg',
+    benefits: 'High solubility creatine hydrochloride form. Eliminates the need for a loading phase, easier on digestion, zero subcutaneous bloating.'
+  },
+  {
+    id: 's-27',
+    name: 'Pure Creatine Powder',
+    brand: 'Nakpro',
+    category: 'creatine',
+    price: 449,
+    servings: 83,
+    dose_per_serving: '3g Creatine Monohydrate',
+    price_per_serving: 5.4,
+    rating: 4.2,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Nakpro+Creatine',
+      blinkit: 'https://blinkit.com/s?q=nakpro+creatine',
+      zepto: 'https://www.zeptonow.com/search?q=nakpro+creatine',
+      healthkart: 'https://www.healthkart.com/search?q=Nakpro+Creatine'
+    },
+    image_url: '/images/supps/nakpro_creatine.jpg',
+    benefits: 'Extremely cost-efficient pure unflavored creatine monohydrate. Ideal budget choice for continuous daily usage.'
+  },
+  {
+    id: 's-28',
+    name: 'Creatine Monohydrate 250g',
+    brand: 'Carbamide Forte',
+    category: 'creatine',
+    price: 429,
+    servings: 83,
+    dose_per_serving: '3g Creatine Monohydrate',
+    price_per_serving: 5.1,
+    rating: 4.3,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Carbamide+Forte+Creatine',
+      blinkit: 'https://blinkit.com/s?q=carbamide+creatine',
+      zepto: 'https://www.zeptonow.com/search?q=carbamide+creatine',
+      healthkart: 'https://www.healthkart.com/search?q=Carbamide+Forte+Creatine'
+    },
+    image_url: '/images/supps/carbamide_creatine.jpg',
+    benefits: 'Micronized for high bioavailability. Helps accelerate lean mass development and delays workout fatigue.'
+  },
+  {
+    id: 's-29',
+    name: 'Nitraflex Pre-Workout',
+    brand: 'GAT Sport',
+    category: 'preworkout',
+    price: 2899,
+    servings: 30,
+    dose_per_serving: '325mg Caffeine & Boron Citrate',
+    price_per_serving: 96.6,
+    rating: 4.7,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=GAT+Sport+Nitraflex',
+      blinkit: 'https://blinkit.com/s?q=nitraflex',
+      zepto: 'https://www.zeptonow.com/search?q=nitraflex',
+      healthkart: 'https://www.healthkart.com/search?q=GAT+Sport+Nitraflex'
+    },
+    image_url: '/images/supps/nitraflex.jpg',
+    benefits: 'High intensity pre-workout containing clinically studied nitrosigine and test-boosting boron. Ideal for peak performance athletes.'
+  },
+  {
+    id: 's-30',
+    name: 'Freak Pre-Workout',
+    brand: 'Bigmuscles Nutrition',
+    category: 'preworkout',
+    price: 999,
+    servings: 30,
+    dose_per_serving: '2g Beta-Alanine, 200mg Caffeine',
+    price_per_serving: 33.3,
+    rating: 4.1,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Bigmuscles+Nutrition+Freak',
+      blinkit: 'https://blinkit.com/s?q=bigmuscles+preworkout',
+      zepto: 'https://www.zeptonow.com/search?q=bigmuscles+preworkout',
+      healthkart: 'https://www.healthkart.com/search?q=Bigmuscles+Freak'
+    },
+    image_url: '/images/supps/bm_preworkout.jpg',
+    benefits: 'Extremely popular low-cost energy formula designed to give quick training stimulation. Contains basic pumps matrix.'
+  },
+  {
+    id: 's-31',
+    name: 'Pre-Workout Pre-Fire',
+    brand: 'Absolute Nutrition',
+    category: 'preworkout',
+    price: 1199,
+    servings: 30,
+    dose_per_serving: '2.5g Citrulline, 250mg Caffeine',
+    price_per_serving: 39.9,
+    rating: 4.2,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Absolute+Nutrition+Pre+Fire',
+      blinkit: 'https://blinkit.com/s?q=absolute+preworkout',
+      zepto: 'https://www.zeptonow.com/search?q=absolute+preworkout',
+      healthkart: 'https://www.healthkart.com/search?q=Absolute+Nutrition+Pre+Fire'
+    },
+    image_url: '/images/supps/absolute_preworkout.jpg',
+    benefits: 'Indian market formulation tailored for clean focus and focus support without crash. Safe, standard performance values.'
+  },
+  {
+    id: 's-32',
+    name: 'Shatter Pre-Workout',
+    brand: 'MuscleTech',
+    category: 'preworkout',
+    price: 2499,
+    servings: 30,
+    dose_per_serving: '3.2g Beta-Alanine, 350mg Caffeine',
+    price_per_serving: 83.3,
+    rating: 4.5,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=MuscleTech+Shatter',
+      blinkit: 'https://blinkit.com/s?q=muscletech+preworkout',
+      zepto: 'https://www.zeptonow.com/search?q=muscletech+preworkout',
+      healthkart: 'https://www.healthkart.com/search?q=MuscleTech+Shatter'
+    },
+    image_url: '/images/supps/shatter.jpg',
+    benefits: 'Explosive energy and maximum vasodilation. Formulated with key neurotransmitter stimulants for rapid focus development.'
+  },
+  {
+    id: 's-33',
+    name: 'HK Vitals Multivitamin',
+    brand: 'HealthKart',
+    category: 'multivitamin',
+    price: 399,
+    servings: 60,
+    dose_per_serving: '9 Essential Amino Acids & Ginseng',
+    price_per_serving: 6.6,
+    rating: 4.3,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=HealthKart+HK+Vitals+Multivitamin',
+      blinkit: 'https://blinkit.com/s?q=hk+vitals+multivitamin',
+      zepto: 'https://www.zeptonow.com/search?q=hk+vitals+multivitamin',
+      healthkart: 'https://www.healthkart.com/search?q=HK+Vitals+Multivitamin'
+    },
+    image_url: '/images/supps/hk_multi.jpg',
+    benefits: 'High consumer base in India. Features a balanced formula of basic micronutrients, taurine, and real Panax Ginseng extracts.'
+  },
+  {
+    id: 's-34',
+    name: 'Multivit Sport Daily',
+    brand: 'TrueBasics',
+    category: 'multivitamin',
+    price: 899,
+    servings: 60,
+    dose_per_serving: '40 Active Ingredients & Joint Blend',
+    price_per_serving: 14.9,
+    rating: 4.7,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=TrueBasics+Multivit+Sport',
+      blinkit: 'https://blinkit.com/s?q=truebasics+multivitamin',
+      zepto: 'https://www.zeptonow.com/search?q=truebasics+multivitamin',
+      healthkart: 'https://www.healthkart.com/search?q=TrueBasics+Multivit'
+    },
+    image_url: '/images/supps/truebasics_multi.jpg',
+    benefits: 'Premium active sports supplement loaded with custom brain, antioxidant, joint support, and amino acid blends.'
+  },
+  {
+    id: 's-35',
+    name: 'Vitalize Multivitamin',
+    brand: 'Fast&Up',
+    category: 'multivitamin',
+    price: 320,
+    servings: 20,
+    dose_per_serving: '1 Effervescent Tablet',
+    price_per_serving: 16.0,
+    rating: 4.4,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Fast+and+Up+Vitalize',
+      blinkit: 'https://blinkit.com/s?q=fast+and+up',
+      zepto: 'https://www.zeptonow.com/search?q=fast+and+up',
+      healthkart: 'https://www.healthkart.com/search?q=Fast+and+Up+Vitalize'
+    },
+    image_url: '/images/supps/fastandup_multi.jpg',
+    benefits: 'Fizzy effervescent hydration tablets. Easy to consume, orange flavor, rapid absorption profile.'
+  },
+  {
+    id: 's-36',
+    name: 'Supradyn Daily Health',
+    brand: 'Supradyn',
+    category: 'multivitamin',
+    price: 60,
+    servings: 15,
+    dose_per_serving: '12 Vitamins & 5 Trace Minerals',
+    price_per_serving: 4.0,
+    rating: 4.5,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Supradyn+Daily',
+      blinkit: 'https://blinkit.com/s?q=supradyn',
+      zepto: 'https://www.zeptonow.com/search?q=supradyn',
+      healthkart: 'https://www.healthkart.com/search?q=Supradyn'
+    },
+    image_url: '/images/supps/supradyn.jpg',
+    benefits: 'Classic pharmacy multivitamin staple in India. Highly effective, reliable baseline multivitamin at near-zero costs.'
+  },
+  {
+    id: 's-37',
+    name: 'HK Vitals Fish Oil',
+    brand: 'HealthKart',
+    category: 'omega3',
+    price: 399,
+    servings: 60,
+    dose_per_serving: '1000mg Fish Oil (180mg EPA / 120mg DHA)',
+    price_per_serving: 6.6,
+    rating: 4.3,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=HealthKart+HK+Vitals+Fish+Oil',
+      blinkit: 'https://blinkit.com/s?q=hk+vitals+fish+oil',
+      zepto: 'https://www.zeptonow.com/search?q=hk+vitals+fish+oil',
+      healthkart: 'https://www.healthkart.com/search?q=HK+Vitals+Fish+Oil'
+    },
+    image_url: '/images/supps/hk_omega.jpg',
+    benefits: 'Widely consumed standard fish oil softgels. Sourced from cold-water sardines, double-purified, standard daily dosage.'
+  },
+  {
+    id: 's-38',
+    name: 'Triple Strength Fish Oil',
+    brand: 'GNC',
+    category: 'omega3',
+    price: 1999,
+    servings: 60,
+    dose_per_serving: '1000mg Fish Oil (640mg EPA / 240mg DHA)',
+    price_per_serving: 33.3,
+    rating: 4.8,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=GNC+Triple+Strength+Fish+Oil',
+      blinkit: 'https://blinkit.com/s?q=gnc+fish+oil',
+      zepto: 'https://www.zeptonow.com/search?q=gnc+fish+oil',
+      healthkart: 'https://www.healthkart.com/search?q=GNC+Triple+Strength+Fish+Oil'
+    },
+    image_url: '/images/supps/gnc_omega.jpg',
+    benefits: 'Highly concentrated active fatty acids. Purified to eliminate heavy metals, PCBS, and trace mercury. Zero fishy burps.'
+  },
+  {
+    id: 's-39',
+    name: 'Deep Sea Fish Oil',
+    brand: 'Neuherbs',
+    category: 'omega3',
+    price: 799,
+    servings: 60,
+    dose_per_serving: '2500mg Fish Oil (800mg EPA / 600mg DHA)',
+    price_per_serving: 13.3,
+    rating: 4.5,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Neuherbs+Deep+Sea+Fish+Oil',
+      blinkit: 'https://blinkit.com/s?q=neuherbs+fish+oil',
+      zepto: 'https://www.zeptonow.com/search?q=neuherbs+fish+oil',
+      healthkart: 'https://www.healthkart.com/search?q=Neuherbs+Fish+Oil'
+    },
+    image_url: '/images/supps/neuherbs_omega.jpg',
+    benefits: 'High concentration deep sea fish oil with added Lemon flavor to curb aftertaste. Excellent joint and cardiovascular support.'
+  },
+  {
+    id: 's-40',
+    name: 'Enteric Coated Fish Oil',
+    brand: 'Optimum Nutrition',
+    category: 'omega3',
+    price: 1499,
+    servings: 100,
+    dose_per_serving: '1000mg Fish Oil (300mg EPA / 200mg DHA)',
+    price_per_serving: 14.9,
+    rating: 4.7,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Optimum+Nutrition+Fish+Oil',
+      blinkit: 'https://blinkit.com/s?q=on+fish+oil',
+      zepto: 'https://www.zeptonow.com/search?q=on+fish+oil',
+      healthkart: 'https://www.healthkart.com/search?q=ON+Fish+Oil'
+    },
+    image_url: '/images/supps/on_omega.jpg',
+    benefits: 'Enteric-coated shell passes intact through stomach acid to dissolve directly in intestines. Premium quality distillation.'
   }
 ];
 

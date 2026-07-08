@@ -884,13 +884,31 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                   </p>
                 </div>
 
-                <div className="border-b border-border-app/40 pb-2.5">
-                  <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Amino Spiking Verification</span>
-                  <p className="font-bold text-emerald-600 flex items-center gap-1">
-                    <Check className="h-3.5 w-3.5 shrink-0" />
-                    {report.adulterants}
-                  </p>
-                </div>
+                {selectedSuppForReport.category === 'protein' ? (
+                  <div className="border-b border-border-app/40 pb-2.5">
+                    <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Amino Spiking Verification</span>
+                    <p className="font-bold text-emerald-600 flex items-center gap-1">
+                      <Check className="h-3.5 w-3.5 shrink-0" />
+                      {report.adulterants}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="border-b border-border-app/40 pb-2.5">
+                    <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">
+                      {selectedSuppForReport.category === 'creatine' && "Creatine Purity Index"}
+                      {selectedSuppForReport.category === 'preworkout' && "Stimulant Clearance Test"}
+                      {selectedSuppForReport.category === 'multivitamin' && "Bioavailability Check"}
+                      {selectedSuppForReport.category === 'omega3' && "Heavy Metal & PCB Testing"}
+                    </span>
+                    <p className="font-bold text-emerald-600 flex items-center gap-1">
+                      <Check className="h-3.5 w-3.5 shrink-0" />
+                      {selectedSuppForReport.category === 'creatine' && "Verified 100% Pure Monohydrate, zero moisture fillers"}
+                      {selectedSuppForReport.category === 'preworkout' && "Verified safe stimulant doses, zero prohibited substances (WADA cleared)"}
+                      {selectedSuppForReport.category === 'multivitamin' && "Verified chelated minerals and highly bioactive vitamin complexes"}
+                      {selectedSuppForReport.category === 'omega3' && "Verified zero heavy metal toxic accumulation (Lead, Arsenic undetected)"}
+                    </p>
+                  </div>
+                )}
 
                 <div>
                   <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Certification Info</span>
