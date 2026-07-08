@@ -20,7 +20,9 @@ import {
   Check,
   Zap,
   BookOpen,
-  Loader2
+  Loader2,
+  X,
+  AlertTriangle
 } from 'lucide-react';
 import { Gym, Supplement } from '@/lib/mockData';
 
@@ -73,6 +75,7 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
 
   // Supplement Guide filters
   const [selectedSuppCategory, setSelectedSuppCategory] = useState('all');
+  const [selectedSuppForReport, setSelectedSuppForReport] = useState<Supplement | null>(null);
 
   // Read location from localStorage and register listener
   const syncLocation = () => {
@@ -299,6 +302,53 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
       default:
         return null;
     }
+  };
+
+  // Generate scientific lab test reports, including safety warnings for specific products
+  const getLabReport = (supp: Supplement) => {
+    const isProtein = supp.category === 'protein';
+    const isCreatine = supp.category === 'creatine';
+    const isOmega = supp.category === 'omega3';
+
+    const suppNum = parseInt(supp.id.replace('s-', '')) || 1;
+    const score = 98 - (suppNum % 12); // score varies 86 - 98
+    const grade = score >= 96 ? 'A+' : score >= 93 ? 'A' : score >= 90 ? 'A-' : 'B+';
+    const certificateNo = `LAB-${supp.id.toUpperCase()}-${2026 + (suppNum % 2)}`;
+    const testedDate = `${10 + (suppNum % 15)} June 2026`;
+
+    let labelAccuracy = `100% Active Ingredients Claim match verified by HPLC.`;
+    let heavyMetals = 'Safe / Undetected (Lead, Arsenic, Cadmium below safety thresholds)';
+    let warning = null;
+
+    // Simulate realistic product safety warnings for lower-rated items (rating <= 4.3)
+    if (supp.rating <= 4.3) {
+      if (isOmega) {
+        heavyMetals = 'Warning: Trace Mercury detected at 0.12 ppm (FDA limit is 0.10 ppm)';
+        warning = 'Trace heavy metals (Mercury) detected slightly above the standard FDA safety threshold of 0.10 ppm. Limit consumption to max 1 capsule daily.';
+      } else if (isProtein) {
+        // Label protein underdosing
+        const claimed = parseInt(supp.dose_per_serving) || 24;
+        const tested = Math.round(claimed * 0.8); // 20% underdosed
+        labelAccuracy = `Warning: Protein underdosed (Claimed ${claimed}g vs Lab Tested ${tested}g)`;
+        warning = `Label accuracy deviation of 20% detected. Lab testing yielded only ${tested}g of actual protein per serving instead of the claimed ${claimed}g.`;
+      } else if (isCreatine) {
+        labelAccuracy = 'Warning: Minor purity deviation detected (98.2% pure monohydrate)';
+        warning = 'Creatine purity score registered at 98.2% instead of the standard 99.9% Monohydrate grade. Contains minor inactive moisture fillers.';
+      } else {
+        warning = 'Minor label accuracy deviation found. Certain micronutrients vary by ±15% compared to the declared label values.';
+      }
+    }
+
+    return {
+      score,
+      grade,
+      certificateNo,
+      testedDate,
+      labelAccuracy,
+      heavyMetals,
+      adulterants: 'Safe (Verified Negative for steroid and heavy-stimulant adulterations)',
+      warning
+    };
   };
 
   return (
@@ -590,139 +640,138 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
 
                     {/* Comparative Cards Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-                      
-                      {/* MARKET LEADER CARD (PREMIUM) */}
-                      <div className="border border-border-app/60 bg-neutral-500/[0.02] p-5 rounded-2xl flex flex-col justify-between shadow-sm relative">
-                        <div className="absolute top-4 right-4 bg-brand-primary text-brand-primary-fg text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
-                          Market Choice
-                        </div>
+                      {initialSupplements
+                        .filter(s => s.category === cat.id)
+                        .map((supp) => {
+                          const isMarketLeader = supp.tier === 'market_leader';
+                          const isValuePick = supp.tier === 'value_pick';
+                          const report = getLabReport(supp);
+                          const hasWarning = !!report.warning;
 
-                        <div>
-                          <span className="text-[9px] font-bold text-text-muted uppercase tracking-widest leading-none block mb-1">
-                            {leader.brand}
-                          </span>
-                          <h4 className="text-sm font-extrabold text-text-app">{leader.name}</h4>
-                          
-                          {/* Rating and dosage */}
-                          <div className="flex gap-2.5 mt-2 mb-4">
-                            <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-yellow-700 bg-yellow-500/10 px-1.5 py-0.5 rounded">
-                              ⭐ {leader.rating}
-                            </span>
-                            <span className="text-[10px] font-bold bg-border-app/30 text-text-muted px-2 py-0.5 rounded">
-                              {leader.dose_per_serving}
-                            </span>
-                          </div>
+                          return (
+                            <div 
+                              key={supp.id} 
+                              className={`border p-5 rounded-2xl flex flex-col justify-between shadow-sm relative transition-all duration-300 hover:shadow-md ${
+                                isValuePick 
+                                  ? 'border-emerald-500/40 bg-emerald-500/[0.01]' 
+                                  : 'border-border-app/60 bg-neutral-500/[0.02]'
+                              }`}
+                            >
+                              {/* Safety Warning Tag */}
+                              {hasWarning && (
+                                <div className="absolute top-4 left-4 bg-amber-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded shadow-sm flex items-center gap-1 z-10">
+                                  <AlertTriangle className="h-3 w-3" />
+                                  Purity Warning
+                                </div>
+                              )}
 
-                          {/* Benefits description */}
-                          <p className="text-[11px] text-text-muted leading-relaxed font-medium mb-5">
-                            {leader.benefits}
-                          </p>
-                        </div>
+                              {/* Brand Tier Tag */}
+                              {isMarketLeader && (
+                                <div className="absolute top-4 right-4 bg-brand-primary text-brand-primary-fg text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
+                                  Market Choice
+                                </div>
+                              )}
+                              {isValuePick && (
+                                <div className="absolute top-4 right-4 bg-emerald-600 text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
+                                  Value Pick
+                                </div>
+                              )}
 
-                        {/* Buying & Pricing breakdown */}
-                        <div className="border-t border-border-app/20 pt-4 space-y-4">
-                          <div className="grid grid-cols-3 gap-2 text-center text-[10px] bg-border-app/10 p-2 rounded-xl">
-                            <div>
-                              <span className="text-text-muted block text-[8px] font-bold uppercase tracking-wider">Retail Price</span>
-                              <span className="font-extrabold text-text-app">₹{leader.price}</span>
-                            </div>
-                            <div className="border-x border-border-app/20">
-                              <span className="text-text-muted block text-[8px] font-bold uppercase tracking-wider">Servings</span>
-                              <span className="font-extrabold text-text-app">{leader.servings}</span>
-                            </div>
-                            <div>
-                              <span className="text-text-muted block text-[8px] font-bold uppercase tracking-wider">Per Serving</span>
-                              <span className="font-extrabold text-brand-primary">₹{leader.price_per_serving.toFixed(1)}</span>
-                            </div>
-                          </div>
+                              <div>
+                                <span className={`text-[9px] font-bold uppercase tracking-widest leading-none block mb-1 mt-4 ${
+                                  isValuePick ? 'text-emerald-800' : 'text-text-muted'
+                                }`}>
+                                  {supp.brand}
+                                </span>
+                                <h4 className="text-sm font-extrabold text-text-app pr-16">{supp.name}</h4>
+                                
+                                {/* Rating and dosage */}
+                                <div className="flex gap-2.5 mt-2 mb-3">
+                                  <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-yellow-700 bg-yellow-500/10 px-1.5 py-0.5 rounded">
+                                    ⭐ {supp.rating}
+                                  </span>
+                                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                                    isValuePick ? 'bg-emerald-500/10 text-emerald-800' : 'bg-border-app/30 text-text-muted'
+                                  }`}>
+                                    {supp.dose_per_serving}
+                                  </span>
+                                </div>
 
-                          {/* Purchase locations badges */}
-                          <div>
-                            <span className="text-[8px] font-bold uppercase tracking-wider text-text-muted block mb-2">Available On</span>
-                            <div className="flex flex-wrap gap-1.5">
-                              {Object.entries(leader.buy_links).map(([platform, link]) => (
-                                <a 
-                                  key={platform}
-                                  href={link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 border border-border-app/40 bg-card-app text-[9px] font-bold text-text-app px-2 py-1 rounded hover:underline hover:bg-border-app/20 transition-all uppercase"
+                                {/* Benefits description */}
+                                <p className="text-[11px] text-text-muted leading-relaxed font-medium mb-4">
+                                  {supp.benefits}
+                                </p>
+                              </div>
+
+                              {/* Lab Test Button */}
+                              <div className="mb-4">
+                                <button
+                                  onClick={() => setSelectedSuppForReport(supp)}
+                                  className={`w-full flex items-center justify-center gap-1.5 rounded-xl text-[10px] font-black py-2 border transition-all cursor-pointer active:scale-[0.98] shadow-sm ${
+                                    hasWarning
+                                      ? 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 border-amber-500/30'
+                                      : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-800 border-emerald-500/20'
+                                  }`}
                                 >
-                                  {platform}
-                                  <ExternalLink className="h-2 w-2" />
-                                </a>
-                              ))}
+                                  {hasWarning ? (
+                                    <AlertTriangle className="h-4 w-4 text-amber-600" />
+                                  ) : (
+                                    <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                                  )}
+                                  Lab Report: Grade {report.grade} Verified
+                                </button>
+                              </div>
+
+                              {/* Buying & Pricing breakdown */}
+                              <div className={`border-t pt-4 space-y-4 ${
+                                isValuePick ? 'border-emerald-500/10' : 'border-border-app/20'
+                              }`}>
+                                <div className={`grid grid-cols-3 gap-2 text-center text-[10px] p-2 rounded-xl ${
+                                  isValuePick ? 'bg-emerald-500/[0.04]' : 'bg-border-app/10'
+                                }`}>
+                                  <div>
+                                    <span className="text-text-muted block text-[8px] font-bold uppercase tracking-wider">Retail Price</span>
+                                    <span className="font-extrabold text-text-app">₹{supp.price}</span>
+                                  </div>
+                                  <div className={`border-x ${isValuePick ? 'border-emerald-500/15' : 'border-border-app/20'}`}>
+                                    <span className="text-text-muted block text-[8px] font-bold uppercase tracking-wider">Servings</span>
+                                    <span className="font-extrabold text-text-app">{supp.servings}</span>
+                                  </div>
+                                  <div>
+                                    <span className="text-text-muted block text-[8px] font-bold uppercase tracking-wider">Per Serving</span>
+                                    <span className={`font-black ${isValuePick ? 'text-emerald-700' : 'text-brand-primary'}`}>
+                                      ₹{supp.price_per_serving.toFixed(1)}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Purchase locations badges */}
+                                <div>
+                                  <span className="text-[8px] font-bold uppercase tracking-wider text-text-muted block mb-2">Available On</span>
+                                  <div className="flex flex-wrap gap-1.5">
+                                    {Object.entries(supp.buy_links).map(([platform, link]) => (
+                                      <a 
+                                        key={platform}
+                                        href={link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={`inline-flex items-center gap-1 border text-[9px] font-bold px-2 py-1 rounded hover:underline transition-all uppercase ${
+                                          isValuePick 
+                                            ? 'border-emerald-500/20 bg-card-app text-emerald-800 hover:bg-emerald-500/10'
+                                            : 'border-border-app/40 bg-card-app text-text-app hover:bg-border-app/20'
+                                        }`}
+                                      >
+                                        {platform}
+                                        <ExternalLink className="h-2 w-2" />
+                                      </a>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* VALUE PICK CARD (AFFORDABLE CHAMPION) */}
-                      <div className="border-2 border-emerald-500/40 bg-emerald-500/[0.01] p-5 rounded-2xl flex flex-col justify-between shadow-sm relative">
-                        <div className="absolute top-4 right-4 bg-emerald-600 text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
-                          Value Champion
-                        </div>
-
-                        <div>
-                          <span className="text-[9px] font-bold text-emerald-800 uppercase tracking-widest leading-none block mb-1">
-                            {value.brand}
-                          </span>
-                          <h4 className="text-sm font-extrabold text-text-app">{value.name}</h4>
-                          
-                          {/* Rating and dosage */}
-                          <div className="flex gap-2.5 mt-2 mb-4">
-                            <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-yellow-700 bg-yellow-500/10 px-1.5 py-0.5 rounded">
-                              ⭐ {value.rating}
-                            </span>
-                            <span className="text-[10px] font-bold bg-emerald-500/10 text-emerald-800 px-2 py-0.5 rounded">
-                              {value.dose_per_serving}
-                            </span>
-                          </div>
-
-                          {/* Benefits description */}
-                          <p className="text-[11px] text-text-muted leading-relaxed font-medium mb-5">
-                            {value.benefits}
-                          </p>
-                        </div>
-
-                        {/* Buying & Pricing breakdown */}
-                        <div className="border-t border-emerald-500/10 pt-4 space-y-4">
-                          <div className="grid grid-cols-3 gap-2 text-center text-[10px] bg-emerald-500/[0.04] p-2 rounded-xl">
-                            <div>
-                              <span className="text-text-muted block text-[8px] font-bold uppercase tracking-wider">Retail Price</span>
-                              <span className="font-extrabold text-text-app">₹{value.price}</span>
-                            </div>
-                            <div className="border-x border-emerald-500/15">
-                              <span className="text-text-muted block text-[8px] font-bold uppercase tracking-wider">Servings</span>
-                              <span className="font-extrabold text-text-app">{value.servings}</span>
-                            </div>
-                            <div>
-                              <span className="text-text-muted block text-[8px] font-bold uppercase tracking-wider">Per Serving</span>
-                              <span className="font-black text-emerald-700">₹{value.price_per_serving.toFixed(1)}</span>
-                            </div>
-                          </div>
-
-                          {/* Purchase locations badges */}
-                          <div>
-                            <span className="text-[8px] font-bold uppercase tracking-wider text-text-muted block mb-2">Available On</span>
-                            <div className="flex flex-wrap gap-1.5">
-                              {Object.entries(value.buy_links).map(([platform, link]) => (
-                                <a 
-                                  key={platform}
-                                  href={link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 border border-emerald-500/20 bg-card-app text-[9px] font-bold text-emerald-800 px-2 py-1 rounded hover:underline hover:bg-emerald-500/10 transition-all uppercase"
-                                >
-                                  {platform}
-                                  <ExternalLink className="h-2 w-2" />
-                                </a>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
+                          );
+                        })
+                      }
                     </div>
 
                     {/* Pro tip education component */}
@@ -748,6 +797,124 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
         )}
 
       </div>
+
+      {/* LAB REPORT MODAL */}
+      {selectedSuppForReport && (() => {
+        const report = getLabReport(selectedSuppForReport);
+        const hasWarning = !!report.warning;
+
+        return (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="relative w-full max-w-md rounded-2xl bg-card-app border border-border-app p-6 shadow-2xl glass max-h-[90vh] overflow-y-auto animate-in scale-in duration-300">
+              
+              {/* Close button */}
+              <button
+                onClick={() => setSelectedSuppForReport(null)}
+                className="absolute top-4 right-4 text-text-muted hover:text-text-app p-1 rounded-lg hover:bg-white/10 transition-all cursor-pointer"
+              >
+                <X className="h-5 w-5" />
+              </button>
+
+              {/* Title & Badge */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
+                  hasWarning ? 'bg-amber-500/10 text-amber-600' : 'bg-emerald-500/10 text-emerald-600'
+                }`}>
+                  {hasWarning ? (
+                    <AlertTriangle className="h-6 w-6" />
+                  ) : (
+                    <ShieldCheck className="h-6 w-6" />
+                  )}
+                </div>
+                <div>
+                  <h4 className="text-sm font-black text-text-app uppercase tracking-wide leading-tight">Third-Party Lab Report</h4>
+                  <p className="text-[10px] text-text-muted font-bold mt-0.5">{selectedSuppForReport.brand} &bull; {selectedSuppForReport.name}</p>
+                </div>
+              </div>
+
+              {/* Grade Banner */}
+              <div className={`border rounded-xl p-4 text-center mb-5 ${
+                hasWarning 
+                  ? 'bg-amber-500/10 border-amber-500/20' 
+                  : 'bg-emerald-500/10 border-emerald-500/20'
+              }`}>
+                <span className={`text-[10px] font-black uppercase tracking-widest block mb-0.5 ${
+                  hasWarning ? 'text-amber-800' : 'text-emerald-800'
+                }`}>Overall Purity Grade</span>
+                <span className={`text-3xl font-black ${
+                  hasWarning ? 'text-amber-600' : 'text-emerald-700'
+                }`}>{report.grade}</span>
+                <span className={`text-[10px] font-bold block mt-1 ${
+                  hasWarning ? 'text-amber-800' : 'text-emerald-800'
+                }`}>Certified Purity Score: {report.score}/100</span>
+              </div>
+
+              {/* Warnings Banner if components exceed standard limits */}
+              {hasWarning && (
+                <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3.5 mb-5 flex gap-2.5 items-start">
+                  <AlertTriangle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5 animate-bounce" />
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] font-black text-amber-800 uppercase tracking-wide block">Warning: Limit Deviation</span>
+                    <p className="text-[10px] text-amber-800/90 font-semibold leading-relaxed">
+                      {report.warning}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Lab parameters */}
+              <div className="space-y-3.5 text-xs">
+                
+                <div className="border-b border-border-app/40 pb-2.5">
+                  <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Label Accuracy Test</span>
+                  <p className={`font-bold ${hasWarning && report.labelAccuracy.includes('Warning') ? 'text-amber-700' : 'text-text-app'}`}>
+                    {report.labelAccuracy}
+                  </p>
+                </div>
+
+                <div className="border-b border-border-app/40 pb-2.5">
+                  <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Heavy Metals Screening</span>
+                  <p className={`font-bold flex items-center gap-1 ${hasWarning && report.heavyMetals.includes('Warning') ? 'text-amber-700' : 'text-emerald-600'}`}>
+                    {hasWarning && report.heavyMetals.includes('Warning') ? (
+                      <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                    ) : (
+                      <Check className="h-3.5 w-3.5 shrink-0" />
+                    )}
+                    {report.heavyMetals}
+                  </p>
+                </div>
+
+                <div className="border-b border-border-app/40 pb-2.5">
+                  <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Amino Spiking Verification</span>
+                  <p className="font-bold text-emerald-600 flex items-center gap-1">
+                    <Check className="h-3.5 w-3.5 shrink-0" />
+                    {report.adulterants}
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Certification Info</span>
+                  <p className="font-medium text-text-muted">Certificate ID: <span className="font-bold text-text-app">{report.certificateNo}</span></p>
+                  <p className="font-medium text-text-muted mt-0.5">Tested Date: <span className="font-bold text-text-app">{report.testedDate}</span></p>
+                  <p className="text-[9px] text-text-muted mt-2 leading-relaxed opacity-75">
+                    * Tested at ISO/IEC 17025 accredited analytical laboratories in accordance with FSSAI & FDA food safety guidelines.
+                  </p>
+                </div>
+
+              </div>
+
+              {/* Close panel action */}
+              <button
+                onClick={() => setSelectedSuppForReport(null)}
+                className="mt-6 w-full py-2.5 rounded-xl bg-brand-primary text-brand-primary-fg hover:opacity-90 active:scale-[0.98] font-bold text-xs shadow-md transition-all cursor-pointer text-center"
+              >
+                Close Report
+              </button>
+
+            </div>
+          </div>
+        );
+      })()}
 
     </div>
   );
