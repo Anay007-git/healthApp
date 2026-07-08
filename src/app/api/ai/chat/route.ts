@@ -20,16 +20,19 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Format Llama 3 chat template for the Hugging Face serverless endpoint
-    let prompt = "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nYou are NutriFit AI, a helpful Indian health, swap, and fitness coach. Keep answers extremely concise (max 3-4 sentences). Recommend specific Indian swaps like Moong Chilla, Makhana, Paneer/Chicken Tikka, and Oats Roti. Avoid technical jargon.<|eot_id|>";
-    
-    for (const msg of messages) {
-      const role = msg.role === 'user' ? 'user' : 'assistant';
-      prompt += `<|start_header_id|>${role}<|end_header_id|>\n\n${msg.content}<|eot_id|>`;
-    }
-    prompt += "<|start_header_id|>assistant<|end_header_id|>\n\n";
+    // Format messages for the OpenAI-compatible Hugging Face Serverless endpoint
+    const hfMessages = [
+      {
+        role: "system",
+        content: "You are NutriFit AI, a helpful Indian health, swap, and fitness coach. Keep answers extremely concise (max 3-4 sentences). Recommend specific Indian swaps like Moong Chilla, Makhana, Paneer/Chicken Tikka, and Oats Roti. Avoid technical jargon."
+      },
+      ...messages.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'assistant',
+        content: msg.content
+      }))
+    ];
 
-    const hfUrl = 'https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct';
+    const hfUrl = 'https://router.huggingface.co/v1/chat/completions';
 
     try {
       const hfResponse = await fetch(hfUrl, {
@@ -39,35 +42,24 @@ export async function POST(request: NextRequest) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          inputs: prompt,
-          parameters: {
-            max_new_tokens: 300,
-            temperature: 0.7,
-            top_p: 0.9,
-            do_sample: true
-          }
+          model: "meta-llama/Meta-Llama-3-8B-Instruct",
+          messages: hfMessages,
+          max_tokens: 300,
+          temperature: 0.7
         }),
-        signal: AbortSignal.timeout(6000)
+        signal: AbortSignal.timeout(8000)
       });
 
       if (hfResponse.ok) {
         const result = await hfResponse.json();
-        
-        let aiText = '';
-        if (Array.isArray(result) && result[0]?.generated_text) {
-          const generated = result[0].generated_text;
-          // Extract only the new assistant response by splitting at the assistant prompt header
-          const parts = generated.split("<|start_header_id|>assistant<|end_header_id|>\n\n");
-          aiText = parts[parts.length - 1]?.replace("<|eot_id|>", "").trim() || generated;
-        } else if (result.generated_text) {
-          aiText = result.generated_text;
-        }
+        const aiText = result.choices?.[0]?.message?.content?.trim();
 
         if (aiText) {
           return NextResponse.json({ message: aiText, isFallback: false });
         }
       } else {
-        console.warn(`Hugging Face API returned status: ${hfResponse.status}, falling back`);
+        const errorData = await hfResponse.text();
+        console.warn(`Hugging Face API returned status: ${hfResponse.status}, body: ${errorData}`);
       }
     } catch (fetchErr) {
       console.warn('Hugging Face Inference call failed/timed out, using local fallback:', fetchErr);
