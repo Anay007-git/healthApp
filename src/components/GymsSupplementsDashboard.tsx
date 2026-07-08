@@ -57,7 +57,7 @@ function getDistance(lat1: number, lon1: number, lat2: number, lon2: number): nu
 
 export default function GymsSupplementsDashboard({ initialGyms, initialSupplements }: GymsSupplementsDashboardProps) {
   // Navigation tabs
-  const [activeTab, setActiveTab] = useState<'gyms' | 'supplements'>('gyms');
+  const [activeTab, setActiveTab] = useState<'gyms' | 'supplements' | 'advisor'>('gyms');
 
   // Location state
   const [locationName, setLocationName] = useState('Indiranagar, Bengaluru');
@@ -73,9 +73,42 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
   const [selectedFacility, setSelectedFacility] = useState('all');
   const [priceTier, setPriceTier] = useState<'all' | 'budget' | 'standard' | 'premium'>('all');
 
-  // Supplement Guide filters
+  // Supplement Guide states
+  const [supplementsList, setSupplementsList] = useState<Supplement[]>([]);
   const [selectedSuppCategory, setSelectedSuppCategory] = useState('all');
   const [selectedSuppForReport, setSelectedSuppForReport] = useState<Supplement | null>(null);
+
+  // AI Advisor Wizard states
+  const [advisorGoal, setAdvisorGoal] = useState<'muscle' | 'joints' | 'health' | 'cardio'>('muscle');
+  const [advisorBudget, setAdvisorBudget] = useState<'budget' | 'balanced' | 'premium'>('balanced');
+  const [advisorPurity, setAdvisorPurity] = useState<'strict' | 'value'>('strict');
+  const [advisorStack, setAdvisorStack] = useState<Supplement[] | null>(null);
+  const [loadingAdvisor, setLoadingAdvisor] = useState(false);
+
+  // Search & Import Agent states
+  const [importQuery, setImportQuery] = useState('');
+  const [loadingImport, setLoadingImport] = useState(false);
+  const [importSuccess, setImportSuccess] = useState<string | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
+
+  // Synchronize supplement list with local storage on load
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('dyn_supplements');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored) as Supplement[];
+          const baseIds = new Set(initialSupplements.map(s => s.id));
+          const uniqueStored = parsed.filter(s => !baseIds.has(s.id));
+          setSupplementsList([...initialSupplements, ...uniqueStored]);
+          return;
+        } catch (e) {
+          console.warn('Failed parsing dyn_supplements from localStorage:', e);
+        }
+      }
+    }
+    setSupplementsList(initialSupplements);
+  }, [initialSupplements]);
 
   // Read location from localStorage and register listener
   const syncLocation = () => {
@@ -261,7 +294,7 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
     const result: Record<string, { marketLeader: Supplement | null; valuePick: Supplement | null }> = {};
 
     categories.forEach(cat => {
-      const items = initialSupplements.filter(s => s.category === cat);
+      const items = supplementsList.filter(s => s.category === cat);
       result[cat] = {
         marketLeader: items.find(s => s.tier === 'market_leader') || null,
         valuePick: items.find(s => s.tier === 'value_pick') || null
@@ -269,7 +302,7 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
     });
 
     return result;
-  }, [initialSupplements]);
+  }, [supplementsList]);
 
   // Expert tips & guidance content based on supplement categories
   const getSupplementTip = (category: string) => {
@@ -351,6 +384,126 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
     };
   };
 
+  // Formulate personalized supplement recommendation stack based on Goal, Budget and Purity
+  const solveAdvisorStack = () => {
+    setLoadingAdvisor(true);
+    setImportSuccess(null);
+    setImportError(null);
+    
+    // Simulate a brief analysis delay for high aesthetic feel
+    setTimeout(() => {
+      let filtered = [...supplementsList];
+
+      // Step 1: Filter categories matching the goal
+      let targetCategories: string[] = [];
+      if (advisorGoal === 'muscle') {
+        targetCategories = ['protein', 'creatine'];
+      } else if (advisorGoal === 'health') {
+        targetCategories = ['multivitamin', 'omega3'];
+      } else if (advisorGoal === 'joints') {
+        targetCategories = ['multivitamin', 'omega3'];
+      } else if (advisorGoal === 'cardio') {
+        targetCategories = ['omega3', 'multivitamin'];
+      }
+
+      // Filter products in target categories
+      let matched = filtered.filter(s => targetCategories.includes(s.category));
+
+      // Step 2: Filter by budget
+      if (advisorBudget === 'budget') {
+        matched = matched.filter(s => s.price < 1500 || s.price_per_serving < 40);
+      } else if (advisorBudget === 'balanced') {
+        matched = matched.filter(s => s.price < 3500 || s.price_per_serving < 85);
+      }
+
+      // Step 3: Filter or prioritize by purity
+      if (advisorPurity === 'strict') {
+        // filter out any items with warnings
+        matched = matched.filter(s => {
+          const rep = getLabReport(s);
+          return !rep.warning;
+        });
+      }
+
+      // Pick the top matches for each category
+      const stackMap: Record<string, Supplement[]> = {};
+      matched.forEach(s => {
+        if (!stackMap[s.category]) stackMap[s.category] = [];
+        stackMap[s.category].push(s);
+      });
+
+      const finalStack: Supplement[] = [];
+      targetCategories.forEach(cat => {
+        const catItems = stackMap[cat] || [];
+        if (catItems.length > 0) {
+          // Sort: if budget, sort by price per serving ascending. If premium/balanced, sort by rating descending.
+          if (advisorBudget === 'budget') {
+            catItems.sort((a, b) => a.price_per_serving - b.price_per_serving);
+          } else {
+            catItems.sort((a, b) => b.rating - a.rating);
+          }
+          finalStack.push(catItems[0]); // top match
+          
+          // If goal is muscle and we have a secondary protein or creatine pick, we can add it
+          if (catItems[1] && finalStack.length < 3 && advisorGoal === 'muscle') {
+            finalStack.push(catItems[1]);
+          }
+        }
+      });
+
+      setAdvisorStack(finalStack.slice(0, 3));
+      setLoadingAdvisor(false);
+    }, 1200);
+  };
+
+  // Handle client-side search and import from external platforms
+  const handleSearchAndImport = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!importQuery.trim()) return;
+
+    setLoadingImport(true);
+    setImportSuccess(null);
+    setImportError(null);
+
+    try {
+      const res = await fetch('/api/ai/supplements/import', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: importQuery.trim() })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.supplement) {
+          const newSupp: Supplement = data.supplement;
+          
+          // Append to state list
+          setSupplementsList(prev => {
+            const updated = [newSupp, ...prev];
+            // Save to LocalStorage so it persists in offline/mock mode
+            localStorage.setItem('dyn_supplements', JSON.stringify(updated.filter(s => s.id.startsWith('s-dyn-'))));
+            return updated;
+          });
+
+          setImportSuccess(`Successfully searched and imported "${newSupp.brand} ${newSupp.name}" into your catalog database! It is now active for comparison and AI stacks.`);
+          setImportQuery('');
+        } else {
+          setImportError('Could not parse imported supplement details.');
+        }
+      } else {
+        const err = await res.json();
+        setImportError(err.message || 'Failed to search and import supplement.');
+      }
+    } catch (err: any) {
+      console.error(err);
+      setImportError('Network error while searching and importing supplement.');
+    } finally {
+      setLoadingImport(false);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 flex-grow flex flex-col justify-start w-full overflow-x-hidden">
       
@@ -370,28 +523,39 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
 
       {/* Premium Navigation Tabs Slider */}
       <div className="flex justify-center mb-8">
-        <div className="grid grid-cols-2 gap-1 border border-border-app/40 rounded-full p-1 bg-card-app/60 max-w-md w-full shadow-md backdrop-blur-md">
+        <div className="grid grid-cols-3 gap-1 border border-border-app/40 rounded-full p-1 bg-card-app/60 max-w-lg w-full shadow-md backdrop-blur-md">
           <button
             onClick={() => setActiveTab('gyms')}
-            className={`flex items-center justify-center gap-2 rounded-full py-2.5 text-xs font-black tracking-wider uppercase transition-all duration-300 ${
+            className={`flex items-center justify-center gap-2 rounded-full py-2.5 text-[10px] sm:text-xs font-black tracking-wider uppercase transition-all duration-300 ${
               activeTab === 'gyms'
                 ? 'bg-brand-primary text-brand-primary-fg shadow-md'
                 : 'text-text-muted hover:text-text-app hover:bg-border-app/10'
             }`}
           >
             <MapPin className="h-4 w-4" />
-            Gym Locator
+            Gyms
           </button>
           <button
             onClick={() => setActiveTab('supplements')}
-            className={`flex items-center justify-center gap-2 rounded-full py-2.5 text-xs font-black tracking-wider uppercase transition-all duration-300 ${
+            className={`flex items-center justify-center gap-2 rounded-full py-2.5 text-[10px] sm:text-xs font-black tracking-wider uppercase transition-all duration-300 ${
               activeTab === 'supplements'
                 ? 'bg-brand-primary text-brand-primary-fg shadow-md'
                 : 'text-text-muted hover:text-text-app hover:bg-border-app/10'
             }`}
           >
             <ShoppingBag className="h-4 w-4" />
-            Supplement Guide
+            Supplements
+          </button>
+          <button
+            onClick={() => setActiveTab('advisor')}
+            className={`flex items-center justify-center gap-2 rounded-full py-2.5 text-[10px] sm:text-xs font-black tracking-wider uppercase transition-all duration-300 ${
+              activeTab === 'advisor'
+                ? 'bg-brand-primary text-brand-primary-fg shadow-md'
+                : 'text-text-muted hover:text-text-app hover:bg-border-app/10'
+            }`}
+          >
+            <Sparkles className="h-4 w-4" />
+            AI Advisor
           </button>
         </div>
       </div>
@@ -640,7 +804,7 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
 
                     {/* Comparative Cards Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-                      {initialSupplements
+                      {supplementsList
                         .filter(s => s.category === cat.id)
                         .map((supp) => {
                           const isMarketLeader = supp.tier === 'market_leader';
@@ -791,6 +955,332 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                   </div>
                 );
               })}
+            </div>
+
+          </div>
+        )}
+
+        {/* AI ADVISOR AGENT TAB */}
+        {activeTab === 'advisor' && (
+          <div className="space-y-8 animate-in fade-in duration-200">
+            
+            {/* Search & Import Card */}
+            <div className="rounded-2xl border border-border-app bg-card-app/40 p-6 shadow-sm">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="h-5 w-5 text-brand-primary shrink-0" />
+                <h3 className="text-sm font-extrabold text-text-app uppercase tracking-wide">
+                  Agent Platform Importer
+                </h3>
+              </div>
+              <p className="text-[11px] text-text-muted leading-relaxed font-semibold mb-4">
+                Enter any supplement brand or product name sold in India (e.g. *Himalaya Ashwagandha, MuscleTech Ashwagandha, Fast&Up Amino Acids*). Our search agent will fetch the real-world parameters, formulate a verified lab report, and insert it directly into your local catalog database!
+              </p>
+
+              <form onSubmit={handleSearchAndImport} className="flex gap-2">
+                <div className="relative flex-grow">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted" />
+                  <input
+                    type="text"
+                    value={importQuery}
+                    onChange={(e) => setImportQuery(e.target.value)}
+                    placeholder="Search product from Amazon / HealthKart..."
+                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-border-app/60 bg-card-app/60 text-xs text-text-app placeholder-text-muted focus:outline-none focus:border-brand-primary"
+                    disabled={loadingImport}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={loadingImport || !importQuery.trim()}
+                  className="px-5 py-2.5 rounded-xl bg-brand-primary text-brand-primary-fg hover:opacity-90 active:scale-[0.98] font-bold text-xs shadow-md transition-all cursor-pointer flex items-center gap-1 shrink-0 disabled:opacity-50"
+                >
+                  {loadingImport ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Searching...
+                    </>
+                  ) : (
+                    'Search & Import'
+                  )}
+                </button>
+              </form>
+
+              {importSuccess && (
+                <div className="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 text-[10px] font-bold rounded-xl flex items-center gap-2">
+                  <Check className="h-4 w-4 text-emerald-600 shrink-0" />
+                  <span>{importSuccess}</span>
+                </div>
+              )}
+              {importError && (
+                <div className="mt-4 p-3 bg-amber-500/10 border border-amber-500/20 text-amber-800 text-[10px] font-bold rounded-xl flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
+                  <span>{importError}</span>
+                </div>
+              )}
+            </div>
+
+            {/* AI Advisor Options Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              
+              {/* Option Selector Column */}
+              <div className="md:col-span-1 space-y-6">
+                <div className="rounded-2xl border border-border-app bg-card-app p-5 shadow-sm space-y-5">
+                  <h4 className="text-xs font-black uppercase tracking-wider text-text-app">
+                    Advisor Configuration
+                  </h4>
+
+                  {/* Goal Selection */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-text-muted">Primary Goal</label>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {[
+                        { id: 'muscle', label: '💪 Muscle' },
+                        { id: 'health', label: '🌱 Health' },
+                        { id: 'joints', label: '🦴 Joints' },
+                        { id: 'cardio', label: '❤️ Cardio' }
+                      ].map((g) => (
+                        <button
+                          key={g.id}
+                          type="button"
+                          onClick={() => setAdvisorGoal(g.id as any)}
+                          className={`py-2 text-[10px] font-black rounded-lg border transition-all cursor-pointer ${
+                            advisorGoal === g.id
+                              ? 'bg-brand-primary border-brand-primary text-brand-primary-fg'
+                              : 'border-border-app/60 hover:bg-border-app/10 text-text-muted'
+                          }`}
+                        >
+                          {g.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Budget Selection */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-text-muted">Stack Budget</label>
+                    <div className="flex flex-col gap-1.5">
+                      {[
+                        { id: 'budget', label: '₹ Budget-Friendly (< ₹1,500)' },
+                        { id: 'balanced', label: '⚖️ Balanced (< ₹3,500)' },
+                        { id: 'premium', label: '👑 Premium Elite (No Limit)' }
+                      ].map((b) => (
+                        <button
+                          key={b.id}
+                          type="button"
+                          onClick={() => setAdvisorBudget(b.id as any)}
+                          className={`w-full py-2 px-3 text-[10px] font-black text-left rounded-lg border transition-all cursor-pointer ${
+                            advisorBudget === b.id
+                              ? 'bg-brand-primary border-brand-primary text-brand-primary-fg'
+                              : 'border-border-app/60 hover:bg-border-app/10 text-text-muted'
+                          }`}
+                        >
+                          {b.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Purity Selection */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-text-muted">Purity Priority</label>
+                    <div className="flex flex-col gap-1.5">
+                      {[
+                        { id: 'strict', label: '🛡️ Maximum Purity (A/A+ Only)' },
+                        { id: 'value', label: '💡 Value-Optimized (Heuristic tolerations)' }
+                      ].map((p) => (
+                        <button
+                          key={p.id}
+                          type="button"
+                          onClick={() => setAdvisorPurity(p.id as any)}
+                          className={`w-full py-2 px-3 text-[10px] font-black text-left rounded-lg border transition-all cursor-pointer ${
+                            advisorPurity === p.id
+                              ? 'bg-brand-primary border-brand-primary text-brand-primary-fg'
+                              : 'border-border-app/60 hover:bg-border-app/10 text-text-muted'
+                          }`}
+                        >
+                          {p.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Trigger Button */}
+                  <button
+                    onClick={solveAdvisorStack}
+                    disabled={loadingAdvisor}
+                    type="button"
+                    className="w-full py-3 bg-brand-primary text-brand-primary-fg hover:opacity-90 active:scale-[0.98] font-black tracking-widest uppercase text-[10px] rounded-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    {loadingAdvisor ? (
+                      <>
+                        <Loader2 className="h-4.5 w-4.5 animate-spin" />
+                        Formulating Stack...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="h-4.5 w-4.5" />
+                        Formulate Optimal Stack
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Stack Advice Results Column */}
+              <div className="md:col-span-2 space-y-6">
+                
+                {loadingAdvisor ? (
+                  <div className="rounded-2xl border border-border-app bg-card-app/40 p-8 flex flex-col items-center justify-center text-center space-y-4 h-full min-h-[300px]">
+                    <div className="relative flex items-center justify-center h-12 w-12 rounded-full bg-brand-primary/10 text-brand-primary">
+                      <Sparkles className="h-6 w-6 animate-pulse" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black uppercase tracking-wider text-text-app">Analyzing Purity Ratios</h4>
+                      <p className="text-[10px] text-text-muted font-bold mt-1 max-w-xs leading-relaxed">
+                        Scanning third-party lab certificates, heavy metal residues, and cost-per-scoop values...
+                      </p>
+                    </div>
+                  </div>
+                ) : advisorStack ? (
+                  <div className="space-y-6 animate-in fade-in duration-300">
+                    
+                    {/* Header banner */}
+                    <div className="p-4 bg-brand-primary/10 border border-brand-primary/20 rounded-2xl flex gap-3 items-center">
+                      <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-xl bg-brand-primary text-brand-primary-fg">
+                        <Sparkles className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-black uppercase tracking-wider text-brand-primary">AI Advisor Formulation Stack</h4>
+                        <p className="text-[10px] text-text-muted font-bold mt-0.5">
+                          Calculated from {supplementsList.length} verified products.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Matched product list */}
+                    <div className="space-y-4">
+                      {advisorStack.map((supp, index) => {
+                        const report = getLabReport(supp);
+                        const hasWarning = !!report.warning;
+
+                        return (
+                          <div
+                            key={supp.id}
+                            className={`rounded-2xl border p-5 bg-card-app flex flex-col justify-between shadow-sm relative transition-all duration-300 hover:shadow-md ${
+                              hasWarning ? 'border-amber-500/30' : 'border-border-app/60'
+                            }`}
+                          >
+                            
+                            {/* Warning Indicator */}
+                            {hasWarning && (
+                              <div className="absolute top-4 left-4 bg-amber-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded shadow-sm flex items-center gap-1 z-10">
+                                <AlertTriangle className="h-3 w-3" />
+                                Purity Warning
+                              </div>
+                            )}
+
+                            {/* Top Badge */}
+                            <div className="absolute top-4 right-4 bg-brand-primary/15 text-brand-primary text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-brand-primary/25">
+                              Stack Pick #{index + 1}
+                            </div>
+
+                            {/* Info */}
+                            <div>
+                              <span className="text-[9px] font-black text-text-muted uppercase tracking-widest block mb-1 mt-4">
+                                {supp.brand} &bull; {supp.category.toUpperCase()}
+                              </span>
+                              <h4 className="text-sm font-extrabold text-text-app pr-20">{supp.name}</h4>
+
+                              {/* Metrics */}
+                              <div className="flex gap-2.5 mt-2.5 mb-3.5">
+                                <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-yellow-700 bg-yellow-500/10 px-1.5 py-0.5 rounded">
+                                  ⭐ {supp.rating}
+                                </span>
+                                <span className="text-[10px] font-bold bg-border-app/30 text-text-muted px-2 py-0.5 rounded">
+                                  {supp.dose_per_serving}
+                                </span>
+                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                                  hasWarning ? 'bg-amber-500/10 text-amber-700' : 'bg-emerald-500/10 text-emerald-700'
+                                }`}>
+                                  Lab Grade: {report.grade}
+                                </span>
+                              </div>
+
+                              {/* AI Advisor Custom Heuristics advice */}
+                              <div className="p-3 bg-neutral-500/[0.03] border border-border-app/40 rounded-xl mb-4.5">
+                                <span className="text-[8px] font-black uppercase tracking-wider text-text-muted block mb-1">AI Agent Advisory</span>
+                                <p className="text-[10px] text-text-app/90 font-semibold leading-relaxed">
+                                  {supp.brand} {supp.name} matches your target stack at <span className="font-extrabold text-brand-primary">₹{supp.price_per_serving.toFixed(1)}/serving</span>. 
+                                  {hasWarning ? (
+                                    <span className="text-amber-800 font-bold ml-1">
+                                      Note: This is recommended based on your budget preference, but be aware of the test deviation ({report.warning})
+                                    </span>
+                                  ) : (
+                                    <span className="text-emerald-700 font-bold ml-1">
+                                      It passes all purity criteria with a certified score of {report.score}/100 and no adulterant warning.
+                                    </span>
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Actions and retail breakdown */}
+                            <div className="border-t border-border-app/20 pt-4 flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
+                              <div className="flex gap-4 text-left text-[10px]">
+                                <div>
+                                  <span className="text-text-muted block text-[8px] font-black uppercase tracking-wider">Price</span>
+                                  <span className="font-extrabold text-text-app">₹{supp.price}</span>
+                                </div>
+                                <div className="border-l border-border-app/20 pl-4">
+                                  <span className="text-text-muted block text-[8px] font-black uppercase tracking-wider">Servings</span>
+                                  <span className="font-extrabold text-text-app">{supp.servings}</span>
+                                </div>
+                              </div>
+
+                              <div className="flex gap-2 shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={() => setSelectedSuppForReport(supp)}
+                                  className="px-3.5 py-2 border border-border-app hover:bg-border-app/10 rounded-xl text-[10px] font-black text-text-app transition-all cursor-pointer active:scale-98"
+                                >
+                                  View Lab Report
+                                </button>
+                                {Object.entries(supp.buy_links).slice(0, 2).map(([platform, link]) => (
+                                  <a
+                                    key={platform}
+                                    href={link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-3.5 py-2 bg-brand-primary text-brand-primary-fg hover:opacity-90 active:scale-98 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center gap-1 transition-all"
+                                  >
+                                    {platform}
+                                    <ExternalLink className="h-3 w-3" />
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                  </div>
+                ) : (
+                  <div className="rounded-2xl border border-border-app/50 bg-card-app/20 p-8 flex flex-col items-center justify-center text-center space-y-4 h-full min-h-[300px]">
+                    <div className="h-12 w-12 rounded-full bg-border-app/40 flex items-center justify-center text-text-muted">
+                      <Sparkles className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black uppercase tracking-wider text-text-app">No Active Stack Formulated</h4>
+                      <p className="text-[10px] text-text-muted font-bold mt-1 max-w-xs leading-relaxed">
+                        Configure your goal, monthly budget and purity safety preference, then click "Formulate Stack" to generate personalized product stack advice.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+
             </div>
 
           </div>

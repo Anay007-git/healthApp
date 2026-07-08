@@ -206,3 +206,35 @@ export async function getSupplements(category?: string): Promise<Supplement[]> {
   return mockSupplements;
 }
 
+/**
+ * Insert or upsert a supplement to the database
+ */
+export async function saveSupplement(supp: Supplement): Promise<boolean> {
+  if (supabase) {
+    try {
+      const { error } = await supabase
+        .from('supplements')
+        .upsert({
+          id: supp.id,
+          name: supp.name,
+          brand: supp.brand,
+          category: supp.category,
+          price: supp.price,
+          servings: supp.servings,
+          dose_per_serving: supp.dose_per_serving,
+          price_per_serving: supp.price_per_serving,
+          rating: supp.rating,
+          tier: supp.tier,
+          buy_links: supp.buy_links,
+          image_url: supp.image_url,
+          benefits: supp.benefits
+        });
+      if (!error) return true;
+      console.warn('Error saving supplement to database:', error);
+    } catch (e) {
+      console.warn('Exception saving supplement to database:', e);
+    }
+  }
+  return false;
+}
+
