@@ -77,6 +77,7 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
   const [supplementsList, setSupplementsList] = useState<Supplement[]>([]);
   const [selectedSuppCategory, setSelectedSuppCategory] = useState('all');
   const [selectedSuppForReport, setSelectedSuppForReport] = useState<Supplement | null>(null);
+  const [suppSearch, setSuppSearch] = useState('');
 
   // AI Advisor Wizard states
   const [advisorGoal, setAdvisorGoal] = useState<'muscle' | 'joints' | 'health' | 'cardio'>('muscle');
@@ -768,61 +769,113 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
         )}
 
         {/* SUPPLEMENT GUIDE TAB */}
-        {activeTab === 'supplements' && (
-          <div className="space-y-8 animate-in fade-in duration-200">
-            
-            {/* Supplement Guide Category filters */}
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none w-full border-b border-border-app/10">
-              {SUPPLEMENT_CATEGORIES.map((cat) => {
-                const active = selectedSuppCategory === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setSelectedSuppCategory(cat.id)}
-                    className={`flex items-center gap-1.5 rounded-full py-2 px-4 text-xs font-bold border shrink-0 transition-all duration-200 active:scale-95 cursor-pointer ${
-                      active 
-                        ? 'bg-brand-primary text-brand-primary-fg border-brand-primary shadow-sm'
-                        : 'bg-card-app border-border-app/40 text-text-app hover:bg-border-app/20'
-                    }`}
-                  >
-                    {cat.name}
-                  </button>
-                );
-              })}
-            </div>
+        {activeTab === 'supplements' && (() => {
+          // Compute matching supplements across all categories for overall empty check
+          const matchesSearchGlobal = supplementsList.filter(s => {
+            const matchesCategory = selectedSuppCategory === 'all' || s.category === selectedSuppCategory;
+            const matchesQuery = !suppSearch.trim() || 
+                                 s.name.toLowerCase().includes(suppSearch.toLowerCase()) || 
+                                 s.brand.toLowerCase().includes(suppSearch.toLowerCase()) || 
+                                 s.category.toLowerCase().includes(suppSearch.toLowerCase());
+            return matchesCategory && matchesQuery;
+          });
 
-            {/* List comparative panels */}
-            <div className="space-y-12">
-              {SUPPLEMENT_CATEGORIES.filter(c => c.id !== 'all').map(cat => {
-                // If specific category selected, only show that category
-                if (selectedSuppCategory !== 'all' && selectedSuppCategory !== cat.id) return null;
-
-                const pair = categorizedSupplements[cat.id];
-                if (!pair || !pair.marketLeader || !pair.valuePick) return null;
-
-                const leader = pair.marketLeader;
-                const value = pair.valuePick;
-                const priceDifference = Math.round(((leader.price_per_serving - value.price_per_serving) / leader.price_per_serving) * 100);
-                const education = getSupplementTip(cat.id);
-
-                return (
-                  <div key={cat.id} className="space-y-4">
-                    {/* Header bar comparing metrics */}
-                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-border-app/20 pb-2 gap-2">
-                      <h3 className="text-base font-extrabold text-brand-primary uppercase tracking-wide flex items-center gap-2">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary text-xs shrink-0">💪</span>
+          return (
+            <div className="space-y-8 animate-in fade-in duration-200">
+              
+              {/* Supplement Guide search & category filters panel */}
+              <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center border-b border-border-app/10 pb-4">
+                {/* Category buttons list */}
+                <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none flex-grow">
+                  {SUPPLEMENT_CATEGORIES.map((cat) => {
+                    const active = selectedSuppCategory === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => setSelectedSuppCategory(cat.id)}
+                        className={`flex items-center gap-1.5 rounded-full py-2 px-4 text-xs font-bold border shrink-0 transition-all duration-200 active:scale-95 cursor-pointer ${
+                          active 
+                            ? 'bg-brand-primary text-brand-primary-fg border-brand-primary shadow-sm'
+                            : 'bg-card-app border-border-app/40 text-text-app hover:bg-border-app/20'
+                        }`}
+                      >
                         {cat.name}
-                      </h3>
-                      <div className="text-xs font-black text-emerald-800 bg-emerald-500/10 px-3 py-1 rounded-full w-fit">
-                        📈 Value Swap saves {priceDifference}% cost per serving!
-                      </div>
-                    </div>
+                      </button>
+                    );
+                  })}
+                </div>
 
-                    {/* Comparative Cards Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-                      {supplementsList
-                        .filter(s => s.category === cat.id)
-                        .map((supp) => {
+                {/* Supplement Search input box */}
+                <div className="relative flex items-center rounded-xl border border-border-app/60 bg-card-app px-3.5 py-2 max-w-xs w-full shadow-sm focus-within:ring-2 focus-within:ring-brand-primary/20 transition-all">
+                  <Search className="h-4 w-4 text-text-muted mr-2.5 shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="Filter by brand or name..."
+                    value={suppSearch}
+                    onChange={(e) => setSuppSearch(e.target.value)}
+                    className="w-full bg-transparent text-xs text-text-app outline-none placeholder:text-text-muted font-medium"
+                  />
+                  {suppSearch && (
+                    <button 
+                      type="button"
+                      onClick={() => setSuppSearch('')}
+                      className="text-[10px] text-text-muted hover:text-text-app ml-1.5 uppercase font-bold shrink-0"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* List comparative panels */}
+              {matchesSearchGlobal.length > 0 ? (
+                <div className="space-y-12">
+                  {SUPPLEMENT_CATEGORIES.filter(c => c.id !== 'all').map(cat => {
+                    // Filter category match
+                    if (selectedSuppCategory !== 'all' && selectedSuppCategory !== cat.id) return null;
+
+                    // Filter search items matching this category
+                    const catItems = supplementsList
+                      .filter(s => s.category === cat.id)
+                      .filter(s => {
+                        if (!suppSearch.trim()) return true;
+                        const query = suppSearch.toLowerCase();
+                        return s.name.toLowerCase().includes(query) || 
+                               s.brand.toLowerCase().includes(query) ||
+                               s.category.toLowerCase().includes(query);
+                      });
+
+                    // Hide the category entirely if search leaves it empty
+                    if (catItems.length === 0) return null;
+
+                    const pair = categorizedSupplements[cat.id];
+                    const leader = pair?.marketLeader || catItems[0];
+                    const value = pair?.valuePick || catItems[catItems.length - 1];
+                    const priceDifference = leader && value && leader.price_per_serving > 0
+                      ? Math.round(((leader.price_per_serving - value.price_per_serving) / leader.price_per_serving) * 100)
+                      : 0;
+
+                    const education = getSupplementTip(cat.id);
+
+                    return (
+                      <div key={cat.id} className="space-y-4 animate-in fade-in duration-300">
+                        {/* Header bar comparing metrics */}
+                        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-border-app/20 pb-2 gap-2">
+                          <h3 className="text-base font-extrabold text-brand-primary uppercase tracking-wide flex items-center gap-2">
+                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary text-xs shrink-0">💪</span>
+                            {cat.name}
+                          </h3>
+                          {priceDifference > 0 && (
+                            <div className="text-xs font-black text-emerald-800 bg-emerald-500/10 px-3 py-1 rounded-full w-fit">
+                              📈 Value Swap saves {priceDifference}% cost per serving!
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Comparative Cards Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+                          {catItems.map((supp) => {
                           const isMarketLeader = supp.tier === 'market_leader';
                           const isValuePick = supp.tier === 'value_pick';
                           const report = getLabReport(supp);
@@ -972,9 +1025,18 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                 );
               })}
             </div>
-
+          ) : (
+            <div className="text-center py-16 rounded-3xl border border-dashed border-border-app bg-card-app/25">
+              <AlertCircle className="mx-auto h-12 w-12 text-text-muted opacity-60 mb-3" />
+              <h4 className="text-base font-bold text-text-app">No matching supplements found</h4>
+              <p className="text-xs text-text-muted mt-1 max-w-sm mx-auto">
+                Try searching for another product name, choosing a different category, or importing a new supplement in the AI Advisor tab!
+              </p>
+            </div>
+          )}
           </div>
-        )}
+        );
+      })()}
 
         {/* AI ADVISOR AGENT TAB */}
         {activeTab === 'advisor' && (
@@ -1170,6 +1232,14 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                           Calculated from {supplementsList.length} verified products.
                         </p>
                       </div>
+                    </div>
+
+                    {/* Explanatory Tip Banner */}
+                    <div className="p-4 bg-card-app/40 border border-border-app/40 rounded-2xl text-[10px] text-text-muted font-bold leading-relaxed flex gap-2.5 items-start shadow-sm">
+                      <Sparkles className="h-4.5 w-4.5 text-brand-primary shrink-0 mt-0.5 animate-pulse" />
+                      <span>
+                        <strong>Complete Fitness Stack</strong>: The Advisor stack formulates a <strong>complete monthly fitness routine</strong> matching your goals. Your imported product (e.g. <em>MuscleTech Ashwagandha</em>) is selected here as your Multivitamin/Adaptogen recovery component, alongside top-rated Whey Protein and Creatine to complete the muscle-building stack.
+                      </span>
                     </div>
 
                     {/* Matched product list */}
