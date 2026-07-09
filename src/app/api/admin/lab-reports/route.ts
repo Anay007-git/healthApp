@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/db';
 import { redis } from '@/lib/redis';
-import { PDFParse } from 'pdf-parse';
 
 // Helper to check authorization
 function isAuthorized(request: NextRequest) {
@@ -13,6 +12,21 @@ function isAuthorized(request: NextRequest) {
 // Helper to automatically extract parameters from a Labdoor PDF certificate
 async function extractReportFromPdfUrl(url: string) {
   try {
+    // Dynamic import to prevent bundle loading/fs failures in Serverless runtimes
+    let pdfParseModule;
+    try {
+      pdfParseModule = require('pdf-parse');
+    } catch (e) {
+      console.warn('pdf-parse module is not available in this runtime environment:', e);
+      return null;
+    }
+
+    const { PDFParse } = pdfParseModule;
+    if (!PDFParse) {
+      console.warn('PDFParse class not found on exports');
+      return null;
+    }
+
     const res = await fetch(url);
     if (!res.ok) return null;
     const buffer = await res.arrayBuffer();
