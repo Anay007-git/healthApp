@@ -495,12 +495,16 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
 
       if (res.ok) {
         const data = await res.json();
-        if (data.supplement) {
-          const newSupp: Supplement = data.supplement;
-          
+        const newSupps: Supplement[] = data.supplements || (data.supplement ? [data.supplement] : []);
+
+        if (newSupps.length > 0) {
           // Append to state list
           setSupplementsList(prev => {
-            const updated = [newSupp, ...prev];
+            const prevIds = new Set(prev.map(s => s.id));
+            const uniqueNew = newSupps.filter(s => !prevIds.has(s.id));
+            if (uniqueNew.length === 0) return prev;
+
+            const updated = [...uniqueNew, ...prev];
             // Save to LocalStorage so it persists in offline/mock mode
             localStorage.setItem('dyn_supplements', JSON.stringify(updated.filter(s => s.id.startsWith('s-dyn-'))));
             
@@ -512,7 +516,8 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
             return updated;
           });
 
-          setImportSuccess(`Successfully searched and imported "${newSupp.brand} ${newSupp.name}" into your catalog database! It is now active for comparison and AI stacks.`);
+          const productNames = newSupps.map(s => `"${s.brand} ${s.name}"`).join(', ');
+          setImportSuccess(`Successfully searched and imported ${productNames} into your catalog database! They are now active for comparison and AI stacks.`);
           setImportQuery('');
         } else {
           setImportError('Could not parse imported supplement details.');

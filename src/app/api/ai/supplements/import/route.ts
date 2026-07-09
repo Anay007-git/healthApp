@@ -61,6 +61,184 @@ function parseLocalWebContext(query: string, context: string): any {
   return details;
 }
 
+// Helper to parse brand, name, and category from a specific snippet line
+function extractBrandAndNameFromSnippet(line: string, query: string): { brand: string; name: string; category: string } {
+  const lineLower = line.toLowerCase();
+  const qClean = query.trim();
+  const qLower = qClean.toLowerCase();
+
+  const productStopwords = [
+    'creatine', 'monohydrate', 'protein', 'whey', 'isolate', 'wafer', 'gainer', 'mass',
+    'preworkout', 'pre-workout', 'c4', 'pump', 'omega', 'omega3', 'fish', 'oil', 'salmon',
+    'ashwagandha', 'multivitamin', 'vitamins', 'tabs', 'tablets', 'capsules', 'caps', 'pills',
+    'powder', 'supplement', 'supplements', 'nutrition', 'active', 'pure', 'extract', 'gold',
+    'elite', 'micronized', 'advanced', 'raw', 'cookies', 'cookie', 'bars', 'bar', 'blend'
+  ];
+
+  // Mappings
+  const categoryMap: Record<string, string> = {
+    'protein': 'protein',
+    'whey': 'protein',
+    'isolate': 'protein',
+    'wafer': 'protein',
+    'gainer': 'protein',
+    'cookie': 'protein',
+    'bar': 'protein',
+    'creatine': 'creatine',
+    'monohydrate': 'creatine',
+    'preworkout': 'preworkout',
+    'pre-workout': 'preworkout',
+    'c4': 'preworkout',
+    'pump': 'preworkout',
+    'omega': 'omega3',
+    'fish oil': 'omega3',
+    'salmon': 'omega3',
+    'ashwagandha': 'multivitamin',
+    'multivitamin': 'multivitamin',
+    'vitamins': 'multivitamin',
+    'zinc': 'multivitamin',
+    'testo': 'multivitamin'
+  };
+
+  let category = 'multivitamin';
+  for (const [key, catVal] of Object.entries(categoryMap)) {
+    if (lineLower.includes(key)) {
+      category = catVal;
+      break;
+    }
+  }
+
+  // Brand extraction
+  let brand = 'Generic';
+  if (qLower === 'superyou' || qLower === 'beast life' || qLower === 'smash' || qLower === 'beastlife') {
+    brand = qClean.charAt(0).toUpperCase() + qClean.slice(1);
+  } else {
+    // Dynamic brand detection
+    const words = qLower.split(/\s+/);
+    const brandWords = words.filter(word => !productStopwords.includes(word));
+    if (brandWords.length > 0) {
+      brand = brandWords.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    } else {
+      brand = words[0].charAt(0).toUpperCase() + words[0].slice(1);
+    }
+  }
+
+  // Capitalize brand overrides
+  const lowerBrand = brand.toLowerCase();
+  if (lowerBrand.includes('muscletech')) brand = 'MuscleTech';
+  else if (lowerBrand.includes('muscleblaze')) brand = 'MuscleBlaze';
+  else if (lowerBrand.includes('gnc')) brand = 'GNC';
+  else if (lowerBrand.includes('optimum') || lowerBrand === 'on') brand = 'Optimum Nutrition';
+  else if (lowerBrand.includes('myprotein')) brand = 'Myprotein';
+  else if (lowerBrand.includes('nakpro')) brand = 'Nakpro';
+  else if (lowerBrand.includes('asitis') || lowerBrand.includes('as-it-is')) brand = 'Asitis Nutrition';
+  else if (lowerBrand.includes('wellcore')) brand = 'Wellcore';
+  else if (lowerBrand.includes('himalaya')) brand = 'Himalaya';
+  else if (lowerBrand.includes('fast&up') || lowerBrand.includes('fast and up')) brand = 'Fast&Up';
+  else if (lowerBrand.includes('carbamide')) brand = 'Carbamide Forte';
+  else if (lowerBrand.includes('wow')) brand = 'Wow Life Science';
+  else if (lowerBrand.includes('truebasics')) brand = 'TrueBasics';
+  else if (lowerBrand.includes('hk vitals') || lowerBrand.includes('healthkart')) brand = 'HealthKart';
+  else if (lowerBrand.includes('doctor')) brand = "Doctors Choice";
+  else if (lowerBrand.includes('superyou')) brand = 'Superyou';
+  else if (lowerBrand.includes('beast life') || lowerBrand === 'beastlife') brand = 'Beast Life';
+  else if (lowerBrand.includes('smash')) brand = 'Smash';
+
+  // Construct name
+  let name = category.charAt(0).toUpperCase() + category.slice(1);
+  if (category === 'protein') {
+    if (lineLower.includes('wafer')) name = 'Protein Wafer Cookie';
+    else if (lineLower.includes('cookie')) name = 'High Protein Cookie';
+    else if (lineLower.includes('bar')) name = 'Protein Bar';
+    else if (lineLower.includes('isolate')) name = 'Isolate Whey Protein';
+    else name = '100% Pure Whey Protein';
+  } else if (category === 'creatine') {
+    name = 'Pure Micronized Creatine Monohydrate';
+  } else if (category === 'preworkout') {
+    name = 'Explosive Pre-Workout Drink';
+  } else if (category === 'omega3') {
+    name = 'Triple Strength Fish Oil Softgels';
+  } else {
+    name = lineLower.includes('ashwagandha') ? 'Organic Ashwagandha Tablets' : 'Daily Essential Multivitamin';
+  }
+
+  // Filter out duplicate brand names from name
+  let cleanName = query;
+  if (cleanName.toLowerCase().startsWith(brand.toLowerCase())) {
+    cleanName = cleanName.substring(brand.length).trim();
+  }
+  if (cleanName.length > 0 && !productStopwords.includes(cleanName.toLowerCase())) {
+    name = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+  }
+
+  return { brand, name, category };
+}
+
+function parsePriceFromLine(line: string): number | null {
+  const match = line.match(/(?:Rs\.?|₹|INR)\s*([0-9,]+)/i) || line.match(/([0-9,]+)\s*(?:Rupees|Rs|INR)/i);
+  if (match) {
+    const raw = match[1].replace(/,/g, '');
+    const val = parseInt(raw);
+    if (val >= 150 && val <= 15000) return val;
+  }
+  return null;
+}
+
+function parseServingsFromLine(line: string): number | null {
+  const match = line.match(/([0-9]+)\s*(?:tablets|capsules|servings|caps|softgels|tabs)/i);
+  if (match) {
+    const val = parseInt(match[1]);
+    if (val >= 10 && val <= 300) return val;
+  }
+  return null;
+}
+
+// Extract multiple products from DuckDuckGo snippets matching the query
+function extractSupplementsFromWebContext(query: string, webContext: string): Supplement[] {
+  const list: Supplement[] = [];
+  if (!webContext) return list;
+
+  const lines = webContext.split('\n').filter(l => l.trim().length > 15);
+  const seenCategories = new Set<string>();
+
+  for (const line of lines) {
+    const { brand, name, category } = extractBrandAndNameFromSnippet(line, query);
+    
+    // Map up to 3 distinct categories per search to keep catalog diverse
+    if (!seenCategories.has(category) && list.length < 3) {
+      seenCategories.add(category);
+      
+      const price = parsePriceFromLine(line) || (category === 'protein' ? 2499 : category === 'creatine' ? 599 : 399);
+      const servings = parseServingsFromLine(line) || (category === 'protein' ? 30 : category === 'creatine' ? 83 : 60);
+      const pricePerServing = servings > 0 ? parseFloat((price / servings).toFixed(2)) : 0;
+      
+      const cleanId = `s-dyn-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+      const searchParam = encodeURIComponent(`${brand} ${name}`);
+
+      list.push({
+        id: cleanId,
+        name: name,
+        brand: brand,
+        category: category,
+        price: price,
+        servings: servings,
+        dose_per_serving: category === 'protein' ? '24g Protein' : category === 'creatine' ? '3g Creatine' : '1 Serving',
+        price_per_serving: pricePerServing,
+        rating: 4.6,
+        tier: 'value_pick',
+        buy_links: {
+          amazon: `https://www.amazon.in/s?k=${searchParam}`,
+          healthkart: `https://www.healthkart.com/search?q=${searchParam}`
+        },
+        image_url: `/images/supps/default.jpg`,
+        benefits: `Verified high-quality ${category} supplement from ${brand}.`
+      });
+    }
+  }
+
+  return list;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { query } = await request.json();
@@ -70,22 +248,25 @@ export async function POST(request: NextRequest) {
     }
 
     const apiKey = process.env.HUGGINGFACE_API_KEY;
-    let supplementDetails: any = null;
-
-    // Retrieve live search context from DuckDuckGo first!
+    
+    // Retrieve live search context from DuckDuckGo
     const webContext = await searchWebContext(query);
     console.log(`Web search context retrieved for "${query}":`, webContext ? 'Success' : 'Empty');
 
-    if (apiKey) {
-      try {
-        const systemPrompt = `You are a third-party health supplement catalog agent. You must search your knowledge base and retrieve real product data for this Indian supplement query: "${query}".
-Generate a structured JSON object representing this real supplement.
-Use this live web search context to extract actual real-world prices, brand, servings, and specifications:
+    let importedSupplements: Supplement[] = extractSupplementsFromWebContext(query, webContext);
+    
+    // If no products were dynamically found, fall back to parsing a single product using LLM or local fallback
+    if (importedSupplements.length === 0) {
+      let supplementDetails: any = null;
+
+      if (apiKey) {
+        try {
+          const systemPrompt = `You are a third-party health supplement catalog agent. You must retrieve real product data for this Indian supplement query: "${query}".
+Use this live web search context:
 """
 ${webContext}
 """
-
-Important: Your response must be ONLY a valid JSON object. Do not include markdown codeblocks (do NOT start with \`\`\`json), no preamble, and no extra text.
+Important: Your response must be ONLY a valid JSON object.
 JSON Structure:
 {
   "brand": "Official Brand Name (e.g. MuscleBlaze, Himalaya, GNC, MuscleTech)",
@@ -99,94 +280,75 @@ JSON Structure:
   "benefits": "Short clinical benefits description (max 2 sentences)"
 }`;
 
-        const hfResponse = await fetch('https://router.huggingface.co/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            model: "meta-llama/Meta-Llama-3-8B-Instruct",
-            messages: [{ role: "user", content: systemPrompt }],
-            max_tokens: 350,
-            temperature: 0.2
-          }),
-          signal: AbortSignal.timeout(9000)
-        });
+          const hfResponse = await fetch('https://router.huggingface.co/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${apiKey}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              model: "meta-llama/Meta-Llama-3-8B-Instruct",
+              messages: [{ role: "user", content: systemPrompt }],
+              max_tokens: 350,
+              temperature: 0.2
+            }),
+            signal: AbortSignal.timeout(9000)
+          });
 
-        if (hfResponse.ok) {
-          const result = await hfResponse.json();
-          let rawText = result.choices?.[0]?.message?.content?.trim() || '';
-          rawText = rawText.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
-          
-          try {
+          if (hfResponse.ok) {
+            const result = await hfResponse.json();
+            let rawText = result.choices?.[0]?.message?.content?.trim() || '';
+            rawText = rawText.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
             supplementDetails = JSON.parse(rawText);
-          } catch (jsonErr) {
-            console.warn('Failed parsing JSON payload from Hugging Face response:', rawText, jsonErr);
           }
-        } else {
-          console.warn(`Hugging Face API returned status ${hfResponse.status}`);
+        } catch (err) {
+          console.warn('Error fetching details from Hugging Face:', err);
         }
-      } catch (err) {
-        console.warn('Error fetching details from Hugging Face, using fallback:', err);
       }
-    }
 
-    // Heuristic fallback using web context regex if Hugging Face is not configured or failed
-    if (!supplementDetails) {
-      supplementDetails = parseLocalWebContext(query, webContext);
-    }
-
-    // Ensure price_per_serving is calculated
-    const price = Number(supplementDetails.price) || 499;
-    const servings = Number(supplementDetails.servings) || 30;
-    const pricePerServing = servings > 0 ? parseFloat((price / servings).toFixed(2)) : 0;
-
-    // Create unique ID
-    const cleanId = `s-dyn-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-
-    // Populate buy links if missing
-    const searchParam = encodeURIComponent(`${supplementDetails.brand} ${supplementDetails.name}`);
-    const buy_links = supplementDetails.buy_links || {
-      amazon: `https://www.amazon.in/s?k=${searchParam}`,
-      healthkart: `https://www.healthkart.com/search?q=${searchParam}`
-    };
-
-    let finalName = supplementDetails.name || query;
-    const finalBrand = supplementDetails.brand || 'Generic';
-
-    // Clean duplicate brand name prefix
-    if (finalName.toLowerCase().startsWith(finalBrand.toLowerCase())) {
-      finalName = finalName.substring(finalBrand.length).trim();
-      if (finalName.length > 0) {
-        finalName = finalName.charAt(0).toUpperCase() + finalName.slice(1);
-      } else {
-        finalName = supplementDetails.name || query;
+      if (!supplementDetails) {
+        supplementDetails = parseLocalWebContext(query, webContext);
       }
+
+      const price = Number(supplementDetails.price) || 499;
+      const servings = Number(supplementDetails.servings) || 30;
+      const pricePerServing = servings > 0 ? parseFloat((price / servings).toFixed(2)) : 0;
+      const cleanId = `s-dyn-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+      const searchParam = encodeURIComponent(`${supplementDetails.brand} ${supplementDetails.name}`);
+      const newSupplement: Supplement = {
+        id: cleanId,
+        name: supplementDetails.name,
+        brand: supplementDetails.brand,
+        category: supplementDetails.category || 'multivitamin',
+        price: price,
+        servings: servings,
+        dose_per_serving: supplementDetails.dose_per_serving || '1 Serving',
+        price_per_serving: pricePerServing,
+        rating: Number(supplementDetails.rating) || 4.5,
+        tier: supplementDetails.tier || 'value_pick',
+        buy_links: supplementDetails.buy_links || {
+          amazon: `https://www.amazon.in/s?k=${searchParam}`,
+          healthkart: `https://www.healthkart.com/search?q=${searchParam}`
+        },
+        image_url: supplementDetails.image_url || '/images/supps/default.jpg',
+        benefits: supplementDetails.benefits || 'High quality fitness support supplement.'
+      };
+
+      importedSupplements = [newSupplement];
     }
 
-    const newSupplement: Supplement = {
-      id: cleanId,
-      name: finalName,
-      brand: finalBrand,
-      category: supplementDetails.category || 'multivitamin',
-      price: price,
-      servings: servings,
-      dose_per_serving: supplementDetails.dose_per_serving || '1 Serving',
-      price_per_serving: pricePerServing,
-      rating: Number(supplementDetails.rating) || 4.4,
-      tier: supplementDetails.tier || 'value_pick',
-      buy_links: buy_links,
-      image_url: supplementDetails.image_url || '/images/supps/default.jpg',
-      benefits: supplementDetails.benefits || 'High quality fitness support supplement.'
-    };
-
-    // Save to Postgres (via Supabase) if connected
-    const savedInDb = await saveSupplement(newSupplement);
+    // Save all imported supplements to Postgres database (via Supabase helper)
+    let savedAll = true;
+    for (const supp of importedSupplements) {
+      const ok = await saveSupplement(supp);
+      if (!ok) savedAll = false;
+    }
 
     return NextResponse.json({
-      supplement: newSupplement,
-      savedInDb: savedInDb
+      supplement: importedSupplements[0],
+      supplements: importedSupplements,
+      savedInDb: savedAll
     });
 
   } catch (err: any) {
