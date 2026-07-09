@@ -1514,8 +1514,8 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                   <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Certification Info</span>
                   <p className="font-medium text-text-muted">Certificate ID: <span className="font-bold text-text-app">{report.certificateNo}</span></p>
                   <p className="font-medium text-text-muted mt-0.5">Tested Date: <span className="font-bold text-text-app">{report.testedDate}</span></p>
-                  <p className="text-[9px] text-text-muted mt-2 leading-relaxed opacity-75">
-                    * Tested at ISO/IEC 17025 accredited analytical laboratories in accordance with FSSAI & FDA food safety guidelines.
+                  <p className="text-[9px] text-text-muted mt-2.5 leading-relaxed opacity-75">
+                    * <strong>Disclaimer</strong>: Certificate numbers, test dates, and chemical ratings are simulated models based on public safety advisories (such as FDA heavy metal ceilings and HPLC assays) for health education. This serves as comparative guidance. Always check official packaging for certified third-party seals (e.g. Trustified, Labdoor, or Informed-Choice).
                   </p>
                 </div>
 
