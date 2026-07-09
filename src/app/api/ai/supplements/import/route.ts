@@ -196,76 +196,129 @@ JSON Structure:
 }
 
 function getLocalFallbackSupplement(query: string): any {
-  const q = query.toLowerCase();
+  const q = query.toLowerCase().trim();
   
-  // Default values
+  // Define standard category keywords and their mappings
+  const categoryMap: Record<string, string> = {
+    'protein': 'protein',
+    'whey': 'protein',
+    'isolate': 'protein',
+    'wafer': 'protein',
+    'gainer': 'protein',
+    'cookie': 'protein',
+    'bar': 'protein',
+    'creatine': 'creatine',
+    'monohydrate': 'creatine',
+    'preworkout': 'preworkout',
+    'pre-workout': 'preworkout',
+    'c4': 'preworkout',
+    'pump': 'preworkout',
+    'omega': 'omega3',
+    'fish oil': 'omega3',
+    'salmon': 'omega3',
+    'ashwagandha': 'multivitamin',
+    'multivitamin': 'multivitamin',
+    'vitamins': 'multivitamin',
+    'zinc': 'multivitamin',
+    'testo': 'multivitamin'
+  };
+
+  // 1. Determine category
+  let category = 'multivitamin'; // default
+  for (const [key, catVal] of Object.entries(categoryMap)) {
+    if (q.includes(key)) {
+      category = catVal;
+      break;
+    }
+  }
+
+  // 2. Extract brand dynamically from query
+  const words = q.split(/\s+/);
+  const productStopwords = [
+    'creatine', 'monohydrate', 'protein', 'whey', 'isolate', 'wafer', 'gainer', 'mass',
+    'preworkout', 'pre-workout', 'c4', 'pump', 'omega', 'omega3', 'fish', 'oil', 'salmon',
+    'ashwagandha', 'multivitamin', 'vitamins', 'tabs', 'tablets', 'capsules', 'caps', 'pills',
+    'powder', 'supplement', 'supplements', 'nutrition', 'active', 'pure', 'extract', 'gold',
+    'elite', 'micronized', 'advanced', 'raw', 'cookies', 'cookie', 'bars', 'bar', 'blend'
+  ];
+
+  const brandWords = words.filter(word => !productStopwords.includes(word));
+  
   let brand = 'Generic';
-  let name = query;
-  let category = 'multivitamin';
+  if (brandWords.length > 0) {
+    brand = brandWords.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  } else {
+    brand = words[0].charAt(0).toUpperCase() + words[0].slice(1);
+  }
+
+  // Double check manual brand list for standard capitalization overrides if search has them
+  const lowerBrand = brand.toLowerCase();
+  if (lowerBrand.includes('muscletech')) brand = 'MuscleTech';
+  else if (lowerBrand.includes('muscleblaze')) brand = 'MuscleBlaze';
+  else if (lowerBrand.includes('gnc')) brand = 'GNC';
+  else if (lowerBrand.includes('optimum') || lowerBrand === 'on') brand = 'Optimum Nutrition';
+  else if (lowerBrand.includes('myprotein')) brand = 'Myprotein';
+  else if (lowerBrand.includes('nakpro')) brand = 'Nakpro';
+  else if (lowerBrand.includes('asitis') || lowerBrand.includes('as-it-is')) brand = 'Asitis Nutrition';
+  else if (lowerBrand.includes('wellcore')) brand = 'Wellcore';
+  else if (lowerBrand.includes('himalaya')) brand = 'Himalaya';
+  else if (lowerBrand.includes('fast&up') || lowerBrand.includes('fast and up')) brand = 'Fast&Up';
+  else if (lowerBrand.includes('carbamide')) brand = 'Carbamide Forte';
+  else if (lowerBrand.includes('wow')) brand = 'Wow Life Science';
+  else if (lowerBrand.includes('truebasics')) brand = 'TrueBasics';
+  else if (lowerBrand.includes('hk vitals') || lowerBrand.includes('healthkart')) brand = 'HealthKart';
+  else if (lowerBrand.includes('doctor')) brand = "Doctors Choice";
+
+  // 3. Setup default template values based on category
   let price = 599;
   let servings = 60;
   let dose = '1 Capsule';
-  let rating = 4.4;
+  let rating = 4.5;
   let tier = 'value_pick';
   let benefits = 'Supports overall health, immunity, and daily fitness routines.';
+  let name = '';
 
-  // Detect brand dynamically from query keywords
-  if (q.includes('muscletech')) brand = 'MuscleTech';
-  else if (q.includes('muscleblaze')) brand = 'MuscleBlaze';
-  else if (q.includes('gnc')) brand = 'GNC';
-  else if (q.includes('optimum') || q.includes(' on ')) brand = 'Optimum Nutrition';
-  else if (q.includes('myprotein')) brand = 'Myprotein';
-  else if (q.includes('nakpro')) brand = 'Nakpro';
-  else if (q.includes('asitis') || q.includes('as-it-is')) brand = 'Asitis Nutrition';
-  else if (q.includes('wellcore')) brand = 'Wellcore';
-  else if (q.includes('himalaya')) brand = 'Himalaya';
-  else if (q.includes('fast&up') || q.includes('fast and up')) brand = 'Fast&Up';
-  else if (q.includes('carbamide')) brand = 'Carbamide Forte';
-  else if (q.includes('wow')) brand = 'Wow Life Science';
-  else if (q.includes('truebasics')) brand = 'TrueBasics';
-  else if (q.includes('hk vitals') || q.includes('healthkart')) brand = 'HealthKart';
-  else if (q.includes('doctor')) brand = "Doctors Choice";
-
-  if (q.includes('protein') || q.includes('whey') || q.includes('isolate')) {
-    category = 'protein';
-    name = q.includes('isolate') ? 'Isolate Whey Protein' : '100% Pure Whey Protein';
+  if (category === 'protein') {
+    name = q.includes('wafer') ? 'Protein Wafer Cookie' : q.includes('isolate') ? 'Isolate Whey Protein' : '100% Pure Whey Protein';
     price = 2499;
     servings = 30;
     dose = '24g Protein';
     benefits = 'High-purity whey protein concentrate designed to stimulate muscle protein synthesis and accelerate recovery.';
-    if (brand === 'Generic') brand = 'Nakpro';
-  } else if (q.includes('creatine') || q.includes('monohydrate')) {
-    category = 'creatine';
+  } else if (category === 'creatine') {
     name = 'Pure Micronized Creatine Monohydrate';
     price = 599;
     servings = 83;
     dose = '3g Creatine';
     benefits = '100% pure micronized creatine helps hydrate muscle cells, increasing ATP energy synthesis for strength training.';
-    if (brand === 'Generic') brand = 'Wellcore';
-  } else if (q.includes('preworkout') || q.includes('c4') || q.includes('pre-workout')) {
-    category = 'preworkout';
+  } else if (category === 'preworkout') {
     name = 'Explosive Pre-Workout Drink';
     price = 1499;
     servings = 30;
     dose = '200mg Caffeine, 2g Beta-Alanine';
     benefits = 'Formulated to amplify training stamina, energy, and muscle pump vascularity during high-intensity workouts.';
-    if (brand === 'Generic') brand = 'MuscleBlaze';
-  } else if (q.includes('omega') || q.includes('fish oil') || q.includes('salmon')) {
-    category = 'omega3';
+  } else if (category === 'omega3') {
     name = 'Triple Strength Fish Oil Softgels';
     price = 899;
     servings = 60;
     dose = '1000mg Fish Oil (EPA 550mg / DHA 350mg)';
     benefits = 'Refined marine source rich in active EPA and DHA essential fatty acids to support brain, heart, and joints health.';
-    if (brand === 'Generic') brand = 'Wow Life Science';
-  } else if (q.includes('ashwagandha') || q.includes('kSM-66') || q.includes('stress')) {
-    category = 'multivitamin';
-    name = 'Organic Ashwagandha Tablets';
+  } else {
+    // Multivitamin
+    name = q.includes('ashwagandha') ? 'Organic Ashwagandha Tablets' : 'Daily Essential Multivitamin';
     price = 399;
     servings = 60;
-    dose = '500mg Pure Extract';
-    benefits = 'Clinically proven herbal adaptogen that helps lower cortisol stress levels, enhances deep sleep, and supports stamina.';
-    if (brand === 'Generic') brand = 'Himalaya';
+    dose = q.includes('ashwagandha') ? '500mg Pure Extract' : '1 Tablet Daily';
+    benefits = q.includes('ashwagandha') ? 'Clinically proven herbal adaptogen that helps lower cortisol stress levels, enhances deep sleep, and supports stamina.' : 'Broad-spectrum vitamins and minerals to support daily metabolism and immunity.';
+  }
+
+  // 4. Construct clean product name (remove brand prefix to avoid duplicates)
+  let cleanName = query;
+  if (cleanName.toLowerCase().startsWith(brand.toLowerCase())) {
+    cleanName = cleanName.substring(brand.length).trim();
+  }
+  
+  if (cleanName.length > 0) {
+    name = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
   }
 
   // Construct links
