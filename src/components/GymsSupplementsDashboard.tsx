@@ -80,7 +80,7 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
   const [suppSearch, setSuppSearch] = useState('');
 
   // AI Advisor Wizard states
-  const [advisorGoal, setAdvisorGoal] = useState<'muscle' | 'joints' | 'health' | 'cardio'>('muscle');
+  const [advisorGoal, setAdvisorGoal] = useState<'all' | 'muscle' | 'joints' | 'health' | 'cardio'>('all');
   const [advisorBudget, setAdvisorBudget] = useState<'budget' | 'balanced' | 'premium'>('balanced');
   const [advisorPurity, setAdvisorPurity] = useState<'strict' | 'value'>('strict');
   const [advisorStack, setAdvisorStack] = useState<Supplement[] | null>(null);
@@ -401,7 +401,9 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
 
       // Step 1: Filter categories matching the goal
       let targetCategories: string[] = [];
-      if (advisorGoal === 'muscle') {
+      if (advisorGoal === 'all') {
+        targetCategories = ['protein', 'creatine', 'preworkout', 'multivitamin', 'omega3'];
+      } else if (advisorGoal === 'muscle') {
         targetCategories = ['protein', 'creatine', 'multivitamin'];
       } else if (advisorGoal === 'health') {
         targetCategories = ['multivitamin', 'omega3'];
@@ -445,12 +447,18 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
       targetCategories.forEach(cat => {
         const catItems = stackMap[cat] || [];
         if (catItems.length > 0) {
-          // Sort: if budget, sort by price per serving ascending. If premium/balanced, sort by rating descending.
-          if (advisorBudget === 'budget') {
-            catItems.sort((a, b) => a.price_per_serving - b.price_per_serving);
-          } else {
-            catItems.sort((a, b) => b.rating - a.rating);
-          }
+          // Sort: Prioritize dynamically imported products first so user's searches are always recommended!
+          catItems.sort((a, b) => {
+            const aDyn = a.id.startsWith('s-dyn-') ? 1 : 0;
+            const bDyn = b.id.startsWith('s-dyn-') ? 1 : 0;
+            if (aDyn !== bDyn) return bDyn - aDyn;
+
+            if (advisorBudget === 'budget') {
+              return a.price_per_serving - b.price_per_serving;
+            } else {
+              return b.rating - a.rating;
+            }
+          });
           finalStack.push(catItems[0]); // top match for each target category
         }
       });
@@ -1110,6 +1118,17 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-text-muted">Primary Goal</label>
                     <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setAdvisorGoal('all')}
+                        className={`col-span-2 py-2 text-[10px] font-black rounded-lg border transition-all cursor-pointer ${
+                          advisorGoal === 'all'
+                            ? 'bg-brand-primary border-brand-primary text-brand-primary-fg shadow-sm'
+                            : 'border-border-app/60 hover:bg-border-app/10 text-text-muted'
+                        }`}
+                      >
+                        🌐 All Categories
+                      </button>
                       {[
                         { id: 'muscle', label: '💪 Muscle' },
                         { id: 'health', label: '🌱 Health' },
@@ -1122,7 +1141,7 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                           onClick={() => setAdvisorGoal(g.id as any)}
                           className={`py-2 text-[10px] font-black rounded-lg border transition-all cursor-pointer ${
                             advisorGoal === g.id
-                              ? 'bg-brand-primary border-brand-primary text-brand-primary-fg'
+                              ? 'bg-brand-primary border-brand-primary text-brand-primary-fg shadow-sm'
                               : 'border-border-app/60 hover:bg-border-app/10 text-text-muted'
                           }`}
                         >
