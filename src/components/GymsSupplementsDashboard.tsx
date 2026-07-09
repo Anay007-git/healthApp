@@ -25,6 +25,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import { Gym, Supplement } from '@/lib/mockData';
+import { LabReportBadge } from './LabReportBadge';
 
 interface GymsSupplementsDashboardProps {
   initialGyms: Gym[];
@@ -78,6 +79,32 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
   const [selectedSuppCategory, setSelectedSuppCategory] = useState('all');
   const [selectedSuppForReport, setSelectedSuppForReport] = useState<Supplement | null>(null);
   const [suppSearch, setSuppSearch] = useState('');
+
+  // Verified Lab Report Fetch states
+  const [activeReportData, setActiveReportData] = useState<any | null>(null);
+  const [loadingReportData, setLoadingReportData] = useState(false);
+
+  useEffect(() => {
+    if (selectedSuppForReport) {
+      setLoadingReportData(true);
+      setActiveReportData(null);
+      fetch(`/api/location/products/lab-report?id=${selectedSuppForReport.id}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.report) {
+            setActiveReportData(data.report);
+          }
+        })
+        .catch(err => {
+          console.error('Error fetching verified report:', err);
+        })
+        .finally(() => {
+          setLoadingReportData(false);
+        });
+    } else {
+      setActiveReportData(null);
+    }
+  }, [selectedSuppForReport]);
 
   // AI Advisor Wizard states
   const [advisorGoal, setAdvisorGoal] = useState<'all' | 'muscle' | 'joints' | 'health' | 'cardio'>('all');
@@ -1400,8 +1427,28 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
 
       {/* LAB REPORT MODAL */}
       {selectedSuppForReport && (() => {
-        const report = getLabReport(selectedSuppForReport);
-        const hasWarning = !!report.warning;
+        const isProtein = selectedSuppForReport.category === 'protein';
+        const isCreatine = selectedSuppForReport.category === 'creatine';
+        
+        // Determine what parameters to display
+        // If we have verified report data, we use it, otherwise we fallback to procedurally simulated parameters
+        const hasVerifiedReport = activeReportData && activeReportData.source_type !== 'sample_demo';
+        
+        const labelAccuracy = hasVerifiedReport 
+          ? activeReportData.label_accuracy_status 
+          : (selectedSuppForReport.rating >= 4.6 ? '100% Active ingredients matching label' : 'Minor underdose (~5% variance)');
+          
+        const heavyMetals = hasVerifiedReport 
+          ? activeReportData.heavy_metals_status 
+          : (selectedSuppForReport.category === 'omega3' && selectedSuppForReport.rating <= 4.3 ? 'Warning: Mercury level 0.12 ppm exceeds limit' : 'Clear (undetected / safe trace levels)');
+          
+        const certificateNo = hasVerifiedReport 
+          ? activeReportData.certificate_id 
+          : `LAB-${selectedSuppForReport.id.toUpperCase()}-${2026 + (parseInt(selectedSuppForReport.id.replace('s-', '')) || 1) % 2}`;
+          
+        const testedDate = hasVerifiedReport 
+          ? (activeReportData.verified_at ? new Date(activeReportData.verified_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Pending')
+          : `${10 + (parseInt(selectedSuppForReport.id.replace('s-', '')) || 1) % 15} June 2026`;
 
         return (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
@@ -1417,117 +1464,95 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
 
               {/* Title & Badge */}
               <div className="flex items-center gap-3 mb-4">
-                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
-                  hasWarning ? 'bg-amber-500/10 text-amber-600' : 'bg-emerald-500/10 text-emerald-600'
-                }`}>
-                  {hasWarning ? (
-                    <AlertTriangle className="h-6 w-6" />
-                  ) : (
-                    <ShieldCheck className="h-6 w-6" />
-                  )}
+                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-primary/10 text-brand-primary`}>
+                  <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-black text-text-app uppercase tracking-wide leading-tight">Third-Party Lab Report</h4>
+                  <h4 className="text-sm font-black text-text-app uppercase tracking-wide leading-tight">Supplement Audit profile</h4>
                   <p className="text-[10px] text-text-muted font-bold mt-0.5">{selectedSuppForReport.brand} &bull; {selectedSuppForReport.name}</p>
                 </div>
               </div>
 
-              {/* Grade Banner */}
-              <div className={`border rounded-xl p-4 text-center mb-5 ${
-                hasWarning 
-                  ? 'bg-amber-500/10 border-amber-500/20' 
-                  : 'bg-emerald-500/10 border-emerald-500/20'
-              }`}>
-                <span className={`text-[10px] font-black uppercase tracking-widest block mb-0.5 ${
-                  hasWarning ? 'text-amber-800' : 'text-emerald-800'
-                }`}>Overall Purity Grade</span>
-                <span className={`text-3xl font-black ${
-                  hasWarning ? 'text-amber-600' : 'text-emerald-700'
-                }`}>{report.grade}</span>
-                <span className={`text-[10px] font-bold block mt-1 ${
-                  hasWarning ? 'text-amber-800' : 'text-emerald-800'
-                }`}>Certified Purity Score: {report.score}/100</span>
-              </div>
+              {loadingReportData ? (
+                <div className="py-12 flex flex-col items-center justify-center space-y-3">
+                  <Loader2 className="h-8 w-8 animate-spin text-brand-primary" />
+                  <span className="text-[10px] font-black uppercase tracking-wider text-text-muted">Fetching Verified Audit...</span>
+                </div>
+              ) : (
+                <div className="space-y-5">
+                  
+                  {/* Lab Report Badge Rendering */}
+                  <LabReportBadge report={activeReportData} />
 
-              {/* Warnings Banner if components exceed standard limits */}
-              {hasWarning && (
-                <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3.5 mb-5 flex gap-2.5 items-start">
-                  <AlertTriangle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5 animate-bounce" />
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] font-black text-amber-800 uppercase tracking-wide block">Warning: Limit Deviation</span>
-                    <p className="text-[10px] text-amber-800/90 font-semibold leading-relaxed">
-                      {report.warning}
-                    </p>
+                  {/* Lab parameters */}
+                  <div className="space-y-3.5 text-xs border-t border-border-app/40 pt-4">
+                    
+                    <div className="border-b border-border-app/40 pb-2.5">
+                      <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Label Accuracy Test</span>
+                      <p className={`font-bold text-text-app`}>
+                        {labelAccuracy}
+                      </p>
+                    </div>
+
+                    <div className="border-b border-border-app/40 pb-2.5">
+                      <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Heavy Metals Screening</span>
+                      <p className={`font-bold flex items-center gap-1 ${heavyMetals.toLowerCase().includes('warning') ? 'text-amber-700' : 'text-emerald-600'}`}>
+                        {heavyMetals.toLowerCase().includes('warning') ? (
+                          <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                        ) : (
+                          <Check className="h-3.5 w-3.5 shrink-0" />
+                        )}
+                        {heavyMetals}
+                      </p>
+                    </div>
+
+                    {selectedSuppForReport.category === 'protein' ? (
+                      <div className="border-b border-border-app/40 pb-2.5">
+                        <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Amino Spiking Verification</span>
+                        <p className="font-bold text-emerald-600 flex items-center gap-1">
+                          <Check className="h-3.5 w-3.5 shrink-0" />
+                          Verified zero free-form amino spike adulterants
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="border-b border-border-app/40 pb-2.5">
+                        <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">
+                          {selectedSuppForReport.category === 'creatine' && "Creatine Purity Index"}
+                          {selectedSuppForReport.category === 'preworkout' && "Stimulant Clearance Test"}
+                          {selectedSuppForReport.category === 'multivitamin' && "Bioavailability Check"}
+                          {selectedSuppForReport.category === 'omega3' && "Heavy Metal & PCB Testing"}
+                        </span>
+                        <p className="font-bold text-emerald-600 flex items-center gap-1">
+                          <Check className="h-3.5 w-3.5 shrink-0" />
+                          {selectedSuppForReport.category === 'creatine' && "Verified 100% Pure Monohydrate, zero moisture fillers"}
+                          {selectedSuppForReport.category === 'preworkout' && "Verified safe stimulant doses, zero prohibited substances (WADA cleared)"}
+                          {selectedSuppForReport.category === 'multivitamin' && "Verified chelated minerals and highly bioactive vitamin complexes"}
+                          {selectedSuppForReport.category === 'omega3' && "Verified zero heavy metal toxic accumulation (Lead, Arsenic undetected)"}
+                        </p>
+                      </div>
+                    )}
+
+                    <div>
+                      <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Certification Info</span>
+                      <p className="font-medium text-text-muted">Certificate ID: <span className="font-bold text-text-app">{certificateNo || 'Pending'}</span></p>
+                      <p className="font-medium text-text-muted mt-0.5">Tested Date: <span className="font-bold text-text-app">{testedDate}</span></p>
+                      <p className="text-[9px] text-text-muted mt-2.5 leading-relaxed opacity-75">
+                        * <strong>Disclaimer</strong>: Certificate numbers, test dates, and chemical ratings are simulated models based on public safety advisories (such as FDA heavy metal ceilings and HPLC assays) for health education. This serves as comparative guidance. Always check official packaging for certified third-party seals (e.g. Trustified, Labdoor, or Informed-Choice).
+                      </p>
+                    </div>
+
                   </div>
+
+                  {/* Close panel action */}
+                  <button
+                    onClick={() => setSelectedSuppForReport(null)}
+                    className="mt-6 w-full py-2.5 rounded-xl bg-brand-primary text-brand-primary-fg hover:opacity-90 active:scale-[0.98] font-bold text-xs shadow-md transition-all cursor-pointer text-center"
+                  >
+                    Close Audit Profile
+                  </button>
+
                 </div>
               )}
-
-              {/* Lab parameters */}
-              <div className="space-y-3.5 text-xs">
-                
-                <div className="border-b border-border-app/40 pb-2.5">
-                  <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Label Accuracy Test</span>
-                  <p className={`font-bold ${hasWarning && report.labelAccuracy.includes('Warning') ? 'text-amber-700' : 'text-text-app'}`}>
-                    {report.labelAccuracy}
-                  </p>
-                </div>
-
-                <div className="border-b border-border-app/40 pb-2.5">
-                  <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Heavy Metals Screening</span>
-                  <p className={`font-bold flex items-center gap-1 ${hasWarning && report.heavyMetals.includes('Warning') ? 'text-amber-700' : 'text-emerald-600'}`}>
-                    {hasWarning && report.heavyMetals.includes('Warning') ? (
-                      <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
-                    ) : (
-                      <Check className="h-3.5 w-3.5 shrink-0" />
-                    )}
-                    {report.heavyMetals}
-                  </p>
-                </div>
-
-                {selectedSuppForReport.category === 'protein' ? (
-                  <div className="border-b border-border-app/40 pb-2.5">
-                    <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Amino Spiking Verification</span>
-                    <p className="font-bold text-emerald-600 flex items-center gap-1">
-                      <Check className="h-3.5 w-3.5 shrink-0" />
-                      {report.adulterants}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="border-b border-border-app/40 pb-2.5">
-                    <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">
-                      {selectedSuppForReport.category === 'creatine' && "Creatine Purity Index"}
-                      {selectedSuppForReport.category === 'preworkout' && "Stimulant Clearance Test"}
-                      {selectedSuppForReport.category === 'multivitamin' && "Bioavailability Check"}
-                      {selectedSuppForReport.category === 'omega3' && "Heavy Metal & PCB Testing"}
-                    </span>
-                    <p className="font-bold text-emerald-600 flex items-center gap-1">
-                      <Check className="h-3.5 w-3.5 shrink-0" />
-                      {selectedSuppForReport.category === 'creatine' && "Verified 100% Pure Monohydrate, zero moisture fillers"}
-                      {selectedSuppForReport.category === 'preworkout' && "Verified safe stimulant doses, zero prohibited substances (WADA cleared)"}
-                      {selectedSuppForReport.category === 'multivitamin' && "Verified chelated minerals and highly bioactive vitamin complexes"}
-                      {selectedSuppForReport.category === 'omega3' && "Verified zero heavy metal toxic accumulation (Lead, Arsenic undetected)"}
-                    </p>
-                  </div>
-                )}
-
-                <div>
-                  <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Certification Info</span>
-                  <p className="font-medium text-text-muted">Certificate ID: <span className="font-bold text-text-app">{report.certificateNo}</span></p>
-                  <p className="font-medium text-text-muted mt-0.5">Tested Date: <span className="font-bold text-text-app">{report.testedDate}</span></p>
-                  <p className="text-[9px] text-text-muted mt-2.5 leading-relaxed opacity-75">
-                    * <strong>Disclaimer</strong>: Certificate numbers, test dates, and chemical ratings are simulated models based on public safety advisories (such as FDA heavy metal ceilings and HPLC assays) for health education. This serves as comparative guidance. Always check official packaging for certified third-party seals (e.g. Trustified, Labdoor, or Informed-Choice).
-                  </p>
-                </div>
-
-              </div>
-
-              {/* Close panel action */}
-              <button
-                onClick={() => setSelectedSuppForReport(null)}
-                className="mt-6 w-full py-2.5 rounded-xl bg-brand-primary text-brand-primary-fg hover:opacity-90 active:scale-[0.98] font-bold text-xs shadow-md transition-all cursor-pointer text-center"
-              >
-                Close Report
-              </button>
 
             </div>
           </div>

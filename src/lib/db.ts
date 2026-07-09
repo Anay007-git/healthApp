@@ -238,3 +238,41 @@ export async function saveSupplement(supp: Supplement): Promise<boolean> {
   return false;
 }
 
+export interface LabReport {
+  id?: string;
+  supplement_id: string;
+  source_type: 'sample_demo' | 'brand_published' | 'third_party_verified';
+  issuing_lab?: string | null;
+  certificate_id?: string | null;
+  source_url?: string | null;
+  purity_score?: number | null;
+  label_accuracy_status?: string | null;
+  heavy_metals_status?: string | null;
+  verified_by?: string | null;
+  verified_at?: string | null;
+  status: 'draft' | 'published' | 'expired' | 'flagged';
+}
+
+/**
+ * Fetch a published lab report for a supplement by its supplement ID
+ */
+export async function getLabReportBySupplementId(supplementId: string): Promise<LabReport | null> {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('lab_reports')
+        .select('*')
+        .eq('supplement_id', supplementId)
+        .eq('status', 'published')
+        .maybeSingle();
+      
+      if (!error && data) return data as LabReport;
+      if (error) console.warn(`Error fetching lab report for supplement ID ${supplementId}:`, error);
+    } catch (e) {
+      console.warn(`Exception fetching lab report for supplement ID ${supplementId}:`, e);
+    }
+  }
+  return null;
+}
+
+
