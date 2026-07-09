@@ -2,6 +2,65 @@ import { NextRequest, NextResponse } from 'next/server';
 import { saveSupplement } from '@/lib/db';
 import { Supplement } from '@/lib/mockData';
 
+// Helper to scrape search engine results for prices and product context
+async function searchWebContext(query: string): Promise<string> {
+  const searchUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query + " price India site:amazon.in OR site:healthkart.com OR site:flipkart.com")}`;
+  try {
+    const res = await fetch(searchUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5'
+      },
+      signal: AbortSignal.timeout(6000)
+    });
+    if (res.ok) {
+      const html = await res.text();
+      const snippets = html.match(/Result__snippet"[^>]*>([\s\S]+?)<\/a>/gi) || html.match(/<a class="result__snippet"[^>]*>([\s\S]+?)<\/a>/gi);
+      if (snippets && snippets.length > 0) {
+        return snippets.slice(0, 5)
+          .map(s => s.replace(/<[^>]+>/g, '').trim())
+          .join('\n');
+      }
+    }
+  } catch (err) {
+    console.error('Error fetching web search context:', err);
+  }
+  return '';
+}
+
+// Local regex parser to extract real prices and servings from web search results when LLM is unavailable
+function parseLocalWebContext(query: string, context: string): any {
+  const details = getLocalFallbackSupplement(query);
+  if (!context) return details;
+
+  // 1. Try to find the price (e.g. ₹699, Rs. 1,250, INR 899, etc.)
+  const priceMatches = context.match(/(?:Rs\.?|₹|INR)\s*([0-9,]+)/i) || context.match(/([0-9,]+)\s*(?:Rupees|Rs|INR)/i);
+  if (priceMatches) {
+    const rawPrice = priceMatches[1].replace(/,/g, '');
+    const p = parseInt(rawPrice);
+    if (p >= 150 && p < 15000) {
+      details.price = p;
+    }
+  }
+
+  // 2. Try to find servings (e.g. 60 tablets, 30 servings, 90 tablets)
+  const servingsMatches = context.match(/([0-9]+)\s*(?:tablets|capsules|servings|caps|softgels|tabs)/i);
+  if (servingsMatches) {
+    const s = parseInt(servingsMatches[1]);
+    if (s >= 10 && s <= 300) {
+      details.servings = s;
+    }
+  }
+
+  // 3. Try to clean up name based on the query if they typed something specific
+  if (query.trim().length > 5) {
+    details.name = query;
+  }
+
+  return details;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { query } = await request.json();
@@ -13,15 +72,24 @@ export async function POST(request: NextRequest) {
     const apiKey = process.env.HUGGINGFACE_API_KEY;
     let supplementDetails: any = null;
 
+    // Retrieve live search context from DuckDuckGo first!
+    const webContext = await searchWebContext(query);
+    console.log(`Web search context retrieved for "${query}":`, webContext ? 'Success' : 'Empty');
+
     if (apiKey) {
       try {
         const systemPrompt = `You are a third-party health supplement catalog agent. You must search your knowledge base and retrieve real product data for this Indian supplement query: "${query}".
 Generate a structured JSON object representing this real supplement.
+Use this live web search context to extract actual real-world prices, brand, servings, and specifications:
+"""
+${webContext}
+"""
+
 Important: Your response must be ONLY a valid JSON object. Do not include markdown codeblocks (do NOT start with \`\`\`json), no preamble, and no extra text.
 JSON Structure:
 {
-  "brand": "Official Brand Name (e.g. MuscleBlaze, Himalaya, GNC)",
-  "name": "Full Product Name (e.g. Biozyme Whey Protein, Ashwagandha Organic)",
+  "brand": "Official Brand Name (e.g. MuscleBlaze, Himalaya, GNC, MuscleTech)",
+  "name": "Full Product Name without repeating the brand (e.g. Biozyme Whey Protein, Ashwagandha Tablets)",
   "category": "Must be exactly one of: 'protein', 'creatine', 'preworkout', 'multivitamin', 'omega3'",
   "price": Retail price in Indian Rupees (INR) as an integer (e.g. 799),
   "servings": Number of servings as an integer (e.g. 60),
@@ -49,8 +117,6 @@ JSON Structure:
         if (hfResponse.ok) {
           const result = await hfResponse.json();
           let rawText = result.choices?.[0]?.message?.content?.trim() || '';
-          
-          // Strip markdown codeblock markers if any exist
           rawText = rawText.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
           
           try {
@@ -66,9 +132,9 @@ JSON Structure:
       }
     }
 
-    // Heuristic fallback if Hugging Face is not configured or failed to return valid JSON
+    // Heuristic fallback using web context regex if Hugging Face is not configured or failed
     if (!supplementDetails) {
-      supplementDetails = getLocalFallbackSupplement(query);
+      supplementDetails = parseLocalWebContext(query, webContext);
     }
 
     // Ensure price_per_serving is calculated
