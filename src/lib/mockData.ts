@@ -1619,6 +1619,57 @@ export const mockSupplements: Supplement[] = [
     },
     image_url: '/images/supps/nakpro_whey.jpg',
     benefits: 'Smart-formulated whey protein supporting lean gains and digestion. Labdoor certification upcoming.'
+  },
+  {
+    id: '20000000-0000-0000-0000-000000000001',
+    name: 'Triton Fish Oil',
+    brand: 'Legion',
+    category: 'omega3',
+    price: 3999,
+    servings: 30,
+    dose_per_serving: '4000mg Fish Oil (1600mg EPA / 800mg DHA)',
+    price_per_serving: 133.3,
+    rating: 4.9,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Legion+Triton+Fish+Oil'
+    },
+    image_url: '/images/supps/truebasics_omega.jpg',
+    benefits: 'Extreme potency re-esterified triglyceride fish oil with added vitamin E. Certified #1 on Labdoor.'
+  },
+  {
+    id: '20000000-0000-0000-0000-000000000002',
+    name: 'UnoCardio 1000 + Vitamin D3',
+    brand: 'WHC',
+    category: 'omega3',
+    price: 4999,
+    servings: 60,
+    dose_per_serving: '1280mg Fish Oil (675mg EPA / 460mg DHA)',
+    price_per_serving: 83.3,
+    rating: 4.9,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=WHC+UnoCardio+1000'
+    },
+    image_url: '/images/supps/gnc_omega.jpg',
+    benefits: 'Highest active concentration fish oil in the world. Cold-processed with Vitamin D3. Labdoor certified.'
+  },
+  {
+    id: '20000000-0000-0000-0000-000000000003',
+    name: 'Bulk Pre-Workout',
+    brand: 'Transparent Labs',
+    category: 'preworkout',
+    price: 4499,
+    servings: 30,
+    dose_per_serving: '8g Citrulline Malate, 4g Beta-Alanine, 200mg Caffeine',
+    price_per_serving: 149.9,
+    rating: 4.8,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Transparent+Labs+Bulk'
+    },
+    image_url: '/images/supps/c4_preworkout.jpg',
+    benefits: '100% transparent formula with zero artificial sweeteners or colorings. Clinically dosed for peak performance. Labdoor certified.'
   }
 ];
 
