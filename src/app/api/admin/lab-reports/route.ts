@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
     const certificateId = pdfData?.certificateId ?? `CERT-${supplementId.substring(0, 8).toUpperCase()}`;
 
     // 3. Upsert linked lab_reports row with draft status and auto-filled data
-    const { error: reportError } = await supabase
+    const { data: upsertedReport, error: reportError } = await supabase
       .from('lab_reports')
       .upsert({
         supplement_id: supplementId,
@@ -164,7 +164,9 @@ export async function POST(request: NextRequest) {
         heavy_metals_status: heavyMetalsStatus,
         certificate_id: certificateId,
         status: 'draft'
-      }, { onConflict: 'supplement_id' });
+      }, { onConflict: 'supplement_id' })
+      .select()
+      .single();
 
     if (reportError) {
       return NextResponse.json({ error: 'Failed to save draft lab report', message: reportError.message }, { status: 500 });
@@ -185,7 +187,8 @@ export async function POST(request: NextRequest) {
         ? 'Draft mapping and report saved. Extracted details from PDF successfully!' 
         : pdfError
           ? `Draft mapping and report successfully saved (no PDF parsed. Error: ${pdfError}).`
-          : 'Draft mapping and report successfully saved (no PDF parsed).' 
+          : 'Draft mapping and report successfully saved (no PDF parsed).',
+      report: upsertedReport
     });
 
   } catch (err: any) {

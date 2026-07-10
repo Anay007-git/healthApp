@@ -80,7 +80,7 @@ export default function AdminLabReportsClient({
         ];
         const updatedReps = [
           ...reports.filter((r) => r.supplement_id !== selectedSuppId),
-          {
+          data.report || {
             supplement_id: selectedSuppId,
             source_type: 'third_party_verified' as const,
             issuing_lab: 'Labdoor (USA)',
