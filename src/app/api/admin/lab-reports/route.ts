@@ -14,7 +14,9 @@ async function extractReportFromPdfUrl(url: string): Promise<{ data: any | null;
   try {
     // Dynamic import to prevent bundle loading/fs failures in Serverless runtimes
     let pdfParseModule;
+    let canvasFactoryModule;
     try {
+      canvasFactoryModule = require('pdf-parse/worker');
       pdfParseModule = require('pdf-parse');
     } catch (e: any) {
       console.warn('pdf-parse module is not available in this runtime environment:', e);
@@ -25,6 +27,7 @@ async function extractReportFromPdfUrl(url: string): Promise<{ data: any | null;
     if (!PDFParse) {
       return { data: null, error: 'PDFParse class not found on exports object' };
     }
+    const CanvasFactory = canvasFactoryModule?.CanvasFactory;
 
     const res = await fetch(url);
     if (!res.ok) {
@@ -34,12 +37,12 @@ async function extractReportFromPdfUrl(url: string): Promise<{ data: any | null;
     
     let result;
     try {
-      const parser = new PDFParse({ data: new Uint8Array(buffer) });
+      const parser = new PDFParse({ data: new Uint8Array(buffer), CanvasFactory });
       result = await parser.getText();
     } catch (e: any) {
       // Try URL option if data buffer fails
       try {
-        const parser = new PDFParse({ url: url });
+        const parser = new PDFParse({ url: url, CanvasFactory });
         result = await parser.getText();
       } catch (e2: any) {
         return { data: null, error: `PDFParse text extraction failed: ${e.message || String(e)} / ${e2.message || String(e2)}` };
