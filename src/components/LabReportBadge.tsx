@@ -148,27 +148,22 @@ export const LabReportBadge: React.FC<LabReportBadgeProps> = ({ report }) => {
     );
   }
 
-  // Default: sample_demo
+  // Default/Pending:
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 shadow-sm">
-      {/* Watermark */}
-      <div className="absolute right-2 top-2 origin-top-right rotate-12 text-[24px] font-black text-amber-500/10 uppercase tracking-widest pointer-events-none select-none">
-        Sample Demo
-      </div>
-
+    <div className="relative overflow-hidden rounded-2xl border border-amber-500/25 bg-amber-500/5 p-4 shadow-sm transition-all duration-200 hover:border-amber-500/40">
       <div className="flex items-start gap-2.5">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 shrink-0">
-          <ShieldAlert className="h-4.5 w-4.5" />
+          <Shield className="h-4.5 w-4.5 animate-pulse" />
         </div>
         <div>
           <h5 className="text-[11px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400">
-            Sample Lab Report Profile
+            Lab Verification Pending
           </h5>
           <p className="text-[10px] font-bold text-text-app mt-0.5">
-            Illustrative only — not a real certification
+            Lab report will be published soon
           </p>
           <p className="text-[9px] text-text-muted mt-1 leading-relaxed max-w-[320px]">
-            No verified lab audit or manufacturer certificate of analysis has been matching-associated with this product profile yet.
+            Labdoor testing and certificate auditing are currently underway. Verified purity index, label accuracy, and heavy metals screening results will be updated soon.
           </p>
         </div>
       </div>

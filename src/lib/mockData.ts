@@ -1272,6 +1272,353 @@ export const mockSupplements: Supplement[] = [
     },
     image_url: '/images/supps/on_omega.jpg',
     benefits: 'Enteric-coated shell passes intact through stomach acid to dissolve directly in intestines. Premium quality distillation.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000001',
+    name: 'Atom PWR Whey Protein',
+    brand: 'AS-IT-IS Nutrition',
+    category: 'protein',
+    price: 1899,
+    servings: 33,
+    dose_per_serving: '27g Whey Protein',
+    price_per_serving: 57.5,
+    rating: 4.3,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=AS-IT-IS+Atom+PWR+Whey+Protein',
+      healthkart: 'https://www.healthkart.com/search?q=AS-IT-IS+Atom+PWR+Whey+Protein'
+    },
+    image_url: '/images/supps/asitis_atom_whey.jpg',
+    benefits: 'High protein yield per serving with double digestive enzymes. Certified by Labdoor for high purity.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000002',
+    name: 'Bon Iso Whey 100% Protein Isolate - Irish Chocolate',
+    brand: 'Bon',
+    category: 'protein',
+    price: 3499,
+    servings: 30,
+    dose_per_serving: '25g Whey Isolate',
+    price_per_serving: 116.6,
+    rating: 4.5,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Bon+Iso+Whey+Protein',
+      healthkart: 'https://www.healthkart.com/search?q=Bon+Iso+Whey+Protein'
+    },
+    image_url: '/images/supps/myprotein_whey.jpg',
+    benefits: 'Pure whey protein isolate with rich Irish chocolate flavor, low carb. Certified by Labdoor for high purity.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000003',
+    name: 'Platinum Whey',
+    brand: 'L-Men',
+    category: 'protein',
+    price: 2799,
+    servings: 25,
+    dose_per_serving: '25g Whey Protein',
+    price_per_serving: 111.9,
+    rating: 4.4,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=L-Men+Platinum+Whey'
+    },
+    image_url: '/images/supps/gnc_protein.jpg',
+    benefits: 'Clinically formulated platinum whey for active athletes. Certified by Labdoor.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000004',
+    name: '100% Whey',
+    brand: 'Muscle Feast',
+    category: 'protein',
+    price: 4199,
+    servings: 37,
+    dose_per_serving: '20g Whey Protein',
+    price_per_serving: 113.4,
+    rating: 4.8,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Muscle+Feast+100+Whey'
+    },
+    image_url: '/images/supps/on_whey.jpg',
+    benefits: 'All-natural grass-fed whey with zero artificial ingredients or fillers. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000005',
+    name: 'Biozorb Performance Whey',
+    brand: 'MuscleBlaze',
+    category: 'protein',
+    price: 3199,
+    servings: 30,
+    dose_per_serving: '25g Whey Protein',
+    price_per_serving: 106.6,
+    rating: 4.7,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=MuscleBlaze+Biozorb+Performance+Whey',
+      healthkart: 'https://www.healthkart.com/search?q=MuscleBlaze+Biozorb+Performance'
+    },
+    image_url: '/images/supps/mb_biozyme.jpg',
+    benefits: 'Enhanced absorption formula optimized for digestive efficiency. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000007',
+    name: 'Hormone Free Grass Fed Whey Isolate',
+    brand: 'Muscle Feast',
+    category: 'protein',
+    price: 4899,
+    servings: 37,
+    dose_per_serving: '21g Whey Isolate',
+    price_per_serving: 132.4,
+    rating: 4.9,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Muscle+Feast+Grass+Fed+Whey+Isolate'
+    },
+    image_url: '/images/supps/on_whey.jpg',
+    benefits: 'Hormone-free grass-fed whey isolate of supreme purity. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000008',
+    name: 'Biozorb Iso Zero',
+    brand: 'MuscleBlaze',
+    category: 'protein',
+    price: 4499,
+    servings: 30,
+    dose_per_serving: '27g Whey Isolate',
+    price_per_serving: 149.9,
+    rating: 4.8,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=MuscleBlaze+Biozorb+Iso+Zero',
+      healthkart: 'https://www.healthkart.com/search?q=MuscleBlaze+Biozorb+Iso+Zero'
+    },
+    image_url: '/images/supps/mb_biozyme.jpg',
+    benefits: 'Zero carb, zero fat lactose-free isolate with Biozorb formulation. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000009',
+    name: 'Biozyme Iso-Zero Low Carb',
+    brand: 'MuscleBlaze',
+    category: 'protein',
+    price: 4699,
+    servings: 33,
+    dose_per_serving: '27g Whey Isolate',
+    price_per_serving: 142.4,
+    rating: 4.8,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=MuscleBlaze+Biozyme+Iso+Zero',
+      healthkart: 'https://www.healthkart.com/search?q=MuscleBlaze+Biozyme+Iso+Zero'
+    },
+    image_url: '/images/supps/mb_biozyme.jpg',
+    benefits: 'Low carb, low lactose whey protein isolate for lean muscle definition. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000010',
+    name: 'Whey+ Protein Powder',
+    brand: 'Legion',
+    category: 'protein',
+    price: 4299,
+    servings: 30,
+    dose_per_serving: '22g Whey Isolate',
+    price_per_serving: 143.3,
+    rating: 4.7,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Legion+Whey+Protein+Powder'
+    },
+    image_url: '/images/supps/on_whey.jpg',
+    benefits: '100% natural grass-fed whey isolate, lactose-free. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000011',
+    name: 'Whey Protein Concentrate',
+    brand: 'Muscle Feast',
+    category: 'protein',
+    price: 3699,
+    servings: 37,
+    dose_per_serving: '19g Whey Protein',
+    price_per_serving: 99.9,
+    rating: 4.6,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Muscle+Feast+Whey+Protein+Concentrate'
+    },
+    image_url: '/images/supps/on_whey.jpg',
+    benefits: 'Cold-filtered grass-fed whey protein concentrate of high purity. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000012',
+    name: 'Whey Protein Hydrolyzed',
+    brand: 'Muscle Feast',
+    category: 'protein',
+    price: 4999,
+    servings: 37,
+    dose_per_serving: '20g Hydrolyzed Whey',
+    price_per_serving: 135.1,
+    rating: 4.7,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Muscle+Feast+Whey+Protein+Hydrolyzed'
+    },
+    image_url: '/images/supps/on_whey.jpg',
+    benefits: 'Rapidly absorbing hydrolyzed whey protein, ideal for post-workout. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000013',
+    name: 'Concentrate Whey Protein',
+    brand: 'Bal Bharat',
+    category: 'protein',
+    price: 1599,
+    servings: 30,
+    dose_per_serving: '24g Whey Protein',
+    price_per_serving: 53.3,
+    rating: 4.4,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Bal+Bharat+Whey+Protein'
+    },
+    image_url: '/images/supps/nakpro_whey.jpg',
+    benefits: 'Affordable high quality concentrate, local brand for daily fitness support. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000014',
+    name: 'Whey Protein Concentrate',
+    brand: 'AS-IT-IS Nutrition',
+    category: 'protein',
+    price: 1699,
+    servings: 30,
+    dose_per_serving: '24g Whey Protein',
+    price_per_serving: 56.6,
+    rating: 4.5,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=AS-IT-IS+Whey+Protein+Concentrate',
+      healthkart: 'https://www.healthkart.com/search?q=AS-IT-IS+Whey+Protein+Concentrate'
+    },
+    image_url: '/images/supps/asitis_atom_whey.jpg',
+    benefits: 'Pure unflavored whey protein concentrate with no additives. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000015',
+    name: 'PRO WHEY 100',
+    brand: 'Muscle First',
+    category: 'protein',
+    price: 2499,
+    servings: 30,
+    dose_per_serving: '24g Whey Protein',
+    price_per_serving: 83.3,
+    rating: 4.4,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Muscle+First+PRO+WHEY+100'
+    },
+    image_url: '/images/supps/nakpro_whey.jpg',
+    benefits: 'Premium grade whey protein with high mixability and taste. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000016',
+    name: 'Power Play Fuel Cold Micro Filtered Whey Protein Isolate',
+    brand: 'Power Play',
+    category: 'protein',
+    price: 3999,
+    servings: 30,
+    dose_per_serving: '26g Whey Isolate',
+    price_per_serving: 133.3,
+    rating: 4.6,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Power+Play+Fuel+Whey+Isolate'
+    },
+    image_url: '/images/supps/myprotein_whey.jpg',
+    benefits: 'Cold micro-filtered whey isolate preserving immunoglobulins. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000017',
+    name: 'Puro IsoPro WPI Whey Isolate',
+    brand: 'Puro',
+    category: 'protein',
+    price: 4199,
+    servings: 30,
+    dose_per_serving: '27g Whey Isolate',
+    price_per_serving: 139.9,
+    rating: 4.5,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Puro+IsoPro+Whey+Isolate'
+    },
+    image_url: '/images/supps/myprotein_whey.jpg',
+    benefits: 'High-potency pure whey isolate with zero sugar and low fat. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000018',
+    name: 'Impact Whey Isolate - India',
+    brand: 'Myprotein',
+    category: 'protein',
+    price: 4599,
+    servings: 40,
+    dose_per_serving: '22g Whey Isolate',
+    price_per_serving: 114.9,
+    rating: 4.7,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Myprotein+Impact+Whey+Isolate+India',
+      healthkart: 'https://www.healthkart.com/search?q=Myprotein+Impact+Whey+Isolate+India'
+    },
+    image_url: '/images/supps/myprotein_whey.jpg',
+    benefits: 'World-class premium whey isolate, grass-fed and highly refined. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000019',
+    name: '100% Grass-Fed Whey Protein Isolate',
+    brand: 'Transparent Labs',
+    category: 'protein',
+    price: 4999,
+    servings: 30,
+    dose_per_serving: '28g Whey Isolate',
+    price_per_serving: 166.6,
+    rating: 4.9,
+    tier: 'market_leader',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Transparent+Labs+Whey+Isolate'
+    },
+    image_url: '/images/supps/on_whey.jpg',
+    benefits: '100% grass-fed whey isolate with zero artificial sweeteners or food dyes. Labdoor certified.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000020',
+    name: 'ATOM Nitro Whey Protein with Creatine',
+    brand: 'AS-IT-IS Nutrition',
+    category: 'protein',
+    price: 2199,
+    servings: 33,
+    dose_per_serving: '27g Protein, 3g Creatine',
+    price_per_serving: 66.6,
+    rating: 4.3,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=AS-IT-IS+Atom+Nitro+Whey'
+    },
+    image_url: '/images/supps/asitis_atom_whey.jpg',
+    benefits: 'Fortified with creatine and performance boosters for explosive power. Labdoor certification upcoming.'
+  },
+  {
+    id: '10000000-0000-0000-0000-000000000022',
+    name: 'Smart Nutrition Whey Protein',
+    brand: "Will's",
+    category: 'protein',
+    price: 2399,
+    servings: 30,
+    dose_per_serving: '24g Whey Protein',
+    price_per_serving: 79.9,
+    rating: 4.4,
+    tier: 'value_pick',
+    buy_links: {
+      amazon: 'https://www.amazon.in/s?k=Wills+Smart+Nutrition+Whey+Protein'
+    },
+    image_url: '/images/supps/nakpro_whey.jpg',
+    benefits: 'Smart-formulated whey protein supporting lean gains and digestion. Labdoor certification upcoming.'
   }
 ];
 
