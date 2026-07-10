@@ -10,31 +10,45 @@ function isAuthorized(request: NextRequest) {
 }
 
 // Helper to automatically extract parameters from a Labdoor PDF certificate
-async function extractReportFromPdfUrl(url: string) {
+async function extractReportFromPdfUrl(url: string): Promise<{ data: any | null; error: string | null }> {
   try {
     // Dynamic import to prevent bundle loading/fs failures in Serverless runtimes
     let pdfParseModule;
     try {
       pdfParseModule = require('pdf-parse');
-    } catch (e) {
+    } catch (e: any) {
       console.warn('pdf-parse module is not available in this runtime environment:', e);
-      return null;
+      return { data: null, error: `Module load failure: ${e.message || String(e)}` };
     }
 
     const { PDFParse } = pdfParseModule;
     if (!PDFParse) {
-      console.warn('PDFParse class not found on exports');
-      return null;
+      return { data: null, error: 'PDFParse class not found on exports object' };
     }
 
     const res = await fetch(url);
-    if (!res.ok) return null;
+    if (!res.ok) {
+      return { data: null, error: `HTTP fetch failed with status ${res.status}` };
+    }
     const buffer = await res.arrayBuffer();
     
-    const parser = new PDFParse({ data: new Uint8Array(buffer) });
-    const result = await parser.getText();
+    let result;
+    try {
+      const parser = new PDFParse({ data: new Uint8Array(buffer) });
+      result = await parser.getText();
+    } catch (e: any) {
+      // Try URL option if data buffer fails
+      try {
+        const parser = new PDFParse({ url: url });
+        result = await parser.getText();
+      } catch (e2: any) {
+        return { data: null, error: `PDFParse text extraction failed: ${e.message || String(e)} / ${e2.message || String(e2)}` };
+      }
+    }
     
-    if (!result || !result.pages || result.pages.length === 0) return null;
+    if (!result || !result.pages || result.pages.length === 0) {
+      return { data: null, error: 'No text pages parsed from PDF' };
+    }
     
     const fullText = result.pages.map((p: any) => p.text).join('\n');
     
@@ -63,14 +77,17 @@ async function extractReportFromPdfUrl(url: string) {
     }
 
     return {
-      certificateId,
-      labelAccuracyStatus,
-      heavyMetalsStatus,
-      purityScore
+      data: {
+        certificateId,
+        labelAccuracyStatus,
+        heavyMetalsStatus,
+        purityScore
+      },
+      error: null
     };
-  } catch (err) {
+  } catch (err: any) {
     console.error('Error parsing PDF certificate:', err);
-    return null;
+    return { data: null, error: err.message || String(err) };
   }
 }
 
@@ -118,9 +135,12 @@ export async function POST(request: NextRequest) {
 
     // 2. Extract PDF details if URL points to a PDF certificate
     let pdfData = null;
+    let pdfError = null;
     if (labdoorUrl.toLowerCase().includes('.pdf')) {
       console.log('PDF certificate detected. Extracting audit parameters...');
-      pdfData = await extractReportFromPdfUrl(labdoorUrl);
+      const parseResult = await extractReportFromPdfUrl(labdoorUrl);
+      pdfData = parseResult.data;
+      pdfError = parseResult.error;
     }
 
     const purityScore = pdfData?.purityScore ?? 95;
@@ -160,7 +180,9 @@ export async function POST(request: NextRequest) {
       success: true, 
       message: pdfData 
         ? 'Draft mapping and report saved. Extracted details from PDF successfully!' 
-        : 'Draft mapping and report successfully saved (no PDF parsed).' 
+        : pdfError
+          ? `Draft mapping and report successfully saved (no PDF parsed. Error: ${pdfError}).`
+          : 'Draft mapping and report successfully saved (no PDF parsed).' 
     });
 
   } catch (err: any) {
