@@ -75,6 +75,102 @@ export const LabReportBadge: React.FC<LabReportBadgeProps> = ({ report }) => {
     );
   }
 
+  // 1. Expired Certification State
+  if (activeReport.status === 'expired') {
+    return (
+      <div className="relative overflow-hidden rounded-2xl border border-rose-500/25 bg-rose-500/5 p-4 shadow-sm transition-all duration-200 hover:border-rose-500/40">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+          <div className="flex items-start gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 shrink-0">
+              <ShieldAlert className="h-4.5 w-4.5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h5 className="text-[11px] font-black uppercase tracking-wider text-rose-600 dark:text-rose-400">
+                  Labdoor Certification Expired
+                </h5>
+                {issuing_lab && (
+                  <span className="text-[8px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/15">
+                    {issuing_lab}
+                  </span>
+                )}
+              </div>
+              <p className="text-[10px] font-bold text-text-app mt-1">
+                Verification Expired
+              </p>
+              <p className="text-[9px] text-text-muted mt-1 leading-relaxed max-w-[320px]">
+                This product's third-party verification has expired. Recent manufacturing batches have not been active-ingredient audited.
+              </p>
+
+              <div className="flex gap-4 mt-3 flex-wrap">
+                {label_accuracy_status && (
+                  <div>
+                    <span className="text-[8px] font-black uppercase tracking-wider text-text-muted block">Last Label Accuracy</span>
+                    <span className="text-[10px] font-extrabold text-rose-500 dark:text-rose-400">{label_accuracy_status}</span>
+                  </div>
+                )}
+                {activeReport.certificate_id && (
+                  <div>
+                    <span className="text-[8px] font-black uppercase tracking-wider text-text-muted block">Expired Lot #</span>
+                    <span className="text-[10px] font-extrabold text-rose-500 dark:text-rose-400">{activeReport.certificate_id}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex sm:flex-col items-end gap-2.5 self-stretch sm:self-auto shrink-0 justify-between sm:justify-start">
+            {purity_score !== null && purity_score !== undefined && (
+              <div className="flex items-center gap-2">
+                <span className="text-[9px] font-black uppercase tracking-wider text-text-muted">Last Score</span>
+                <div className="flex items-center justify-center font-black text-xs text-brand-primary-fg bg-rose-500 h-7 w-12 rounded-lg shadow-sm">
+                  {purity_score}%
+                </div>
+              </div>
+            )}
+
+            {source_url && (
+              <a
+                href={source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-lg bg-rose-500 text-white hover:opacity-90 text-[9px] font-black uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer active:scale-95 shadow-sm"
+              >
+                View past report
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Draft / Upcoming / Pending Verification State
+  if (activeReport.status === 'draft') {
+    return (
+      <div className="relative overflow-hidden rounded-2xl border border-amber-500/25 bg-amber-500/5 p-4 shadow-sm transition-all duration-200 hover:border-amber-500/40">
+        <div className="flex items-start gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 shrink-0">
+            <Shield className="h-4.5 w-4.5 animate-pulse" />
+          </div>
+          <div>
+            <h5 className="text-[11px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400">
+              Lab Verification Pending
+            </h5>
+            <p className="text-[10px] font-bold text-text-app mt-0.5">
+              Lab report will be published soon
+            </p>
+            <p className="text-[9px] text-text-muted mt-1 leading-relaxed max-w-[320px]">
+              Labdoor testing and certificate auditing are currently underway. Verified purity index, label accuracy, and heavy metals screening results will be updated soon.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 3. Published Third-Party Verified State
   if (source_type === 'third_party_verified') {
     return (
       <div className="relative overflow-hidden rounded-2xl border border-emerald-500/25 bg-emerald-500/5 p-4 shadow-sm transition-all duration-200 hover:border-emerald-500/40">
@@ -148,7 +244,7 @@ export const LabReportBadge: React.FC<LabReportBadgeProps> = ({ report }) => {
     );
   }
 
-  // Default/Pending:
+  // Default Fallback (Verification Pending)
   return (
     <div className="relative overflow-hidden rounded-2xl border border-amber-500/25 bg-amber-500/5 p-4 shadow-sm transition-all duration-200 hover:border-amber-500/40">
       <div className="flex items-start gap-2.5">
