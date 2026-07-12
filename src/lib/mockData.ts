@@ -167,7 +167,9 @@ export interface Supplement {
   };
   image_url?: string;
   benefits: string;
+  lab_report_status?: 'draft' | 'published' | 'expired' | 'flagged' | null;
 }
+
 
 export const mockGyms: Gym[] = [
   // Indiranagar, Bengaluru

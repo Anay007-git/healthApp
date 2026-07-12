@@ -22,7 +22,9 @@ import {
   BookOpen,
   Loader2,
   X,
-  AlertTriangle
+  AlertTriangle,
+  Clock,
+  ShieldAlert
 } from 'lucide-react';
 import { Gym, Supplement } from '@/lib/mockData';
 import { LabReportBadge } from './LabReportBadge';
@@ -981,17 +983,29 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                                 <button
                                   onClick={() => setSelectedSuppForReport(supp)}
                                   className={`w-full flex items-center justify-center gap-1.5 rounded-xl text-[10px] font-black py-2 border transition-all cursor-pointer active:scale-[0.98] shadow-sm ${
-                                    hasWarning
+                                    supp.lab_report_status === 'expired'
+                                      ? 'bg-rose-500/10 hover:bg-rose-500/20 text-rose-700 border-rose-500/30'
+                                      : (supp.lab_report_status === 'draft' || !supp.lab_report_status)
+                                      ? 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 border-amber-500/30'
+                                      : hasWarning
                                       ? 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 border-amber-500/30'
                                       : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-800 border-emerald-500/20'
                                   }`}
                                 >
-                                  {hasWarning ? (
+                                  {supp.lab_report_status === 'expired' ? (
+                                    <ShieldAlert className="h-4 w-4 text-rose-600" />
+                                  ) : (supp.lab_report_status === 'draft' || !supp.lab_report_status) ? (
+                                    <Clock className="h-4 w-4 text-amber-600 animate-pulse" />
+                                  ) : hasWarning ? (
                                     <AlertTriangle className="h-4 w-4 text-amber-600" />
                                   ) : (
                                     <ShieldCheck className="h-4 w-4 text-emerald-600" />
                                   )}
-                                  Lab Report: Grade {report.grade} Verified
+                                  {supp.lab_report_status === 'expired'
+                                    ? 'Lab Report: Expired'
+                                    : (supp.lab_report_status === 'draft' || !supp.lab_report_status)
+                                    ? 'Lab Report: Pending Verification'
+                                    : `Lab Report: Grade ${report.grade} Verified`}
                                 </button>
                               </div>
 
@@ -1336,9 +1350,19 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                                   {supp.dose_per_serving}
                                 </span>
                                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                                  hasWarning ? 'bg-amber-500/10 text-amber-700' : 'bg-emerald-500/10 text-emerald-700'
+                                  supp.lab_report_status === 'expired'
+                                    ? 'bg-rose-500/10 text-rose-700'
+                                    : (supp.lab_report_status === 'draft' || !supp.lab_report_status)
+                                    ? 'bg-amber-500/10 text-amber-700'
+                                    : hasWarning
+                                    ? 'bg-amber-500/10 text-amber-700'
+                                    : 'bg-emerald-500/10 text-emerald-700'
                                 }`}>
-                                  Lab Grade: {report.grade}
+                                  {supp.lab_report_status === 'expired'
+                                    ? 'Lab: Expired'
+                                    : (supp.lab_report_status === 'draft' || !supp.lab_report_status)
+                                    ? 'Lab: Pending'
+                                    : `Lab Grade: ${report.grade}`}
                                 </span>
                               </div>
 
@@ -1347,7 +1371,15 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                                 <span className="text-[8px] font-black uppercase tracking-wider text-text-muted block mb-1">AI Agent Advisory</span>
                                 <p className="text-[10px] text-text-app/90 font-semibold leading-relaxed">
                                   {supp.brand} {supp.name} matches your target stack at <span className="font-extrabold text-brand-primary">₹{supp.price_per_serving.toFixed(1)}/serving</span>. 
-                                  {hasWarning ? (
+                                  {supp.lab_report_status === 'expired' ? (
+                                    <span className="text-rose-700 font-bold ml-1">
+                                      Note: Third-party Labdoor certification for this product has expired.
+                                    </span>
+                                  ) : (supp.lab_report_status === 'draft' || !supp.lab_report_status) ? (
+                                    <span className="text-amber-700 font-bold ml-1">
+                                      Note: Labdoor testing and certification are currently pending.
+                                    </span>
+                                  ) : hasWarning ? (
                                     <span className="text-amber-800 font-bold ml-1">
                                       Note: This is recommended based on your budget preference, but be aware of the test deviation ({report.warning})
                                     </span>
@@ -1379,7 +1411,11 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                                   onClick={() => setSelectedSuppForReport(supp)}
                                   className="px-3.5 py-2 border border-border-app hover:bg-border-app/10 rounded-xl text-[10px] font-black text-text-app transition-all cursor-pointer active:scale-98"
                                 >
-                                  View Lab Report
+                                  {supp.lab_report_status === 'expired'
+                                    ? 'View Expired Report'
+                                    : (supp.lab_report_status === 'draft' || !supp.lab_report_status)
+                                    ? 'Check Audit Status'
+                                    : 'View Lab Report'}
                                 </button>
                                 {Object.entries(supp.buy_links).slice(0, 2).map(([platform, link]) => (
                                   <a
@@ -1485,63 +1521,69 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                   <LabReportBadge report={activeReportData} />
 
                   {/* Lab parameters */}
-                  <div className="space-y-3.5 text-xs border-t border-border-app/40 pt-4">
-                    
-                    <div className="border-b border-border-app/40 pb-2.5">
-                      <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Label Accuracy Test</span>
-                      <p className={`font-bold text-text-app`}>
-                        {labelAccuracy}
-                      </p>
-                    </div>
-
-                    <div className="border-b border-border-app/40 pb-2.5">
-                      <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Heavy Metals Screening</span>
-                      <p className={`font-bold flex items-center gap-1 ${heavyMetals.toLowerCase().includes('warning') ? 'text-amber-700' : 'text-emerald-600'}`}>
-                        {heavyMetals.toLowerCase().includes('warning') ? (
-                          <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
-                        ) : (
-                          <Check className="h-3.5 w-3.5 shrink-0" />
-                        )}
-                        {heavyMetals}
-                      </p>
-                    </div>
-
-                    {selectedSuppForReport.category === 'protein' ? (
+                  {activeReportData?.status === 'published' ? (
+                    <div className="space-y-3.5 text-xs border-t border-border-app/40 pt-4">
+                      
                       <div className="border-b border-border-app/40 pb-2.5">
-                        <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Amino Spiking Verification</span>
-                        <p className="font-bold text-emerald-600 flex items-center gap-1">
-                          <Check className="h-3.5 w-3.5 shrink-0" />
-                          Verified zero free-form amino spike adulterants
+                        <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Label Accuracy Test</span>
+                        <p className={`font-bold text-text-app`}>
+                          {labelAccuracy}
                         </p>
                       </div>
-                    ) : (
+
                       <div className="border-b border-border-app/40 pb-2.5">
-                        <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">
-                          {selectedSuppForReport.category === 'creatine' && "Creatine Purity Index"}
-                          {selectedSuppForReport.category === 'preworkout' && "Stimulant Clearance Test"}
-                          {selectedSuppForReport.category === 'multivitamin' && "Bioavailability Check"}
-                          {selectedSuppForReport.category === 'omega3' && "Heavy Metal & PCB Testing"}
-                        </span>
-                        <p className="font-bold text-emerald-600 flex items-center gap-1">
-                          <Check className="h-3.5 w-3.5 shrink-0" />
-                          {selectedSuppForReport.category === 'creatine' && "Verified 100% Pure Monohydrate, zero moisture fillers"}
-                          {selectedSuppForReport.category === 'preworkout' && "Verified safe stimulant doses, zero prohibited substances (WADA cleared)"}
-                          {selectedSuppForReport.category === 'multivitamin' && "Verified chelated minerals and highly bioactive vitamin complexes"}
-                          {selectedSuppForReport.category === 'omega3' && "Verified zero heavy metal toxic accumulation (Lead, Arsenic undetected)"}
+                        <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Heavy Metals Screening</span>
+                        <p className={`font-bold flex items-center gap-1 ${heavyMetals.toLowerCase().includes('warning') ? 'text-amber-700' : 'text-emerald-600'}`}>
+                          {heavyMetals.toLowerCase().includes('warning') ? (
+                            <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                          ) : (
+                            <Check className="h-3.5 w-3.5 shrink-0" />
+                          )}
+                          {heavyMetals}
                         </p>
                       </div>
-                    )}
 
-                    <div>
-                      <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Certification Info</span>
-                      <p className="font-medium text-text-muted">Certificate ID: <span className="font-bold text-text-app">{certificateNo || 'Pending'}</span></p>
-                      <p className="font-medium text-text-muted mt-0.5">Tested Date: <span className="font-bold text-text-app">{testedDate}</span></p>
-                      <p className="text-[9px] text-text-muted mt-2.5 leading-relaxed opacity-75">
-                        * <strong>Disclaimer</strong>: Certificate numbers, test dates, and chemical ratings are simulated models based on public safety advisories (such as FDA heavy metal ceilings and HPLC assays) for health education. This serves as comparative guidance. Always check official packaging for certified third-party seals (e.g. Trustified, Labdoor, or Informed-Choice).
-                      </p>
+                      {selectedSuppForReport.category === 'protein' ? (
+                        <div className="border-b border-border-app/40 pb-2.5">
+                          <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Amino Spiking Verification</span>
+                          <p className="font-bold text-emerald-600 flex items-center gap-1">
+                            <Check className="h-3.5 w-3.5 shrink-0" />
+                            Verified zero free-form amino spike adulterants
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="border-b border-border-app/40 pb-2.5">
+                          <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">
+                            {selectedSuppForReport.category === 'creatine' && "Creatine Purity Index"}
+                            {selectedSuppForReport.category === 'preworkout' && "Stimulant Clearance Test"}
+                            {selectedSuppForReport.category === 'multivitamin' && "Bioavailability Check"}
+                            {selectedSuppForReport.category === 'omega3' && "Heavy Metal & PCB Testing"}
+                          </span>
+                          <p className="font-bold text-emerald-600 flex items-center gap-1">
+                            <Check className="h-3.5 w-3.5 shrink-0" />
+                            {selectedSuppForReport.category === 'creatine' && "Verified 100% Pure Monohydrate, zero moisture fillers"}
+                            {selectedSuppForReport.category === 'preworkout' && "Verified safe stimulant doses, zero prohibited substances (WADA cleared)"}
+                            {selectedSuppForReport.category === 'multivitamin' && "Verified chelated minerals and highly bioactive vitamin complexes"}
+                            {selectedSuppForReport.category === 'omega3' && "Verified zero heavy metal toxic accumulation (Lead, Arsenic undetected)"}
+                          </p>
+                        </div>
+                      )}
+
+                      <div>
+                        <span className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Certification Info</span>
+                        <p className="font-medium text-text-muted">Certificate ID: <span className="font-bold text-text-app">{certificateNo || 'Pending'}</span></p>
+                        <p className="font-medium text-text-muted mt-0.5">Tested Date: <span className="font-bold text-text-app">{testedDate}</span></p>
+                        <p className="text-[9px] text-text-muted mt-2.5 leading-relaxed opacity-75">
+                          * <strong>Disclaimer</strong>: Certificate numbers, test dates, and chemical ratings are simulated models based on public safety advisories (such as FDA heavy metal ceilings and HPLC assays) for health education. This serves as comparative guidance. Always check official packaging for certified third-party seals (e.g. Trustified, Labdoor, or Informed-Choice).
+                        </p>
+                      </div>
+
                     </div>
-
-                  </div>
+                  ) : (
+                    <div className="text-center py-6 px-4 border-t border-border-app/40 text-text-muted text-[11px] leading-relaxed">
+                      Detailed chemical assay parameters, purity verification scores, and lot certificates are not displayed for pending or expired lab reports.
+                    </div>
+                  )}
 
                   {/* Close panel action */}
                   <button

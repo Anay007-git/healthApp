@@ -188,12 +188,30 @@ export async function getGyms(): Promise<Gym[]> {
 export async function getSupplements(category?: string): Promise<Supplement[]> {
   if (supabase) {
     try {
-      let query = supabase.from('supplements').select('*');
+      let query = supabase.from('supplements').select(`
+        *,
+        lab_reports (status)
+      `);
       if (category && category !== 'all') {
         query = query.eq('category', category);
       }
       const { data, error } = await query.order('rating', { ascending: false });
-      if (!error && data) return data as Supplement[];
+      if (!error && data) {
+        return data.map((item: any) => {
+          let status = null;
+          if (item.lab_reports) {
+            if (Array.isArray(item.lab_reports)) {
+              status = item.lab_reports[0]?.status || null;
+            } else {
+              status = item.lab_reports.status || null;
+            }
+          }
+          return {
+            ...item,
+            lab_report_status: status
+          };
+        }) as Supplement[];
+      }
       console.warn('Error fetching supplements from database, falling back to mock:', error);
     } catch (e) {
       console.warn('Exception fetching supplements, falling back to mock:', e);
@@ -263,7 +281,6 @@ export async function getLabReportBySupplementId(supplementId: string): Promise<
         .from('lab_reports')
         .select('*')
         .eq('supplement_id', supplementId)
-        .eq('status', 'published')
         .maybeSingle();
       
       if (!error && data) return data as LabReport;
