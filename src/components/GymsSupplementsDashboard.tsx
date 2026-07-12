@@ -921,7 +921,7 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                           const isMarketLeader = supp.tier === 'market_leader';
                           const isValuePick = supp.tier === 'value_pick';
                           const report = getLabReport(supp);
-                          const hasWarning = !!report.warning;
+                          const hasWarning = supp.lab_report_status === 'published' && !!report.warning;
 
                           return (
                             <div 
@@ -1311,7 +1311,7 @@ export default function GymsSupplementsDashboard({ initialGyms, initialSupplemen
                     <div className="space-y-4">
                       {advisorStack.map((supp, index) => {
                         const report = getLabReport(supp);
-                        const hasWarning = !!report.warning;
+                        const hasWarning = supp.lab_report_status === 'published' && !!report.warning;
 
                         return (
                           <div
