@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from 'next/link';
-import { Home, ClipboardList, Dumbbell } from 'lucide-react';
+import { Home, ClipboardList, Dumbbell, Flame } from 'lucide-react';
 import "./globals.css";
 import Header from "@/components/Header";
 import AiChatbot from "@/components/AiChatbot";
@@ -60,6 +60,10 @@ export default function RootLayout({
             <Link href="/gyms-supplements" className="flex flex-col items-center gap-0.5 text-text-app hover:text-brand-primary">
               <Dumbbell className="h-5.5 w-5.5" />
               <span className="text-[9px] font-black uppercase tracking-wider">Gyms & Supps</span>
+            </Link>
+            <Link href="/hypertrophy" className="flex flex-col items-center gap-0.5 text-text-app hover:text-brand-primary">
+              <Flame className="h-5.5 w-5.5" />
+              <span className="text-[9px] font-black uppercase tracking-wider">Hypertrophy</span>
             </Link>
           </div>
 

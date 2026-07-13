@@ -143,6 +143,9 @@ export default function Header() {
               <Link href="/gyms-supplements" className="text-xs font-bold text-text-app hover:text-brand-primary transition-colors">
                 Gyms & Supps
               </Link>
+              <Link href="/hypertrophy" className="text-xs font-bold text-text-app hover:text-brand-primary transition-colors">
+                Hypertrophy AI
+              </Link>
             </nav>
           </div>
 
