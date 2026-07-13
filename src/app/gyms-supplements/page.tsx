@@ -1,7 +1,7 @@
 import { getGyms, getSupplements } from "@/lib/db";
 import GymsSupplementsDashboard from "@/components/GymsSupplementsDashboard";
 
-export const revalidate = 3600; // Cache page static generation, ISR revalidate every hour
+export const dynamic = 'force-dynamic'; // Fetch live database values on every page request
 
 export default async function GymsSupplementsPage() {
   const gyms = await getGyms();
