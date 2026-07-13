@@ -58,193 +58,172 @@ export default function NutritionPlanner() {
     // Water: 35ml per kg + 1L for training
     const water = ((wt * 35) / 1000 + 1).toFixed(1);
 
-    return { calories: targetCalories, protein, carbs, fat, water };
+    return {
+      maintenance: Math.round(maintenance),
+      targetCalories,
+      protein,
+      carbs,
+      fat,
+      water
+    };
   };
 
   const macros = calculateMacros();
 
+  // Percentage calculations for bars
+  const totalKcal = macros.protein * 4 + macros.carbs * 4 + macros.fat * 9;
+  const pPct = ((macros.protein * 4) / totalKcal) * 100;
+  const cPct = ((macros.carbs * 4) / totalKcal) * 100;
+  const fPct = ((macros.fat * 9) / totalKcal) * 100;
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
-      {/* Inputs Column */}
-      <div className="lg:col-span-4 p-6 rounded-3xl bg-[#090D16]/60 border border-slate-800/60 backdrop-blur-md space-y-6">
+      
+      {/* Nutrition input selectors */}
+      <div className="lg:col-span-4 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col gap-6">
         <div className="space-y-0.5">
-          <span className="text-[10px] font-mono text-blue-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+          <span className="text-[10px] font-mono text-blue-600 uppercase tracking-widest font-black flex items-center gap-1.5">
             <Sliders className="h-4 w-4" />
-            CALORIE & MACRO CALCULATOR
+            NUTRITIONAL CONTROLLER
           </span>
-          <h3 className="text-lg font-black text-white">Anabolic Calibration</h3>
+          <h3 className="text-lg font-extrabold text-slate-900">Macros Calibrator</h3>
         </div>
 
-        <div className="space-y-4 text-xs font-semibold text-slate-300">
+        <div className="space-y-4 text-xs font-semibold text-slate-655">
           {/* Weight */}
           <div>
-            <label className="block text-[10px] font-mono text-slate-500 uppercase tracking-widest font-bold mb-1.5">WEIGHT (KG)</label>
+            <label className="block text-[8px] font-mono text-slate-400 uppercase tracking-widest font-bold mb-1.5">CURRENT BODYWEIGHT (KG)</label>
             <input
               type="number"
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
-              className="w-full bg-[#0e1626] border border-slate-800 text-white rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-blue-500"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2 focus:outline-none"
             />
           </div>
 
-          {/* Goal selection */}
+          {/* Goal */}
           <div>
-            <label className="block text-[10px] font-mono text-slate-500 uppercase tracking-widest font-bold mb-1.5">DIETARY GOAL</label>
+            <label className="block text-[8px] font-mono text-slate-400 uppercase tracking-widest font-bold mb-1.5">TRAINING OBJECTIVE</label>
             <select
               value={goal}
               onChange={(e) => setGoal(e.target.value)}
-              className="w-full bg-[#0e1626] border border-slate-800 text-white rounded-xl px-3 py-2.5 focus:outline-none"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-850 rounded-xl px-3.5 py-2 focus:outline-none"
             >
-              <option value="lean_bulk">Lean Bulk (+250 kcal surplus)</option>
-              <option value="clean_bulk">Clean Bulk (+450 kcal surplus)</option>
-              <option value="maintenance">Maintenance (Energy Balance)</option>
-              <option value="cut">Moderate Cut (-400 kcal deficit)</option>
-              <option value="fat_loss">Aggressive Recomp (-600 kcal deficit)</option>
+              <option value="lean_bulk">Lean Bulk (+250 kcal)</option>
+              <option value="clean_bulk">Clean Bulk (+450 kcal)</option>
+              <option value="cut">Fat Cut (-400 kcal)</option>
+              <option value="fat_loss">Aggressive Deficit (-600 kcal)</option>
             </select>
           </div>
 
           {/* Activity */}
           <div>
-            <label className="block text-[10px] font-mono text-slate-500 uppercase tracking-widest font-bold mb-1.5">TRAINING ACTIVITY</label>
+            <label className="block text-[8px] font-mono text-slate-400 uppercase tracking-widest font-bold mb-1.5">DAILY ENERGY EXPENDITURE</label>
             <select
               value={activity}
               onChange={(e) => setActivity(e.target.value)}
-              className="w-full bg-[#0e1626] border border-slate-800 text-white rounded-xl px-3 py-2.5 focus:outline-none"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-850 rounded-xl px-3.5 py-2 focus:outline-none"
             >
-              <option value="sedentary">Sedentary (1-2 workouts/wk)</option>
-              <option value="moderate">Moderate (3-4 workouts/wk)</option>
-              <option value="active">Active (5+ workouts/wk)</option>
+              <option value="sedentary">Sedentary (Desk work / No training)</option>
+              <option value="moderate">Moderately Active (Train 3-4x / wk)</option>
+              <option value="active">Very Active (Train 5-6x / wk)</option>
             </select>
           </div>
         </div>
 
-        {/* Calculated outputs list */}
-        <div className="pt-4 border-t border-slate-800/60 space-y-3 font-mono">
-          <div className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-center">
-            <span className="text-[9px] text-blue-400 font-bold uppercase tracking-widest block">TARGET DAILY CALORIES</span>
-            <span className="text-3xl font-black text-white">{macros.calories} kcal</span>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2 text-center text-xs">
-            <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <span className="block text-[8px] text-slate-500 font-bold">PROTEIN</span>
-              <span className="font-bold text-white text-sm">{macros.protein}g</span>
-            </div>
-            <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <span className="block text-[8px] text-slate-500 font-bold">CARBS</span>
-              <span className="font-bold text-white text-sm">{macros.carbs}g</span>
-            </div>
-            <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <span className="block text-[8px] text-slate-500 font-bold">FATS</span>
-              <span className="font-bold text-white text-sm">{macros.fat}g</span>
-            </div>
-          </div>
-
-          <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/60 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Droplets className="h-4.5 w-4.5 text-blue-400" />
-              <span className="text-[10px] text-slate-400 font-bold">TARGET WATER</span>
-            </div>
-            <span className="text-xs font-black text-white">{macros.water} Liters</span>
-          </div>
+        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span className="text-[9px] text-slate-400 font-mono">FORMULA: HARRIS_BENEDICT</span>
+          <span className="text-[10px] text-blue-600 font-bold">ONLINE</span>
         </div>
       </div>
 
-      {/* Timing and Supplement Guides Column */}
-      <div className="lg:col-span-8 space-y-6">
-        {/* Nutrient timing */}
-        <div className="p-6 rounded-3xl bg-[#090D16]/60 border border-slate-800/60 backdrop-blur-md space-y-5">
-          <h3 className="text-base font-bold text-white flex items-center gap-2">
-            <Clock className="h-5 w-5 text-blue-400" />
-            Nutrient Timing Strategies
-          </h3>
+      {/* Target calories & macros display */}
+      <div className="lg:col-span-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-6">
+        <div className="flex flex-wrap justify-between items-start gap-4">
+          <div className="space-y-0.5">
+            <span className="text-[10px] font-mono text-blue-600 uppercase tracking-widest font-black flex items-center gap-1.5">
+              <Sparkles className="h-4 w-4" />
+              NUTRITION SYNTHESIS SUMMARY
+            </span>
+            <h3 className="text-xl font-extrabold text-slate-900">Anabolic Calorie Budget</h3>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-medium">
-            {/* Pre */}
-            <div className="p-4 rounded-2xl bg-[#0B0F19]/60 border border-slate-850 space-y-1.5">
-              <span className="text-[9px] font-mono text-blue-400 font-black uppercase block">Pre-Workout (2-3 hrs)</span>
-              <span className="font-bold text-white block">Starch Carbs + Protein</span>
-              <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
-                Consume 40g slow carbs (e.g. oats, rice) and 30g protein. This creates circulating amino acids and maximizes glycogen fullness for energy.
-              </p>
+          <div className="text-right">
+            <span className="block text-[9px] font-mono text-slate-400 uppercase tracking-widest">Target Energy</span>
+            <span className="text-3xl font-black text-slate-850">{macros.targetCalories} kcal</span>
+          </div>
+        </div>
+
+        {/* Macros split progress bars */}
+        <div className="space-y-4">
+          <span className="block text-[10px] font-mono text-slate-400 uppercase tracking-widest font-bold">MACRONUTRIENT DISTRIBUTION</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Protein */}
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-bold text-slate-800">Protein</span>
+                <span className="font-mono text-slate-500">{macros.protein}g</span>
+              </div>
+              <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-600" style={{ width: `${pPct}%` }} />
+              </div>
+              <span className="text-[9px] text-slate-450 block font-mono">Preserves & builds muscle tissue ({Math.round(pPct)}% kcal)</span>
             </div>
 
-            {/* Intra */}
-            <div className="p-4 rounded-2xl bg-[#0B0F19]/60 border border-slate-850 space-y-1.5">
-              <span className="text-[9px] font-mono text-blue-400 font-black uppercase block">Intra-Workout</span>
-              <span className="font-bold text-white block">Hydration + EAA / Fast Carbs</span>
-              <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
-                Focus on sipping water with electrolytes. If training exceeds 75+ mins, add 20g fast-acting carbs to maintain blood glucose and reduce muscle breakdown.
-              </p>
+            {/* Carbs */}
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-bold text-slate-800">Carbs</span>
+                <span className="font-mono text-slate-500">{macros.carbs}g</span>
+              </div>
+              <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-500" style={{ width: `${cPct}%` }} />
+              </div>
+              <span className="text-[9px] text-slate-450 block font-mono">Energizes anaerobic pathways ({Math.round(cPct)}% kcal)</span>
             </div>
 
-            {/* Post */}
-            <div className="p-4 rounded-2xl bg-[#0B0F19]/60 border border-slate-850 space-y-1.5">
-              <span className="text-[9px] font-mono text-blue-400 font-black uppercase block">Post-Workout (0-2 hrs)</span>
-              <span className="font-bold text-white block">Rapid Protein + Glycogen</span>
-              <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
-                Consume 35-40g high-quality whey or isolate along with 50-60g fast carbs. This spikes Muscle Protein Synthesis (MPS) and prompts rapid glycogen restoration.
-              </p>
+            {/* Fat */}
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-bold text-slate-800">Fat</span>
+                <span className="font-mono text-slate-500">{macros.fat}g</span>
+              </div>
+              <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-400" style={{ width: `${fPct}%` }} />
+              </div>
+              <span className="text-[9px] text-slate-450 block font-mono">Regulates hormone production ({Math.round(fPct)}% kcal)</span>
             </div>
           </div>
         </div>
 
-        {/* Supplementation */}
-        <div className="p-6 rounded-3xl bg-[#090D16]/60 border border-slate-800/60 backdrop-blur-md space-y-5">
-          <h3 className="text-base font-bold text-white flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-blue-400" />
-            Hypertrophy-Specific Supplement Guide
-          </h3>
+        {/* Fluid hydration alert */}
+        <div className="p-4 rounded-2xl bg-blue-50 border border-blue-105 flex gap-3 items-center">
+          <Droplets className="h-5 w-5 text-blue-650 flex-shrink-0" />
+          <div className="space-y-0.5 text-xs text-slate-700">
+            <span className="block text-[9px] font-mono text-blue-650 uppercase tracking-widest font-black">HYDRATION PROTOCOL</span>
+            <span>Consume <span className="font-bold text-blue-650">{macros.water} Liters</span> of filtered water daily to maintain cellular swelling/hydration.</span>
+          </div>
+        </div>
 
-          <div className="space-y-3">
-            {/* Supplement 1 */}
-            <div className="p-4 rounded-2xl bg-[#0B0F19]/60 border border-slate-800/60 flex flex-col md:flex-row md:items-center justify-between gap-3">
-              <div className="space-y-1 md:max-w-md">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-white">Creatine Monohydrate</span>
-                  <span className="text-[8px] font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded uppercase font-bold">ESSENTIAL</span>
-                </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
-                  Increases cellular phosphocreatine stores, which aids rapid ATP restoration during heavy sets of squats or presses. Also draws water inside the muscle cells (intracellular hydration) causing a direct hypertrophic swelling stimulus.
-                </p>
-              </div>
-              <div className="text-right font-mono flex-shrink-0">
-                <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-black mb-0.5">DOSAGE</span>
-                <span className="text-xs font-bold text-blue-400">5g Daily (Anytime)</span>
+        {/* Micronutrients / Supplements recommendations */}
+        <div className="space-y-3.5 border-t border-slate-100 pt-4">
+          <span className="block text-[10px] font-mono text-slate-400 uppercase tracking-widest font-bold">RECOMMENDED SUPPLEMENT DOSAGES</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold text-slate-700">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex gap-3">
+              <Clock className="h-4.5 w-4.5 text-blue-600 flex-shrink-0 mt-0.5" />
+              <div className="space-y-0.5">
+                <span className="block text-[9px] font-mono text-slate-400 uppercase tracking-widest">Creatine Monohydrate</span>
+                <span className="block font-bold">5g Daily (Anytime)</span>
+                <p className="text-[10px] text-slate-500 font-medium">Saturates intramuscular phosphocreatine pools. Boosts power & cellular swelling.</p>
               </div>
             </div>
 
-            {/* Supplement 2 */}
-            <div className="p-4 rounded-2xl bg-[#0B0F19]/60 border border-slate-800/60 flex flex-col md:flex-row md:items-center justify-between gap-3">
-              <div className="space-y-1 md:max-w-md">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-white">Caffeine Anhydrous</span>
-                  <span className="text-[8px] font-mono text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded uppercase font-bold">PRE-WORKOUT</span>
-                </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
-                  Reduces Rate of Perceived Exertion (RPE) and increases motor unit recruitment. Amplifies peak force output, letting you hit more reps under high mechanical tension.
-                </p>
-              </div>
-              <div className="text-right font-mono flex-shrink-0">
-                <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-black mb-0.5">DOSAGE</span>
-                <span className="text-xs font-bold text-blue-400">3-6 mg/kg (30-60 min pre)</span>
-              </div>
-            </div>
-
-            {/* Supplement 3 */}
-            <div className="p-4 rounded-2xl bg-[#0B0F19]/60 border border-slate-800/60 flex flex-col md:flex-row md:items-center justify-between gap-3">
-              <div className="space-y-1 md:max-w-md">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-white">Beta-Alanine</span>
-                  <span className="text-[8px] font-mono text-slate-500 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded uppercase font-bold">PERFORMANCE</span>
-                </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
-                  Acts as a lactic acid buffer by increasing muscle carnosine levels. Best suited for high-rep sets (12+ reps) where metabolic stress and burning limit performance.
-                </p>
-              </div>
-              <div className="text-right font-mono flex-shrink-0">
-                <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-black mb-0.5">DOSAGE</span>
-                <span className="text-xs font-bold text-blue-400">3.2g Daily (Beta-tingle)</span>
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex gap-3">
+              <Clock className="h-4.5 w-4.5 text-blue-600 flex-shrink-0 mt-0.5" />
+              <div className="space-y-0.5">
+                <span className="block text-[9px] font-mono text-slate-400 uppercase tracking-widest">Caffeine Anhydrous</span>
+                <span className="block font-bold">150-300mg (30-45m Pre-Workout)</span>
+                <p className="text-[10px] text-slate-500 font-medium">Antagonizes adenosine receptors. Decreases Rate of Perceived Exertion (RPE).</p>
               </div>
             </div>
           </div>

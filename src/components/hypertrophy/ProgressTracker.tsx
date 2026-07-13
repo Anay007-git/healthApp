@@ -95,8 +95,8 @@ export default function ProgressTracker() {
       <svg className="w-full h-44 font-mono overflow-visible" viewBox={`0 0 ${width} ${height}`}>
         <defs>
           <linearGradient id="chartGlow" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.0" />
+            <stop offset="0%" stopColor="#2563EB" stopOpacity="0.15" />
+            <stop offset="100%" stopColor="#2563EB" stopOpacity="0.0" />
           </linearGradient>
         </defs>
 
@@ -106,8 +106,8 @@ export default function ProgressTracker() {
           const y = height - padding - ratio * (height - padding * 2);
           return (
             <g key={val}>
-              <line x1={padding} y1={y} x2={width - padding} y2={y} className="stroke-slate-800/40 stroke-1" strokeDasharray="4,4" />
-              <text x={padding - 5} y={y + 3} className="fill-slate-500 text-[8px]" textAnchor="end">{val}kg</text>
+              <line x1={padding} y1={y} x2={width - padding} y2={y} className="stroke-slate-200 stroke-1" strokeDasharray="4,4" />
+              <text x={padding - 5} y={y + 3} className="fill-slate-400 text-[8px]" textAnchor="end">{val}kg</text>
             </g>
           );
         })}
@@ -116,14 +116,14 @@ export default function ProgressTracker() {
         <path d={areaD} fill="url(#chartGlow)" />
 
         {/* Trend Line */}
-        <path d={pathD} fill="none" className="stroke-blue-500 stroke-2" />
+        <path d={pathD} fill="none" className="stroke-blue-600 stroke-2" />
 
         {/* Data points */}
         {points.map((p, idx) => (
           <g key={idx} className="group cursor-pointer">
-            <circle cx={p.x} cy={p.y} r="3.5" className="fill-slate-950 stroke-blue-400 stroke-2 hover:fill-blue-500 transition-colors" />
-            <text x={p.x} y={height - 2} className="fill-slate-500 text-[8px] text-center" textAnchor="middle">{p.day}</text>
-            <text x={p.x} y={p.y - 8} className="fill-white text-[7px] opacity-0 group-hover:opacity-100 transition-opacity text-center font-bold" textAnchor="middle">{p.weight}kg</text>
+            <circle cx={p.x} cy={p.y} r="4" className="fill-white stroke-blue-600 stroke-2 hover:fill-blue-600 transition-colors" />
+            <text x={p.x} y={height - 2} className="fill-slate-400 text-[8px] text-center" textAnchor="middle">{p.day}</text>
+            <text x={p.x} y={p.y - 8} className="fill-slate-800 text-[8px] opacity-0 group-hover:opacity-100 transition-opacity text-center font-bold" textAnchor="middle">{p.weight}kg</text>
           </g>
         ))}
       </svg>
@@ -133,33 +133,33 @@ export default function ProgressTracker() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
       {/* Weight Tracker Block */}
-      <div className="lg:col-span-8 p-6 rounded-3xl bg-[#090D16]/60 border border-slate-800/60 backdrop-blur-md space-y-6">
+      <div className="lg:col-span-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-6">
         <div className="flex justify-between items-center">
           <div className="space-y-0.5">
-            <span className="text-[10px] font-mono text-blue-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+            <span className="text-[10px] font-mono text-blue-600 uppercase tracking-widest font-black flex items-center gap-1.5">
               <TrendingUp className="h-4 w-4" />
               WEIGHT PROGRESSION CURVE
             </span>
-            <h3 className="text-lg font-black text-white">Body Recomposition Log</h3>
+            <h3 className="text-lg font-extrabold text-slate-900">Body Recomposition Log</h3>
           </div>
-          <span className="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/25">
+          <span className="text-[9px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
             TREND: LEAN GAIN (+0.2KG/WK)
           </span>
         </div>
 
         {/* Custom SVG line graph */}
-        <div className="p-4 rounded-2xl bg-[#0B0F19]/50 border border-slate-800/40">
+        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
           {renderSvgLineChart()}
         </div>
 
         {/* Inputs */}
-        <form onSubmit={handleAddDataPoint} className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end text-xs font-semibold">
+        <form onSubmit={handleAddDataPoint} className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end text-xs font-semibold text-slate-600">
           <div>
-            <label className="block text-[8px] font-mono text-slate-500 uppercase tracking-widest font-bold mb-1.5">DAY OF WEEK</label>
+            <label className="block text-[8px] font-mono text-slate-400 uppercase tracking-widest font-bold mb-1.5">DAY OF WEEK</label>
             <select
               value={inputDay}
               onChange={(e) => setInputDay(e.target.value)}
-              className="w-full bg-[#0e1626] border border-slate-800 text-white rounded-xl px-2.5 py-2"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-2.5 py-2 focus:outline-none"
             >
               <option value="Mon">Monday</option>
               <option value="Tue">Tuesday</option>
@@ -171,92 +171,86 @@ export default function ProgressTracker() {
             </select>
           </div>
           <div>
-            <label className="block text-[8px] font-mono text-slate-500 uppercase tracking-widest font-bold mb-1.5">WEIGHT (KG)</label>
+            <label className="block text-[8px] font-mono text-slate-400 uppercase tracking-widest font-bold mb-1.5">WEIGHT (KG)</label>
             <input
               type="number"
               step="0.1"
               value={inputWeight}
               onChange={(e) => setInputWeight(e.target.value)}
-              className="w-full bg-[#0e1626] border border-slate-800 text-white rounded-xl px-3.5 py-2"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3 py-2 focus:outline-none"
             />
           </div>
           <div>
-            <label className="block text-[8px] font-mono text-slate-500 uppercase tracking-widest font-bold mb-1.5">VOL LOAD (KG)</label>
+            <label className="block text-[8px] font-mono text-slate-400 uppercase tracking-widest font-bold mb-1.5">VOLUME (KG/WK)</label>
             <input
               type="number"
               value={inputVolume}
               onChange={(e) => setInputVolume(e.target.value)}
-              className="w-full bg-[#0e1626] border border-slate-800 text-white rounded-xl px-3.5 py-2"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3 py-2 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg active:scale-95 transition-all flex items-center justify-center gap-1"
+            className="py-2 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold transition-all shadow-sm flex items-center justify-center gap-1.5"
           >
-            <PlusCircle className="h-4 w-4" />
-            Add Log Entry
+            <PlusCircle className="h-4.5 w-4.5" />
+            Add Log Point
           </button>
         </form>
       </div>
 
-      {/* Strength Personal Records (PRs) Column */}
-      <div className="lg:col-span-4 p-6 rounded-3xl bg-[#090D16]/60 border border-slate-800/60 backdrop-blur-md flex flex-col gap-6">
+      {/* PR / Records Block */}
+      <div className="lg:col-span-4 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-6">
         <div className="space-y-0.5">
-          <span className="text-[10px] font-mono text-blue-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+          <span className="text-[10px] font-mono text-blue-600 uppercase tracking-widest font-black flex items-center gap-1.5">
             <Award className="h-4 w-4" />
-            STRENGTH HALL OF FAME
+            PERSONAL STRENGTH PRs
           </span>
-          <h3 className="text-lg font-black text-white">Personal Records (PRs)</h3>
+          <h3 className="text-lg font-extrabold text-slate-900">Hall of Records</h3>
         </div>
 
         {/* PR list */}
-        <div className="space-y-2.5 flex-1">
+        <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
           {prs.map((pr, idx) => (
-            <div
-              key={idx}
-              className="p-3.5 rounded-2xl bg-[#0B0F19]/60 border border-slate-800/60 flex items-center justify-between group hover:border-blue-500/20 transition-all duration-200"
-            >
+            <div key={idx} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex justify-between items-center text-xs">
               <div className="space-y-0.5">
-                <span className="text-xs font-bold text-white block">{pr.exercise}</span>
-                <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest block">RECORDED: {pr.date}</span>
+                <span className="font-bold text-slate-800 block">{pr.exercise}</span>
+                <span className="text-[9px] font-mono text-slate-400 block">{pr.date}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-black text-blue-400">{pr.weight}</span>
-                <div className="p-1.5 rounded-lg bg-blue-500/5 text-blue-400 border border-blue-500/10">
-                  <Zap className="h-3 w-3" />
-                </div>
-              </div>
+              <span className="px-3 py-1 bg-blue-50 text-blue-600 border border-blue-100 font-mono font-bold rounded-xl text-[10px]">
+                {pr.weight}
+              </span>
             </div>
           ))}
         </div>
 
-        {/* Add PR Form */}
-        <form onSubmit={handleAddPR} className="space-y-3 border-t border-slate-800/60 pt-4 text-xs font-semibold">
+        {/* Add PR form */}
+        <form onSubmit={handleAddPR} className="space-y-3 pt-4 border-t border-slate-100 text-xs font-semibold text-slate-600">
           <div>
-            <label className="block text-[8px] font-mono text-slate-500 uppercase tracking-widest font-bold mb-1">EXERCISE</label>
+            <label className="block text-[8px] font-mono text-slate-400 uppercase tracking-widest font-bold mb-1">EXERCISE</label>
             <input
               type="text"
-              placeholder="e.g. Incline Bench"
+              placeholder="e.g. Incline Bench Press"
               value={newExName}
               onChange={(e) => setNewExName(e.target.value)}
-              className="w-full bg-[#0e1626] border border-slate-800 text-white rounded-xl px-3 py-2"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3 py-2 focus:outline-none"
             />
           </div>
           <div>
-            <label className="block text-[8px] font-mono text-slate-500 uppercase tracking-widest font-bold mb-1">RECORD WEIGHT</label>
+            <label className="block text-[8px] font-mono text-slate-400 uppercase tracking-widest font-bold mb-1">LOAD (KG / REPS)</label>
             <input
               type="text"
-              placeholder="e.g. 100 kg"
+              placeholder="e.g. 100 kg x 5 reps"
               value={newExWeight}
               onChange={(e) => setNewExWeight(e.target.value)}
-              className="w-full bg-[#0e1626] border border-slate-800 text-white rounded-xl px-3 py-2"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3 py-2 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800/80 text-xs font-bold text-slate-200 border border-slate-800 transition-colors"
+            className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold transition-all shadow-sm"
           >
-            Log New Strength Record
+            Log New Bench PR
           </button>
         </form>
       </div>

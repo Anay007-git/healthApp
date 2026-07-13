@@ -59,157 +59,161 @@ export default function AiCoachChat() {
     return "That's an excellent question! Hypertrophy research confirms that the four foundational pillars of muscle growth are: 1. Progressive overload (adding weight or reps), 2. Controlled eccentrics (2-3s lowering phase) loading the muscle under stretch, 3. Consistent training within 1-3 Reps in Reserve, and 4. Systemic recovery (7-9 hours sleep, daily protein cap).";
   };
 
-  const handleSend = (text: string) => {
+  const handleSendMessage = (text: string) => {
     if (!text.trim()) return;
 
+    const userTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const userMsg: Message = {
       id: msgCounter,
       sender: "user",
       text,
-      timestamp: "Just now"
+      timestamp: userTime
     };
 
     setMessages((prev) => [...prev, userMsg]);
+    setMsgCounter((c) => c + 1);
     setInputVal("");
     setIsTyping(true);
 
-    const nextId = msgCounter + 1;
-    setMsgCounter(prev => prev + 2);
-
-    // Simulate coach response latency
+    // Simulate AI thinking and typing response
     setTimeout(() => {
+      const responseText = getCoachResponse(text);
+      const coachTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       const coachMsg: Message = {
-        id: nextId,
+        id: msgCounter + 1,
         sender: "coach",
-        text: getCoachResponse(text),
-        timestamp: "Just now"
+        text: responseText,
+        timestamp: coachTime
       };
+
       setMessages((prev) => [...prev, coachMsg]);
+      setMsgCounter((c) => c + 2);
       setIsTyping(false);
     }, 1200);
   };
 
+  const clearChatHistory = () => {
+    if (confirm("Reset conversation with your AI Coach?")) {
+      setMessages([
+        {
+          id: 1,
+          sender: "coach",
+          text: "Hello! I am your AI Hypertrophy Coach, specialized in exercise biomechanics and nutrition science. Ask me anything about lagging muscle groups, workout programming, RPE, or meal schedules.",
+          timestamp: "12:00"
+        }
+      ]);
+    }
+  };
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[600px] items-stretch animate-in fade-in slide-in-from-bottom-4 duration-300">
-      {/* Suggestions column */}
-      <div className="lg:col-span-4 p-6 rounded-3xl bg-[#090D16]/60 border border-slate-800/60 backdrop-blur-md flex flex-col gap-6 h-full">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+      {/* Suggestions Column */}
+      <div className="lg:col-span-4 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col gap-5 h-fit">
         <div className="space-y-0.5">
-          <span className="text-[10px] font-mono text-blue-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+          <span className="text-[10px] font-mono text-blue-600 uppercase tracking-widest font-black flex items-center gap-1.5">
             <BrainCircuit className="h-4 w-4" />
-            AI COMPANION CONSOLE
+            AI COMPANION HUDS
           </span>
-          <h3 className="text-lg font-black text-white font-sans">Scientific Queries</h3>
+          <h3 className="text-lg font-extrabold text-slate-900">Training Prompt Suggestions</h3>
         </div>
 
-        <p className="text-xs text-slate-400 leading-relaxed font-medium">
-          Select a quick-suggest query to ask your AI coach or type your own question in the input prompt.
-        </p>
-
-        <div className="flex-1 space-y-2">
-          {predefinedQuestions.map((q) => (
+        <div className="space-y-2">
+          {predefinedQuestions.map((item, idx) => (
             <button
-              key={q.id}
-              onClick={() => handleSend(q.q)}
-              className="w-full text-left p-3.5 rounded-2xl bg-[#0B0F19]/60 border border-slate-800 hover:border-blue-500/35 hover:bg-blue-500/5 transition-all text-xs font-semibold text-slate-300 flex items-center justify-between group"
+              key={idx}
+              onClick={() => handleSendMessage(item.q)}
+              className="w-full text-left p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200 text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all flex items-center justify-between group"
             >
-              <span>{q.q}</span>
-              <ChevronRight className="h-4 w-4 text-slate-600 group-hover:text-blue-400 transition-colors" />
+              <span>{item.q}</span>
+              <ChevronRight className="h-4 w-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
             </button>
           ))}
         </div>
 
         <button
-          onClick={() => setMessages([messages[0]])}
-          className="w-full py-2.5 rounded-xl border border-slate-800 bg-slate-900/50 hover:bg-slate-850 text-[10px] font-bold text-slate-500 hover:text-slate-300 transition-colors flex items-center justify-center gap-1"
+          onClick={clearChatHistory}
+          className="w-full py-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[10px] font-bold text-slate-500 hover:text-slate-800 transition-colors flex items-center justify-center gap-1"
         >
           <RotateCcw className="h-3.5 w-3.5" />
-          Clear Chat History
+          Clear Conversation History
         </button>
       </div>
 
-      {/* Main chat interface column */}
-      <div className="lg:col-span-8 p-6 rounded-3xl bg-[#090D16]/40 border border-slate-800/60 backdrop-blur-md flex flex-col h-full overflow-hidden">
-        {/* Chat HUD */}
-        <div className="flex items-center gap-3 border-b border-slate-800 pb-4 mb-4">
-          <div className="h-9 w-9 rounded-xl bg-blue-500/10 border border-blue-500/25 flex items-center justify-center text-blue-400">
-            <Sparkles className="h-4.5 w-4.5" />
+      {/* Main Console Chat Terminal */}
+      <div className="lg:col-span-8 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col h-[520px]">
+        {/* Terminal HUD Header */}
+        <div className="pb-4 border-b border-slate-100 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="h-9 w-9 items-center justify-center rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex">
+              <BrainCircuit className="h-5 w-5 animate-pulse" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs font-black text-slate-900">BIOMECHANICAL AI COMPANION</span>
+              <span className="text-[9px] font-mono text-slate-400">ENGINE V1.0 • ONLINE</span>
+            </div>
           </div>
-          <div>
-            <span className="text-xs font-bold text-white block">Hypertrophy AI System v1</span>
-            <span className="text-[8px] font-mono text-emerald-400 flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> ONLINE & COMPLIANT
-            </span>
+
+          <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 border border-slate-200 rounded-full text-[9px] font-mono text-slate-500">
+            <Sparkles className="h-3 w-3 text-blue-500" />
+            <span>KNOWLEDGE LIMIT: JULY 2026</span>
           </div>
         </div>
 
-        {/* Messages list */}
-        <div className="flex-1 overflow-y-auto space-y-4 pr-2 mb-4 scrollbar-none">
-          {messages.map((m) => {
-            const isCoach = m.sender === "coach";
-            return (
+        {/* Message Logs */}
+        <div className="flex-1 overflow-y-auto space-y-4 py-4 pr-1 scrollbar-none">
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex flex-col ${msg.sender === "user" ? "items-end" : "items-start"}`}
+            >
               <div
-                key={m.id}
-                className={`flex gap-3 max-w-[85%] ${
-                  isCoach ? "mr-auto" : "ml-auto flex-row-reverse"
+                className={`max-w-[85%] p-3.5 rounded-2xl text-xs font-medium leading-relaxed ${
+                  msg.sender === "user"
+                    ? "bg-blue-600 text-white rounded-tr-none shadow-sm shadow-blue-500/10"
+                    : "bg-slate-50 border border-slate-100 text-slate-700 rounded-tl-none"
                 }`}
               >
-                {/* Avatar icon */}
-                {isCoach && (
-                  <div className="h-7 w-7 rounded-lg bg-blue-900/40 border border-blue-500/20 flex-shrink-0 flex items-center justify-center text-[10px] text-blue-400 font-bold">
-                    AI
-                  </div>
-                )}
-                {/* Bubble */}
-                <div
-                  className={`p-3.5 rounded-2xl text-xs font-medium leading-relaxed ${
-                    isCoach
-                      ? "bg-[#0f1626]/80 text-slate-300 border border-slate-850 rounded-tl-none"
-                      : "bg-blue-600 text-white rounded-tr-none shadow-md shadow-blue-500/5"
-                  }`}
-                >
-                  <p>{m.text}</p>
-                  <span className={`block text-[8px] mt-1.5 text-right ${isCoach ? "text-slate-500" : "text-blue-200"}`}>
-                    {m.timestamp}
-                  </span>
-                </div>
+                {msg.text}
               </div>
-            );
-          })}
+              <span className="text-[8px] font-mono text-slate-400 mt-1 px-1">
+                {msg.sender === "user" ? "USER" : "COACH"} • {msg.timestamp}
+              </span>
+            </div>
+          ))}
 
           {isTyping && (
-            <div className="flex gap-3 max-w-[85%] mr-auto">
-              <div className="h-7 w-7 rounded-lg bg-blue-900/40 border border-blue-500/20 flex-shrink-0 flex items-center justify-center text-[10px] text-blue-400 font-bold">
-                AI
-              </div>
-              <div className="p-3.5 rounded-2xl bg-[#0f1626]/80 border border-slate-850 rounded-tl-none flex items-center gap-1">
-                <span className="h-1.5 w-1.5 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="h-1.5 w-1.5 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="h-1.5 w-1.5 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            <div className="flex flex-col items-start animate-pulse">
+              <div className="max-w-[85%] p-3 bg-slate-50 border border-slate-100 text-slate-400 text-xs rounded-2xl rounded-tl-none flex items-center gap-1.5 font-bold">
+                <span>AI Coach is compiling biomechanics</span>
+                <span className="flex gap-0.5">
+                  <span className="h-1 w-1 bg-slate-400 rounded-full animate-ping" />
+                  <span className="h-1 w-1 bg-slate-400 rounded-full animate-ping delay-75" />
+                  <span className="h-1 w-1 bg-slate-400 rounded-full animate-ping delay-150" />
+                </span>
               </div>
             </div>
           )}
-
           <div ref={chatEndRef} />
         </div>
 
-        {/* Input prompt */}
+        {/* Console Prompt Form */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSend(inputVal);
+            handleSendMessage(inputVal);
           }}
-          className="flex gap-2 text-xs font-semibold"
+          className="flex gap-3 border-t border-slate-100 pt-4 flex-shrink-0"
         >
           <input
             type="text"
-            placeholder="Type your scientific question..."
+            placeholder="Type your anatomical query (e.g. barbell chest sweep or hamstrings eccentric contraction)..."
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
-            className="flex-1 bg-[#0e1626] border border-slate-800 text-white rounded-2xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-colors placeholder-slate-500"
+            className="flex-1 bg-slate-50 border border-slate-200 text-xs rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-colors"
           />
           <button
             type="submit"
-            className="p-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-500/10 active:scale-95 transition-all flex items-center justify-center"
+            className="px-5 bg-blue-600 hover:bg-blue-500 rounded-xl text-white shadow-sm flex items-center justify-center transition-colors active:scale-95"
           >
             <Send className="h-4.5 w-4.5" />
           </button>
