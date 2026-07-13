@@ -174,12 +174,12 @@ export default function AnatomyCanvas({
     const groups: { [key: string]: THREE.Mesh[] } = {};
     const meshesToRaycast: THREE.Object3D[] = [];
 
-    // Helper to create glowing glass material
+    // Helper to create glowing glass material for active muscles
     function createMuscleMaterial() {
       return new THREE.MeshStandardMaterial({
         color: 0x1E293B,
         roughness: 0.25,
-        metalness: 0.15,
+        metalness: 0.1,
         transparent: true,
         opacity: 0.45,
         emissive: 0x000000,
@@ -188,120 +188,163 @@ export default function AnatomyCanvas({
       });
     }
 
+    // Helper to create a dark base material for skeleton/background cores
+    function createCoreMaterial() {
+      return new THREE.MeshStandardMaterial({
+        color: 0x090D15,
+        roughness: 0.45,
+        metalness: 0.05,
+        transparent: true,
+        opacity: 0.6,
+        flatShading: false,
+      });
+    }
+
     // Helper to register parts
-    function addPart(muscleId: string, geometry: THREE.BufferGeometry, position: [number, number, number], rotation: [number, number, number] = [0, 0, 0], scale: [number, number, number] = [1, 1, 1]) {
-      const mat = createMuscleMaterial();
+    function addPart(
+      muscleId: string, 
+      geometry: THREE.BufferGeometry, 
+      position: [number, number, number], 
+      rotation: [number, number, number] = [0, 0, 0], 
+      scale: [number, number, number] = [1, 1, 1],
+      isBackground: boolean = false
+    ) {
+      const mat = isBackground ? createCoreMaterial() : createMuscleMaterial();
       const mesh = new THREE.Mesh(geometry, mat);
       mesh.position.set(...position);
       mesh.rotation.set(...rotation);
       mesh.scale.set(...scale);
 
-      mesh.userData = { muscleId };
+      mesh.userData = { muscleId, isBackground };
       scene.add(mesh);
       
-      if (!groups[muscleId]) groups[muscleId] = [];
-      groups[muscleId].push(mesh);
-      meshesToRaycast.push(mesh);
+      if (!isBackground) {
+        if (!groups[muscleId]) groups[muscleId] = [];
+        groups[muscleId].push(mesh);
+        meshesToRaycast.push(mesh);
+      }
     }
 
-    // Head & Neck
-    const headGeo = new THREE.SphereGeometry(0.24, 24, 24);
-    addPart("neck", headGeo, [0, 2.05, 0], [0, 0, 0], [1, 1.2, 1]); // Head representation
+    // ----------------------------------------------------
+    // BACKGROUND CORE / PROPORTIONAL ANATOMY (Non-clickable)
+    // ----------------------------------------------------
+    // Head representation
+    const headGeo = new THREE.SphereGeometry(0.20, 32, 32);
+    addPart("background", headGeo, [0, 1.85, 0], [0, 0, 0], [1, 1.25, 1], true);
 
-    const neckGeo = new THREE.CapsuleGeometry(0.09, 0.18, 4, 12);
-    addPart("neck", neckGeo, [0, 1.78, 0]);
+    // Neck
+    const neckGeo = new THREE.CapsuleGeometry(0.08, 0.18, 4, 12);
+    addPart("background", neckGeo, [0, 1.58, 0], [0, 0, 0], [1, 1, 1], true);
 
-    // Torso / Chest
-    const pecGeo = new THREE.SphereGeometry(0.18, 24, 24);
-    addPart("upper_chest", pecGeo, [-0.16, 1.45, 0.12], [0, 0, -0.05], [1.3, 0.8, 0.7]);
-    addPart("upper_chest", pecGeo, [0.16, 1.45, 0.12], [0, 0, 0.05], [1.3, 0.8, 0.7]);
-    addPart("lower_chest", pecGeo, [-0.16, 1.24, 0.12], [0, 0, -0.05], [1.3, 0.8, 0.7]);
-    addPart("lower_chest", pecGeo, [0.16, 1.24, 0.12], [0, 0, 0.05], [1.3, 0.8, 0.7]);
+    // Main Upper Chest/Ribcage Core
+    const upperCoreGeo = new THREE.CapsuleGeometry(0.20, 0.65, 8, 16);
+    addPart("background", upperCoreGeo, [0, 0.95, 0], [0, 0, 0], [1.1, 1.0, 0.95], true);
 
-    // Core / Abs
-    const absPackGeo = new THREE.SphereGeometry(0.075, 16, 16);
-    // 6 pack grids
-    addPart("abs", absPackGeo, [-0.08, 0.98, 0.13], [0, 0, 0], [1.2, 0.85, 0.6]);
-    addPart("abs", absPackGeo, [0.08, 0.98, 0.13], [0, 0, 0], [1.2, 0.85, 0.6]);
-    addPart("abs", absPackGeo, [-0.08, 0.84, 0.13], [0, 0, 0], [1.2, 0.85, 0.6]);
-    addPart("abs", absPackGeo, [0.08, 0.84, 0.13], [0, 0, 0], [1.2, 0.85, 0.6]);
-    addPart("abs", absPackGeo, [-0.08, 0.70, 0.13], [0, 0, 0], [1.2, 0.85, 0.6]);
-    addPart("abs", absPackGeo, [0.08, 0.70, 0.13], [0, 0, 0], [1.2, 0.85, 0.6]);
+    // Pelvis / Hips Core
+    const lowerCoreGeo = new THREE.CapsuleGeometry(0.21, 0.25, 8, 16);
+    addPart("background", lowerCoreGeo, [0, 0.2, -0.02], [0, 0, 0], [1.05, 1.0, 1.0], true);
 
-    // Obliques (side of waist)
-    const obliqueGeo = new THREE.CapsuleGeometry(0.065, 0.35, 4, 12);
-    addPart("obliques", obliqueGeo, [-0.25, 0.82, 0.08], [0, 0, 0.15]);
-    addPart("obliques", obliqueGeo, [0.25, 0.82, 0.08], [0, 0, -0.15]);
+    // Hands
+    const handGeo = new THREE.SphereGeometry(0.07, 16, 16);
+    addPart("background", handGeo, [-0.58, 0.44, 0.08], [0, 0, 0], [1, 1, 1], true);
+    addPart("background", handGeo, [0.58, 0.44, 0.08], [0, 0, 0], [1, 1, 1], true);
 
-    // Shoulders
+    // Feet
+    const footGeo = new THREE.CapsuleGeometry(0.065, 0.18, 4, 12);
+    addPart("background", footGeo, [-0.18, -1.5, 0.08], [0.2, 0, 0], [1, 1, 1.3], true);
+    addPart("background", footGeo, [0.18, -1.5, 0.08], [0.2, 0, 0], [1, 1, 1.3], true);
+
+    // ----------------------------------------------------
+    // MUSCULAR LAYERS / SELECTABLE GROUPS (Bodybuilder Proportions)
+    // ----------------------------------------------------
+    // Chest (Pecs - Massive overlapping spheres)
+    const upperPecGeo = new THREE.SphereGeometry(0.14, 24, 24);
+    addPart("upper_chest", upperPecGeo, [-0.13, 1.32, 0.16], [0, 0, -0.04], [1.4, 0.72, 0.8]);
+    addPart("upper_chest", upperPecGeo, [0.13, 1.32, 0.16], [0, 0, 0.04], [1.4, 0.72, 0.8]);
+
+    const lowerPecGeo = new THREE.SphereGeometry(0.155, 24, 24);
+    addPart("lower_chest", lowerPecGeo, [-0.14, 1.16, 0.17], [0, 0, -0.04], [1.38, 0.82, 0.8]);
+    addPart("lower_chest", lowerPecGeo, [0.14, 1.16, 0.17], [0, 0, 0.04], [1.38, 0.82, 0.8]);
+
+    // Core / Abs (Tightly packed bulging six-pack plates)
+    const absPackGeo = new THREE.SphereGeometry(0.07, 16, 16);
+    addPart("abs", absPackGeo, [-0.075, 0.94, 0.14], [0, 0, 0], [1.2, 0.85, 0.6]);
+    addPart("abs", absPackGeo, [0.075, 0.94, 0.14], [0, 0, 0], [1.2, 0.85, 0.6]);
+    addPart("abs", absPackGeo, [-0.075, 0.81, 0.14], [0, 0, 0], [1.2, 0.85, 0.6]);
+    addPart("abs", absPackGeo, [0.075, 0.81, 0.14], [0, 0, 0], [1.2, 0.85, 0.6]);
+    addPart("abs", absPackGeo, [-0.075, 0.68, 0.14], [0, 0, 0], [1.2, 0.85, 0.6]);
+    addPart("abs", absPackGeo, [0.075, 0.68, 0.14], [0, 0, 0], [1.2, 0.85, 0.6]);
+
+    // Obliques (Tapered waist)
+    const obliqueGeo = new THREE.CapsuleGeometry(0.06, 0.3, 4, 12);
+    addPart("obliques", obliqueGeo, [-0.23, 0.8, 0.09], [0, 0, 0.15], [1.0, 1.0, 1.0]);
+    addPart("obliques", obliqueGeo, [0.23, 0.8, 0.09], [0, 0, -0.15], [1.0, 1.0, 1.0]);
+
+    // Shoulders (Boulder Deltoids)
     const deltGeo = new THREE.SphereGeometry(0.14, 24, 24);
-    addPart("front_delts", deltGeo, [-0.46, 1.5, 0.08], [0, 0, 0], [1, 1.3, 1]);
-    addPart("front_delts", deltGeo, [0.46, 1.5, 0.08], [0, 0, 0], [1, 1.3, 1]);
-    addPart("side_delts", deltGeo, [-0.50, 1.5, 0], [0, 0, 0], [1, 1.3, 1]);
-    addPart("side_delts", deltGeo, [0.50, 1.5, 0], [0, 0, 0], [1, 1.3, 1]);
-    addPart("rear_delts", deltGeo, [-0.46, 1.5, -0.08], [0, 0, 0], [1, 1.3, 1]);
-    addPart("rear_delts", deltGeo, [0.46, 1.5, -0.08], [0, 0, 0], [1, 1.3, 1]);
+    addPart("front_delts", deltGeo, [-0.34, 1.34, 0.08], [0, 0, 0], [1, 1.3, 1]);
+    addPart("front_delts", deltGeo, [0.34, 1.34, 0.08], [0, 0, 0], [1, 1.3, 1]);
+    addPart("side_delts", deltGeo, [-0.37, 1.34, 0], [0, 0, 0], [1.1, 1.35, 1.1]);
+    addPart("side_delts", deltGeo, [0.37, 1.34, 0], [0, 0, 0], [1.1, 1.35, 1.1]);
+    addPart("rear_delts", deltGeo, [-0.34, 1.34, -0.08], [0, 0, 0], [1, 1.3, 1]);
+    addPart("rear_delts", deltGeo, [0.34, 1.34, -0.08], [0, 0, 0], [1, 1.3, 1]);
 
-    // Upper Arms (Biceps & Triceps)
-    const bicepsGeo = new THREE.CapsuleGeometry(0.085, 0.35, 8, 16);
-    // Biceps (Front-ish of upper arm)
-    addPart("biceps", bicepsGeo, [-0.53, 1.15, 0.05], [0, 0, 0.1]);
-    addPart("biceps", bicepsGeo, [0.53, 1.15, 0.05], [0, 0, -0.1]);
+    // Upper Arms (Bulging Bicep peaks & Sweeping Triceps)
+    const bicepsGeo = new THREE.SphereGeometry(0.09, 24, 24);
+    addPart("biceps", bicepsGeo, [-0.46, 1.08, 0.06], [0, 0, 0.12], [0.85, 1.35, 0.85]);
+    addPart("biceps", bicepsGeo, [0.46, 1.08, 0.06], [0, 0, -0.12], [0.85, 1.35, 0.85]);
     
-    const tricepsGeo = new THREE.CapsuleGeometry(0.085, 0.35, 8, 16);
-    // Triceps (Back-ish of upper arm)
-    addPart("triceps", tricepsGeo, [-0.53, 1.12, -0.07], [0, 0, 0.1]);
-    addPart("triceps", tricepsGeo, [0.53, 1.12, -0.07], [0, 0, -0.1]);
+    const tricepsGeo = new THREE.SphereGeometry(0.095, 24, 24);
+    addPart("triceps", tricepsGeo, [-0.44, 1.05, -0.07], [0, 0, 0.12], [0.9, 1.45, 0.9]);
+    addPart("triceps", tricepsGeo, [0.44, 1.05, -0.07], [0, 0, -0.12], [0.9, 1.45, 0.9]);
 
-    // Forearms
-    const forearmGeo = new THREE.CapsuleGeometry(0.075, 0.42, 8, 16);
-    addPart("forearms", forearmGeo, [-0.60, 0.72, 0.02], [0, 0, 0.15]);
-    addPart("forearms", forearmGeo, [0.60, 0.72, 0.02], [0, 0, -0.15]);
+    // Forearms (Muscular taper)
+    const forearmGeo = new THREE.CapsuleGeometry(0.068, 0.32, 8, 16);
+    addPart("forearms", forearmGeo, [-0.52, 0.72, 0.06], [0, 0, 0.18], [1.15, 1.15, 1.0]);
+    addPart("forearms", forearmGeo, [0.52, 0.72, 0.06], [0, 0, -0.18], [1.15, 1.15, 1.0]);
 
     // Back Muscles (Traps, Lats, Rhomboids, Spinal Erectors)
-    // Upper traps
+    // Upper traps (High neck yoke)
     const trapsGeo = new THREE.SphereGeometry(0.18, 24, 24);
-    addPart("traps", trapsGeo, [0, 1.62, -0.12], [-0.1, 0, 0], [1.4, 0.8, 0.6]);
+    addPart("traps", trapsGeo, [0, 1.5, -0.12], [-0.1, 0, 0], [1.4, 0.75, 0.6]);
 
-    // Lats (wide wings on back)
+    // Lats (Wide sweeping wings)
     const latsGeo = new THREE.SphereGeometry(0.18, 24, 24);
-    addPart("lats", latsGeo, [-0.20, 1.18, -0.12], [0, 0, -0.15], [1.1, 1.8, 0.6]);
-    addPart("lats", latsGeo, [0.20, 1.18, -0.12], [0, 0, 0.15], [1.1, 1.8, 0.6]);
+    addPart("lats", latsGeo, [-0.20, 1.10, -0.10], [0, 0, -0.2], [1.1, 1.9, 0.55]);
+    addPart("lats", latsGeo, [0.20, 1.10, -0.10], [0, 0, 0.2], [1.1, 1.9, 0.55]);
 
-    // Rhomboids (center back under traps)
-    const rhomboidsGeo = new THREE.SphereGeometry(0.16, 24, 24);
-    addPart("rhomboids", rhomboidsGeo, [0, 1.30, -0.12], [0, 0, 0], [1.3, 0.8, 0.5]);
+    // Rhomboids (Mid-back thickener)
+    const rhomboidsGeo = new THREE.SphereGeometry(0.15, 24, 24);
+    addPart("rhomboids", rhomboidsGeo, [0, 1.20, -0.11], [0, 0, 0], [1.3, 0.85, 0.5]);
 
-    // Spinal Erectors (lower back columns)
-    const erectorsGeo = new THREE.CapsuleGeometry(0.045, 0.42, 4, 12);
-    addPart("spinal_erectors", erectorsGeo, [-0.08, 0.72, -0.12]);
-    addPart("spinal_erectors", erectorsGeo, [0.08, 0.72, -0.12]);
+    // Spinal Erectors (Lower back columns)
+    const erectorsGeo = new THREE.CapsuleGeometry(0.045, 0.40, 4, 12);
+    addPart("spinal_erectors", erectorsGeo, [-0.08, 0.68, -0.11]);
+    addPart("spinal_erectors", erectorsGeo, [0.08, 0.68, -0.11]);
 
     // Hips / Glutes
-    const gluteGeo = new THREE.SphereGeometry(0.22, 24, 24);
-    addPart("glutes", gluteGeo, [-0.15, 0.15, -0.16], [0, 0, 0], [1, 1, 0.95]);
-    addPart("glutes", gluteGeo, [0.15, 0.15, -0.16], [0, 0, 0], [1, 1, 0.95]);
+    const gluteGeo = new THREE.SphereGeometry(0.21, 24, 24);
+    addPart("glutes", gluteGeo, [-0.13, 0.14, -0.18], [0, 0, 0], [1, 1, 0.95]);
+    addPart("glutes", gluteGeo, [0.13, 0.14, -0.18], [0, 0, 0], [1, 1, 0.95]);
 
-    // Hip Flexors (front groin area)
-    const flexorGeo = new THREE.SphereGeometry(0.13, 24, 24);
-    addPart("hip_flexors", flexorGeo, [-0.16, 0.15, 0.12], [0, 0, -0.1], [1.1, 1.4, 0.9]);
+    // Hip Flexors (Groin)
+    const flexorGeo = new THREE.SphereGeometry(0.12, 24, 24);
+    addPart("hip_flexors", flexorGeo, [-0.14, 0.15, 0.12], [0, 0, -0.1], [1.1, 1.4, 0.9]);
     addPart("hip_flexors", flexorGeo, [0.16, 0.15, 0.12], [0, 0, 0.1], [1.1, 1.4, 0.9]);
 
-    // Legs (Thighs/Quads/Hamstrings)
-    const quadGeo = new THREE.CapsuleGeometry(0.12, 0.65, 8, 16);
-    // Quads (Front/Outer thigh)
-    addPart("quads", quadGeo, [-0.18, -0.35, 0.05], [0, 0, -0.05]);
-    addPart("quads", quadGeo, [0.18, -0.35, 0.05], [0, 0, 0.05]);
+    // Legs (Thighs/Quads/Hamstrings with outward sweeps)
+    const quadGeo = new THREE.CapsuleGeometry(0.115, 0.55, 8, 16);
+    addPart("quads", quadGeo, [-0.17, -0.32, 0.05], [0, 0, -0.06], [1.1, 1.0, 1.0]);
+    addPart("quads", quadGeo, [0.17, -0.32, 0.05], [0, 0, 0.06], [1.1, 1.0, 1.0]);
     
-    const hamstringGeo = new THREE.CapsuleGeometry(0.12, 0.65, 8, 16);
-    // Hamstrings (Back/Inner thigh)
-    addPart("hamstrings", hamstringGeo, [-0.18, -0.38, -0.12], [0, 0, -0.05]);
-    addPart("hamstrings", hamstringGeo, [0.18, -0.38, -0.12], [0, 0, 0.05]);
+    const hamstringGeo = new THREE.CapsuleGeometry(0.11, 0.55, 8, 16);
+    addPart("hamstrings", hamstringGeo, [-0.17, -0.35, -0.11], [0, 0, -0.05]);
+    addPart("hamstrings", hamstringGeo, [0.17, -0.35, -0.11], [0, 0, 0.05]);
 
-    // Calves
-    const calfGeo = new THREE.CapsuleGeometry(0.09, 0.6, 8, 16);
-    addPart("calves", calfGeo, [-0.18, -1.15, -0.04], [0, 0, -0.02]);
-    addPart("calves", calfGeo, [0.18, -1.15, -0.04], [0, 0, 0.02]);
+    // Calves (Diamond-shaped sweeps)
+    const calfGeo = new THREE.CapsuleGeometry(0.085, 0.52, 8, 16);
+    addPart("calves", calfGeo, [-0.17, -1.05, -0.03], [0, 0, -0.02], [1.1, 1.0, 1.0]);
+    addPart("calves", calfGeo, [0.17, -1.05, -0.03], [0, 0, 0.02], [1.1, 1.0, 1.0]);
 
     muscleGroupsRef.current = groups;
     setLoading(false);
