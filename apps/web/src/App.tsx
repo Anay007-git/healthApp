@@ -343,7 +343,7 @@ export function App() {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-12 pb-24 lg:pb-12">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-6 sm:space-y-12 pb-28 lg:pb-12">
         {/* HOMEPAGE VIEW */}
         {activeTab === "home" && (
           <>
@@ -1000,12 +1000,12 @@ export function App() {
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-3 flex-wrap">
+                    <div className="space-y-3">
                       {/* State Selector */}
                       <select
                         value={selectedStateForSchemes}
                         onChange={(e) => setSelectedStateForSchemes(e.target.value)}
-                        className="bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-mono text-xs px-3 py-2 rounded focus:outline-none focus:border-[#D95300]"
+                        className="w-full sm:w-auto bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-mono text-xs px-3 py-2 rounded focus:outline-none focus:border-[#D95300]"
                       >
                         <option value="">All States / UTs</option>
                         {states.map((st) => (
@@ -1013,13 +1013,13 @@ export function App() {
                         ))}
                       </select>
 
-                      {/* Status Filter */}
-                      <div className="flex items-center gap-1.5 font-mono text-xs">
+                      {/* Status Filter - horizontally scrollable on mobile */}
+                      <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1 font-mono text-xs">
                         {["ALL", "implemented", "in-progress", "pending", "partial"].map((f) => (
                           <button
                             key={f}
                             onClick={() => setStateSchemeFilter(f)}
-                            className={`px-2.5 py-1 rounded-full border transition-all cursor-pointer ${
+                            className={`px-3 py-1.5 rounded-full border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                               stateSchemeFilter === f
                                 ? "bg-[#111827] text-[#FFFFFF] font-bold border-[#111827]"
                                 : "bg-[#FAF7F0] text-[#4B5563] border-[#E8DEC8] hover:bg-[#E8DEC8]"
@@ -1085,8 +1085,23 @@ export function App() {
                           </div>
                         </div>
 
-                        {/* Schemes List */}
-                        <div className="table-scroll">
+                        {/* Schemes — card layout on mobile, table on sm+ */}
+                        <div className="block sm:hidden space-y-3">
+                          {display.map((s, idx) => (
+                            <div key={`${s.stateCode}-${idx}`} className="bg-[#FFFFFF] border border-[#E8DEC8] rounded-xl p-4 space-y-2 shadow-xs">
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] bg-[#111827] text-[#FAF7F0] px-2 py-0.5 rounded font-mono font-bold">{s.stateCode} • {s.stateName}</span>
+                                {statusBadge(s.status)}
+                              </div>
+                              <div className="text-[11px] font-mono text-[#D95300] font-bold uppercase tracking-wider">{s.category}</div>
+                              <p className="font-serif text-sm font-bold text-[#111827] leading-snug">{s.promise}</p>
+                              <p className="text-[11px] text-[#4B5563] font-mono leading-relaxed line-clamp-3">{s.note}</p>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Table layout for sm+ screens */}
+                        <div className="hidden sm:block table-scroll">
                           <table className="w-full min-w-[560px] text-left border-collapse font-sans text-xs">
                             <thead>
                               <tr className="bg-[#FAF7F0] border-b border-[#E8DEC8] font-mono text-[11px] text-[#4B5563] uppercase">
@@ -2677,8 +2692,8 @@ export function App() {
         </div>
       </footer>
 
-      {/* Mobile Sticky Bottom Quick-Action Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FAF7F0]/95 backdrop-blur-md border-t border-[#E8DEC8] px-2 py-1.5 flex items-center justify-around shadow-2xl">
+      {/* Mobile Sticky Bottom Navigation Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FAF7F0]/98 backdrop-blur-lg border-t-2 border-[#E8DEC8] flex items-stretch shadow-[0_-4px_24px_rgba(0,0,0,0.08)]" style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
         {[
           { id: "home", label: "Home", icon: Home },
           { id: "schemes", label: "Schemes", icon: Layers },
@@ -2696,12 +2711,19 @@ export function App() {
                 setIsMobileMenuOpen(false);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className={`flex flex-col items-center justify-center py-1 px-3 rounded-lg transition-all cursor-pointer ${
-                isActive ? "text-[#06038D] font-bold scale-105" : "text-[#64748B] hover:text-[#0F172A]"
+              className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2 transition-all cursor-pointer relative ${
+                isActive
+                  ? "text-[#06038D]"
+                  : "text-[#94A3B8] hover:text-[#475569]"
               }`}
             >
-              <Icon className={`w-5 h-5 ${isActive ? "text-[#FF671F]" : "text-[#64748B]"}`} />
-              <span className="text-[10.5px] font-serif mt-0.5">{item.label}</span>
+              {isActive && (
+                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[#FF671F] rounded-b-full" />
+              )}
+              <Icon className={`w-5 h-5 ${isActive ? "text-[#FF671F]" : ""}`} />
+              <span className={`text-[9.5px] font-mono font-bold leading-none ${
+                isActive ? "text-[#06038D]" : "text-[#94A3B8]"
+              }`}>{item.label}</span>
             </button>
           );
         })}
