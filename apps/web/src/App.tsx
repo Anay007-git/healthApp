@@ -2146,122 +2146,6 @@ export function App() {
           </div>
         )}
 
-        {/* ASK THE DATA AI CHATBOT TAB */}
-        {activeTab === "ask" && (
-          <div className="space-y-8 max-w-4xl mx-auto">
-            <div className="border-b border-[#E8DEC8] pb-4 text-center">
-              <span className="font-mono text-xs font-bold text-[#D95300] uppercase tracking-wider">
-                NON-HALLUCINATING AI ASSISTANT
-              </span>
-              <h2 className="font-serif text-4xl font-bold text-[#111827] mt-1">Ask the Data</h2>
-              <p className="text-sm text-[#4B5563] font-sans mt-1">
-                Enter any query to execute database tools, generate dynamic visual charts, and view primary sources.
-              </p>
-            </div>
-
-            <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-6 rounded shadow-sm space-y-6">
-              <div className="space-y-3">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={aiInput}
-                    onChange={(e) => setAiInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleAskAI()}
-                    placeholder="e.g. Compare West Bengal and Maharashtra in education"
-                    className="flex-1 bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] text-sm font-mono px-4 py-3 rounded focus:outline-none focus:border-[#D95300]"
-                  />
-                  <button
-                    onClick={() => handleAskAI()}
-                    disabled={aiLoading}
-                    className="px-6 py-3 bg-[#D95300] text-[#FFFFFF] text-xs font-mono font-medium rounded hover:bg-[#B34000] transition-colors disabled:opacity-50"
-                  >
-                    {aiLoading ? "QUERYING DATABASE..." : "RUN QUERY"}
-                  </button>
-                </div>
-
-                <div className="flex flex-wrap gap-2 font-mono text-xs text-[#4B5563]">
-                  <span>TRY SAMPLE QUERIES:</span>
-                  {[
-                    "Compare West Bengal and Maharashtra",
-                    "Jal Jeevan Mission audit",
-                    "CAG findings on drinking water",
-                  ].map((sample) => (
-                    <button
-                      key={sample}
-                      onClick={() => {
-                        setAiInput(sample);
-                        handleAskAI(sample);
-                      }}
-                      className="text-[#D95300] underline hover:text-[#B34000]"
-                    >
-                      {sample}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* AI RESPONSE DISPLAY */}
-              {aiResponse && (
-                <div className="border-t border-[#E8DEC8] pt-6 space-y-6 animate-in fade-in">
-                  <div className="bg-[#FAF7F0] p-5 rounded border border-[#E8DEC8] space-y-3 font-sans">
-                    <span className="font-mono text-xs text-[#D95300] font-bold uppercase">AI DATA EXPLANATION</span>
-                    <p className="text-sm text-[#111827] leading-relaxed">{aiResponse.answer}</p>
-                  </div>
-
-                  {/* Dynamic Metrics */}
-                  {aiResponse.metrics && aiResponse.metrics.length > 0 && (
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                      {aiResponse.metrics.map((m, idx) => (
-                        <StatCard key={idx} label={m.label} value={m.value} />
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Dynamic Visualization */}
-                  {aiResponse.visualization && (
-                    <div className="space-y-2">
-                      <span className="font-mono text-xs text-[#4B5563] uppercase">DYNAMICALLY GENERATED CHART</span>
-                      {aiResponse.visualization.type === "comparison" || aiResponse.visualization.type === "bar" ? (
-                        <GenericBarChart
-                          title={aiResponse.visualization.title}
-                          data={aiResponse.visualization.data}
-                          keys={aiResponse.visualization.keys}
-                        />
-                      ) : (
-                        <GenericLineChart
-                          title={aiResponse.visualization.title}
-                          data={aiResponse.visualization.data}
-                          keys={aiResponse.visualization.keys}
-                        />
-                      )}
-                    </div>
-                  )}
-
-                  {/* Sources */}
-                  {aiResponse.sources && aiResponse.sources.length > 0 && (
-                    <div className="bg-[#F3EDE0] p-4 rounded border border-[#E8DEC8] font-mono text-xs space-y-2">
-                      <span className="text-[#D95300] font-bold uppercase block">PRIMARY VERIFIED SOURCES</span>
-                      <ul className="space-y-1">
-                        {aiResponse.sources.map((src) => (
-                          <li key={src.id} className="flex items-center justify-between text-[#111827]">
-                            <span>• {src.name} ({src.publisher})</span>
-                            <button
-                              onClick={() => handleOpenEvidence()}
-                              className="text-[#D95300] font-semibold underline"
-                            >
-                              View Evidence
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
         {/* NEWSLETTER SUBSCRIPTION TAB */}
         {activeTab === "newsletter" && (
           <div className="space-y-12 max-w-4xl mx-auto py-6">
@@ -2488,19 +2372,19 @@ export function App() {
             <div className="border-b border-[#E8DEC8] pb-4">
               <span className="font-mono text-xs font-bold text-[#D95300] uppercase tracking-wider flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4 text-[#FF671F]" />
-                CIVIC INTELLIGENCE ENGINE & HUGGING FACE LLM
+                CIVIC DATA INTELLIGENCE ENGINE
               </span>
-              <h2 className="font-serif text-4xl font-bold text-[#111827] mt-1">
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#0F172A] mt-1">
                 Ask the Data Anything
               </h2>
-              <p className="text-sm text-[#4B5563] mt-1">
-                Natural-language query engine cross-referencing Union Budgets, CAG Audit Reports, NFHS-5 surveys, and Election Commission filings.
+              <p className="text-xs sm:text-sm text-[#475569] mt-1 font-sans">
+                Evidence-backed natural language queries cross-referencing Union Budgets, CAG Audits, NFHS-5 surveys, and Election Commission filings.
               </p>
             </div>
 
             {/* Main Interactive Query Input Box */}
-            <div className="bg-[#FFFFFF] border-2 border-[#111827] p-6 rounded-xl shadow-md space-y-4">
-              <div className="flex items-center gap-3">
+            <div className="bg-[#FFFFFF] border-2 border-[#0F172A] p-5 sm:p-6 rounded-xl shadow-md space-y-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <div className="relative flex-1">
                   <input
                     type="text"
@@ -2512,12 +2396,12 @@ export function App() {
                         handleAskAI();
                       }
                     }}
-                    className="w-full bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-mono text-sm px-4 py-3.5 rounded-lg pr-12 focus:outline-none focus:border-[#D95300] focus:ring-1 focus:ring-[#D95300]"
+                    className="w-full bg-[#FAF7F0] border border-[#E8DEC8] text-[#0F172A] font-mono text-sm px-4 py-3.5 rounded-lg pr-12 focus:outline-none focus:border-[#06038D] focus:ring-1 focus:ring-[#06038D]"
                   />
                   {aiInput && (
                     <button
                       onClick={() => setAiInput("")}
-                      className="absolute right-3 top-3.5 text-[#9CA3AF] hover:text-[#111827] cursor-pointer"
+                      className="absolute right-3 top-3.5 text-[#94A3B8] hover:text-[#0F172A] cursor-pointer"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -2526,7 +2410,7 @@ export function App() {
                 <button
                   onClick={() => handleAskAI()}
                   disabled={aiLoading || !aiInput.trim()}
-                  className="px-6 py-3.5 saffron-btn text-xs font-mono font-bold rounded-lg transition-all cursor-pointer shadow-xs disabled:opacity-50 flex items-center gap-2"
+                  className="px-6 py-3.5 saffron-btn text-xs font-mono font-bold rounded-lg transition-all cursor-pointer shadow-xs disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {aiLoading ? (
                     <>
@@ -2544,7 +2428,7 @@ export function App() {
 
               {/* Preset prompt pills */}
               <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-[#E8DEC8]/60">
-                <span className="text-xs font-mono text-[#6B7280]">Suggested Queries:</span>
+                <span className="text-xs font-mono text-[#64748B]">Suggested Queries:</span>
                 {[
                   "Compare West Bengal and Maharashtra",
                   "Jal Jeevan Mission audit discrepancies",
@@ -2557,7 +2441,7 @@ export function App() {
                       setAiInput(preset);
                       handleAskAI(preset);
                     }}
-                    className="text-xs font-mono px-3 py-1 bg-[#FAF7F0] hover:bg-[#F3EDE0] border border-[#E8DEC8] text-[#111827] rounded-full transition-colors cursor-pointer"
+                    className="text-xs font-mono px-3 py-1 bg-[#FAF7F0] hover:bg-[#F3EDE0] border border-[#E8DEC8] text-[#0F172A] rounded-full transition-colors cursor-pointer"
                   >
                     {preset}
                   </button>
@@ -2565,33 +2449,34 @@ export function App() {
               </div>
             </div>
 
-            {/* AI Response Card */}
+            {/* AI Response Loading State */}
             {aiLoading && (
-              <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-12 rounded-xl text-center space-y-3">
+              <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-12 rounded-xl text-center space-y-3 shadow-xs animate-pulse">
                 <div className="w-10 h-10 border-3 border-[#D95300] border-t-transparent rounded-full animate-spin mx-auto" />
-                <p className="font-mono text-sm text-[#111827] font-bold">Querying verified civic records & generating analysis...</p>
-                <p className="font-mono text-xs text-[#6B7280]">Cross-referencing CAG audit paras, union budget outlays, and state indicators</p>
+                <p className="font-mono text-sm text-[#0F172A] font-bold">Querying verified civic records & synthesizing analysis...</p>
+                <p className="font-mono text-xs text-[#64748B]">Cross-referencing CAG audit paras, union budget outlays, and state indicators</p>
               </div>
             )}
 
+            {/* AI Response Card */}
             {!aiLoading && aiResponse && (
               <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-6 sm:p-8 rounded-xl shadow-xs space-y-6">
                 {/* Header with confidence badge */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E8DEC8] pb-4">
-                  <div className="flex items-center gap-2">
-                    <span className="p-2 bg-[#111827] text-[#FFFFFF] rounded-lg">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E8DEC8] pb-4">
+                  <div className="flex items-center gap-3">
+                    <span className="p-2.5 bg-[#06038D] text-[#FFFFFF] rounded-lg shadow-2xs">
                       <Bot className="w-5 h-5 text-[#FF671F]" />
                     </span>
                     <div>
                       <span className="font-mono text-[10px] text-[#D95300] font-bold uppercase tracking-wider block">
                         INTELLIGENCE VERDICT
                       </span>
-                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#111827]">
+                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#0F172A]">
                         Analytical Response
                       </h3>
                     </div>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#15803D]/10 text-[#15803D] font-mono text-xs font-bold border border-[#15803D]/30 w-fit">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#046A38]/10 text-[#046A38] font-mono text-xs font-bold border border-[#046A38]/30 w-fit">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     CONFIDENCE: {aiResponse.confidence || "HIGH"}
                   </span>
@@ -2602,51 +2487,112 @@ export function App() {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {aiResponse.metrics.map((m, idx) => (
                       <div key={idx} className="bg-[#FAF7F0] border border-[#E8DEC8] p-3.5 rounded-lg font-mono">
-                        <span className="text-[11px] text-[#6B7280] uppercase block truncate">{m.label}</span>
-                        <span className="text-lg sm:text-xl font-bold text-[#111827] mt-0.5 block">{m.value}</span>
+                        <span className="text-[11px] text-[#64748B] uppercase block truncate">{m.label}</span>
+                        <span className="text-lg sm:text-xl font-bold text-[#0F172A] mt-0.5 block">{m.value}</span>
                       </div>
                     ))}
                   </div>
                 )}
 
-                {/* Markdown text answer */}
-                <div className="prose max-w-none text-sm sm:text-base text-[#1F2937] leading-relaxed whitespace-pre-wrap font-sans bg-[#FAF7F0]/40 p-5 rounded-lg border border-[#E8DEC8]/80">
-                  {aiResponse.answer}
+                {/* Structured Narrative Breakdown */}
+                <div className="bg-[#FAF7F0] p-5 sm:p-6 rounded-xl border border-[#E8DEC8] space-y-3 font-sans text-sm sm:text-base leading-relaxed text-[#1F2937]">
+                  {aiResponse.answer.split("\n\n").map((paragraph: string, pIdx: number) => {
+                    const cleanP = paragraph.trim();
+                    if (!cleanP) return null;
+                    if (cleanP.startsWith("### ")) {
+                      return (
+                        <h4 key={pIdx} className="font-serif text-xl sm:text-2xl font-bold text-[#0F172A] border-b border-[#E8DEC8] pb-2 pt-1 flex items-center gap-2">
+                          {cleanP.replace("### ", "")}
+                        </h4>
+                      );
+                    }
+                    if (cleanP.startsWith("- ") || cleanP.includes("\n- ")) {
+                      const items = cleanP.split("\n- ").map((item) => item.replace(/^- /, "").trim());
+                      return (
+                        <div key={pIdx} className="grid grid-cols-1 gap-2.5 my-2">
+                          {items.map((item, iIdx) => {
+                            const boldMatch = item.match(/\*\*(.*?)\*\*:(.*)/);
+                            if (boldMatch) {
+                              return (
+                                <div key={iIdx} className="bg-[#FFFFFF] border border-[#E8DEC8] p-3.5 rounded-lg shadow-2xs flex items-start gap-2.5">
+                                  <div className="w-2 h-2 rounded-full bg-[#D95300] mt-2 shrink-0" />
+                                  <div>
+                                    <strong className="text-[#0F172A] font-bold block">{boldMatch[1]}</strong>
+                                    <span className="text-[#475569] text-xs sm:text-sm mt-0.5 block">{boldMatch[2].replace(/\*\*/g, "")}</span>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return (
+                              <div key={iIdx} className="bg-[#FFFFFF] border border-[#E8DEC8] p-3 rounded-lg flex items-start gap-2 text-xs sm:text-sm text-[#334155]">
+                                <div className="w-1.5 h-1.5 rounded-full bg-[#06038D] mt-1.5 shrink-0" />
+                                <span>{item.replace(/\*\*/g, "")}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    }
+                    return (
+                      <p key={pIdx} className="text-[#334155]">
+                        {cleanP.replace(/\*\*/g, "")}
+                      </p>
+                    );
+                  })}
                 </div>
 
-                {/* Optional Visualization Chart */}
-                {aiResponse.visualization && aiResponse.visualization.type === "bar" && (
-                  <div className="pt-2">
-                    <GenericBarChart
-                      title={aiResponse.visualization.title}
-                      data={aiResponse.visualization.data}
-                    />
+                {/* Dynamic Visualization Chart */}
+                {aiResponse.visualization && (
+                  <div className="bg-[#FAF7F0] p-5 rounded-xl border border-[#E8DEC8] space-y-3">
+                    <div className="flex items-center justify-between border-b border-[#E8DEC8] pb-2">
+                      <span className="font-mono text-xs font-bold text-[#D95300] uppercase tracking-wider flex items-center gap-1.5">
+                        <BarChart3 className="w-4 h-4 text-[#06038D]" />
+                        DYNAMIC DATA VISUALIZATION
+                      </span>
+                      <span className="font-mono text-[11px] text-[#475569] bg-[#FFFFFF] px-2.5 py-0.5 rounded border border-[#E8DEC8]">
+                        Interactive Graph
+                      </span>
+                    </div>
+                    <div className="pt-2">
+                      {aiResponse.visualization.type === "comparison" || aiResponse.visualization.type === "bar" ? (
+                        <GenericBarChart
+                          title={aiResponse.visualization.title}
+                          data={aiResponse.visualization.data}
+                          keys={aiResponse.visualization.keys}
+                        />
+                      ) : (
+                        <GenericLineChart
+                          title={aiResponse.visualization.title}
+                          data={aiResponse.visualization.data}
+                          keys={aiResponse.visualization.keys}
+                        />
+                      )}
+                    </div>
                   </div>
                 )}
 
                 {/* Primary Sources & Citations */}
                 {aiResponse.sources && aiResponse.sources.length > 0 && (
-                  <div className="border-t border-[#E8DEC8] pt-4 space-y-3 font-mono">
-                    <span className="text-xs font-bold text-[#0F172A] uppercase tracking-wider block">
-                      VERIFIED PRIMARY SOURCE CITATIONS:
-                    </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                      {aiResponse.sources.map((s: any, idx) => (
-                        <div key={idx} className="bg-[#FAF7F0] p-3 rounded border border-[#E8DEC8] flex items-center justify-between">
-                          <div>
-                            <span className="font-bold text-[#111827] block truncate">{s.name || s.title}</span>
-                            <span className="text-[11px] text-[#6B7280]">{s.publisher || s.ministry}</span>
+                  <div className="border-t border-[#E8DEC8] pt-5 space-y-3 font-mono">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-[#0F172A] uppercase tracking-wider">
+                        PRIMARY VERIFIED EVIDENCE DOCUMENTS:
+                      </span>
+                      <span className="text-[11px] text-[#046A38] font-bold">100% Primary Gazette Citations</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                      {aiResponse.sources.map((s: any, idx: number) => (
+                        <div key={idx} className="bg-[#FAF7F0] p-3.5 rounded-lg border border-[#E8DEC8] flex items-center justify-between shadow-2xs hover:border-[#D95300] transition-all">
+                          <div className="pr-2">
+                            <span className="font-bold text-[#0F172A] block truncate">{s.name || s.title}</span>
+                            <span className="text-[11px] text-[#475569] font-sans block mt-0.5">{s.publisher || s.ministry}</span>
                           </div>
-                          {s.url && (
-                            <a
-                              href={s.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-[#D95300] hover:underline shrink-0 ml-2"
-                            >
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
-                          )}
+                          <button
+                            onClick={() => handleOpenEvidence(s.id)}
+                            className="text-[#D95300] hover:text-[#06038D] font-bold underline shrink-0 cursor-pointer text-[11px]"
+                          >
+                            View Evidence →
+                          </button>
                         </div>
                       ))}
                     </div>
