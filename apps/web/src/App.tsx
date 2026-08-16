@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { brandConfig } from "@civiclens/config";
-import { db } from "@civiclens/database";
+import { db, STATE_AUDITED_METRICS_DATA } from "@civiclens/database";
 import { EvidenceDrawer } from "@civiclens/ui";
 import { IndiaMap, GenericBarChart, GenericLineChart, StatCard, PartyIncomeTrendChart } from "@civiclens/charts";
 import { Evidence, AIStructuredResponse, Scheme, StateProfile, PartyFundingRecord, CorporateDonorRecord } from "@civiclens/types";
@@ -859,70 +859,70 @@ export function App() {
                             label: "Human Development Index (HDI)",
                             higherBetter: true,
                             unit: "",
-                            getVal: (st: StateProfile) => st.indicators.find((i) => i.indicatorCode === "HDI")?.value || 0.65,
+                            getVal: (st: StateProfile) => st.indicators?.find((i) => i.indicatorCode === "HDI")?.value ?? (STATE_AUDITED_METRICS_DATA[st.code]?.hdi || 0.68),
                           },
                           {
                             key: "LITERACY_RATE",
                             label: "Literacy Rate (%)",
                             higherBetter: true,
                             unit: "%",
-                            getVal: (st: StateProfile) => st.indicators.find((i) => i.indicatorCode === "LITERACY_RATE")?.value || 75.0,
+                            getVal: (st: StateProfile) => st.indicators?.find((i) => i.indicatorCode === "LITERACY_RATE")?.value ?? (STATE_AUDITED_METRICS_DATA[st.code]?.literacy || 78.5),
                           },
                           {
                             key: "INFANT_MORTALITY",
                             label: "Infant Mortality Rate (IMR)",
                             higherBetter: false,
                             unit: "per 1k",
-                            getVal: (st: StateProfile) => st.indicators.find((i) => i.indicatorCode === "INFANT_MORTALITY")?.value || 20,
+                            getVal: (st: StateProfile) => st.indicators?.find((i) => i.indicatorCode === "INFANT_MORTALITY")?.value ?? (STATE_AUDITED_METRICS_DATA[st.code]?.imr || 22),
                           },
                           {
                             key: "CRIME_SAFETY",
                             label: "Crime Rate & Safety Index (NCRB)",
                             higherBetter: false,
                             unit: "per 100k",
-                            getVal: (st: StateProfile) => st.indicators.find((i) => i.indicatorCode === "CRIME_SAFETY")?.value || 22.0,
+                            getVal: (st: StateProfile) => st.indicators?.find((i) => i.indicatorCode === "CRIME_SAFETY")?.value ?? (STATE_AUDITED_METRICS_DATA[st.code]?.crimeRate || 240.0),
                           },
                           {
                             key: "PER_CAPITA_INCOME",
                             label: "Per Capita Income (NSDP)",
                             higherBetter: true,
                             unit: "₹",
-                            getVal: (st: StateProfile) => st.indicators.find((i) => i.indicatorCode === "PER_CAPITA_INCOME")?.value || 150000,
+                            getVal: (st: StateProfile) => st.indicators?.find((i) => i.indicatorCode === "PER_CAPITA_INCOME")?.value ?? (STATE_AUDITED_METRICS_DATA[st.code]?.perCapitaIncome || 175000),
                           },
                           {
                             key: "GSDP_GROWTH",
                             label: "GSDP Economic Growth Rate",
                             higherBetter: true,
                             unit: "%",
-                            getVal: (st: StateProfile) => st.indicators.find((i) => i.indicatorCode === "GSDP_GROWTH")?.value || 7.0,
+                            getVal: (st: StateProfile) => st.indicators?.find((i) => i.indicatorCode === "GSDP_GROWTH")?.value ?? (STATE_AUDITED_METRICS_DATA[st.code]?.gsdpGrowth || 8.2),
                           },
                           {
                             key: "FISCAL_DEFICIT",
                             label: "Fiscal Deficit (% GSDP)",
                             higherBetter: false,
                             unit: "%",
-                            getVal: (st: StateProfile) => st.indicators.find((i) => i.indicatorCode === "FISCAL_DEFICIT")?.value || 3.0,
+                            getVal: (st: StateProfile) => st.indicators?.find((i) => i.indicatorCode === "FISCAL_DEFICIT")?.value ?? (STATE_AUDITED_METRICS_DATA[st.code]?.fiscalDeficit || 3.2),
                           },
                           {
                             key: "EASE_OF_DOING_BIZ",
                             label: "Ease of Doing Business Rank",
                             higherBetter: false,
                             unit: "Rank",
-                            getVal: (st: StateProfile) => st.indicators.find((i) => i.indicatorCode === "EASE_OF_DOING_BIZ")?.value || 10,
+                            getVal: (st: StateProfile) => st.indicators?.find((i) => i.indicatorCode === "EASE_OF_DOING_BIZ")?.value ?? (STATE_AUDITED_METRICS_DATA[st.code]?.easeOfBizRank || 15),
                           },
                           {
                             key: "CAG_FINDINGS",
                             label: "CAG Audit Discrepancy Flags",
                             higherBetter: false,
                             unit: "Flags",
-                            getVal: (st: StateProfile) => st.cagFindingsCount,
+                            getVal: (st: StateProfile) => st.cagFindingsCount || (STATE_AUDITED_METRICS_DATA[st.code]?.cagFlags || 10),
                           },
                           {
                             key: "SCHEMES",
                             label: "Active Welfare Schemes",
                             higherBetter: true,
                             unit: "Schemes",
-                            getVal: (st: StateProfile) => st.activeSchemesCount,
+                            getVal: (st: StateProfile) => st.activeSchemesCount || (STATE_AUDITED_METRICS_DATA[st.code]?.activeSchemes || 32),
                           },
                         ].map((row) => {
                           const valA = row.getVal(compareStates.stateA);
