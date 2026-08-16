@@ -260,21 +260,31 @@ export function App() {
           <div className="flex items-center justify-between h-16 sm:h-20 border-b border-[#E8DEC8]/60">
             {/* Brand Logo */}
             <div
-              className="flex items-center gap-2.5 sm:gap-3 cursor-pointer"
+              className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group"
               onClick={() => {
                 setActiveTab("home");
                 setIsMobileMenuOpen(false);
               }}
             >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#FF671F] via-[#06038D] to-[#046A38] text-[#FFFFFF] flex items-center justify-center font-serif text-base sm:text-lg font-bold rounded shadow-sm border border-[#FF671F]/30 ring-1 ring-[#046A38]/30 shrink-0">
-                🇮🇳
+              {/* Orange Glasses Icon */}
+              <div className="w-9 h-9 sm:w-11 sm:h-11 bg-[#FF671F] flex items-center justify-center rounded-xl shadow-md group-hover:shadow-lg transition-all shrink-0 ring-2 ring-[#FF671F]/30">
+                <svg viewBox="0 0 36 36" fill="none" className="w-6 h-6 sm:w-7 sm:h-7">
+                  <rect x="2" y="10" width="13" height="10" rx="5" fill="none" stroke="white" strokeWidth="2"/>
+                  <rect x="21" y="10" width="13" height="10" rx="5" fill="none" stroke="white" strokeWidth="2"/>
+                  <path d="M15 15 Q18 13 21 15" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none"/>
+                  <path d="M2 15 L0 15" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M34 15 L36 15" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                  <rect x="3.5" y="11.5" width="10" height="7" rx="3.5" fill="white" fillOpacity="0.2"/>
+                  <rect x="22.5" y="11.5" width="10" height="7" rx="3.5" fill="white" fillOpacity="0.2"/>
+                  <path d="M5 13 Q7 12 8.5 13" stroke="white" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.7"/>
+                  <path d="M24 13 Q26 12 27.5 13" stroke="white" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.7"/>
+                </svg>
               </div>
               <div>
-                <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-[#0F172A] flex items-center gap-1.5 leading-none">
+                <h1 className="font-serif text-lg sm:text-2xl font-bold tracking-tight text-[#0F172A] leading-none">
                   {brandConfig.name}
-                  <span className="text-[10px] sm:text-xs px-1.5 py-0.2 bg-[#FF671F]/15 text-[#D95300] font-mono font-bold rounded border border-[#FF671F]/30">BHARAT</span>
                 </h1>
-                <span className="font-mono text-[8.5px] sm:text-[9.5px] tracking-widest text-[#06038D] uppercase font-bold block mt-0.5">
+                <span className="font-mono text-[7.5px] sm:text-[9px] tracking-widest text-[#FF671F] uppercase font-bold block mt-0.5">
                   {brandConfig.logo.subtext}
                 </span>
               </div>

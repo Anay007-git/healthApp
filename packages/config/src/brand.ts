@@ -54,15 +54,15 @@ export interface BrandConfig {
 }
 
 export const brandConfig: BrandConfig = {
-  name: "CivicLens",
-  shortName: "CivicLens Bharat",
+  name: "Orange-Chasma",
+  shortName: "Orange-Chasma Bharat",
   tagline: "सत्यमेव जयते • Understand India through evidence, not noise.",
   description:
     "India's Interactive Civic Intelligence and Data-Visualization Platform. Explore schemes, public spending, audit reports, promises, and governance outcomes backed by verifiable evidence.",
   logo: {
-    text: "CIVICLENS",
+    text: "ORANGE-CHASMA",
     subtext: "BHARAT CIVIC INTELLIGENCE ENGINE",
-    icon: "chakra",
+    icon: "glasses",
   },
   domain: "anaytech.in",
   url: "https://anaytech.in",
