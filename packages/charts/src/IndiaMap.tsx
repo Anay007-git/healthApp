@@ -667,23 +667,33 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
                 <button
                   key={state.code}
                   onClick={() => selectState(state)}
-                  className={`text-left p-2.5 border rounded transition-all ${
-                    selected
-                      ? "bg-[#111827] border-[#111827] text-white"
-                      : "bg-white border-[#E8DEC8] hover:bg-[#F3EDE0]"
-                  }`}
+                  className="text-left p-2.5 border rounded-lg transition-all cursor-pointer shadow-2xs"
+                  style={{
+                    backgroundColor: selected ? "#111827" : "#FFFFFF",
+                    borderColor: selected ? "#111827" : "#E8DEC8",
+                  }}
                 >
                   <div className="flex justify-between items-center">
-                    <span className="font-mono text-xs font-bold">{state.code}</span>
                     <span
-                      className={`font-mono text-[10px] px-1.5 py-0.5 rounded ${
-                        selected ? "bg-[#D95300] text-white" : "bg-[#F3EDE0] text-[#D95300]"
-                      }`}
+                      className="font-mono text-xs font-bold"
+                      style={{ color: selected ? "#FFFFFF" : "#111827" }}
+                    >
+                      {state.code}
+                    </span>
+                    <span
+                      className="font-mono text-[10px] px-1.5 py-0.5 rounded font-bold"
+                      style={{
+                        backgroundColor: selected ? "#D95300" : "#F3EDE0",
+                        color: selected ? "#FFFFFF" : "#D95300",
+                      }}
                     >
                       {score ?? "—"}
                     </span>
                   </div>
-                  <div className={`font-serif font-bold text-xs mt-1 truncate ${selected ? "text-white" : "text-[#111827]"}`}>
+                  <div
+                    className="font-serif font-bold text-xs mt-1 truncate"
+                    style={{ color: selected ? "#FFFFFF" : "#111827" }}
+                  >
                     {state.name}
                   </div>
                 </button>
@@ -699,7 +709,10 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
                   <h4 className="font-serif text-2xl font-bold text-[#111827] mt-1">{selectedState.name}</h4>
                   <p className="font-mono text-[10px] text-[#4B5563] mt-1">{selectedState.capital}</p>
                 </div>
-                <span className="bg-[#111827] text-white px-2 py-1 rounded font-mono text-xs font-bold">
+                <span
+                  className="px-2.5 py-1 rounded font-mono text-xs font-bold"
+                  style={{ backgroundColor: "#111827", color: "#FFFFFF" }}
+                >
                   {selectedState.code}
                 </span>
               </div>
