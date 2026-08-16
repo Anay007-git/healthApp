@@ -13,22 +13,11 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./src/*"]
-    }
   },
   "include": [
-    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["**/node_modules", "node_modules", "dist", ".next", "build", "out", "scratch", "**/state_facts.json"]
+  "exclude": ["**/node_modules", "node_modules", "dist", "build", "out", "scratch", "**/state_facts.json"]
 }

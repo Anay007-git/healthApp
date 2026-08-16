@@ -177,7 +177,7 @@ export function App() {
     setNewsletterLoading(true);
     try {
       // Connect to Neon PostgreSQL via HTTP API
-      const dbUrl = "postgresql://neondb_owner:npg_p01qwhLgRorF@ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require";
+      const dbUrl = "postgresql://neondb_owner:npg_OBj2LtShf1Rv@ep-gentle-king-axtrdlfg-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
       const url = new URL(dbUrl);
       const host = url.host;
 
