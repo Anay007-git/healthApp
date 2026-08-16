@@ -158,6 +158,7 @@ export function App() {
     { id: "cag", label: "CAG Audits", icon: AlertTriangle },
     { id: "manifesto", label: "Manifesto Tracker", icon: FileText },
     { id: "ministers", label: "Ministers", icon: Users },
+    { id: "ask", label: "AI Assistant", icon: Bot },
     { id: "newsletter", label: "Newsletter", icon: Mail },
   ];
 
@@ -182,10 +183,27 @@ export function App() {
     if (!query.trim()) return;
     setAiLoading(true);
     try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: query }),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          setAiResponse(json.data);
+          return;
+        }
+      }
+    } catch {
+      // Fallback to local intelligence engine
+    }
+
+    try {
       const response = await aiEngine.processQuery(query);
       setAiResponse(response);
     } catch {
-      // Fallback
+      // Final fallback
     } finally {
       setAiLoading(false);
     }
@@ -371,7 +389,8 @@ export function App() {
             <section>
               <IndiaMap
                 states={states}
-                onSelectState={(st) => setActiveTab("states")}
+                selectedCode={selectedStateForSchemes}
+                onSelectState={(st) => setSelectedStateForSchemes(st.code)}
                 onCompare={(a, b) => {
                   setCompareStates(db.compareStates(a, b));
                   setActiveTab("states");
@@ -920,6 +939,7 @@ export function App() {
               <>
                 <IndiaMap
                   states={states}
+                  selectedCode={selectedStateForSchemes}
                   onSelectState={(st) => setSelectedStateForSchemes(st.code)}
                   onCompare={(a, b) => setCompareStates(db.compareStates(a, b))}
                 />
@@ -2444,6 +2464,182 @@ export function App() {
                 ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {/* ASK THE DATA AI TAB */}
+        {activeTab === "ask" && (
+          <div className="space-y-8 max-w-5xl mx-auto font-sans">
+            {/* Header */}
+            <div className="border-b border-[#E8DEC8] pb-4">
+              <span className="font-mono text-xs font-bold text-[#D95300] uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#FF671F]" />
+                CIVIC INTELLIGENCE ENGINE & HUGGING FACE LLM
+              </span>
+              <h2 className="font-serif text-4xl font-bold text-[#111827] mt-1">
+                Ask the Data Anything
+              </h2>
+              <p className="text-sm text-[#4B5563] mt-1">
+                Natural-language query engine cross-referencing Union Budgets, CAG Audit Reports, NFHS-5 surveys, and Election Commission filings.
+              </p>
+            </div>
+
+            {/* Main Interactive Query Input Box */}
+            <div className="bg-[#FFFFFF] border-2 border-[#111827] p-6 rounded-xl shadow-md space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    placeholder="Ask any question (e.g. Compare West Bengal and Maharashtra in literacy and health)..."
+                    value={aiInput}
+                    onChange={(e) => setAiInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && aiInput.trim()) {
+                        handleAskAI();
+                      }
+                    }}
+                    className="w-full bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-mono text-sm px-4 py-3.5 rounded-lg pr-12 focus:outline-none focus:border-[#D95300] focus:ring-1 focus:ring-[#D95300]"
+                  />
+                  {aiInput && (
+                    <button
+                      onClick={() => setAiInput("")}
+                      className="absolute right-3 top-3.5 text-[#9CA3AF] hover:text-[#111827] cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+                <button
+                  onClick={() => handleAskAI()}
+                  disabled={aiLoading || !aiInput.trim()}
+                  className="px-6 py-3.5 saffron-btn text-xs font-mono font-bold rounded-lg transition-all cursor-pointer shadow-xs disabled:opacity-50 flex items-center gap-2"
+                >
+                  {aiLoading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-[#FFFFFF] border-t-transparent rounded-full animate-spin" />
+                      <span>ANALYZING...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Bot className="w-4 h-4" />
+                      <span>QUERY AI</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Preset prompt pills */}
+              <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-[#E8DEC8]/60">
+                <span className="text-xs font-mono text-[#6B7280]">Suggested Queries:</span>
+                {[
+                  "Compare West Bengal and Maharashtra",
+                  "Jal Jeevan Mission audit discrepancies",
+                  "Top Electoral Bond donors and party shares",
+                  "Ayushman Bharat PM-JAY false claims detection",
+                ].map((preset) => (
+                  <button
+                    key={preset}
+                    onClick={() => {
+                      setAiInput(preset);
+                      handleAskAI(preset);
+                    }}
+                    className="text-xs font-mono px-3 py-1 bg-[#FAF7F0] hover:bg-[#F3EDE0] border border-[#E8DEC8] text-[#111827] rounded-full transition-colors cursor-pointer"
+                  >
+                    {preset}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* AI Response Card */}
+            {aiLoading && (
+              <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-12 rounded-xl text-center space-y-3">
+                <div className="w-10 h-10 border-3 border-[#D95300] border-t-transparent rounded-full animate-spin mx-auto" />
+                <p className="font-mono text-sm text-[#111827] font-bold">Querying verified civic records & generating analysis...</p>
+                <p className="font-mono text-xs text-[#6B7280]">Cross-referencing CAG audit paras, union budget outlays, and state indicators</p>
+              </div>
+            )}
+
+            {!aiLoading && aiResponse && (
+              <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-6 sm:p-8 rounded-xl shadow-xs space-y-6">
+                {/* Header with confidence badge */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E8DEC8] pb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="p-2 bg-[#111827] text-[#FFFFFF] rounded-lg">
+                      <Bot className="w-5 h-5 text-[#FF671F]" />
+                    </span>
+                    <div>
+                      <span className="font-mono text-[10px] text-[#D95300] font-bold uppercase tracking-wider block">
+                        INTELLIGENCE VERDICT
+                      </span>
+                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#111827]">
+                        Analytical Response
+                      </h3>
+                    </div>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#15803D]/10 text-[#15803D] font-mono text-xs font-bold border border-[#15803D]/30 w-fit">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    CONFIDENCE: {aiResponse.confidence || "HIGH"}
+                  </span>
+                </div>
+
+                {/* Key Metrics Grid */}
+                {aiResponse.metrics && aiResponse.metrics.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {aiResponse.metrics.map((m, idx) => (
+                      <div key={idx} className="bg-[#FAF7F0] border border-[#E8DEC8] p-3.5 rounded-lg font-mono">
+                        <span className="text-[11px] text-[#6B7280] uppercase block truncate">{m.label}</span>
+                        <span className="text-lg sm:text-xl font-bold text-[#111827] mt-0.5 block">{m.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Markdown text answer */}
+                <div className="prose max-w-none text-sm sm:text-base text-[#1F2937] leading-relaxed whitespace-pre-wrap font-sans bg-[#FAF7F0]/40 p-5 rounded-lg border border-[#E8DEC8]/80">
+                  {aiResponse.answer}
+                </div>
+
+                {/* Optional Visualization Chart */}
+                {aiResponse.visualization && aiResponse.visualization.type === "bar" && (
+                  <div className="pt-2">
+                    <GenericBarChart
+                      title={aiResponse.visualization.title}
+                      data={aiResponse.visualization.data}
+                    />
+                  </div>
+                )}
+
+                {/* Primary Sources & Citations */}
+                {aiResponse.sources && aiResponse.sources.length > 0 && (
+                  <div className="border-t border-[#E8DEC8] pt-4 space-y-3 font-mono">
+                    <span className="text-xs font-bold text-[#0F172A] uppercase tracking-wider block">
+                      VERIFIED PRIMARY SOURCE CITATIONS:
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      {aiResponse.sources.map((s: any, idx) => (
+                        <div key={idx} className="bg-[#FAF7F0] p-3 rounded border border-[#E8DEC8] flex items-center justify-between">
+                          <div>
+                            <span className="font-bold text-[#111827] block truncate">{s.name || s.title}</span>
+                            <span className="text-[11px] text-[#6B7280]">{s.publisher || s.ministry}</span>
+                          </div>
+                          {s.url && (
+                            <a
+                              href={s.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-[#D95300] hover:underline shrink-0 ml-2"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
       </main>

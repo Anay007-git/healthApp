@@ -7,6 +7,7 @@ import { StateProfile } from "@civiclens/types";
 
 export interface IndiaMapProps {
   states: StateProfile[];
+  selectedCode?: string;
   onSelectState?: (state: StateProfile) => void;
   onCompare?: (stateA: string, stateB: string) => void;
 }
@@ -220,18 +221,31 @@ const FALLBACK_INDIA_GEOJSON: IndiaGeoJSON = {
 */
 export const IndiaMap: React.FC<IndiaMapProps> = ({
   states,
+  selectedCode,
   onSelectState,
   onCompare,
 }) => {
   const [geoData, setGeoData] = useState<IndiaGeoJSON | null>(FALLBACK_INDIA_GEOJSON);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedState, setSelectedState] = useState<StateProfile | null>(states[0] || null);
+  const [selectedState, setSelectedState] = useState<StateProfile | null>(() => {
+    if (selectedCode) {
+      return states.find((s) => s.code.toUpperCase() === selectedCode.toUpperCase()) || states[0] || null;
+    }
+    return states[0] || null;
+  });
   const [hoveredState, setHoveredState] = useState<StateProfile | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("Governance");
   const [searchQuery, setSearchQuery] = useState("");
   const [compareTarget, setCompareTarget] = useState("WB");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    if (selectedCode) {
+      const match = states.find((s) => s.code.toUpperCase() === selectedCode.toUpperCase());
+      if (match) setSelectedState(match);
+    }
+  }, [selectedCode, states]);
 
   /*
   |--------------------------------------------------------------------------
