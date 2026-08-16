@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { brandConfig } from "@civiclens/config";
 import { db } from "@civiclens/database";
 import { EvidenceDrawer } from "@civiclens/ui";
@@ -104,6 +104,42 @@ export function App() {
     "State Intelligence & Governance",
   ]);
   const [newsletterFrequency, setNewsletterFrequency] = useState<"WEEKLY" | "BREAKING">("WEEKLY");
+
+  // Database Connection Status check
+  const [dbStatus, setDbStatus] = useState<"checking" | "connected" | "disconnected">("checking");
+  const [dbLatency, setDbLatency] = useState<number | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    async function checkDbConnection() {
+      const t0 = performance.now();
+      try {
+        const dbUrl = "postgresql://neondb_owner:npg_OBj2LtShf1Rv@ep-gentle-king-axtrdlfg-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
+        const url = new URL(dbUrl);
+        const res = await fetch(`https://${url.host}/sql`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Neon-Connection-String": dbUrl,
+          },
+          body: JSON.stringify({ query: "SELECT 1 as ping;", params: [] }),
+        });
+        const latency = Math.round(performance.now() - t0);
+        if (active) {
+          if (res.ok) {
+            setDbStatus("connected");
+            setDbLatency(latency);
+          } else {
+            setDbStatus("disconnected");
+          }
+        }
+      } catch {
+        if (active) setDbStatus("disconnected");
+      }
+    }
+    checkDbConnection();
+    return () => { active = false; };
+  }, []);
 
   // Mobile Navigation state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -380,21 +416,34 @@ export function App() {
                   </button>
                 </div>
 
-                {stories.map((story) => (
-                  <div key={story.id} className="space-y-3 group cursor-pointer" onClick={() => handleOpenEvidence("ev-cag-jjm-audit")}>
-                    <span className="font-mono text-xs text-[#4B5563]">
-                      {story.author} • {story.readTimeMinutes} min read
-                    </span>
-                    <h4 className="font-serif text-2xl font-bold text-[#111827] group-hover:text-[#D95300] transition-colors leading-tight">
-                      {story.title}
-                    </h4>
-                    <p className="text-sm text-[#4B5563] leading-relaxed">{story.subtitle}</p>
-                    <div className="pt-2 flex items-center gap-2 font-mono text-xs text-[#D95300] font-semibold">
-                      <span>READ FULL INVESTIGATION WITH EVIDENCE</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                <div className="divide-y divide-[#E8DEC8]">
+                  {stories.map((story) => (
+                    <div
+                      key={story.id}
+                      className="py-4 first:pt-0 last:pb-0 space-y-2.5 group cursor-pointer"
+                      onClick={() => handleOpenEvidence(story.sections?.[0]?.evidenceId || "ev-cag-jjm-audit")}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-semibold text-[#D95300]">
+                          {story.author}
+                        </span>
+                        <span className="font-mono text-[11px] text-[#6B7280]">
+                          {story.readTimeMinutes} min read
+                        </span>
+                      </div>
+                      <h4 className="font-serif text-xl sm:text-2xl font-bold text-[#111827] group-hover:text-[#D95300] transition-colors leading-tight">
+                        {story.title}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed">
+                        {story.subtitle}
+                      </p>
+                      <div className="pt-1 flex items-center gap-2 font-mono text-xs text-[#D95300] font-semibold">
+                        <span>READ FULL INVESTIGATION WITH EVIDENCE</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
               {/* Ask the data inline hero */}
@@ -2353,11 +2402,19 @@ export function App() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-[#E8DEC8] flex flex-col sm:flex-row justify-between items-center text-xs font-mono text-[#475569] gap-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-[#E8DEC8] flex flex-col sm:flex-row justify-between items-center text-xs font-mono text-[#475569] gap-3">
           <span className="flex items-center gap-1.5">
             <span>🇮🇳</span> © 2026 {brandConfig.name} • Dedicated to the Citizens of Bharat
           </span>
-          <span className="text-[#06038D] font-bold">{brandConfig.tagline}</span>
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[#E8DEC8] bg-[#FAF7F0] text-[11px]">
+              <span className={`w-2 h-2 rounded-full ${dbStatus === "connected" ? "bg-[#16A34A] animate-pulse" : dbStatus === "checking" ? "bg-[#F59E0B]" : "bg-[#DC2626]"}`} />
+              <span className={dbStatus === "connected" ? "text-[#16A34A] font-bold" : dbStatus === "checking" ? "text-[#D97706]" : "text-[#DC2626]"}>
+                {dbStatus === "connected" ? `Neon DB: Connected (${dbLatency}ms)` : dbStatus === "checking" ? "Neon DB: Connecting..." : "Neon DB: Offline"}
+              </span>
+            </span>
+            <span className="text-[#06038D] font-bold">{brandConfig.tagline}</span>
+          </div>
         </div>
       </footer>
 

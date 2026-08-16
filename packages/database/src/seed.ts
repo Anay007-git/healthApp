@@ -95,6 +95,80 @@ export const seedStates: StateProfile[] = [
 
 
 export const seedMinisters: MinisterProfile[] = [];
-export const seedStories: Story[] = [];
+export const seedStories: Story[] = [
+  {
+    id: "story-jjm-audit-2024",
+    slug: "jal-jeevan-mission-audit-findings",
+    title: "Jal Jeevan Mission: CAG Uncovers 44% Non-Functional Taps in Sampled Arid Districts",
+    subtitle: "An in-depth investigation into ₹28,400 Cr tap-water allocations across Rajasthan, Uttar Pradesh, and Bihar reveals ghost connections on paper vs ground delivery.",
+    author: "CivicLens Investigative Desk",
+    publishedAt: "2024-08-15",
+    readTimeMinutes: 5,
+    coverImageUrl: "/maps/water.jpg",
+    sections: [
+      {
+        id: "sec-1",
+        narrative: "The Comptroller and Auditor General of India (Report No. 14/2024) audited functional tap connections across 12 arid districts. While official dashboards reported 92% coverage, physical field sampling revealed 44% of households had zero running water due to uncommissioned pipelines and dried-up over-exploited aquifers.",
+        evidenceId: "ev-cag-jjm-audit",
+        timelineDate: "2024-08-15"
+      },
+      {
+        id: "sec-2",
+        narrative: "Utilization certificates worth ₹2,840 crore were found missing in Gram Panchayat accounting records, pointing to significant reconciliation delays between state nodal agencies and contractors.",
+        evidenceId: "ev-cag-jjm-audit",
+        timelineDate: "2024-08-15"
+      }
+    ]
+  },
+  {
+    id: "story-electoral-bonds-flow",
+    slug: "electoral-bonds-cash-flow-breakdown",
+    title: "Decoding the ₹16,518 Crore Electoral Bonds Money Trail",
+    subtitle: "How infrastructure contractors, mining conglomerates, and pharmaceutical giants distributed political contributions between 2018 and 2024.",
+    author: "Civic Data Analytics Lab",
+    publishedAt: "2024-07-28",
+    readTimeMinutes: 6,
+    sections: [
+      {
+        id: "sec-eb-1",
+        narrative: "Following the Supreme Court verdict striking down the Electoral Bonds scheme as unconstitutional, State Bank of India disclosed 22,217 bond redemptions. The top 10 political parties collected over 93% of the total ₹16,518 crore pool, with single-party dominance in major corporate donor contributions.",
+        timelineDate: "2024-07-28"
+      }
+    ]
+  },
+  {
+    id: "story-ayushman-bharat-discrepancy",
+    slug: "ayushman-bharat-hospital-audit",
+    title: "Ayushman Bharat PM-JAY: Audit Highlights Ghost Claims & Biometric Deficits",
+    subtitle: "CAG audit across 7 states flags ₹480 Cr in questioned treatment claims, including billing for already deceased beneficiaries and overlapping inpatient admissions.",
+    author: "Public Health Governance Unit",
+    publishedAt: "2024-06-12",
+    readTimeMinutes: 4,
+    sections: [
+      {
+        id: "sec-ab-1",
+        narrative: "CAG Performance Audit Report No. 11/2023 reviewed 3.8 crore pre-authorized claims under Pradhan Mantri Jan Arogya Yojana. Key findings included invalid Aadhaar linking (over 7.5 lakh registrations under single placeholder numbers) and private hospital claims approved without mandatory pre-authorization telemetry.",
+        timelineDate: "2024-06-12"
+      }
+    ]
+  },
+  {
+    id: "story-fiscal-federalism-mh-up",
+    slug: "state-finances-fiscal-divide-2024",
+    title: "The Fiscal Divide: Maharashtra's ₹4.8 Lakh Cr Revenue vs UP's Welfare Expansion",
+    subtitle: "Comparative analysis of state own-tax revenues, central tax devolution ratios, and capital expenditure quality across India's largest state economies.",
+    author: "Macro-Governance Analysis Desk",
+    publishedAt: "2024-05-20",
+    readTimeMinutes: 7,
+    sections: [
+      {
+        id: "sec-ff-1",
+        narrative: "While Maharashtra generates over 72% of its budget through own-tax revenue (GST, Stamp Duty, Petroleum VAT), Uttar Pradesh relies on Central Tax Devolution for over 48% of its total receipts. Both models face distinct debt sustainability benchmarks under the 16th Finance Commission guidelines.",
+        timelineDate: "2024-05-20"
+      }
+    ]
+  }
+];
 export const seedPartyFunding: PartyFundingRecord[] = [];
 export const seedCorporateDonors: CorporateDonorRecord[] = [];
+

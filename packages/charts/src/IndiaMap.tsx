@@ -334,15 +334,15 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
   |--------------------------------------------------------------------------
   */
   const width = 620;
-  const height = 620;
+  const height = 530;
 
   const projection = useMemo<GeoProjection | null>(() => {
     if (!geoData) return null;
 
     return geoMercator().fitExtent(
       [
-        [30, 20],
-        [width - 30, height - 20],
+        [20, 10],
+        [width - 20, height - 70],
       ],
       geoData as any
     );
@@ -378,18 +378,18 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
   };
 
   return (
-    <div className="bg-white border border-[#E8DEC8] rounded shadow-sm p-6 space-y-6">
+    <div className="bg-white border border-[#E8DEC8] rounded shadow-sm p-5 space-y-4">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#E8DEC8] pb-4">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#E8DEC8] pb-3">
         <div>
           <span className="font-mono text-xs font-semibold text-[#D95300] uppercase tracking-wider flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4" />
             Geographic Intelligence Engine
           </span>
-          <h3 className="font-serif text-3xl font-bold text-[#111827] mt-1">
+          <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#111827] mt-0.5">
             India Governance Map
           </h3>
-          <p className="text-xs text-[#4B5563] font-mono mt-1">
+          <p className="text-xs text-[#4B5563] font-mono mt-0.5">
             D3-geo Mercator Projection with State Level Indicators
           </p>
         </div>
@@ -400,9 +400,9 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-3 py-1.5 text-xs font-mono rounded transition-all ${
+              className={`px-3 py-1.5 text-xs font-mono rounded transition-all cursor-pointer ${
                 activeCategory === category
-                  ? "bg-[#D95300] text-white"
+                  ? "bg-[#D95300] text-white font-bold"
                   : "bg-[#F3EDE0] text-[#4B5563] hover:bg-[#E8DEC8]"
               }`}
             >
@@ -413,17 +413,17 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
       </div>
 
       {/* Main Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* MAP CANVAS */}
         <div className="lg:col-span-7">
-          <div className="bg-[#FAF7F0] border border-[#E8DEC8] rounded p-4 relative">
-            <div className="flex items-center justify-between mb-3 px-2">
+          <div className="bg-[#FAF7F0] border border-[#E8DEC8] rounded p-3 relative">
+            <div className="flex items-center justify-between mb-2 px-1">
               <span className="font-mono text-xs text-[#4B5563]">INDIA · STATE BOUNDARIES</span>
               <span className="font-mono text-xs text-[#D95300] font-bold">{activeCategory}</span>
             </div>
 
             {loading && (
-              <div className="h-[520px] flex items-center justify-center">
+              <div className="h-[460px] flex items-center justify-center">
                 <div className="text-center">
                   <div className="w-8 h-8 border-2 border-[#D95300] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
                   <p className="font-mono text-xs text-[#4B5563]">Loading geographic data...</p>
@@ -432,7 +432,7 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
             )}
 
             {!loading && error && (
-              <div className="h-[520px] flex items-center justify-center">
+              <div className="h-[460px] flex items-center justify-center">
                 <div className="text-center max-w-sm">
                   <Info className="w-8 h-8 text-[#D95300] mx-auto mb-3" />
                   <p className="font-serif font-bold text-[#111827]">Map unavailable</p>
@@ -541,14 +541,14 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
 
                   {/* ISLAND & UT OVERLAY CALLOUTS FOR EASY SELECTION */}
                   {[
-                    { code: "LD", label: "Lakshadweep (LD)", x: 50, y: 530, w: 125 },
-                    { code: "DL", label: "Delhi (NCT)", x: 185, y: 530, w: 105 },
-                    { code: "PY", label: "Puducherry (PY)", x: 300, y: 530, w: 110 },
-                    { code: "AN", label: "Andaman & Nicobar (AN)", x: 420, y: 530, w: 155 },
-                    { code: "CH", label: "Chandigarh (CH)", x: 50, y: 560, w: 125 },
-                    { code: "GA", label: "Goa (GA)", x: 185, y: 560, w: 105 },
-                    { code: "DN", label: "Dadra & Nagar Haveli (DN)", x: 300, y: 560, w: 155 },
-                    { code: "LA", label: "Ladakh (LA)", x: 465, y: 560, w: 110 },
+                    { code: "LD", label: "Lakshadweep", x: 25, y: 470, w: 110 },
+                    { code: "DL", label: "Delhi (NCT)", x: 145, y: 470, w: 100 },
+                    { code: "PY", label: "Puducherry", x: 255, y: 470, w: 100 },
+                    { code: "AN", label: "Andaman & Nicobar", x: 365, y: 470, w: 145 },
+                    { code: "CH", label: "Chandigarh", x: 25, y: 498, w: 110 },
+                    { code: "GA", label: "Goa", x: 145, y: 498, w: 100 },
+                    { code: "DN", label: "Dadra & Nagar", x: 255, y: 498, w: 120 },
+                    { code: "LA", label: "Ladakh", x: 385, y: 498, w: 90 },
                   ].map((island) => {
                     const st = stateByCode.get(island.code);
                     if (!st) return null;
@@ -568,18 +568,18 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
                           x={island.x}
                           y={island.y}
                           width={island.w}
-                          height="22"
+                          height="20"
                           rx="4"
                           fill={fill}
                           stroke="#FFFFFF"
-                          strokeWidth="1.2"
+                          strokeWidth="1"
                         />
                         <text
                           x={island.x + island.w / 2}
-                          y={island.y + 15}
+                          y={island.y + 13.5}
                           textAnchor="middle"
                           fill="#FFFFFF"
-                          fontSize="8.5"
+                          fontSize="8"
                           fontWeight="bold"
                           fontFamily="JetBrains Mono, monospace"
                         >
@@ -590,27 +590,39 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({
                   })}
                 </svg>
 
-                {/* Tooltip */}
+                {/* Tooltip with High Contrast & Guaranteed Readability */}
                 {hoveredState && (
                   <div
-                    className="absolute z-30 pointer-events-none bg-[#111827] text-white px-3 py-2.5 rounded shadow-xl border border-[#374151] min-w-[180px]"
+                    className="absolute z-50 pointer-events-none rounded-lg shadow-2xl backdrop-blur-md"
                     style={{
-                      left: tooltipPosition.x + 12,
-                      top: tooltipPosition.y + 12,
+                      left: Math.min(tooltipPosition.x + 12, 380),
+                      top: Math.max(tooltipPosition.y - 40, 8),
+                      backgroundColor: "rgba(17, 24, 39, 0.98)",
+                      border: "1px solid #4B5563",
+                      padding: "10px 14px",
+                      minWidth: "190px",
+                      color: "#FFFFFF",
+                      boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5)",
                     }}
                   >
-                    <div className="font-serif font-bold text-sm">{hoveredState.name}</div>
-                    <div className="font-mono text-[10px] text-[#D1D5DB] mt-1">{hoveredState.code}</div>
-                    <div className="border-t border-[#374151] my-2" />
-                    <div className="flex justify-between gap-5">
-                      <span className="font-mono text-[10px] text-[#9CA3AF]">{activeCategory}</span>
-                      <strong className="font-mono text-xs">
+                    <div style={{ color: "#FFFFFF", fontWeight: "bold", fontSize: "14px", fontFamily: "serif", lineHeight: 1.2 }}>
+                      {hoveredState.name}
+                    </div>
+                    <div style={{ color: "#9CA3AF", fontSize: "10px", fontFamily: "monospace", marginTop: "2px" }}>
+                      STATE CODE: <span style={{ color: "#F3F4F6", fontWeight: "bold" }}>{hoveredState.code}</span> {hoveredState.capital ? `• ${hoveredState.capital}` : ""}
+                    </div>
+                    <div style={{ borderTop: "1px solid #374151", margin: "8px 0" }} />
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px", fontSize: "11px", fontFamily: "monospace" }}>
+                      <span style={{ color: "#9CA3AF" }}>{activeCategory} Score</span>
+                      <strong style={{ color: "#F59E0B", fontWeight: "bold", fontSize: "12px" }}>
                         {hoveredState.scores?.[activeCategory] ?? "No data"}
                       </strong>
                     </div>
-                    <div className="flex justify-between gap-5 mt-1">
-                      <span className="font-mono text-[10px] text-[#9CA3AF]">CAG Findings</span>
-                      <strong className="font-mono text-xs">{hoveredState.cagFindingsCount}</strong>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px", fontSize: "11px", fontFamily: "monospace", marginTop: "4px" }}>
+                      <span style={{ color: "#9CA3AF" }}>CAG Audit Findings</span>
+                      <strong style={{ color: "#EF4444", fontWeight: "bold", fontSize: "12px" }}>
+                        {hoveredState.cagFindingsCount}
+                      </strong>
                     </div>
                   </div>
                 )}

@@ -94,6 +94,8 @@ export const GenericBarChart: React.FC<ChartProps> = ({
                 fontFamily: "JetBrains Mono",
                 border: "1px solid #374151",
               }}
+              itemStyle={{ color: "#FBF9F5" }}
+              labelStyle={{ color: "#FFFFFF", fontWeight: "bold" }}
             />
             {barKeys.length > 1 && (
               <Legend
@@ -184,6 +186,8 @@ export const GenericLineChart: React.FC<ChartProps> = ({
                 fontFamily: "JetBrains Mono",
                 border: "1px solid #374151",
               }}
+              itemStyle={{ color: "#FBF9F5" }}
+              labelStyle={{ color: "#FFFFFF", fontWeight: "bold" }}
             />
             {lineKeys.length > 1 && (
               <Legend
