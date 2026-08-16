@@ -390,10 +390,15 @@ export function App() {
               <IndiaMap
                 states={states}
                 selectedCode={selectedStateForSchemes}
-                onSelectState={(st) => setSelectedStateForSchemes(st.code)}
+                onSelectState={(st) => {
+                  setSelectedStateForSchemes(st.code);
+                  setActiveTab("states");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
                 onCompare={(a, b) => {
                   setCompareStates(db.compareStates(a, b));
                   setActiveTab("states");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               />
             </section>
