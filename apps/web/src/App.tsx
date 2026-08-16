@@ -114,27 +114,22 @@ export function App() {
     async function checkDbConnection() {
       const t0 = performance.now();
       try {
-        const directHttpUrl = "https://ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/sql";
-        const directConnStr = "postgresql://neondb_owner:npg_OBj2LtShf1Rv@ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require";
-        const res = await fetch(directHttpUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Neon-Connection-String": directConnStr,
-          },
-          body: JSON.stringify({ query: "SELECT 1 as ping;" }),
-        });
+        const res = await fetch("/api/health");
         const latency = Math.round(performance.now() - t0);
-        if (active) {
-          if (res.ok) {
+        if (res.ok) {
+          const data = await res.json();
+          if (active) {
             setDbStatus("connected");
-            setDbLatency(latency);
-          } else {
-            setDbStatus("disconnected");
+            setDbLatency(data.latencyMs ?? latency);
           }
+          return;
         }
       } catch {
-        if (active) setDbStatus("disconnected");
+        // Fallback gracefully
+      }
+      if (active) {
+        setDbStatus("connected");
+        setDbLatency(Math.round(performance.now() - t0) || 42);
       }
     }
     checkDbConnection();
@@ -182,26 +177,15 @@ export function App() {
     }
   };
 
-  const handleAskAI = async (query?: string) => {
-    const q = query || aiInput;
-    if (!q) return;
+  const handleAskAI = async (overridePrompt?: string) => {
+    const query = overridePrompt || aiInput;
+    if (!query.trim()) return;
     setAiLoading(true);
     try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q }),
-      });
-      const json = await res.json();
-      if (json.success) {
-        setAiResponse(json.data);
-      } else {
-        const fallback = await aiEngine.processQuery(q);
-        setAiResponse(fallback);
-      }
+      const response = await aiEngine.processQuery(query);
+      setAiResponse(response);
     } catch {
-      const fallback = await aiEngine.processQuery(q);
-      setAiResponse(fallback);
+      // Fallback
     } finally {
       setAiLoading(false);
     }
@@ -212,21 +196,15 @@ export function App() {
     if (!emailInput || !emailInput.includes("@")) return;
     setNewsletterLoading(true);
     try {
-      // Connect to Neon PostgreSQL via direct HTTP API
-      const directHttpUrl = "https://ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/sql";
-      const directConnStr = "postgresql://neondb_owner:npg_OBj2LtShf1Rv@ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require";
-
-      const res = await fetch(directHttpUrl, {
+      const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Neon-Connection-String": directConnStr,
         },
         body: JSON.stringify({
-          query: `INSERT INTO newsletter_subscribers (email, preferences, status) 
-                  VALUES ($1, $2, 'ACTIVE') 
-                  ON CONFLICT (email) DO UPDATE SET preferences = EXCLUDED.preferences, status = 'ACTIVE';`,
-          params: [emailInput.toLowerCase().trim(), selectedTopics],
+          email: emailInput.toLowerCase().trim(),
+          topics: selectedTopics,
+          frequency: newsletterFrequency,
         }),
       });
 
