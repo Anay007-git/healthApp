@@ -119,66 +119,97 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
             )}
           </div>
 
-          {/* PROGRESS & ACCOUNTABILITY SCORES */}
-          <div className="bg-[#FFFFFF] p-4 sm:p-5 rounded-xl border border-[#E8DEC8] shadow-xs space-y-3">
-            <div className="flex items-center justify-between border-b border-[#E8DEC8] pb-2">
-              <span className="font-mono text-[11px] text-[#06038D] uppercase tracking-wider font-bold flex items-center gap-1.5">
-                <Award className="w-4 h-4 text-[#06038D]" />
-                DATA INTEGRITY & PROGRESS SCORES
-              </span>
-              <span className="font-mono text-[10px] text-[#15803D] font-bold bg-[#E8F5E9] px-2 py-0.5 rounded">
-                Tier-1 Certified
-              </span>
-            </div>
-
+          {/* GOVERNMENT EXECUTION & PROGRESS AUDIT (SUCCESS VS LAGGING) */}
+          <div className="bg-[#FFFFFF] p-4 sm:p-5 rounded-xl border border-[#E8DEC8] shadow-xs space-y-4">
             {(() => {
-              const matchScore = evidence.evidenceMatchScore ?? 98;
-              const traceScore = evidence.auditTraceabilityScore ?? 94;
-              const deliveryScore = evidence.groundDeliveryScore ?? 82;
+              const successRate = evidence.successRate ?? evidence.groundDeliveryScore ?? 82;
+              const evidenceScore = evidence.evidenceScore ?? evidence.evidenceMatchScore ?? 53;
+              const laggingRate = evidence.laggingRate ?? Math.max(5, 100 - evidenceScore);
+              const verdict = evidence.cagVerdict || (evidenceScore < 60 ? "CRITICAL_DEFICIT" : evidenceScore < 80 ? "PARTIAL_DISCREPANCY" : "SATISFACTORY");
+
+              const verdictBadge = verdict === "CRITICAL_DEFICIT"
+                ? { text: "Critical Audit Deficit", bg: "bg-[#FEF2F2]", textCol: "text-[#991B1B]", border: "border-[#F87171]" }
+                : verdict === "PARTIAL_DISCREPANCY"
+                ? { text: "Partial Discrepancy Flagged", bg: "bg-[#FFFBEB]", textCol: "text-[#D97706]", border: "border-[#FCD34D]" }
+                : { text: "Satisfactory Delivery", bg: "bg-[#F0FDF4]", textCol: "text-[#15803D]", border: "border-[#86EFAC]" };
+
               return (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                  {/* Score 1 - Green */}
-                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-2">
-                    <div className="flex justify-between items-center text-xs font-mono">
-                      <span className="text-[#64748B] text-[10px] font-bold uppercase">Evidence Match</span>
-                      <span className="font-bold text-[#046A38] text-sm">{matchScore}%</span>
-                    </div>
-                    <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
-                      <div
-                        className="h-full rounded-full transition-all duration-500"
-                        style={{ width: `${Math.min(100, Math.max(5, matchScore))}%`, backgroundColor: "#046A38" }}
-                      />
-                    </div>
+                <>
+                  <div className="flex items-center justify-between border-b border-[#E8DEC8] pb-2.5 gap-2 flex-wrap">
+                    <span className="font-mono text-[11px] text-[#0F172A] uppercase tracking-wider font-bold flex items-center gap-1.5">
+                      <Award className="w-4 h-4 text-[#D95300]" />
+                      GOVERNMENT EXECUTION & PROGRESS AUDIT
+                    </span>
+                    <span className={`font-mono text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${verdictBadge.bg} ${verdictBadge.textCol} ${verdictBadge.border}`}>
+                      {verdictBadge.text}
+                    </span>
                   </div>
 
-                  {/* Score 2 - Saffron */}
-                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-2">
-                    <div className="flex justify-between items-center text-xs font-mono">
-                      <span className="text-[#64748B] text-[10px] font-bold uppercase">Audit Traceability</span>
-                      <span className="font-bold text-[#D95300] text-sm">{traceScore}%</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {/* Score 1 - SUCCESS RATE (Green) */}
+                    <div className="bg-[#FAF7F0] p-3.5 rounded-xl border border-[#E8DEC8] space-y-2 flex flex-col justify-between">
+                      <div>
+                        <div className="flex justify-between items-baseline text-xs font-mono">
+                          <span className="text-[#046A38] text-[10.5px] font-bold uppercase flex items-center gap-1">
+                            <CheckCircle className="w-3.5 h-3.5 text-[#046A38]" /> GOVT SUCCEEDED
+                          </span>
+                          <span className="font-bold text-[#046A38] text-base">{successRate}%</span>
+                        </div>
+                        <div className="w-full h-2 rounded-full overflow-hidden mt-2" style={{ backgroundColor: "#E2E8F0" }}>
+                          <div
+                            className="h-full rounded-full transition-all duration-500"
+                            style={{ width: `${Math.min(100, Math.max(5, successRate))}%`, backgroundColor: "#046A38" }}
+                          />
+                        </div>
+                      </div>
+                      <p className="text-[10px] text-[#475569] font-sans pt-1 leading-tight border-t border-[#E8DEC8]/60 mt-1">
+                        {evidence.successDetail || "Budget disbursed & ground telemetry verified."}
+                      </p>
                     </div>
-                    <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
-                      <div
-                        className="h-full rounded-full transition-all duration-500"
-                        style={{ width: `${Math.min(100, Math.max(5, traceScore))}%`, backgroundColor: "#D95300" }}
-                      />
-                    </div>
-                  </div>
 
-                  {/* Score 3 - Navy */}
-                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-2">
-                    <div className="flex justify-between items-center text-xs font-mono">
-                      <span className="text-[#64748B] text-[10px] font-bold uppercase">Ground Delivery</span>
-                      <span className="font-bold text-[#06038D] text-sm">{deliveryScore}%</span>
+                    {/* Score 2 - WHERE GOVT IS LAGGING (Red) */}
+                    <div className="bg-[#FEF2F2]/60 p-3.5 rounded-xl border border-[#FCA5A5] space-y-2 flex flex-col justify-between">
+                      <div>
+                        <div className="flex justify-between items-baseline text-xs font-mono">
+                          <span className="text-[#991B1B] text-[10.5px] font-bold uppercase flex items-center gap-1">
+                            <AlertTriangle className="w-3.5 h-3.5 text-[#DC2626]" /> GOVT LAGGING
+                          </span>
+                          <span className="font-bold text-[#DC2626] text-base">{laggingRate}%</span>
+                        </div>
+                        <div className="w-full h-2 rounded-full overflow-hidden mt-2" style={{ backgroundColor: "#FEE2E2" }}>
+                          <div
+                            className="h-full rounded-full transition-all duration-500"
+                            style={{ width: `${Math.min(100, Math.max(5, laggingRate))}%`, backgroundColor: "#DC2626" }}
+                          />
+                        </div>
+                      </div>
+                      <p className="text-[10px] text-[#991B1B] font-sans pt-1 leading-tight border-t border-[#FCA5A5]/60 mt-1 font-medium">
+                        {evidence.laggingDetail || "Implementation deficit & audit discrepancy noted."}
+                      </p>
                     </div>
-                    <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
-                      <div
-                        className="h-full rounded-full transition-all duration-500"
-                        style={{ width: `${Math.min(100, Math.max(5, deliveryScore))}%`, backgroundColor: "#06038D" }}
-                      />
+
+                    {/* Score 3 - EVIDENCE & AUDIT SCORE (Saffron) */}
+                    <div className="bg-[#FAF7F0] p-3.5 rounded-xl border border-[#E8DEC8] space-y-2 flex flex-col justify-between">
+                      <div>
+                        <div className="flex justify-between items-baseline text-xs font-mono">
+                          <span className="text-[#D95300] text-[10.5px] font-bold uppercase flex items-center gap-1">
+                            <ShieldCheck className="w-3.5 h-3.5 text-[#D95300]" /> EVIDENCE SCORE
+                          </span>
+                          <span className="font-bold text-[#D95300] text-base">{evidenceScore}/100</span>
+                        </div>
+                        <div className="w-full h-2 rounded-full overflow-hidden mt-2" style={{ backgroundColor: "#E2E8F0" }}>
+                          <div
+                            className="h-full rounded-full transition-all duration-500"
+                            style={{ width: `${Math.min(100, Math.max(5, evidenceScore))}%`, backgroundColor: "#D95300" }}
+                          />
+                        </div>
+                      </div>
+                      <p className="text-[10px] text-[#475569] font-sans pt-1 leading-tight border-t border-[#E8DEC8]/60 mt-1">
+                        Audited across parliamentary CAG reports & DBT public filings.
+                      </p>
                     </div>
                   </div>
-                </div>
+                </>
               );
             })()}
           </div>

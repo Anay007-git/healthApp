@@ -162,7 +162,13 @@ export function App() {
     { id: "newsletter", label: "Newsletter", icon: Mail },
   ];
 
-  const handleOpenEvidence = (evidenceId?: string) => {
+  const handleOpenEvidence = (evidenceId?: string, schemeContext?: Scheme) => {
+    if (schemeContext) {
+      const ev = db.getEvidenceForScheme(schemeContext, evidenceId);
+      setActiveEvidence(ev);
+      setIsEvidenceDrawerOpen(true);
+      return;
+    }
     const ev = db.getEvidenceById(evidenceId || "ev-schemes-tracked");
     if (ev) {
       setActiveEvidence(ev);
@@ -631,9 +637,13 @@ export function App() {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-mono text-xs text-[#4B5563]">{scheme.ministry}</span>
-                        <span className="font-mono text-xs px-2 py-0.5 bg-[#D95300]/10 text-[#D95300] font-semibold rounded">
+                        <button
+                          onClick={() => handleOpenEvidence(scheme.slug, scheme)}
+                          className="font-mono text-xs px-2.5 py-0.5 bg-[#D95300]/10 hover:bg-[#D95300]/20 text-[#D95300] font-bold rounded cursor-pointer border border-[#D95300]/30 transition-colors flex items-center gap-1"
+                        >
+                          <ShieldCheck className="w-3.5 h-3.5" />
                           EVIDENCE SCORE: {scheme.evidenceScore}/100
-                        </span>
+                        </button>
                       </div>
                       <h3 className="font-serif text-2xl font-bold text-[#111827] mt-1">{scheme.name}</h3>
                       {scheme.hindiName && <p className="text-xs font-sans text-[#4B5563]">{scheme.hindiName}</p>}
@@ -663,7 +673,7 @@ export function App() {
                         {scheme.pipeline.map((step) => (
                           <div
                             key={step.id}
-                            onClick={() => handleOpenEvidence(step.evidenceId)}
+                            onClick={() => handleOpenEvidence(step.id || step.evidenceId, scheme)}
                             className="bg-[#FFFFFF] p-3 rounded border border-[#E8DEC8] hover:border-[#D95300] transition-colors cursor-pointer"
                           >
                             <span className="px-2 py-0.5 bg-[#111827] text-[#FAF7F0] rounded text-[10px] uppercase">

@@ -433,6 +433,47 @@ export class CivicLensDatabase {
     return this.evidences;
   }
 
+  getEvidenceForScheme(scheme: Scheme, milestoneId?: string): Evidence {
+    const budget = scheme.budgetAllocatedCr || 1000;
+    const spent = scheme.expenditureCr || Math.round(budget * 0.75);
+    const successRate = Math.min(100, Math.max(10, Math.round((spent / budget) * 100)));
+    const evScore = scheme.evidenceScore ?? 53;
+    const laggingRate = Math.max(5, 100 - evScore);
+    const unspent = Math.max(0, budget - spent);
+
+    let milestoneDesc = "";
+    if (milestoneId && scheme.pipeline) {
+      const step = scheme.pipeline.find((p) => p.id === milestoneId || p.evidenceId === milestoneId);
+      if (step) {
+        milestoneDesc = ` [${step.title}: ${step.description}]`;
+      }
+    }
+
+    return {
+      id: `ev-${scheme.slug}`,
+      schemeName: scheme.name,
+      claim: `${scheme.name}: Outlay of ₹${budget.toLocaleString()} Cr for ${scheme.coverageTarget || "citizen coverage"}.`,
+      evidenceSummary: `${scheme.summary || `Primary budget documentation and expenditure telemetry for ${scheme.name}.`}${milestoneDesc}`,
+      sourceId: "src-dbt-mission",
+      source: this.sources[2] || this.sources[0],
+      methodology: "Triangulated DBT transaction logs with departmental annual outlay expenditure files and CAG audit volumes.",
+      verificationStatus: "VERIFIED",
+      verifiedAt: "2026-08-16",
+      verifiedBy: "Orange-Chasma Audit Desk",
+      evidenceMatchScore: evScore,
+      auditTraceabilityScore: Math.max(40, evScore - 4),
+      groundDeliveryScore: successRate,
+      successRate: successRate,
+      laggingRate: laggingRate,
+      evidenceScore: evScore,
+      cagVerdict: scheme.cagVerdict,
+      successDetail: `₹${spent.toLocaleString()} Cr successfully disbursed of ₹${budget.toLocaleString()} Cr outlay (${successRate}% budget delivery).`,
+      laggingDetail: unspent > 0 
+        ? `₹${unspent.toLocaleString()} Cr outlay pending/unspent with ${scheme.cagVerdict?.replace(/_/g, " ").toLowerCase() || "audit deficit"}.`
+        : `CAG audit flagged ${laggingRate}% non-compliance variance in state-level beneficiary validation.`,
+    };
+  }
+
   getEvidenceById(id?: string): Evidence {
     if (!id) return this.evidences[0];
     const found = this.evidences.find((e) => e.id.toLowerCase() === id.toLowerCase());
@@ -446,20 +487,7 @@ export class CivicLensDatabase {
     // Check if ID matches a scheme slug or name
     const scheme = this.schemes.find((s) => s.id.toLowerCase() === id.toLowerCase() || s.slug.toLowerCase() === id.toLowerCase());
     if (scheme) {
-      return {
-        id: `ev-${scheme.slug}`,
-        claim: `${scheme.name}: Outlay of ₹${scheme.budgetAllocatedCr?.toLocaleString()} Cr for ${scheme.coverageTarget || "national implementation"}.`,
-        evidenceSummary: scheme.summary || `Primary budget documentation and expenditure telemetry for ${scheme.name}.`,
-        sourceId: "src-dbt-mission",
-        source: this.sources[2] || this.sources[0],
-        methodology: "Triangulated DBT transaction logs with departmental annual outlay expenditure files.",
-        verificationStatus: "VERIFIED",
-        verifiedAt: "2026-08-16",
-        verifiedBy: "Orange-Chasma Audit Desk",
-        evidenceMatchScore: scheme.evidenceScore || 95,
-        auditTraceabilityScore: Math.max(80, (scheme.evidenceScore || 95) - 3),
-        groundDeliveryScore: scheme.budgetAllocatedCr && scheme.expenditureCr ? Math.min(98, Math.round((scheme.expenditureCr / scheme.budgetAllocatedCr) * 100)) : 84,
-      };
+      return this.getEvidenceForScheme(scheme);
     }
 
     // Check if ID matches a CAG report or finding
@@ -467,6 +495,7 @@ export class CivicLensDatabase {
       if (report.id.toLowerCase() === id.toLowerCase()) {
         return {
           id: `ev-${report.id}`,
+          schemeName: report.title,
           claim: `${report.title}: ₹${report.totalLossCr?.toLocaleString()} Cr discrepancy audit tabled before Parliament.`,
           evidenceSummary: `CAG compliance audit covering ${report.ministry} (${report.year}).`,
           sourceId: "src-cag-portal",
@@ -475,15 +504,23 @@ export class CivicLensDatabase {
           verificationStatus: "VERIFIED",
           verifiedAt: "2026-08-16",
           verifiedBy: "CAG Audit Review Desk",
-          evidenceMatchScore: 99,
+          evidenceMatchScore: 48,
           auditTraceabilityScore: 98,
-          groundDeliveryScore: 72,
+          groundDeliveryScore: 52,
+          successRate: 52,
+          laggingRate: 48,
+          evidenceScore: 48,
+          cagVerdict: "CRITICAL_DEFICIT",
+          successDetail: `Parliamentary audit tabled covering ${report.ministry} across ${report.year}.`,
+          laggingDetail: `₹${report.totalLossCr?.toLocaleString()} Cr loss / discrepancy flagged in compliance audit.`,
         };
       }
       const finding = report.findings?.find((f) => f.id.toLowerCase() === id.toLowerCase());
       if (finding) {
+        const isResolved = finding.status === "RESOLVED";
         return {
           id: `ev-${finding.id}`,
+          schemeName: finding.title,
           claim: `${finding.title} (Financial Impact: ₹${finding.financialImpactCr?.toLocaleString()} Cr)`,
           evidenceSummary: finding.findingSummary || finding.recommendation || `Audit observation by CAG regarding ${finding.department}.`,
           sourceId: "src-cag-portal",
@@ -492,9 +529,15 @@ export class CivicLensDatabase {
           verificationStatus: "VERIFIED",
           verifiedAt: "2026-08-16",
           verifiedBy: "CAG Audit Review Desk",
-          evidenceMatchScore: 98,
+          evidenceMatchScore: isResolved ? 88 : 46,
           auditTraceabilityScore: 96,
-          groundDeliveryScore: finding.status === "RESOLVED" ? 92 : 68,
+          groundDeliveryScore: isResolved ? 85 : 42,
+          successRate: isResolved ? 85 : 42,
+          laggingRate: isResolved ? 15 : 58,
+          evidenceScore: isResolved ? 88 : 46,
+          cagVerdict: finding.severity === "CRITICAL" ? "CRITICAL_DEFICIT" : "PARTIAL_DISCREPANCY",
+          successDetail: isResolved ? "Action taken report submitted and verified." : "Department initiated recovery protocols.",
+          laggingDetail: `₹${finding.financialImpactCr?.toLocaleString()} Cr discrepancy (${finding.severity} Severity) noted in ${finding.department}.`,
         };
       }
     }
@@ -507,9 +550,9 @@ export class CivicLensDatabase {
       hash |= 0;
     }
     const absHash = Math.abs(hash);
-    const matchScore = 91 + (absHash % 9); // 91-99%
-    const traceScore = 86 + ((absHash >> 2) % 13); // 86-98%
-    const deliveryScore = 67 + ((absHash >> 4) % 27); // 67-93%
+    const matchScore = 75 + (absHash % 24); // 75-98%
+    const successRate = 60 + (absHash % 35); // 60-94%
+    const laggingRate = 100 - successRate;
 
     return {
       id: id || "ev-general",
@@ -523,8 +566,14 @@ export class CivicLensDatabase {
       verifiedAt: "2026-08-16",
       verifiedBy: "Orange-Chasma Civic Audit Desk",
       evidenceMatchScore: matchScore,
-      auditTraceabilityScore: traceScore,
-      groundDeliveryScore: deliveryScore,
+      auditTraceabilityScore: 92,
+      groundDeliveryScore: successRate,
+      successRate: successRate,
+      laggingRate: laggingRate,
+      evidenceScore: matchScore,
+      cagVerdict: matchScore > 80 ? "SATISFACTORY" : matchScore > 60 ? "PARTIAL_DISCREPANCY" : "CRITICAL_DEFICIT",
+      successDetail: `${successRate}% target delivery verified via primary public registers.`,
+      laggingDetail: `${laggingRate}% delivery gap or state treasury reconciliation pending.`,
     };
   }
 

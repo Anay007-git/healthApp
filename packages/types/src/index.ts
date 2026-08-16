@@ -27,6 +27,14 @@ export interface Evidence {
   evidenceMatchScore?: number;
   auditTraceabilityScore?: number;
   groundDeliveryScore?: number;
+  // Government Execution & Lagging Metrics
+  successRate?: number;
+  laggingRate?: number;
+  evidenceScore?: number;
+  cagVerdict?: string;
+  successDetail?: string;
+  laggingDetail?: string;
+  schemeName?: string;
 }
 
 export type PipelineStage =
