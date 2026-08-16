@@ -434,14 +434,23 @@ export class CivicLensDatabase {
   }
 
   getStateByCode(code: string): StateProfile | undefined {
+    if (!code) return undefined;
+    const q = code.trim().toLowerCase();
     return this.states.find(
-      (st) => st.code.toLowerCase() === code.toLowerCase() || st.name.toLowerCase() === code.toLowerCase()
+      (st) =>
+        st.code.toLowerCase() === q ||
+        st.name.toLowerCase() === q ||
+        st.name.toLowerCase().includes(q) ||
+        (q === "ts" && st.code.toLowerCase() === "tg") ||
+        (q === "tg" && st.code.toLowerCase() === "ts") ||
+        (q === "uk" && st.code.toLowerCase() === "ut") ||
+        (q === "ut" && st.code.toLowerCase() === "uk")
     );
   }
 
   compareStates(codeA: string, codeB: string): { stateA: StateProfile; stateB: StateProfile } | null {
-    const stA = this.getStateByCode(codeA);
-    const stB = this.getStateByCode(codeB);
+    const stA = this.getStateByCode(codeA) || this.states[0];
+    const stB = this.getStateByCode(codeB) || this.states[1];
     if (!stA || !stB) return null;
     return { stateA: stA, stateB: stB };
   }

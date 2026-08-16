@@ -723,39 +723,56 @@ export function App() {
             {compareStates ? (
               <div className="space-y-8">
                 {/* State Selectors & Comparison Header */}
-                <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-6 rounded shadow-xs space-y-4">
+                <div key={`comp-header-${compareStates.stateA.code}-${compareStates.stateB.code}`} className="bg-[#FFFFFF] border border-[#E8DEC8] p-6 rounded shadow-xs space-y-4">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E8DEC8] pb-4">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
                       <select
                         value={compareStates.stateA.code}
                         onChange={(e) => {
-                          const res = db.compareStates(e.target.value, compareStates.stateB.code);
-                          if (res) setCompareStates(res);
+                          const newCode = e.target.value;
+                          const stA = states.find((s) => s.code === newCode) || db.getStateByCode(newCode);
+                          if (stA) {
+                            setCompareStates({
+                              stateA: stA,
+                              stateB: compareStates.stateB.code === newCode ? (states.find((s) => s.code !== newCode) || states[0]) : compareStates.stateB,
+                            });
+                          }
                         }}
-                        className="w-full sm:w-auto bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-serif font-bold text-base sm:text-xl px-3 sm:px-4 py-2 rounded focus:outline-none focus:border-[#D95300]"
+                        className="w-full sm:w-auto bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-serif font-bold text-base sm:text-xl px-3 sm:px-4 py-2 rounded focus:outline-none focus:border-[#D95300] cursor-pointer"
                       >
                         {states.map((st) => (
-                          <option key={st.code} value={st.code}>{st.name} ({st.code})</option>
+                          <option key={`opt-a-${st.code}`} value={st.code}>{st.name} ({st.code})</option>
                         ))}
                       </select>
                       <span className="font-mono text-sm text-[#D95300] font-bold self-center">VS</span>
                       <select
                         value={compareStates.stateB.code}
                         onChange={(e) => {
-                          const res = db.compareStates(compareStates.stateA.code, e.target.value);
-                          if (res) setCompareStates(res);
+                          const newCode = e.target.value;
+                          const stB = states.find((s) => s.code === newCode) || db.getStateByCode(newCode);
+                          if (stB) {
+                            setCompareStates({
+                              stateA: compareStates.stateA.code === newCode ? (states.find((s) => s.code !== newCode) || states[0]) : compareStates.stateA,
+                              stateB: stB,
+                            });
+                          }
                         }}
-                        className="w-full sm:w-auto bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-serif font-bold text-base sm:text-xl px-3 sm:px-4 py-2 rounded focus:outline-none focus:border-[#D95300]"
+                        className="w-full sm:w-auto bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-serif font-bold text-base sm:text-xl px-3 sm:px-4 py-2 rounded focus:outline-none focus:border-[#D95300] cursor-pointer"
                       >
                         {states.map((st) => (
-                          <option key={st.code} value={st.code}>{st.name} ({st.code})</option>
+                          <option key={`opt-b-${st.code}`} value={st.code}>{st.name} ({st.code})</option>
                         ))}
                       </select>
                     </div>
 
                     <button
-                      onClick={() => setCompareStates(db.compareStates(compareStates.stateB.code, compareStates.stateA.code))}
-                      className="px-3 py-1.5 bg-[#FAF7F0] border border-[#E8DEC8] text-xs font-mono text-[#4B5563] hover:text-[#111827] rounded"
+                      onClick={() => {
+                        setCompareStates({
+                          stateA: compareStates.stateB,
+                          stateB: compareStates.stateA,
+                        });
+                      }}
+                      className="px-3 py-1.5 bg-[#FAF7F0] border border-[#E8DEC8] text-xs font-mono text-[#4B5563] hover:text-[#111827] hover:border-[#D95300] transition-colors rounded cursor-pointer font-bold"
                     >
                       ⇄ SWAP STATES
                     </button>
@@ -777,7 +794,7 @@ export function App() {
                       const isWinner = avgScore >= otherAvg;
 
                       return (
-                        <div key={st.code} className={`p-5 rounded border ${isWinner ? "bg-[#15803D]/5 border-[#15803D]" : "bg-[#FAF7F0] border-[#E8DEC8]"}`}>
+                        <div key={`winner-${st.code}`} className={`p-5 rounded border ${isWinner ? "bg-[#15803D]/5 border-[#15803D]" : "bg-[#FAF7F0] border-[#E8DEC8]"}`}>
                           <div className="flex justify-between items-start">
                             <div>
                               <span className="text-xs text-[#4B5563] uppercase block">{st.capital} • Pop: {(st.population / 1000000).toFixed(1)}M</span>
@@ -811,13 +828,14 @@ export function App() {
                 </div>
 
                 {/* Category Performance Bar Chart Comparison */}
-                <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-6 rounded shadow-xs space-y-4">
+                <div key={`comp-chart-${compareStates.stateA.code}-${compareStates.stateB.code}`} className="bg-[#FFFFFF] border border-[#E8DEC8] p-6 rounded shadow-xs space-y-4">
                   <div className="border-b border-[#E8DEC8] pb-3">
                     <span className="font-mono text-xs font-bold text-[#D95300] uppercase">GOVERNANCE PILLAR COMPARISON</span>
                     <h3 className="font-serif text-2xl font-bold text-[#111827]">Category Index Scores (out of 100)</h3>
                   </div>
 
                   <GenericBarChart
+                    key={`bar-chart-${compareStates.stateA.code}-${compareStates.stateB.code}`}
                     data={["Governance", "Health", "Education", "Fiscal", "Infrastructure"].map((cat) => {
                       const getNumScore = (st: StateProfile, c: string) => {
                         const scores = st.scores || {};
@@ -835,7 +853,7 @@ export function App() {
                 </div>
 
                 {/* ULTIMATE MULTI-KPI BENCHMARK MATRIX TABLE */}
-                <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-6 rounded shadow-xs space-y-4">
+                <div key={`comp-matrix-${compareStates.stateA.code}-${compareStates.stateB.code}`} className="bg-[#FFFFFF] border border-[#E8DEC8] p-6 rounded shadow-xs space-y-4">
                   <div className="border-b border-[#E8DEC8] pb-3">
                     <span className="font-mono text-xs font-bold text-[#D95300] uppercase">COMPLETE KPI & INDICATOR MATRIX</span>
                     <h3 className="font-serif text-2xl font-bold text-[#111827]">Side-by-Side Multi-Indicator Benchmark</h3>
