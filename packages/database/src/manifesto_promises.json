@@ -1,0 +1,132 @@
+[
+  {
+    "id": "prom-1",
+    "year": 2019,
+    "category": "Jal Shakti & Tap Water",
+    "promiseTitle": "Har Ghar Jal - 100% Rural Tap Water Connections",
+    "description": "Provide functional household tap connection (FHTC) to all 19.3 Crore rural households by 2024 under Jal Jeevan Mission.",
+    "status": "PARTIALLY_DELIVERED",
+    "evidenceSummary": "PIB & Jal Jeevan Mission Portal (Aug 2024): 15.1 Crore (78.2%) rural households achieved, up from 3.2 Crore (17%) in 2019.",
+    "evidenceId": "ev-jjm-2024"
+  },
+  {
+    "id": "prom-2",
+    "year": 2015,
+    "category": "Housing & Urban Affairs",
+    "promiseTitle": "Housing for All - PM Awas Yojana",
+    "description": "Construction of 4 Crore pucca houses for rural and urban poor families with LPG, electricity, and sanitation facilities.",
+    "status": "DELIVERED",
+    "evidenceSummary": "Ministry of Rural Development & MoHUA Disclosures (Jan 2024): 3.52 Crore rural and 1.18 Crore urban houses sanctioned & completed.",
+    "evidenceId": "ev-pmay-2024"
+  },
+  {
+    "id": "prom-3",
+    "year": 2019,
+    "category": "Agriculture & Farmers Welfare",
+    "promiseTitle": "PM-KISAN Direct Benefit Income Support",
+    "description": "Provide ₹6,000 per year in 3 equal installments directly to all landholding farmer families nationwide.",
+    "status": "DELIVERED",
+    "evidenceSummary": "Union Budget 2024 Statement 2: ₹3.24 Lakh Crore transferred directly to 11+ Crore farmers via Aadhaar-seeded bank accounts with zero leakage.",
+    "evidenceId": "ev-pmkisan-2024"
+  },
+  {
+    "id": "prom-4",
+    "year": 2019,
+    "category": "Road Transport & Highways",
+    "promiseTitle": "National Highways Construction Pace (40 km/day)",
+    "description": "Accelerate highway construction to 40 km/day and build 35,000 km under Bharatmala Pariyojana phase 1.",
+    "status": "PARTIALLY_DELIVERED",
+    "evidenceSummary": "MoRTH Annual Performance Report (2024): Peak highway construction reached 37 km/day in FY21 and 34 km/day in FY24. 55,000+ km built since 2014.",
+    "evidenceId": "ev-morth-2024"
+  },
+  {
+    "id": "prom-5",
+    "year": 2018,
+    "category": "Health & Family Welfare",
+    "promiseTitle": "Ayushman Bharat - World's Largest Health Cover",
+    "description": "Provide ₹5 Lakh per family per year secondary & tertiary hospitalization coverage to 50 Crore vulnerable citizens.",
+    "status": "DELIVERED",
+    "evidenceSummary": "National Health Authority Dashboard (2024): 34.5 Crore Ayushman Cards issued; over 6.5 Crore hospital admissions authorized worth ₹82,000 Cr.",
+    "evidenceId": "ev-pmjay-2024"
+  },
+  {
+    "id": "prom-6",
+    "year": 2014,
+    "category": "Defence & Military Welfare",
+    "promiseTitle": "One Rank One Pension (OROP) Implementation",
+    "description": "Implement One Rank One Pension for defense personnel to equalize pensions for same rank & length of service regardless of retirement date.",
+    "status": "DELIVERED",
+    "evidenceSummary": "Ministry of Defence Audit Report (2023): OROP implementation & Revision 2 arrears disbursed to 25.13 Lakh veterans (₹28,138 Cr total).",
+    "evidenceId": "ev-orop-2023"
+  },
+  {
+    "id": "prom-7",
+    "year": 2021,
+    "category": "Railways",
+    "promiseTitle": "Vande Bharat Semi-High-Speed Trains Rollout",
+    "description": "Manufacture and deploy 75 indigenous Vande Bharat Express trainsets to modernize passenger rail network.",
+    "status": "DELIVERED",
+    "evidenceSummary": "Railway Board Official Release (May 2024): 102 Vande Bharat train services active connecting 280+ districts nationwide.",
+    "evidenceId": "ev-railways-2024"
+  },
+  {
+    "id": "prom-8",
+    "year": 2015,
+    "category": "Urban Development",
+    "promiseTitle": "100 Smart Cities Mission",
+    "description": "Develop 100 sustainable smart cities equipped with Integrated Command and Control Centers (ICCC) and modern civic infrastructure.",
+    "status": "PARTIALLY_DELIVERED",
+    "evidenceSummary": "Smart Cities Mission Portal (June 2024): 7,150 of 8,000 planned projects completed (89.3% project completion rate).",
+    "evidenceId": "ev-smartcities-2024"
+  },
+  {
+    "id": "prom-9",
+    "year": 2017,
+    "category": "Power & Energy",
+    "promiseTitle": "Universal Household Electrification (Saubhagya)",
+    "description": "Provide last-mile electricity connections to all willing un-electrified households in rural and urban areas.",
+    "status": "DELIVERED",
+    "evidenceSummary": "REC / Ministry of Power Release (2021): 2.86 Crore households electrified; 100% village electrification achieved.",
+    "evidenceId": "ev-saubhagya-2021"
+  },
+  {
+    "id": "prom-10",
+    "year": 2019,
+    "category": "Electronics & Telecom",
+    "promiseTitle": "Rapid Nationwide 5G Rollout",
+    "description": "Conduct transparent 5G spectrum auction and deploy 5G mobile network across all major Indian cities within 12 months.",
+    "status": "DELIVERED",
+    "evidenceSummary": "Department of Telecommunications (2024): 4.42 Lakh 5G BTS towers installed covering 738 districts, recognized as world's fastest 5G rollout.",
+    "evidenceId": "ev-5g-2024"
+  },
+  {
+    "id": "prom-11",
+    "year": 2021,
+    "category": "Renewable Energy",
+    "promiseTitle": "500 GW Non-Fossil Energy Target by 2030",
+    "description": "Achieve 500 GW renewable energy capacity and 50% non-fossil fuel share in total power generation capacity.",
+    "status": "IN_PROGRESS",
+    "evidenceSummary": "MNRE Monthly Status Report (June 2024): Non-fossil installed capacity reached 203.7 GW (45.3% of total installed grid capacity).",
+    "evidenceId": "ev-mnre-2024"
+  },
+  {
+    "id": "prom-12",
+    "year": 2016,
+    "category": "Petroleum & LPG",
+    "promiseTitle": "PM Ujjwala Yojana - Clean Cooking Fuel",
+    "description": "Provide deposit-free LPG connections to 10 Crore poor women to eliminate indoor air pollution.",
+    "status": "DELIVERED",
+    "evidenceSummary": "MoPNG Disclosure (2024): 10.33 Crore Ujjwala connections delivered; LPG coverage increased from 62% (2016) to 99.8% (2024).",
+    "evidenceId": "ev-ujjwala-2024"
+  },
+  {
+    "id": "prom-13",
+    "year": 2016,
+    "category": "Agriculture & Farmers Welfare",
+    "promiseTitle": "Doubling Farmers Income by 2022",
+    "description": "Double real income of Indian farmers through MSP hikes, PM Fasal Bima Yojana, and agricultural market reforms.",
+    "status": "NOT_DELIVERED",
+    "evidenceSummary": "NITI Aayog / ICAR Evaluation (2023): Real farm income increased 28-35% vs 100% target; affected by global fertilizer spikes and climate events.",
+    "evidenceId": "ev-farmerincome-2023"
+  }
+]

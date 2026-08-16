@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CivicLens
 
-## Getting Started
+> Understand India through evidence, not noise.
 
-First, run the development server:
+**CivicLens** is India's interactive civic intelligence and data-visualization platform. It combines data journalism, public policy analysis, financial audit tracking, interactive maps, scrollytelling investigations, non-hallucinating AI data queries, and evidence traceability.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Technical Architecture
+
+CivicLens is structured as a modular PNPM Monorepo:
+
+```text
+CivicLens/
+├── apps/
+│   ├── web/               # Public Website (React 19, Vite, Editorial Theme)
+│   ├── admin/             # Intelligence CMS Panel (React 19, Verification Workflow)
+│   └── api/               # Express 5 REST API Server with Zod Validation
+├── packages/
+│   ├── ui/                # Shared Editorial UI Library & Evidence Drawer
+│   ├── database/          # Drizzle ORM Schema, Verified Seeds & Queries
+│   ├── charts/            # D3 / Recharts / SVG Interactive Map & Visualization Suite
+│   ├── ai/                # Data-First AI Tool Executor & Response Builder
+│   ├── types/             # Shared TypeScript Interfaces
+│   ├── validation/        # Zod Validation Schemas
+│   └── config/            # Centralized Brand Configuration & Tokens
+├── docs/                  # System & Architecture Documentation
+└── package.json           # Monorepo Root Configuration
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Core Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Evidence Drawer**: Every data metric, chart point, or AI response is traceable to primary sources (Union Budget, CAG Audits, NFHS-5, ECI Affidavits).
+- **Government Scheme Intelligence**: Interactive *Promise → Budget → Expenditure → CAG Finding → Outcome* pipeline step visualizer.
+- **Interactive India Map**: SVG/GeoJSON state map with indicator heatmaps and state comparison matrix.
+- **CAG Investigations**: Audit findings, severity categorization, and money-flow visualizer.
+- **Ask the Data AI Assistant**: Non-hallucinating chatbot executing backend tools and outputting structured JSON charts.
+- **Admin Verification CMS**: Multi-role RBAC workflow (`DRAFT` → `REVIEW` → `VERIFIED` → `PUBLISHED`) with audit logs.
+- **The Civic Brief Newsletter**: Subscriber management with topic preferences.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Quick Start
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Option A: Using standard npm (works out-of-the-box on Windows/macOS/Linux)
+npm run dev:web      # Starts Public Web App (Port 3000)
+npm run dev:admin    # Starts Admin CMS Panel (Port 3002)
+npm run dev:api      # Starts REST API Server (Port 3001)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Option B: Using npx pnpm
+npx pnpm dev:web
+npx pnpm dev:admin
+npx pnpm dev:api
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Attribution & License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built upon open-source foundations with full respect for original software licensing.
+License: MIT

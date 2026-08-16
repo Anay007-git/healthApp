@@ -1,0 +1,146 @@
+[
+  {
+    "party": "Bharatiya Janata Party",
+    "shortName": "BJP",
+    "amount": 5594,
+    "color": "#FF6600",
+    "coalition": "NDA",
+    "ideology": "Hindu nationalism, Centre-right"
+  },
+  {
+    "party": "All India Trinamool Congress",
+    "shortName": "TMC",
+    "amount": 1592,
+    "color": "#17A2B8",
+    "coalition": "INDIA",
+    "ideology": "Social democracy, Bengal regionalism"
+  },
+  {
+    "party": "Indian National Congress",
+    "shortName": "INC",
+    "amount": 1351,
+    "color": "#138808",
+    "coalition": "INDIA",
+    "ideology": "Social liberalism, Secularism"
+  },
+  {
+    "party": "Bharat Rashtra Samithi",
+    "shortName": "BRS",
+    "amount": 1191,
+    "color": "#E91E63",
+    "coalition": "Other",
+    "ideology": "Telangana regionalism, Progressive"
+  },
+  {
+    "party": "Biju Janata Dal",
+    "shortName": "BJD",
+    "amount": 775,
+    "color": "#4CAF50",
+    "coalition": "State",
+    "ideology": "Odisha regionalism, Centrist"
+  },
+  {
+    "party": "Dravida Munnetra Kazhagam",
+    "shortName": "DMK",
+    "amount": 632,
+    "color": "#CC0000",
+    "coalition": "INDIA",
+    "ideology": "Tamil nationalism, Social justice"
+  },
+  {
+    "party": "YSR Congress Party",
+    "shortName": "YSRCP",
+    "amount": 328,
+    "color": "#1565C0",
+    "coalition": "State",
+    "ideology": "Andhra regionalism, Welfare populism"
+  },
+  {
+    "party": "Telugu Desam Party",
+    "shortName": "TDP",
+    "amount": 211,
+    "color": "#FDD835",
+    "coalition": "NDA",
+    "ideology": "Andhra regionalism, Pro-business"
+  },
+  {
+    "party": "Shiv Sena",
+    "shortName": "ShivSena",
+    "amount": 152,
+    "color": "#FF8F00",
+    "coalition": "NDA",
+    "ideology": "Marathi regionalism, Right-wing"
+  },
+  {
+    "party": "Rashtriya Janata Dal",
+    "shortName": "RJD",
+    "amount": 72,
+    "color": "#8BC34A",
+    "coalition": "INDIA",
+    "ideology": "Social justice, Bihar regionalism"
+  },
+  {
+    "party": "Aam Aadmi Party",
+    "shortName": "AAP",
+    "amount": 65,
+    "color": "#29B6F6",
+    "coalition": "INDIA",
+    "ideology": "Anti-corruption, Urban progressive"
+  },
+  {
+    "party": "Janata Dal (Secular)",
+    "shortName": "JD(S)",
+    "amount": 41,
+    "color": "#78909C",
+    "coalition": "NDA",
+    "ideology": "Karnataka regionalism, Centrist"
+  },
+  {
+    "party": "Sikkim Krantikari Morcha",
+    "shortName": "SKM",
+    "amount": 36,
+    "color": "#AB47BC",
+    "coalition": "NDA",
+    "ideology": "Sikkim regionalism"
+  },
+  {
+    "party": "NCP (Maharashtra)",
+    "shortName": "NCP",
+    "amount": 28,
+    "color": "#00BCD4",
+    "coalition": "INDIA",
+    "ideology": "Social democracy, Maharashtra"
+  },
+  {
+    "party": "Jana Sena Party",
+    "shortName": "JanaSena",
+    "amount": 21,
+    "color": "#FF7043",
+    "coalition": "NDA",
+    "ideology": "Telugu regionalism, Centre-right"
+  },
+  {
+    "party": "Samajwadi Party",
+    "shortName": "SP",
+    "amount": 13,
+    "color": "#E53935",
+    "coalition": "INDIA",
+    "ideology": "Socialism, UP regionalism"
+  },
+  {
+    "party": "Jharkhand Mukti Morcha",
+    "shortName": "JMM",
+    "amount": 12,
+    "color": "#26A69A",
+    "coalition": "INDIA",
+    "ideology": "Jharkhand tribal rights"
+  },
+  {
+    "party": "Janata Dal (United)",
+    "shortName": "JDU",
+    "amount": 12,
+    "color": "#66BB6A",
+    "coalition": "NDA",
+    "ideology": "Bihar regionalism, Centrist"
+  }
+]

@@ -1,0 +1,1009 @@
+[
+  {
+    "rank": 1,
+    "name": "Future Gaming & Hotel Services Pvt. Ltd.",
+    "shortName": "Future Gaming",
+    "sector": "Lottery & Hospitality",
+    "amount": 1365,
+    "note": "Owned by Santiago Martin (\"Lottery King\"). Under ED/IT investigation at time of purchase. Gave most to TMC and DMK.",
+    "parties": [
+      {
+        "party": "All India Trinamool Congress",
+        "shortName": "TMC",
+        "amount": 542
+      },
+      {
+        "party": "Dravida Munnetra Kazhagam",
+        "shortName": "DMK",
+        "amount": 503
+      },
+      {
+        "party": "YSR Congress Party",
+        "shortName": "YSRCP",
+        "amount": 154
+      },
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 100
+      },
+      {
+        "party": "Indian National Congress",
+        "shortName": "INC",
+        "amount": 50
+      },
+      {
+        "party": "Sikkim Krantikari Morcha",
+        "shortName": "SKM",
+        "amount": 11
+      },
+      {
+        "party": "Sikkim Democratic Front",
+        "shortName": "SDF",
+        "amount": 5
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Tamil Nadu State Lottery distribution contract",
+        "year": "2014",
+        "authority": "Tamil Nadu State Lotteries Dept",
+        "sourceUrl": "https://www.tn.gov.in/department/19"
+      },
+      {
+        "description": "Kerala State Lottery ticket printing & distribution",
+        "year": "2016",
+        "authority": "Kerala State Lotteries",
+        "sourceUrl": "https://www.kerala.gov.in/web/guest/state-lotteries"
+      },
+      {
+        "description": "Goa state lottery operations",
+        "year": "2015",
+        "authority": "Goa Directorate of Small Savings & Lotteries",
+        "sourceUrl": "https://myneta.info/electoral_bonds/"
+      },
+      {
+        "description": "Sikkim State Lottery distribution rights",
+        "year": "2012",
+        "authority": "Sikkim State Lotteries",
+        "sourceUrl": "https://myneta.info/electoral_bonds/"
+      }
+    ]
+  },
+  {
+    "rank": 2,
+    "name": "Megha Engineering & Infrastructures Ltd.",
+    "shortName": "Megha Engineering",
+    "sector": "Infrastructure & Construction",
+    "amount": 966,
+    "note": "Hyderabad-based infra firm; won large govt contracts in Telangana & Andhra. Largest single BJP donor.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 584
+      },
+      {
+        "party": "Bharat Rashtra Samithi",
+        "shortName": "BRS",
+        "amount": 195
+      },
+      {
+        "party": "Dravida Munnetra Kazhagam",
+        "shortName": "DMK",
+        "amount": 85
+      },
+      {
+        "party": "YSR Congress Party",
+        "shortName": "YSRCP",
+        "amount": 37
+      },
+      {
+        "party": "Telugu Desam Party",
+        "shortName": "TDP",
+        "amount": 28
+      },
+      {
+        "party": "Indian National Congress",
+        "shortName": "INC",
+        "amount": 18
+      },
+      {
+        "party": "Janata Dal (United)",
+        "shortName": "JDU",
+        "amount": 10
+      },
+      {
+        "party": "Janata Dal (Secular)",
+        "shortName": "JD(S)",
+        "amount": 5
+      },
+      {
+        "party": "Jana Sena Party",
+        "shortName": "JanaSena",
+        "amount": 4
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Kaleshwaram Lift Irrigation Scheme — multiple civil packages",
+        "year": "2016–2022",
+        "authority": "Telangana Irrigation Dept / KLIS Corp",
+        "value": "₹14,400 cr (company share)",
+        "sourceUrl": "https://irrigation.telangana.gov.in/"
+      },
+      {
+        "description": "Polavaram Irrigation Project — earthwork & civil packages",
+        "year": "2018",
+        "authority": "AP Water Resources Dept / NWRWS",
+        "sourceUrl": "https://apwrims.ap.gov.in/"
+      },
+      {
+        "description": "NHAI National Highway construction (NH-65 & NH-44 packages)",
+        "year": "2019–2021",
+        "authority": "National Highways Authority of India",
+        "sourceUrl": "https://eprocure.gov.in/eprocure/app"
+      },
+      {
+        "description": "Hyderabad Metro Rail civil work — viaduct packages",
+        "year": "2012",
+        "authority": "L&T Metro Rail Hyderabad Ltd / Telangana Govt",
+        "sourceUrl": "https://www.ltmetro.in/"
+      }
+    ]
+  },
+  {
+    "rank": 3,
+    "name": "Qwik Supply Chain Pvt. Ltd.",
+    "shortName": "Qwik Supply Chain",
+    "sector": "FMCG & Food (Haldirams group)",
+    "amount": 410,
+    "note": "Linked to Haldirams group. Gave almost exclusively to BJP.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 375
+      },
+      {
+        "party": "Shiv Sena",
+        "shortName": "ShivSena",
+        "amount": 25
+      },
+      {
+        "party": "NCP (Maharashtra)",
+        "shortName": "NCP",
+        "amount": 10
+      }
+    ],
+    "contracts": [
+      {
+        "description": "FSSAI manufacturing & distribution licenses for packaged foods",
+        "year": "2012–ongoing",
+        "authority": "Food Safety & Standards Authority of India",
+        "sourceUrl": "https://foscos.fssai.gov.in/advance-fbo-search"
+      },
+      {
+        "description": "Canteen Stores Dept (CSD) approved vendor — snack supply to armed forces canteens",
+        "year": "2018",
+        "authority": "Ministry of Defence / CSD",
+        "sourceUrl": "https://csdindia.gov.in/downloads.html"
+      }
+    ]
+  },
+  {
+    "rank": 4,
+    "name": "Vedanta Limited",
+    "shortName": "Vedanta",
+    "sector": "Mining & Natural Resources",
+    "amount": 400,
+    "note": "Anil Agarwal group. Spread across ruling parties in states where it has mining operations (Odisha, Rajasthan).",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 230
+      },
+      {
+        "party": "Indian National Congress",
+        "shortName": "INC",
+        "amount": 125
+      },
+      {
+        "party": "Biju Janata Dal",
+        "shortName": "BJD",
+        "amount": 40
+      },
+      {
+        "party": "Jharkhand Mukti Morcha",
+        "shortName": "JMM",
+        "amount": 5
+      },
+      {
+        "party": "All India Trinamool Congress",
+        "shortName": "TMC",
+        "amount": 0.2
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Rajasthan zinc-lead mining lease renewal — Zawar & Rampura Agucha mines",
+        "year": "2020",
+        "authority": "Ministry of Mines / Rajasthan Govt",
+        "value": "50-year lease",
+        "sourceUrl": "https://mines.gov.in/"
+      },
+      {
+        "description": "Niyamgiri bauxite mining — MoEF clearance (contested by Supreme Court gram sabhas)",
+        "year": "2008",
+        "authority": "Ministry of Environment & Forests / Odisha Govt",
+        "sourceUrl": "https://indiankanoon.org/doc/1090044/"
+      },
+      {
+        "description": "Cairn India oil & gas block RJ-ON-90/1 — production sharing contract",
+        "year": "2004",
+        "authority": "Ministry of Petroleum & Natural Gas",
+        "sourceUrl": "https://mopng.gov.in/"
+      },
+      {
+        "description": "Tuticorin copper smelter — environmental clearance & port land lease (plant shut 2018)",
+        "year": "2010",
+        "authority": "Tamil Nadu Govt / MoEF",
+        "sourceUrl": "https://parivesh.nic.in/"
+      }
+    ]
+  },
+  {
+    "rank": 5,
+    "name": "Haldia Energy Limited",
+    "shortName": "Haldia Energy",
+    "sector": "Power & Energy",
+    "amount": 377,
+    "note": "West Bengal-based power company. Majority went to TMC, the ruling party in WB.",
+    "parties": [
+      {
+        "party": "All India Trinamool Congress",
+        "shortName": "TMC",
+        "amount": 281
+      },
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 81
+      },
+      {
+        "party": "Indian National Congress",
+        "shortName": "INC",
+        "amount": 15
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Power Purchase Agreement — 600 MW thermal, supply to WBSEDCL",
+        "year": "2014–ongoing",
+        "authority": "West Bengal State Electricity Distribution Co. Ltd.",
+        "sourceUrl": "https://wberc.gov.in/other-order?field_utility_name_uid=17"
+      },
+      {
+        "description": "WBERC tariff order — retail supply tariff approvals for WB distribution",
+        "year": "2015",
+        "authority": "West Bengal Electricity Regulatory Commission",
+        "sourceUrl": "https://www.wberc.gov.in/tariff-related-order"
+      }
+    ]
+  },
+  {
+    "rank": 6,
+    "name": "Essel Mining & Industries Ltd.",
+    "shortName": "Essel Mining",
+    "sector": "Mining (Birla group)",
+    "amount": 224,
+    "note": "Aditya Birla group entity with iron ore mining in Odisha. Gave 78% to BJD (Odisha ruling party).",
+    "parties": [
+      {
+        "party": "Biju Janata Dal",
+        "shortName": "BJD",
+        "amount": 174
+      },
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 50
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Iron ore mining lease — Keonjhar & Sundergarh districts, Odisha",
+        "year": "2006–ongoing",
+        "authority": "Odisha Govt / Indian Bureau of Mines",
+        "sourceUrl": "https://ibm.gov.in/IBMPortal/pages/All_India_Directory_of_Mining_Leases"
+      },
+      {
+        "description": "Bauxite mining rights — Odisha (Aditya Birla group cluster)",
+        "year": "2010",
+        "authority": "Odisha Mining Corporation",
+        "sourceUrl": "https://www.omcltd.in/"
+      }
+    ]
+  },
+  {
+    "rank": 7,
+    "name": "Western UP Power Transmission Co. Ltd.",
+    "shortName": "Western UP Power",
+    "sector": "Power Transmission",
+    "amount": 220,
+    "note": "UP-based power transmission company.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 220
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Power transmission lines — western UP high-voltage grid (220kV/400kV)",
+        "year": "2016–2020",
+        "authority": "UP Power Transmission Corp Ltd (UPPTCL)",
+        "sourceUrl": "https://upptcl.org/upptcl/en"
+      },
+      {
+        "description": "UPERC transmission tariff order — wheeling charges approval",
+        "year": "2017",
+        "authority": "Uttar Pradesh Electricity Regulatory Commission",
+        "sourceUrl": "https://www.uperc.org/"
+      }
+    ]
+  },
+  {
+    "rank": 8,
+    "name": "Bharti Airtel Limited",
+    "shortName": "Bharti Airtel",
+    "sector": "Telecom (Sunil Mittal)",
+    "amount": 198,
+    "note": "India's largest telecom operator. Almost entirely to BJP (₹197 cr of ₹198 cr).",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 197
+      },
+      {
+        "party": "J&K National Conference",
+        "shortName": "JKNC",
+        "amount": 0.5
+      },
+      {
+        "party": "Rashtriya Janata Dal",
+        "shortName": "RJD",
+        "amount": 0.1
+      }
+    ],
+    "contracts": [
+      {
+        "description": "5G spectrum auction — 19,867 MHz acquired across multiple bands",
+        "year": "2022",
+        "authority": "Dept of Telecommunications (DoT)",
+        "value": "₹43,084 cr (total spectrum cost)",
+        "sourceUrl": "https://dot.gov.in/"
+      },
+      {
+        "description": "4G spectrum renewal & expansion auction — 850/1800/2100 MHz",
+        "year": "2016",
+        "authority": "Dept of Telecommunications (DoT)",
+        "sourceUrl": "https://dot.gov.in/"
+      },
+      {
+        "description": "Unified Access Service Licence — nationwide telecom operating licence",
+        "year": "2003–ongoing",
+        "authority": "Dept of Telecommunications (DoT)",
+        "sourceUrl": "https://dot.gov.in/"
+      }
+    ]
+  },
+  {
+    "rank": 9,
+    "name": "Keventer Foodpark Infra Ltd.",
+    "shortName": "Keventer",
+    "sector": "Food Processing & Real Estate",
+    "amount": 195,
+    "note": "Kolkata-based food and real estate group.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 195
+      }
+    ],
+    "contracts": [
+      {
+        "description": "WBIDC-allotted industrial park land — food processing cluster, Haldia",
+        "year": "2014",
+        "authority": "West Bengal Industrial Development Corp",
+        "sourceUrl": "https://www.wbidc.com/"
+      },
+      {
+        "description": "FSSAI food business operator licence — dairy & food processing",
+        "year": "2015–ongoing",
+        "authority": "Food Safety & Standards Authority of India",
+        "sourceUrl": "https://foscos.fssai.gov.in/advance-fbo-search"
+      }
+    ]
+  },
+  {
+    "rank": 10,
+    "name": "MKJ Enterprises Limited",
+    "shortName": "MKJ Enterprises",
+    "sector": "Mining & Commodities",
+    "amount": 192,
+    "note": "Eastern India mining and commodities group.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 192
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Coal linkage & fuel supply agreements with Coal India subsidiaries (ECL / BCCL)",
+        "year": "2010–ongoing",
+        "authority": "Coal India Ltd / Eastern Coalfields",
+        "sourceUrl": "https://www.coalindia.in/"
+      },
+      {
+        "description": "Mineral dispatch permits — iron ore & manganese, Odisha & Jharkhand",
+        "year": "2012–ongoing",
+        "authority": "Indian Bureau of Mines",
+        "sourceUrl": "https://ibm.gov.in/IBMPortal/pages/All_India_Directory_of_Mining_Leases"
+      }
+    ]
+  },
+  {
+    "rank": 11,
+    "name": "Madanlal Ltd.",
+    "shortName": "Madanlal",
+    "sector": "Textiles & Trading",
+    "amount": 185,
+    "note": "Mumbai-based trading and textiles group.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 175
+      },
+      {
+        "party": "Indian National Congress",
+        "shortName": "INC",
+        "amount": 10
+      }
+    ],
+    "contracts": [
+      {
+        "description": "DGFT export licence & APEDA registration — textile & commodity exports",
+        "year": "2010–ongoing",
+        "authority": "Directorate General of Foreign Trade / APEDA",
+        "sourceUrl": "https://www.dgft.gov.in/"
+      },
+      {
+        "description": "SEBI-registered listed entity — ongoing regulatory compliance",
+        "year": "1994–ongoing",
+        "authority": "Securities & Exchange Board of India",
+        "sourceUrl": "https://www.sebi.gov.in/"
+      }
+    ]
+  },
+  {
+    "rank": 12,
+    "name": "Yashoda Super Speciality Hospitals",
+    "shortName": "Yashoda Hospital",
+    "sector": "Healthcare (Telangana)",
+    "amount": 162,
+    "note": "Hyderabad hospital group. Gave majority to BRS (Telangana ruling party) and INC.",
+    "parties": [
+      {
+        "party": "Bharat Rashtra Samithi",
+        "shortName": "BRS",
+        "amount": 94
+      },
+      {
+        "party": "Indian National Congress",
+        "shortName": "INC",
+        "amount": 64
+      },
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 2
+      },
+      {
+        "party": "Aam Aadmi Party",
+        "shortName": "AAP",
+        "amount": 1
+      },
+      {
+        "party": "YSR Congress Party",
+        "shortName": "YSRCP",
+        "amount": 1
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Aarogyasri empanelment — cashless treatment for BPL patients under Telangana health scheme",
+        "year": "2016–ongoing",
+        "authority": "Aarogyasri Health Care Trust, Telangana",
+        "sourceUrl": "https://rajivaarogyasri.telangana.gov.in/ASRI2.0/"
+      },
+      {
+        "description": "CGHS empanelment — central govt employees & pensioners treated at approved rates",
+        "year": "2018–ongoing",
+        "authority": "Central Govt Health Scheme, MoHFW",
+        "sourceUrl": "https://cghsnew.nic.in/reports/view_hospital.jsp"
+      },
+      {
+        "description": "ESI (Employees State Insurance) panel hospital for industrial worker coverage",
+        "year": "2015–ongoing",
+        "authority": "Employees State Insurance Corporation",
+        "sourceUrl": "https://www.esic.gov.in/"
+      }
+    ]
+  },
+  {
+    "rank": 13,
+    "name": "Utkal Alumina International Ltd.",
+    "shortName": "Utkal Alumina",
+    "sector": "Alumina & Mining (Hindalco/Birla)",
+    "amount": 145,
+    "note": "Aditya Birla group alumina refinery in Odisha. Funded both BJD (state) and BJP (national).",
+    "parties": [
+      {
+        "party": "Biju Janata Dal",
+        "shortName": "BJD",
+        "amount": 87
+      },
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 58
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Baphlimali bauxite mining lease — Rayagada district, Odisha (feedstock for Hindalco alumina refinery)",
+        "year": "2006–ongoing",
+        "authority": "Odisha Mining Corporation / IBM",
+        "value": "150 MT lease",
+        "sourceUrl": "https://www.omcltd.in/"
+      },
+      {
+        "description": "Environmental clearance — alumina refinery expansion, Lanjigarh",
+        "year": "2010",
+        "authority": "Ministry of Environment, Forests & Climate Change",
+        "sourceUrl": "https://parivesh.nic.in/"
+      }
+    ]
+  },
+  {
+    "rank": 14,
+    "name": "DLF Commercial Developers Ltd.",
+    "shortName": "DLF Commercial",
+    "sector": "Real Estate",
+    "amount": 130,
+    "note": "DLF group real estate arm. Gave entirely to BJP.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 130
+      }
+    ],
+    "contracts": [
+      {
+        "description": "HUDA (now HRERA) land acquisition & development rights — Gurugram residential & commercial zones",
+        "year": "2007–2014",
+        "authority": "Haryana Urban Development Authority",
+        "sourceUrl": "https://haryanarera.gov.in/"
+      },
+      {
+        "description": "SEZ approval — DLF IT/commercial special economic zone, Gurugram",
+        "year": "2006",
+        "authority": "Dept for Promotion of Industry & Internal Trade (DPIIT)",
+        "sourceUrl": "https://www.sezindia.gov.in/approved-sez"
+      }
+    ]
+  },
+  {
+    "rank": 15,
+    "name": "Jindal Steel & Power Limited",
+    "shortName": "Jindal Steel",
+    "sector": "Steel & Power (Naveen Jindal)",
+    "amount": 123,
+    "note": "Naveen Jindal group. Majority to BJD (Odisha operations), rest to INC and BJP.",
+    "parties": [
+      {
+        "party": "Biju Janata Dal",
+        "shortName": "BJD",
+        "amount": 100
+      },
+      {
+        "party": "Indian National Congress",
+        "shortName": "INC",
+        "amount": 20
+      },
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 3
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Sarda coal block allocation — Raigarh, Chhattisgarh (captive coal for steel plant)",
+        "year": "2005",
+        "authority": "Ministry of Coal (Coal Block Allocation)",
+        "sourceUrl": "https://coal.gov.in/"
+      },
+      {
+        "description": "Iron ore mining lease — Odisha (Keonjhar district operations)",
+        "year": "2008–ongoing",
+        "authority": "Odisha Govt / IBM",
+        "sourceUrl": "https://mines.gov.in/"
+      },
+      {
+        "description": "Power purchase agreements — captive power plant output to state discoms",
+        "year": "2010–ongoing",
+        "authority": "Chhattisgarh State Power Distribution Co.",
+        "sourceUrl": "https://www.cspdcl.co.in/"
+      }
+    ]
+  },
+  {
+    "rank": 16,
+    "name": "Torrent Power Limited",
+    "shortName": "Torrent Power",
+    "sector": "Power & Energy (Torrent Group)",
+    "amount": 113,
+    "note": "Ahmedabad-based power utility; operates in regulated electricity distribution. Majority to BJP, some to INC.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 84
+      },
+      {
+        "party": "Indian National Congress",
+        "shortName": "INC",
+        "amount": 29
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Electricity distribution licence — Ahmedabad & Surat (GERC-regulated franchise)",
+        "year": "2006–ongoing",
+        "authority": "Gujarat Electricity Regulatory Commission",
+        "sourceUrl": "https://www.gercin.org/"
+      },
+      {
+        "description": "Agra electricity distribution franchise — UPPCL privatisation model",
+        "year": "2010–ongoing",
+        "authority": "Uttar Pradesh Power Corporation Ltd",
+        "sourceUrl": "https://www.uperc.org/"
+      },
+      {
+        "description": "Dahej SEZ power distribution licence",
+        "year": "2004",
+        "authority": "Gujarat Industrial Development Corp / GERC",
+        "sourceUrl": "https://www.gercin.org/"
+      }
+    ]
+  },
+  {
+    "rank": 17,
+    "name": "Piramal Enterprises Limited",
+    "shortName": "Piramal",
+    "sector": "Pharma & Financial Services",
+    "amount": 101,
+    "note": "Ajay Piramal group. Diversified across pharma, NBFC, and real estate. Almost entirely to BJP.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 101
+      }
+    ],
+    "contracts": [
+      {
+        "description": "RBI Certificate of Registration — NBFC (Non-Banking Financial Company) licence",
+        "year": "2010–ongoing",
+        "authority": "Reserve Bank of India",
+        "sourceUrl": "https://www.rbi.org.in/"
+      },
+      {
+        "description": "CDSCO drug manufacturing approvals — APIs and formulations for Indian & export markets",
+        "year": "2005–ongoing",
+        "authority": "Central Drugs Standard Control Organisation, MoHFW",
+        "sourceUrl": "https://cdsco.gov.in/"
+      }
+    ]
+  },
+  {
+    "rank": 18,
+    "name": "Landmark Cars (East) Pvt. Ltd.",
+    "shortName": "Landmark Cars",
+    "sector": "Luxury Auto Retail (BMW/Mercedes dealer)",
+    "amount": 97,
+    "note": "Listed luxury car dealership operating BMW, Mercedes, Jeep showrooms. Entirely to BJP. Auto sector is heavily licence-regulated.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 97
+      }
+    ],
+    "contracts": [
+      {
+        "description": "GeM (Govt e-Marketplace) registered vendor — luxury vehicle supply to central & state govt depts",
+        "year": "2018–ongoing",
+        "authority": "Govt e-Marketplace, Ministry of Commerce",
+        "sourceUrl": "https://gem.gov.in/"
+      },
+      {
+        "description": "DGS&D rate contract (pre-GeM) — vehicle supply at approved rates to PSUs",
+        "year": "2015",
+        "authority": "Directorate General of Supplies & Disposals",
+        "sourceUrl": "https://gem.gov.in/"
+      }
+    ]
+  },
+  {
+    "rank": 19,
+    "name": "Dalmia Bharat Limited",
+    "shortName": "Dalmia Bharat",
+    "sector": "Cement & Manufacturing",
+    "amount": 95,
+    "note": "Large cement manufacturer with plants across India. Primarily to BJP.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 90
+      },
+      {
+        "party": "Indian National Congress",
+        "shortName": "INC",
+        "amount": 5
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Cement supply to PMGSY (rural roads) — approved supplier for state road agencies",
+        "year": "2016–ongoing",
+        "authority": "Pradhan Mantri Gram Sadak Yojana / NRRDA",
+        "sourceUrl": "https://pmgsytenders.gov.in/nicgep/app"
+      },
+      {
+        "description": "Cement supply to PMAY (housing for all) — govt housing scheme procurement",
+        "year": "2017–ongoing",
+        "authority": "Ministry of Housing & Urban Affairs",
+        "sourceUrl": "https://pmaymis.gov.in/"
+      },
+      {
+        "description": "Mining lease — limestone quarries (captive, Rajasthan & Odisha) under MMDR Act",
+        "year": "2005–ongoing",
+        "authority": "Ministry of Mines / State Mining Depts",
+        "sourceUrl": "https://mines.gov.in/"
+      }
+    ]
+  },
+  {
+    "rank": 20,
+    "name": "Oriental Structural Engineers Pvt. Ltd.",
+    "shortName": "Oriental Structural",
+    "sector": "Infrastructure & Roads",
+    "amount": 70,
+    "note": "Major road and bridge construction firm with large NHAI contracts. Entirely to BJP — reflects regulatory dependence on central govt infra awards.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 70
+      }
+    ],
+    "contracts": [
+      {
+        "description": "NHAI EPC/HAM highway contract — NH-58 Haridwar bypass & NH-74 (Uttarakhand)",
+        "year": "2017",
+        "authority": "National Highways Authority of India",
+        "value": "₹1,240 cr",
+        "sourceUrl": "https://eprocure.gov.in/eprocure/app"
+      },
+      {
+        "description": "NHAI four-laning contract — NH-44 Jalandhar-Amritsar section",
+        "year": "2019",
+        "authority": "National Highways Authority of India",
+        "value": "₹890 cr",
+        "sourceUrl": "https://eprocure.gov.in/eprocure/app"
+      },
+      {
+        "description": "PWD (Public Works Dept) bridge & road contracts — multiple state govts",
+        "year": "2015–2022",
+        "authority": "State PWDs (UP, Rajasthan, Jharkhand)",
+        "sourceUrl": "https://eprocure.gov.in/eprocure/app"
+      }
+    ]
+  },
+  {
+    "rank": 21,
+    "name": "Augmented Reality Digital Media Technologies Pvt. Ltd.",
+    "shortName": "AR Digital",
+    "sector": "Media & Digital",
+    "amount": 60,
+    "note": "Media and digital entity linked to Eenadu group (Telugu media). Majority to YSRCP and BJP.",
+    "parties": [
+      {
+        "party": "YSR Congress Party",
+        "shortName": "YSRCP",
+        "amount": 35
+      },
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 25
+      }
+    ],
+    "contracts": [
+      {
+        "description": "DD Freedish channel carriage agreement — Eenadu TV bouquet on free-to-air DTH",
+        "year": "2015–ongoing",
+        "authority": "Prasar Bharati / Ministry of I&B",
+        "sourceUrl": "https://fdslots.prasarbharati.org/"
+      },
+      {
+        "description": "MIB uplinking & downlinking licences — satellite TV channels (Eenadu group)",
+        "year": "2007–ongoing",
+        "authority": "Ministry of Information & Broadcasting",
+        "sourceUrl": "https://mib.gov.in/"
+      }
+    ]
+  },
+  {
+    "rank": 22,
+    "name": "Grindwell Norton Limited",
+    "shortName": "Grindwell Norton",
+    "sector": "Abrasives & Industrial (Saint-Gobain)",
+    "amount": 55,
+    "note": "Indian arm of French conglomerate Saint-Gobain. Entirely to BJP.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 55
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Supply contracts to BHEL — abrasives & industrial tools for power plant manufacturing",
+        "year": "2010–ongoing",
+        "authority": "Bharat Heavy Electricals Ltd (PSU)",
+        "sourceUrl": "https://www.bhel.com/"
+      },
+      {
+        "description": "Supply to defence PSUs (HAL, BEL) — grinding & abrasive products for precision manufacturing",
+        "year": "2012–ongoing",
+        "authority": "Hindustan Aeronautics Ltd / Bharat Electronics Ltd",
+        "sourceUrl": "https://hal-india.co.in/"
+      }
+    ]
+  },
+  {
+    "rank": 23,
+    "name": "Aurobindo Pharma Limited",
+    "shortName": "Aurobindo Pharma",
+    "sector": "Pharmaceuticals",
+    "amount": 52,
+    "note": "Hyderabad-based generics pharma major. Split between national ruling party and state incumbents.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 30
+      },
+      {
+        "party": "Bharat Rashtra Samithi",
+        "shortName": "BRS",
+        "amount": 12
+      },
+      {
+        "party": "Indian National Congress",
+        "shortName": "INC",
+        "amount": 10
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Pradhan Mantri Bhartiya Janaushadhi Pariyojana (PMBJP) — generic drug supply to Jan Aushadhi kendras",
+        "year": "2017–ongoing",
+        "authority": "Bureau of Pharma PSUs / Ministry of Chemicals",
+        "sourceUrl": "https://janaushadhi.gov.in/"
+      },
+      {
+        "description": "State NHM drug procurement — supply to government hospitals via Tamil Nadu & AP state drug corporations",
+        "year": "2018–ongoing",
+        "authority": "TNMSC / APMSIDC / HLL Lifecare",
+        "sourceUrl": "https://www.tnmsc.com/"
+      },
+      {
+        "description": "CDSCO manufacturing licence — bulk drugs & formulations exported to 150+ countries",
+        "year": "2000–ongoing",
+        "authority": "Central Drugs Standard Control Organisation",
+        "sourceUrl": "https://cdsco.gov.in/"
+      }
+    ]
+  },
+  {
+    "rank": 24,
+    "name": "Welspun Enterprises Limited",
+    "shortName": "Welspun",
+    "sector": "Infrastructure & Pipes (Welspun Group)",
+    "amount": 46,
+    "note": "B.K. Goenka group; major roads and pipeline infrastructure contractor. Entirely to BJP.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 46
+      }
+    ],
+    "contracts": [
+      {
+        "description": "NHAI Hybrid Annuity Model (HAM) highway project — NH-27 Gorakhpur-Silghat section",
+        "year": "2019",
+        "authority": "National Highways Authority of India",
+        "value": "₹1,680 cr",
+        "sourceUrl": "https://eprocure.gov.in/eprocure/app"
+      },
+      {
+        "description": "Jal Jeevan Mission — water pipeline supply & installation, rural Rajasthan",
+        "year": "2021",
+        "authority": "Ministry of Jal Shakti / State PHEDs",
+        "value": "₹950 cr",
+        "sourceUrl": "https://jaljeevanmission.gov.in/"
+      }
+    ]
+  },
+  {
+    "rank": 25,
+    "name": "Bikaji Foods International Limited",
+    "shortName": "Bikaji Foods",
+    "sector": "FMCG & Snacks",
+    "amount": 45,
+    "note": "Rajasthan-based snack brand (namkeen/bhujia). Listed company. Entirely to BJP.",
+    "parties": [
+      {
+        "party": "Bharatiya Janata Party",
+        "shortName": "BJP",
+        "amount": 45
+      }
+    ],
+    "contracts": [
+      {
+        "description": "Canteen Stores Dept (CSD) approved vendor — snack supply to armed forces canteens",
+        "year": "2019–ongoing",
+        "authority": "Ministry of Defence / CSD",
+        "sourceUrl": "https://csdindia.gov.in/downloads.html"
+      },
+      {
+        "description": "FSSAI food business operator licence & product approvals",
+        "year": "2016–ongoing",
+        "authority": "Food Safety & Standards Authority of India",
+        "sourceUrl": "https://foscos.fssai.gov.in/advance-fbo-search"
+      },
+      {
+        "description": "State mid-day meal supply tenders — Rajasthan school nutrition programme",
+        "year": "2020",
+        "authority": "Rajasthan Govt / MDM Scheme",
+        "sourceUrl": "https://pmposhan.education.gov.in/"
+      }
+    ]
+  }
+]

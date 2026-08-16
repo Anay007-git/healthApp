@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: #111827;
+    color: #FBF9F5;
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  .font-serif {
+    font-family: "Newsreader", Georgia, serif;
+  }
+
+  .font-mono {
+    font-family: "JetBrains Mono", monospace;
+  }
+}

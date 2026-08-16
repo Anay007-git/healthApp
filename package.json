@@ -1,32 +1,17 @@
 {
-  "name": "healthy-food-app",
-  "version": "0.1.0",
+  "name": "civiclens-monorepo",
+  "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.110.0",
-    "@types/three": "^0.185.1",
-    "@upstash/redis": "^1.38.0",
-    "lucide-react": "^1.23.0",
-    "next": "16.2.10",
-    "pdf-parse": "^2.4.5",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "three": "^0.185.1"
+    "dev:web": "npx pnpm --filter @civiclens/web run dev",
+    "dev:admin": "npx pnpm --filter @civiclens/admin run dev",
+    "dev:api": "npx pnpm --filter @civiclens/api run dev",
+    "dev": "npx pnpm dev:web",
+    "build": "npx pnpm -r --if-present run build"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.10",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "prettier": "^3.5.0",
+    "typescript": "^5.7.3"
   }
 }

@@ -1,0 +1,2397 @@
+[
+  {
+    "id": "sch-4",
+    "slug": "pm-kisan",
+    "name": "PM Kisan Samman Nidhi",
+    "hindiName": "PM Kisan Samman Nidhi",
+    "ministry": "Ministry of Agriculture & Farmers Welfare",
+    "launchYear": 2018,
+    "budgetAllocatedCr": 175000,
+    "expenditureCr": 143500,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "14.5 crore small and marginal farmer families",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 53,
+    "summary": "Direct income support scheme providing Rs 6,000 per year in three equal installments to small and marginal farmer families.",
+    "pipeline": [
+      {
+        "id": "pipe-4-0",
+        "schemeId": "sch-4",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2024 (Tripura)",
+        "description": "Audit found irregular disbursement of PM-KISAN benefits to ineligible persons, including government employees, income-tax payers and deceased beneficiaries, reflecting weaknesses in beneficiary validation and monitoring.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-4-1",
+        "schemeId": "sch-4",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 5 of 2022",
+        "description": "Payments made to 2.75 lakh deceased farmers: Rs 270 crore transferred to accounts of farmers who had already died, indicating lack of database maintenance.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-4-2",
+        "schemeId": "sch-4",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2023 (Meghalaya)",
+        "description": "Audit identified irregular payment of PM-KISAN benefits to the same beneficiaries through the same bank accounts, indicating duplicate or inadequately controlled disbursements.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-4-3",
+        "schemeId": "sch-4",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 1/2023 (Haryana)",
+        "description": "Improper identification, non-verification and weak monitoring resulted in PM-KISAN benefits being paid to ineligible recipients, including State Government pensioners; other ineligible payments were not adequately recovered.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-4-4",
+        "schemeId": "sch-4",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2023 (Manipur)",
+        "description": "The subject-specific compliance audit found deficiencies in the implementation of PM-KISAN in Manipur, particularly in beneficiary identification, verification and payment controls.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-4-5",
+        "schemeId": "sch-4",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2024 (Assam)",
+        "description": "The PM-KISAN implementation in Assam was affected by large-scale ineligible applications, weak monitoring, fake or multiple registrations and very limited recovery of funds paid to non-entitled beneficiaries.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-5",
+    "slug": "bbbp",
+    "name": "Beti Bachao Beti Padhao",
+    "hindiName": "Beti Bachao Beti Padhao",
+    "ministry": "Ministry of Women and Child Development",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 848,
+    "expenditureCr": 695,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "100 districts with lowest Child Sex Ratios across India",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 74,
+    "summary": "National programme to address the declining Child Sex Ratio and promote the welfare of girl children. Launched in Panipat, Haryana.",
+    "pipeline": [
+      {
+        "id": "pipe-5-0",
+        "schemeId": "sch-5",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 1/2017",
+        "description": "Haryana did not fully achieve the Beti Bachao Beti Padhao targets for improving the sex ratio at birth, increasing girls enrolment in secondary education, and re-enrolling 100 percent of girls who had dropped out.",
+        "amountCr": 0,
+        "date": "2017-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-5-1",
+        "schemeId": "sch-5",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 2 of 2019",
+        "description": "The report’s table of funds directly transferred to State Implementing Agencies records ₹44.95 lakh released through one NGO for Beti Bachao Beti Padhao under the Social Welfare Department.",
+        "amountCr": 0,
+        "date": "2019-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-5-2",
+        "schemeId": "sch-5",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 1/2017",
+        "description": "The audit included a dedicated compliance audit of the implementation of the Beti Bachao Beti Padhao Scheme in Uttarakhand and reported deficiencies in implementation.",
+        "amountCr": 0,
+        "date": "2017-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-10",
+    "slug": "jal-jeevan",
+    "name": "Jal Jeevan Mission",
+    "hindiName": "Jal Jeevan Mission",
+    "ministry": "Ministry of Jal Shakti",
+    "launchYear": 2019,
+    "budgetAllocatedCr": 360000,
+    "expenditureCr": 295200,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "19.26 crore rural households",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 53,
+    "summary": "Mission to provide safe and adequate drinking water through tap connections to all rural households by 2024. Renamed from NRDWP.",
+    "pipeline": [
+      {
+        "id": "pipe-10-0",
+        "schemeId": "sch-10",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 7/2025",
+        "description": "Punjab reported achieving functional tap connections for 100 per cent of rural households, but CAG found inaccurate and unstructured Annual Action Plans, unrealistic targets, underutilisation of funds, inadequate sustainability measures, weak operation and maintenance arrangements, and insufficient water-quality monitoring.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-10-1",
+        "schemeId": "sch-10",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2026",
+        "description": "In Chhattisgarh, deficiencies in planning, fund management, scheme execution and water-quality monitoring resulted in non-achievement of the Jal Jeevan Missions primary output and intended outcomes.",
+        "amountCr": 0,
+        "date": "2026-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-10-2",
+        "schemeId": "sch-10",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 3/2023",
+        "description": "Water-supply schemes, including NRDWP/Jal Jeevan Mission components, faced inadequate planning and financial sustainability; water charges amounting to ₹278.20 crore were not recovered.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-10-3",
+        "schemeId": "sch-10",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2026",
+        "description": "In Maharashtra, tap connections from private or own sources were included in Jal Jeevan Mission coverage even though their functionality was not established. In six test-checked districts, 9.64 lakh such connections were included in the dashboard total.",
+        "amountCr": 0,
+        "date": "2026-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-10-4",
+        "schemeId": "sch-10",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 5/2026",
+        "description": "In Madhya Pradesh, CAG found systemic planning and implementation weaknesses, including absence of baseline surveys in all test-checked districts, deficient action plans, non-prioritisation of villages, irregular expenditure, excess payments, delays, inadequate water-quality testing and failure to achieve programme outputs and outcomes.",
+        "amountCr": 0,
+        "date": "2026-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-10-5",
+        "schemeId": "sch-10",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 10 of 2025",
+        "description": "Of the total 4,04,404 Functional Household Tap Connections disconnected during the audit period, 2,13,991 were disconnected within one month of being provided, indicating disinterest of beneficiaries in the scheme.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-14",
+    "slug": "startup-india",
+    "name": "Startup India",
+    "hindiName": "Startup India",
+    "ministry": "Department for Promotion of Industry and Internal Trade",
+    "launchYear": 2016,
+    "budgetAllocatedCr": 10000,
+    "expenditureCr": 8200,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Entrepreneurs, startups, innovation ecosystems across India",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Initiative to build a strong ecosystem for nurturing innovation and startups in India, drive sustainable economic growth and generate employment.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-1",
+    "slug": "pmay-urban",
+    "name": "Pradhan Mantri Awas Yojana (Urban)",
+    "hindiName": "Pradhan Mantri Awas Yojana (Urban)",
+    "ministry": "Ministry of Housing and Urban Affairs",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 200000,
+    "expenditureCr": 164000,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "1.12 crore urban households living in slums and economically weaker sections",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 60,
+    "summary": "Aims to provide affordable housing to urban poor through financial assistance. Previously known as Rajiv Awas Yojana and Indira Awas Yojana in its rural form.",
+    "pipeline": [
+      {
+        "id": "pipe-1-0",
+        "schemeId": "sch-1",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 6/2025",
+        "description": "In Chhattisgarh, against a projected demand of five lakh urban dwelling units under PMAY-Urban, only 2.07 lakh units had been completed as of April 2025; audit also noted delayed planning and substantial curtailment of sanctioned projects.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-1-1",
+        "schemeId": "sch-1",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2023",
+        "description": "The Housing for All Plan of Action was completed only in March 2022 instead of June 2016. Of the 13.92 lakh houses identified for urban poor households, 6.84 lakh did not receive the intended benefits because the State failed to obtain sanctions in time. Further, 2.66 lakh sanctioned houses remained incomplete after the mission period.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-1-2",
+        "schemeId": "sch-1",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2022",
+        "description": "In Puducherry, although 44,315 beneficiaries were found eligible for the PMAY-Urban Beneficiary Led Construction component, benefits were provided to only 14,826, denying assistance to 29,489 eligible beneficiaries.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-1-3",
+        "schemeId": "sch-1",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 4/2022",
+        "description": "In Karnataka, only 88,395 dwelling units were completed out of 517,531 approved units under the AHP and BLC components, leaving most approved houses incomplete and making the Housing for All by 2022 objective unlikely to be achieved.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-1-4",
+        "schemeId": "sch-1",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 3/2023",
+        "description": "In its district-centric audit of selected urban local bodies in Cuttack and Sambalpur districts, CAG reviewed implementation of Pradhan Mantri Awas Yojana (Urban) and observed that the State had limited implementation to the beneficiary-led subsidy component, leaving other PMAY-U components unimplemented in the audited urban areas.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-2",
+    "slug": "swachh-bharat-urban",
+    "name": "Swachh Bharat Mission (Urban)",
+    "hindiName": "Swachh Bharat Mission (Urban)",
+    "ministry": "Ministry of Housing and Urban Affairs",
+    "launchYear": 2014,
+    "budgetAllocatedCr": 62009,
+    "expenditureCr": 50847,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "4,041 statutory towns across India",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 35,
+    "summary": "Flagship sanitation programme launched on 2 October 2014. Aims to eliminate open defecation and improve solid waste management in urban areas.",
+    "pipeline": [
+      {
+        "id": "pipe-2-0",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 3/2024",
+        "description": "The Jharkhand audit found that the SBM(U)-supported municipal solid-waste system was not fully streamlined, with deficiencies across planning, financing, IEC, segregation, collection, transportation, processing and final disposal.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-1",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2024",
+        "description": "The audit of solid waste management in Meghalaya identified weak institutional planning, inadequate achievement of service-level benchmarks, deficiencies in financial management, and continued open dumping.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-2",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 1/2025",
+        "description": "The Uttar Pradesh audit found delayed and inadequate release and utilisation of SBM(U) funds, weak planning and capacity building, and poor performance in segregation, processing and scientific disposal.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-3",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 6/2024",
+        "description": "The Assam audit found that the States draft urban solid-waste policy remained unapproved and that urban local bodies had significant deficiencies in planning, funding, processing and monitoring of waste-management activities.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-4",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 5/2020",
+        "description": "Only 22 per cent of funds were utilised by urban local bodies, resulting in delays in implementing solid waste management projects under Swachh Bharat Mission (Urban).",
+        "amountCr": 0,
+        "date": "2020-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-5",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2022",
+        "description": "The performance audit of SBM in Arunachal Pradesh found deficiencies in implementation of the urban component, including failure to prepare project reports or DPRs for public and community toilets.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-6",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 4/2018",
+        "description": "The audit found deficiencies in planning, institutional arrangements, fund utilisation, segregation, collection, processing and scientific disposal of municipal solid waste in urban local bodies.",
+        "amountCr": 0,
+        "date": "2018-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-7",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 9/2022",
+        "description": "Eleven urban local bodies did not receive the Central share of SBM-Urban funds because DPRs were not prepared and submitted on time.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-8",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 4/2024",
+        "description": "The Uttarakhand audit found that urban local bodies had not established effective systems for waste planning, collection, transportation, processing and sanitary disposal.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-9",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 3/2022",
+        "description": "The audit found major deficiencies in implementation of Individual Household Latrines and public toilets; only 10 per cent of constructed Individual Household Latrines were functional.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-10",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 1/2026",
+        "description": "An SBM (Urban) solid waste management project of Lumding Municipal Board remained unfruitful despite fund availability; inadequate follow-up and payment of an unsecured advance led to unfruitful expenditure of ₹30.51 lakh.",
+        "amountCr": 0,
+        "date": "2026-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-11",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 2 of 2024",
+        "description": "The Government stated that grants received from the Ministry for Swachh Bharat Mission Urban Phase-I during 2014-2022 were ₹61.99 crore, while ₹85.30 crore was allocated for Swachh Bharat Mission 2.0.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-12",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 4 of the year 2025",
+        "description": "Out of 18 test-checked ULBs, Detailed Project Reports were prepared by only six ULBs under ISWM/SBM 1.0 and 11 ULBs under SBM 2.0. In three test-checked ULBs where DPRs were prepared, the prescribed waste-generation assessment method was not followed.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-13",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 01 of 2024",
+        "description": "In West Bengal, 13,709 metric tonnes of solid waste was generated per day during 2021-22 and 13,687 tonnes per day was collected, but only 3,047 tonnes per day, or 22.26 per cent of collected waste, was treated; the remaining 10,640 tonnes per day was unscientifically disposed of.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-14",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 1 of 2025",
+        "description": "Fourteen test-checked Urban Local Bodies in Telangana failed to fully utilise funds provided under Swachh Bharat Mission-Urban, leaving 37 per cent of the allocated funds unspent as of March 2022.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-2-15",
+        "schemeId": "sch-2",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 5 of 2025",
+        "description": "In Punjab during 2021-22, approximately 4,222 metric tonnes of solid waste was generated per day and 4,207 metric tonnes per day was collected, but only 1,471 metric tonnes per day was treated, leaving nearly two-thirds of collected waste untreated.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-11",
+    "slug": "namami-gange",
+    "name": "Namami Gange Programme",
+    "hindiName": "Namami Gange Programme",
+    "ministry": "Ministry of Jal Shakti",
+    "launchYear": 2014,
+    "budgetAllocatedCr": 20000,
+    "expenditureCr": 16400,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Population living along the Ganga basin; 5 main-stem states",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 74,
+    "summary": "Integrated conservation mission to accomplish effective abatement of pollution, conservation and rejuvenation of the Ganga river.",
+    "pipeline": [
+      {
+        "id": "pipe-11-0",
+        "schemeId": "sch-11",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 39 of 2017",
+        "description": "Of the 97 sewage treatment plant (STP) projects, only 46 were completed and functional by 2022. 23 STPs non-operational despite being shown as complete. Total sewage untreated remained 9,000 MLD per day.",
+        "amountCr": 0,
+        "date": "2017-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-11-1",
+        "schemeId": "sch-11",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 39 of 2017",
+        "description": "Industrial effluent discharge uncontrolled: Only 215 of 764 grossly polluting industries along Ganga were compliant with discharge norms. 72% of polluters continued dumping untreated waste.",
+        "amountCr": 0,
+        "date": "2017-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-11-2",
+        "schemeId": "sch-11",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 2 of 2025",
+        "description": "The State Ganga Committee and State Mission for Clean Ganga did not plan and implement sewage treatment infrastructure in collaboration with local communities. Many Sewage Treatment Plants remained unconnected or only partially connected to household sewer networks, existing treatment capacity was insufficient, and significant quantities of untreated sewage were discharged into the Ganga. Eighteen STPs were not taken over by the maintenance agency because of operational and safety-related deficiencies.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-9",
+    "slug": "saubhagya",
+    "name": "Saubhagya (Pradhan Mantri Sahaj Bijli Har Ghar Yojana)",
+    "hindiName": "Saubhagya (Pradhan Mantri Sahaj Bijli Har Ghar Yojana)",
+    "ministry": "Ministry of Power",
+    "launchYear": 2017,
+    "budgetAllocatedCr": 16320,
+    "expenditureCr": 13382,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "All un-electrified households: approximately 4 crore households",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 35,
+    "summary": "Scheme to provide electricity connections to all un-electrified households in rural areas and poor households in urban areas. Replaced RGGVY.",
+    "pipeline": [
+      {
+        "id": "pipe-9-0",
+        "schemeId": "sch-9",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2022",
+        "description": "Performance audit of DDUGJY and Saubhagya in Mizoram found deficiencies in implementation of the schemes by the Power and Electricity Department.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-9-1",
+        "schemeId": "sch-9",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 3/2022",
+        "description": "Assam Power Distribution Company Limited did not undertake feeder-segregation works, and implementation suffered from delays, weak monitoring, irregular contracting and procurement of substandard items.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-9-2",
+        "schemeId": "sch-9",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 5/2022",
+        "description": "Karnatakas implementation audit found incomplete and deficient Saubhagya works, including execution without sanctioned estimates, discrepancies in material inspection and excess payment to contractors.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-9-3",
+        "schemeId": "sch-9",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 4/2024",
+        "description": "Madhya Pradeshs audit of Saubhagya found deficient project execution, excess expenditure and procurement, infrastructure created without connections, non-compliant solar power-pack installations and incorrect claims for cash awards and additional grants.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-9-4",
+        "schemeId": "sch-9",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2022",
+        "description": "Performance audit of DDUGJY and Saubhagya in Tripura identified deficiencies in planning, implementation, household electrification, feeder separation, financial management and monitoring.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-9-5",
+        "schemeId": "sch-9",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 3/2022",
+        "description": "In Jharkhand, 284,485 Saubhagya connections were released in seven test-checked districts against work orders for 406,196 connections, without ensuring assessment of beneficiaries eligible for free connections.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-9-6",
+        "schemeId": "sch-9",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2/2023",
+        "description": "Arunachal Pradeshs performance audit of DDUGJY and Saubhagya revealed several deficiencies in planning, execution, financial management and monitoring of rural electrification works.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-9-7",
+        "schemeId": "sch-9",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 17/2025",
+        "description": "The Union-level performance audit found systemic deficiencies in DDUGJY and Saubhagya implementation, including incomplete electrification, weak planning and monitoring, financial irregularities, inadequate quality assurance and failure to fully achieve scheme objectives.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-9-8",
+        "schemeId": "sch-9",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 7/2025",
+        "description": "Uttar Pradesh issued an indent for electrification of 1.70 crore un-electrified households, but REC approved only 1.22 crore connections; the audit also found that off-grid connections were omitted from DPRs and identified irregularities in execution and beneficiary selection.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-3",
+    "slug": "pmjay",
+    "name": "Ayushman Bharat – PM Jan Arogya Yojana",
+    "hindiName": "Ayushman Bharat – PM Jan Arogya Yojana",
+    "ministry": "Ministry of Health and Family Welfare",
+    "launchYear": 2018,
+    "budgetAllocatedCr": 64000,
+    "expenditureCr": 52480,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "10 crore families from bottom 40% of Indian population",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 60,
+    "summary": "Worlds largest health insurance scheme providing health cover of Rs 5 lakh per family per year for secondary and tertiary care hospitalization. Renamed from RSBY.",
+    "pipeline": [
+      {
+        "id": "pipe-3-0",
+        "schemeId": "sch-3",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 4/2025",
+        "description": "The audit found substantial shortfalls in beneficiary verification and coverage under AB-PMJAY in Bihar. Against the revised target of 61.8 million beneficiaries, only 25.6 million had been verified by 31 March 2024. In addition, 595 villages with eligible beneficiaries had no Ayushman Cards issued.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-3-1",
+        "schemeId": "sch-3",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 11 of 2023",
+        "description": "CAG found significant data quality issues in the beneficiary database. In 7 sample states, 7.49 lakh beneficiary families were found ineligible or duplicate, yet they received benefits worth Rs 491 crore.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-3-2",
+        "schemeId": "sch-3",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 11 of 2023",
+        "description": "Only 2.95 crore of the targeted 10 crore families had been issued Ayushman cards as of 2022. Coverage of intended beneficiaries was only 29.5%.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-3-3",
+        "schemeId": "sch-3",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 11 of 2023",
+        "description": "Hospitals empanelled under PMJAY performed fraudulent claims. CAG identified 7,491 suspicious transactions worth Rs 88.36 crore — payments made after patient death, treatments impossible in the empanelled facility type.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-3-4",
+        "schemeId": "sch-3",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 6 of the year 2024",
+        "description": "Under Pradhan Mantri Jan Arogya Yojana (PMJAY), inordinate delay in payment of insurance claims to beneficiaries was noticed. A District Implementation Unit to support PMJAY and a combined state-level unit for anti-fraud, medical audit and vigilance with district-level officers were not formed.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-13",
+    "slug": "pmkvy",
+    "name": "Pradhan Mantri Kaushal Vikas Yojana (PMKVY)",
+    "hindiName": "Pradhan Mantri Kaushal Vikas Yojana (PMKVY)",
+    "ministry": "Ministry of Skill Development and Entrepreneurship",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 6000,
+    "expenditureCr": 4920,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "School/college dropouts and unemployed youth (STT); employed informal workers seeking formal certification (RPL); special focus on North-East, hill states and tribal districts",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 35,
+    "summary": "Indias flagship demand-driven skill certification scheme, now in its fourth phase (2022–26). Trains youth in industry-relevant short-term courses (STT) and certifies existing workers through Recognition of Prior Learning (RPL). Run through a network of NSDC-accredited training centres and Skill India Digital Hub.",
+    "pipeline": [
+      {
+        "id": "pipe-13-0",
+        "schemeId": "sch-13",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 20 of 2025",
+        "description": "Bank account details on the Skill India Portal were missing, blank, null, or invalid for 90.66 lakh out of 95.90 lakh certified beneficiaries under PMKVY 2.0 and 3.0 — 94.53% of all records. Invalid entries included placeholder values such as 11111111111, 123456, single-digit numbers, and text/names/special characters. 12,122 account numbers were reused across 52,381 different candidates; one account number was shared by 2,106 individuals.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-13-1",
+        "schemeId": "sch-13",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 20 of 2025",
+        "description": "Certified training was claimed by multiple defunct companies on the Skill India Portal. Radiate Designs (struck off by Registrar of Companies in 2015) certified 15,218 people. Neelima Moving Pictures (shut for 5–6 years) claimed to have trained 33,000 people. Present Media Private Limited certified 19,561 candidates as dancers, hairdressers, and makeup artists across nine states. At least one training partner (Jaipur Cultural Society) claimed to have conducted training on 31st February — a date that does not exist. Identical photographs were submitted as training evidence in multiple states simultaneously (Bihar, Uttar Pradesh, Maharashtra, Rajasthan).",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-13-2",
+        "schemeId": "sch-13",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 20 of 2025",
+        "description": "Thousands of underage candidates were enrolled and certified in violation of PMKVY eligibility criteria. Over 52,000 candidates were certified as Group Farming Practitioners without meeting the minimum age requirement. Over 40,000 underage candidates were certified as Self-Employed Tailors. Similar violations were found across multiple other job roles. DBT incentive payments of ₹500 had not been received by 34 lakh certified candidates as of October 2024, despite the relevant phases having formally concluded. DBT was successful for only 18.44% of certified candidates as of 2023.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-13-3",
+        "schemeId": "sch-13",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 20 of 2025",
+        "description": "Out of 56 lakh candidates certified under the Short-Term Training and Special Projects components of PMKVY, only 23 lakh candidates were placed, representing 41 per cent placement.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-13-4",
+        "schemeId": "sch-13",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 3 of the year 2023",
+        "description": "Failure of the Kerala Academy for Skills Excellence to ensure the genuineness of placement documents submitted by training partners resulted in undue financial benefit of ₹16.72 lakh to the training partners under PMKVY.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-13-5",
+        "schemeId": "sch-13",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 2 of 2022",
+        "description": "MSDE sanctioned ₹1,088.73 lakh under PMKVY for training and placement of 7,071 youths during 2017-18; the Department had incurred expenditure of ₹776.81 lakh as of 4 August 2019.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-13-6",
+        "schemeId": "sch-13",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 3 of 2025",
+        "description": "The audit found that adherence to PMKVY guidelines relating to biometric attendance, insurance of candidates, organising Kaushal Melas, and training linked to captive placements was not maintained or complied with; monitoring, inspection and internal control mechanisms were also ineffective.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-13-7",
+        "schemeId": "sch-13",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 3 of 2025",
+        "description": "The report included a Subject Specific Compliance Audit on Pradhan Mantri Kaushal Vikas Yojana 2.0 under the Skill Development and Employment Department, Government of Uttarakhand.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-13-8",
+        "schemeId": "sch-13",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit No. 24 of 2022",
+        "description": "The report showed a budget allocation of ₹2,676.65 crore for Pradhan Mantri Kaushal Vikas Yojana against expenditure of ₹2,112.67 crore, resulting in savings of ₹563.98 crore, or 21.07 per cent of the allocation.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-7",
+    "slug": "pmuy",
+    "name": "PM Ujjwala Yojana",
+    "hindiName": "PM Ujjwala Yojana",
+    "ministry": "Ministry of Petroleum and Natural Gas",
+    "launchYear": 2016,
+    "budgetAllocatedCr": 12800,
+    "expenditureCr": 10496,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Women from BPL households across rural India",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 81,
+    "summary": "Scheme to provide free LPG connections to women from BPL households. Aims to replace unclean cooking fuels with clean LPG.",
+    "pipeline": [
+      {
+        "id": "pipe-7-0",
+        "schemeId": "sch-7",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 14 of 2019",
+        "description": "CAG found that only 3.66 crore out of 8 crore Ujjwala beneficiaries refilled their cylinders even once. 54% of LPG connections were effectively dormant by end of 2018.",
+        "amountCr": 0,
+        "date": "2019-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-7-1",
+        "schemeId": "sch-7",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 14 of 2019",
+        "description": "Average LPG consumption by Ujjwala beneficiaries was 3.21 refills per year against national average of 7.7. Beneficiaries still using firewood due to cost of cylinder refill.",
+        "amountCr": 0,
+        "date": "2019-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-16",
+    "slug": "digital-india",
+    "name": "Digital India Programme",
+    "hindiName": "Digital India Programme",
+    "ministry": "Ministry of Electronics and Information Technology",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 113000,
+    "expenditureCr": 92660,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "All citizens; focus on rural India",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 60,
+    "summary": "Flagship programme to transform India into a digitally empowered society and knowledge economy. Covers digital infrastructure, digital services, and digital literacy.",
+    "pipeline": [
+      {
+        "id": "pipe-16-0",
+        "schemeId": "sch-16",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 16 of 2023",
+        "description": "BSNL procured 6,000 Aadhaar Enrolment Kits during 2018-19 at a cost of ₹77.88 crore; 3,941 kits remained non-operational up to December 2022, blocking Government funds of ₹51.15 crore. UIDAI also imposed a disincentive of ₹0.65 crore on BSNL.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-16-1",
+        "schemeId": "sch-16",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 5 of 2026",
+        "description": "The audit reviewed implementation of the Common Service Centres 2.0 Project under the Digital India Programme and reported shortcomings in the delivery of the project’s intended last-mile digital services.",
+        "amountCr": 0,
+        "date": "2026-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-16-2",
+        "schemeId": "sch-16",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 1 of 2025",
+        "description": "The audit examined the National Knowledge Network Project, a MeitY project associated with the Digital India ecosystem. The project had been approved with an outlay of ₹5,990 crore to connect 1,500 institutions.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-16-3",
+        "schemeId": "sch-16",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 15 of 2022",
+        "description": "The audit reported idling of Aadhaar enrolment kits in Post Office Aadhaar Centres while examining the Department of Posts’ IT Modernisation Project and related digital service infrastructure.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-16-4",
+        "schemeId": "sch-16",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 3 of 2021",
+        "description": "Deficient planning, delayed implementation and non-resolution of issues in the project for providing broadband connectivity to 2,500 Common Services Centres in the North East and other inaccessible regions led to sub-optimal use and idling of equipment. Expenditure of ₹8.63 crore on installation of VSAT equipment and ₹26.46 crore on operating expenditure was rendered unfruitful.",
+        "amountCr": 0,
+        "date": "2021-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-15",
+    "slug": "smart-cities",
+    "name": "Smart Cities Mission",
+    "hindiName": "Smart Cities Mission",
+    "ministry": "Ministry of Housing and Urban Affairs",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 200000,
+    "expenditureCr": 164000,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "100 selected cities across India",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 60,
+    "summary": "Mission to develop 100 smart cities as models of urban development for the rest of India through area-based development and pan-city initiatives.",
+    "pipeline": [
+      {
+        "id": "pipe-15-0",
+        "schemeId": "sch-15",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 7 of 2021",
+        "description": "There was no substantial role of Urban Local Bodies in implementation of the Smart Cities Mission in Punjab.",
+        "amountCr": 0,
+        "date": "2021-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-15-1",
+        "schemeId": "sch-15",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 2 of 2023",
+        "description": "Out of 61 prioritised projects under Kohima Smart City Development, only 28 DPRs were completed, and only eight projects had been completed by October 2021. The audit also reported infructuous expenditure of ₹70.75 lakh on procurement of a water ATM and water tanker and ₹85.57 lakh on construction of a Multi Utility Duct.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-15-2",
+        "schemeId": "sch-15",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 2 of the year 2024",
+        "description": "Unfeasible projects were included among the 44 initially approved projects for Patna Smart City, resulting in delayed or incomplete execution. The audit also found poor contract management, mobilisation advance paid without finalisation of the scope of work, diversion of funds to unapproved projects and submission of incorrect utilisation certificates.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-15-3",
+        "schemeId": "sch-15",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 11 of 2025",
+        "description": "Against 135 goals specified in the Smart City Proposals of Karnatakas smart cities, achievement was 68 goals; other projects were still in progress. Smart cities also dropped 161 of 544 originally planned projects, equivalent to 30 per cent, contrary to Ministry of Housing and Urban Affairs instructions.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-15-4",
+        "schemeId": "sch-15",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 5 of 2025",
+        "description": "Dehradun Smart City Limited identified 33 projects valued at ₹1,359.80 crore under the revised Smart City Proposal, but only 22 projects valued at ₹1,021.54 crore were implemented under the Smart Cities Mission by March 2023. The audit further found that numerous smart solutions were dropped or remained non-functional and observed wasteful expenditure of ₹6.17 crore.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-31",
+    "slug": "udan",
+    "name": "UDAN (Ude Desh ka Aam Naagrik)",
+    "hindiName": "UDAN (Ude Desh ka Aam Naagrik)",
+    "ministry": "Ministry of Civil Aviation",
+    "launchYear": 2016,
+    "budgetAllocatedCr": 4500,
+    "expenditureCr": 3690,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Common citizens in tier-2 and tier-3 cities; first-time flyers",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "Regional connectivity scheme to make air travel affordable for common citizens and connect tier-2 and tier-3 cities. Uses viability gap funding for airlines.",
+    "pipeline": [
+      {
+        "id": "pipe-31-0",
+        "schemeId": "sch-31",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No.22 of 2023",
+        "description": "Up to UDAN-3, 52 per cent (403 out of 774 routes) of the awarded routes could not commence operations.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-28",
+    "slug": "samagra-shiksha",
+    "name": "Samagra Shiksha Abhiyan",
+    "hindiName": "Samagra Shiksha Abhiyan",
+    "ministry": "Ministry of Education",
+    "launchYear": 2018,
+    "budgetAllocatedCr": 294283,
+    "expenditureCr": 241312,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "All school-going children from pre-primary to Class 12",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 74,
+    "summary": "Integrated scheme for school education extending from pre-school to Class 12. Treats school education holistically without segmentation.",
+    "pipeline": [
+      {
+        "id": "pipe-28-0",
+        "schemeId": "sch-28",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 5 of 2025",
+        "description": "The utilisation of funds ranged between 44 and 50 per cent under the Samagra Shiksha Scheme.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-28-1",
+        "schemeId": "sch-28",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 2 of 2025",
+        "description": "Savings of ₹1,300 crore, representing 84.20 per cent of the net grant, occurred under the scheme Samagra Shiksha Abhiyan (Elementary Education) (Central Share).",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-28-2",
+        "schemeId": "sch-28",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 03 of 2026",
+        "description": "Major components of Samagra Shiksha were not implemented in the test-checked districts for want of funds. Strengthening of existing schools was not undertaken in Bankura during 2019-20 to 2023-24, in Uttar Dinajpur during 2020-21 to 2023-24, in Murshidabad during 2020-21 and 2023-24, and in Dakshin Dinajpur during 2019-20 to 2021-22.",
+        "amountCr": 0,
+        "date": "2026-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-32",
+    "slug": "bharatmala",
+    "name": "Bharatmala Pariyojana",
+    "hindiName": "Bharatmala Pariyojana",
+    "ministry": "Ministry of Road Transport and Highways",
+    "launchYear": 2017,
+    "budgetAllocatedCr": 535000,
+    "expenditureCr": 438700,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "All highway users; logistics sector; connect 550 districts",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 81,
+    "summary": "Umbrella programme for highways development focusing on optimising efficiency of freight and passenger movement across India through development of Economic Corridors.",
+    "pipeline": [
+      {
+        "id": "pipe-32-0",
+        "schemeId": "sch-32",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 19 of 2023",
+        "description": "CAG found only 7,662 km of the 34,800 km Phase I target was completed by June 2023, against the 2022 deadline. Project cost has escalated to Rs 10.64 lakh crore, nearly double the original Rs 5.35 lakh crore estimate.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-32-1",
+        "schemeId": "sch-32",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 19 of 2023",
+        "description": "CAG found land acquisition was pending for 28% of project length. Rs 1.1 lakh crore paid to NHAI via market borrowings had created debt burden with annual interest of Rs 18,000 crore, raising sustainability concerns.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-26",
+    "slug": "poshan-abhiyaan",
+    "name": "POSHAN Abhiyaan (National Nutrition Mission)",
+    "hindiName": "POSHAN Abhiyaan (National Nutrition Mission)",
+    "ministry": "Ministry of Women and Child Development",
+    "launchYear": 2018,
+    "budgetAllocatedCr": 9046,
+    "expenditureCr": 7418,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Children 0-6 years, pregnant women, lactating mothers across India",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 74,
+    "summary": "Governments flagship programme to improve nutritional outcomes for children, pregnant women and lactating mothers. Uses technology and Jan Andolan approach.",
+    "pipeline": [
+      {
+        "id": "pipe-26-0",
+        "schemeId": "sch-26",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 9 of 2025",
+        "description": "The audit found non-coverage of a considerable percentage of targeted beneficiaries under POSHAN Abhiyaan in Odisha.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-26-1",
+        "schemeId": "sch-26",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 9 of 2025",
+        "description": "A short delivery of wheat to Anganwadi Centres by the appointed Transport Agent was observed during the audit.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-26-2",
+        "schemeId": "sch-26",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 9 of 2025",
+        "description": "Audit detected diversion of Take Home Ration (THR) funds for unrelated expenditure.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-29",
+    "slug": "pm-poshan",
+    "name": "PM Poshan Shakti Nirman (Mid-Day Meal Scheme)",
+    "hindiName": "PM Poshan Shakti Nirman (Mid-Day Meal Scheme)",
+    "ministry": "Ministry of Education",
+    "launchYear": 2021,
+    "budgetAllocatedCr": 130000,
+    "expenditureCr": 106600,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "11.80 crore students in government and government-aided schools",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "Renamed from Mid-Day Meal Scheme, provides free hot cooked meals to students in government schools. Enhanced to include breakfast in aspirational districts.",
+    "pipeline": [
+      {
+        "id": "pipe-29-0",
+        "schemeId": "sch-29",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 36 of 2015",
+        "description": "Enrolment of children in schools covered by the Mid-Day Meal Scheme declined consistently from 14.69 crore in 2009-10 to 13.87 crore in 2013-14; in contrast, private-school enrolment increased by 38 per cent from 4.02 crore to 5.53 crore.",
+        "amountCr": 0,
+        "date": "2015-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-19",
+    "slug": "pmgsy",
+    "name": "Pradhan Mantri Gram Sadak Yojana (Phase III)",
+    "hindiName": "Pradhan Mantri Gram Sadak Yojana (Phase III)",
+    "ministry": "Ministry of Rural Development",
+    "launchYear": 2019,
+    "budgetAllocatedCr": 80250,
+    "expenditureCr": 65805,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Rural habitations with population over 500 (250 in hilly/tribal areas)",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "Provides all-weather road connectivity to unconnected habitations in rural areas. Phase III focuses on consolidation and upgradation of existing rural roads.",
+    "pipeline": [
+      {
+        "id": "pipe-19-0",
+        "schemeId": "sch-19",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 8 of 2024",
+        "description": "The Management’s decision not to upload Phase-I and Phase-II NITs on the PMGSY portal as prescribed in the Standard Bidding Document limited bidder participation: an average of two/three bidders participated in Phase-I and Phase-II, whereas six bidders participated in Phase-III.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-18",
+    "slug": "amrut",
+    "name": "AMRUT (Atal Mission for Rejuvenation and Urban Transformation)",
+    "hindiName": "AMRUT (Atal Mission for Rejuvenation and Urban Transformation)",
+    "ministry": "Ministry of Housing and Urban Affairs",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 50000,
+    "expenditureCr": 41000,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "500 cities with population above 1 lakh",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 81,
+    "summary": "Mission to establish infrastructure to ensure basic services including water supply, sewerage, urban transport to households and build amenities in cities.",
+    "pipeline": [
+      {
+        "id": "pipe-18-0",
+        "schemeId": "sch-18",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 4 of 2025",
+        "description": "The State Urban Development Agency reported that Mission cities had achieved 36-37 reform milestones, whereas Audit found that only 15-16 milestones had actually been achieved.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-18-1",
+        "schemeId": "sch-18",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No.7 of 2025",
+        "description": "Although the primary objective of AMRUT was universal coverage in water supply, none of the nine mission cities achieved this objective as of October 2024. Household water-supply coverage ranged from 9.39 per cent to 89.16 per cent.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-24",
+    "slug": "nhm",
+    "name": "National Health Mission",
+    "hindiName": "National Health Mission",
+    "ministry": "Ministry of Health and Family Welfare",
+    "launchYear": 2013,
+    "budgetAllocatedCr": 340000,
+    "expenditureCr": 278800,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "All rural and urban populations with focus on 18 high-focus states",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 67,
+    "summary": "Umbrella mission encompassing National Rural Health Mission (NRHM) and National Urban Health Mission (NUHM). Continued and expanded under BJP government.",
+    "pipeline": [
+      {
+        "id": "pipe-24-0",
+        "schemeId": "sch-24",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No.4 of 2018",
+        "description": "Over 12 per cent of the 24.95 lakh pregnant women registered for Ante Natal Care did not receive Iron and Folic Acid tablets.",
+        "amountCr": 0,
+        "date": "2018-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-24-1",
+        "schemeId": "sch-24",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No.25 of 2017",
+        "description": "State Health Societies spent ₹1,06,179.78 crore out of ₹1,10,930.30 crore available during 2011-16 under the National Rural Health Mission.",
+        "amountCr": 0,
+        "date": "2017-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-24-2",
+        "schemeId": "sch-24",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 02 of the year 2024",
+        "description": "The Government of India and the Government of Chhattisgarh allocated ₹7,263.47 crore to the National Health Mission during 2016-22, of which ₹6,486.08 crore, or 89.30 per cent, was spent.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-24-3",
+        "schemeId": "sch-24",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 05 of 2024",
+        "description": "Out of seven national programmes under the National Health Mission, utilisation of funds was less than 50 per cent in three national programmes during 2016-22.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-30",
+    "slug": "khelo-india",
+    "name": "Khelo India Programme",
+    "hindiName": "Khelo India Programme",
+    "ministry": "Ministry of Youth Affairs and Sports",
+    "launchYear": 2018,
+    "budgetAllocatedCr": 3183,
+    "expenditureCr": 2610,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Young athletes aged 8-18 identified through Khelo India Games",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 74,
+    "summary": "Programme to revive sports culture at grassroots level in India. Identifies and trains talented young athletes with scholarships and world-class training.",
+    "pipeline": [
+      {
+        "id": "pipe-30-0",
+        "schemeId": "sch-30",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 1 of 2021",
+        "description": "Under the Khelo India Scheme, utilisation of funds was only eight per cent because the Government of India funds were received at the fag end of the year.",
+        "amountCr": 0,
+        "date": "2021-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-30-1",
+        "schemeId": "sch-30",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 1 of 2022",
+        "description": "Government of India directly transferred ₹15.81 crore to the Sports Authority of Arunachal Pradesh under Khelo India during 2020-21.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-30-2",
+        "schemeId": "sch-30",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 1 of 2022",
+        "description": "Government of India directly transferred ₹5.70 crore to the Nagaland State Sports Council under the Khelo India National Programme during 2019-20.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-25",
+    "slug": "mission-indradhanush",
+    "name": "Mission Indradhanush",
+    "hindiName": "Mission Indradhanush",
+    "ministry": "Ministry of Health and Family Welfare",
+    "launchYear": 2014,
+    "budgetAllocatedCr": 2000,
+    "expenditureCr": 1640,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Children under 2 years and pregnant women across India",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 81,
+    "summary": "Immunisation programme to cover all children under 2 years and pregnant women who are either unvaccinated or partially vaccinated against 12 vaccine-preventable diseases.",
+    "pipeline": [
+      {
+        "id": "pipe-25-0",
+        "schemeId": "sch-25",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 3 of 2017",
+        "description": "In the exit conference, the Principal Secretary stated that Mission Indradhanush was conducted in high- and medium-priority districts to close immunisation gaps during 2015-16 and 2016-17.",
+        "amountCr": 0,
+        "date": "2017-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-25-1",
+        "schemeId": "sch-25",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 4 of 2018",
+        "description": "The State had achieved the target of 100 per cent immunisation of children in the 0-1 year age group, including coverage of dropout children through Mission Indradhanush.",
+        "amountCr": 0,
+        "date": "2018-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-34",
+    "slug": "pli-scheme",
+    "name": "Production Linked Incentive (PLI) Scheme",
+    "hindiName": "Production Linked Incentive (PLI) Scheme",
+    "ministry": "Ministry of Commerce and Industry",
+    "launchYear": 2020,
+    "budgetAllocatedCr": 197000,
+    "expenditureCr": 161540,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Manufacturers in 14 identified sectors",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Scheme to give companies incentives on incremental sales from products manufactured in India over a base year. Covers 14 key sectors including electronics, pharma, autos.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-35",
+    "slug": "pm-svanidhi",
+    "name": "PM SVANidhi (PM Street Vendor AtmaNirbhar Nidhi)",
+    "hindiName": "PM SVANidhi (PM Street Vendor AtmaNirbhar Nidhi)",
+    "ministry": "Ministry of Housing and Urban Affairs",
+    "launchYear": 2020,
+    "budgetAllocatedCr": 700,
+    "expenditureCr": 574,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "50 lakh street vendors affected by COVID-19 lockdowns",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Micro-credit scheme for street vendors to help them resume livelihoods after COVID-19 lockdowns. Provides collateral-free working capital loans with incentives for digital transactions.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-37",
+    "slug": "ddu-gky",
+    "name": "Deen Dayal Upadhyaya Grameen Kaushalya Yojana (DDU-GKY)",
+    "hindiName": "Deen Dayal Upadhyaya Grameen Kaushalya Yojana (DDU-GKY)",
+    "ministry": "Ministry of Rural Development",
+    "launchYear": 2014,
+    "budgetAllocatedCr": 8995,
+    "expenditureCr": 7376,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Rural youth aged 15-35 from poor families across India",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 74,
+    "summary": "Skill training and placement programme for rural youth from poor families. Aims to diversify incomes of rural families and cater to career aspirations of rural youth.",
+    "pipeline": [
+      {
+        "id": "pipe-37-0",
+        "schemeId": "sch-37",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 5 of the year 2020",
+        "description": "ORMAS received ₹657.90 crore under DDU-GKY during 2014-19 and utilised ₹568.43 crore, representing 86 per cent utilisation as of March 2019.",
+        "amountCr": 0,
+        "date": "2020-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-37-1",
+        "schemeId": "sch-37",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 4 of the year 2018",
+        "description": "The Punarjani skilling and placement project targeted training for 5,000 Kudumbashree workers but benefited only 1,794 members; the audit also found that Programme Implementation Agencies were not monitored by Kudumbashree, resulting in deficiencies in the scheme.",
+        "amountCr": 0,
+        "date": "2018-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-37-2",
+        "schemeId": "sch-37",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 4 of the year 2024",
+        "description": "The subject-specific compliance audit on implementation of DDU-GKY found irregularities in the selection of project implementing agencies and awarding of projects, as well as irregularities in the conduct of training and placement.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-38",
+    "slug": "atal-bhujal",
+    "name": "Atal Bhujal Yojana",
+    "hindiName": "Atal Bhujal Yojana",
+    "ministry": "Ministry of Jal Shakti",
+    "launchYear": 2020,
+    "budgetAllocatedCr": 6000,
+    "expenditureCr": 4920,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "8,353 gram panchayats in Gujarat, Haryana, Karnataka, MP, Maharashtra, Rajasthan, UP",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Scheme for sustainable groundwater management with community participation in water-stressed areas. Focuses on demand-side interventions and community behaviour change.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-41",
+    "slug": "pm-kusum",
+    "name": "PM Kisan Urja Suraksha evam Utthaan Mahabhiyan (PM KUSUM)",
+    "hindiName": "PM Kisan Urja Suraksha evam Utthaan Mahabhiyan (PM KUSUM)",
+    "ministry": "Ministry of New and Renewable Energy",
+    "launchYear": 2019,
+    "budgetAllocatedCr": 34422,
+    "expenditureCr": 28226,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "35 lakh farmers with agricultural pump sets",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "Scheme to add solar power generation capacity in rural areas, solarise agricultural pump sets, and install grid-connected solar power plants for farmers.",
+    "pipeline": [
+      {
+        "id": "pipe-41-0",
+        "schemeId": "sch-41",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 4 of 2025",
+        "description": "As of 31 March 2023, only 98.78 MW of solar power Power Purchase Agreements had been signed under Component A of PM-KUSUM against the State target of 500 MW, and only 3 MW had been commissioned, representing less than one per cent of the target achievement.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-42",
+    "slug": "swamitva",
+    "name": "Swamitva Scheme",
+    "hindiName": "Swamitva Scheme",
+    "ministry": "Ministry of Panchayati Raj",
+    "launchYear": 2020,
+    "budgetAllocatedCr": 566,
+    "expenditureCr": 464,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Residents of 6.62 lakh villages with houses in abadi areas",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Scheme to provide property rights to residents of rural areas of India by mapping land parcels using drone technology. Provides property cards to households.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-46",
+    "slug": "pmay-gramin",
+    "name": "PMAY (Gramin) – PM Awas Yojana Rural",
+    "hindiName": "PMAY (Gramin) – PM Awas Yojana Rural",
+    "ministry": "Ministry of Rural Development",
+    "launchYear": 2016,
+    "budgetAllocatedCr": 130075,
+    "expenditureCr": 106662,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Rural BPL households living in kaccha or dilapidated houses",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 74,
+    "summary": "Separate from PMAY Urban. Provides financial assistance to rural BPL households to construct pucca houses with basic amenities including toilet, LPG connection, electricity.",
+    "pipeline": [
+      {
+        "id": "pipe-46-0",
+        "schemeId": "sch-46",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 1 of 2020",
+        "description": "The failure to upload data pertaining to 7.15 lakh beneficiaries resulted in the Government of India refusing to include them in the Permanent Wait List, depriving them of a pucca house.",
+        "amountCr": 0,
+        "date": "2020-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-46-1",
+        "schemeId": "sch-46",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 7 of 2023",
+        "description": "Audit noted that 8.59 lakh eligible beneficiaries identified by Gram Sabhas were excluded from the Permanent Wait List, while 12.25 lakh beneficiaries could not be included in the list and were deprived of benefits under PMAY-G. The State also surrendered the target of 5.27 lakh houses due to non-availability of households in the Permanent Wait List.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-46-2",
+        "schemeId": "sch-46",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 8 of 2025",
+        "description": "The State completed construction of 34.18 lakh PMAY-G houses by March 2024 out of 34.71 lakh houses sanctioned during 2016-17 to 2022-23; deficiencies were observed in implementation of the scheme.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-36",
+    "slug": "aspirational-districts",
+    "name": "Aspirational Districts Programme",
+    "hindiName": "Aspirational Districts Programme",
+    "ministry": "NITI Aayog",
+    "launchYear": 2018,
+    "budgetAllocatedCr": 49000,
+    "expenditureCr": 40180,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "112 aspirational districts across 28 states",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 74,
+    "summary": "Programme to quickly and effectively transform the most underdeveloped districts of India across 5 thematic areas: health, education, agriculture, financial inclusion, and infrastructure.",
+    "pipeline": [
+      {
+        "id": "pipe-36-0",
+        "schemeId": "sch-36",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 7 of 2020",
+        "description": "Audit found that ₹442.18 crore was incurred by CPSEs in aspirational districts under the common theme, representing 11.78 per cent of total CSR expenditure, and that only 55 CPSEs incurred CSR expenditure in aspirational districts.",
+        "amountCr": 0,
+        "date": "2020-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-36-1",
+        "schemeId": "sch-36",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No.10 of the year 2022",
+        "description": "The Board did not have the data points specified in the NITI Aayog Aspirational District indicator framework. CAG observed that, without the required data, evaluation of the outcomes of the Boards activities was not feasible and the Board could not demonstrate the effectiveness of its operations in measurable terms.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-36-2",
+        "schemeId": "sch-36",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 3 of 2026",
+        "description": "The Cluster Facilitation Project, aimed at improving performance in aspirational districts, remained largely ineffective due to delays in operationalisation, under-deployment of Thematic Experts, and poor achievement of performance deliverables despite payment of ₹6.56 crore. Only 11 per cent of the Thematic Experts were appointed.",
+        "amountCr": 0,
+        "date": "2026-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-40",
+    "slug": "naps",
+    "name": "National Apprenticeship Promotion Scheme",
+    "hindiName": "National Apprenticeship Promotion Scheme",
+    "ministry": "Ministry of Skill Development and Entrepreneurship",
+    "launchYear": 2016,
+    "budgetAllocatedCr": 10000,
+    "expenditureCr": 8200,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Industry partners; unemployed youth seeking on-the-job training",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Scheme to promote apprenticeship training in India by sharing 25% of prescribed stipend with employers for fresh apprentices. Target: 50 lakh apprentices by 2020.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-47",
+    "slug": "swachh-bharat-gramin",
+    "name": "Swachh Bharat Mission (Gramin)",
+    "hindiName": "Swachh Bharat Mission (Gramin)",
+    "ministry": "Ministry of Jal Shakti",
+    "launchYear": 2014,
+    "budgetAllocatedCr": 134000,
+    "expenditureCr": 109880,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Rural households without toilets; 6 lakh villages across India",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 67,
+    "summary": "Rural component of the Swachh Bharat Mission aiming to eliminate open defecation in rural India through construction of individual household toilets (IHHLs) and behaviour change.",
+    "pipeline": [
+      {
+        "id": "pipe-47-0",
+        "schemeId": "sch-47",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 5 of 2017",
+        "description": "Shortfall in achievement of targets was noticed: Individual Household Latrines for 2,14,647 households under Swachh Bharat Mission (Gramin) in Punjab were yet to be constructed despite availability of funds.",
+        "amountCr": 0,
+        "date": "2017-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-47-1",
+        "schemeId": "sch-47",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No.1 of 2018",
+        "description": "Planning and implementation of Swachh Bharat Mission (Gramin) by Uttarakhand was inadequate: against targets of 546 Community Sanitary Complexes and 4,485 Solid and Liquid Waste Management structures, only 63 and 50 respectively had been constructed up to March 2017.",
+        "amountCr": 0,
+        "date": "2018-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-47-2",
+        "schemeId": "sch-47",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 39 of 2017",
+        "description": "The main objective of the rural sanitation programme to make all Ganga river basin villages Open Defecation Free under Swachh Bharat Mission (Gramin) could not be achieved. Audit also recommended that the reliability of data reported under the SBM (Gramin) Management Information System be ensured through cross-checking with monthly physical and financial reports.",
+        "amountCr": 0,
+        "date": "2017-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-47-3",
+        "schemeId": "sch-47",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 2 of 2022",
+        "description": "The objectives of Swachh Bharat Mission (Gramin) were not achieved by 2 October 2019 because all households without toilets were not included in the baseline survey. Consequently, the Department constructed 44,712 IHHLs in excess of the target set in the Project Implementation Plan during 2014-15 to 2019-20.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-49",
+    "slug": "soil-health-card",
+    "name": "Soil Health Card Scheme",
+    "hindiName": "Soil Health Card Scheme",
+    "ministry": "Ministry of Agriculture & Farmers Welfare",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 1068,
+    "expenditureCr": 876,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "All 14 crore farming households across India",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 81,
+    "summary": "Scheme to issue Soil Health Cards to farmers carrying crop-wise nutrient recommendations based on soil test results, to promote balanced use of fertilisers and improve soil health.",
+    "pipeline": [
+      {
+        "id": "pipe-49-0",
+        "schemeId": "sch-49",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 1 of 2021",
+        "description": "Implementation of the Soil Health Card Scheme remained ineffective due to inefficient flow of funds, deficient planning for providing financial assistance for recommended nutrients, and non-planning for training and workshops.",
+        "amountCr": 0,
+        "date": "2021-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-49-1",
+        "schemeId": "sch-49",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 3 of the year 2019",
+        "description": "Soil testing laboratories were underutilised, resulting in slow implementation of the Soil Health Cards Scheme; the shortfall in analysing soil samples ranged between 13.49 per cent and 45.92 per cent.",
+        "amountCr": 0,
+        "date": "2019-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-50",
+    "slug": "pmjap",
+    "name": "Pradhan Mantri Jan Aushadhi Pariyojana (PMJAP)",
+    "hindiName": "Pradhan Mantri Jan Aushadhi Pariyojana (PMJAP)",
+    "ministry": "Ministry of Chemicals and Fertilizers",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 904,
+    "expenditureCr": 741,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "All citizens especially poor, elderly, and those with chronic diseases",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Scheme to make quality generic medicines available at affordable prices through dedicated retail stores called Pradhan Mantri Bhartiya Janaushadhi Kendras (PMBJKs) across the country.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-53",
+    "slug": "enam",
+    "name": "eNAM (National Agriculture Market)",
+    "hindiName": "eNAM (National Agriculture Market)",
+    "ministry": "Ministry of Agriculture & Farmers Welfare",
+    "launchYear": 2016,
+    "budgetAllocatedCr": 200,
+    "expenditureCr": 164,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Farmers, traders, and buyers of agricultural produce across integrated mandis",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "Pan-India electronic trading portal for agricultural commodities providing a single window service for all APMC related information and services. Enables farmers to get better prices through online competitive bidding.",
+    "pipeline": [
+      {
+        "id": "pipe-53-0",
+        "schemeId": "sch-53",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 5 of 2025",
+        "description": "The Market Board received ₹138.94 crore from the Government of India during 2017-18 to 2021-22 for implementation of three centrally sponsored schemes, including Electronic National Agriculture Market (e-NAM).",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-54",
+    "slug": "ddugjy",
+    "name": "Deen Dayal Upadhyaya Gram Jyoti Yojana (DDUGJY)",
+    "hindiName": "Deen Dayal Upadhyaya Gram Jyoti Yojana (DDUGJY)",
+    "ministry": "Ministry of Power",
+    "launchYear": 2014,
+    "budgetAllocatedCr": 75893,
+    "expenditureCr": 62232,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "18,452 unelectrified villages; 2.37 crore BPL rural households",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 39,
+    "summary": "Scheme for rural electrification focusing on feeder separation of agricultural and domestic supply, strengthening sub-transmission and distribution infrastructure in rural areas.",
+    "pipeline": [
+      {
+        "id": "pipe-54-0",
+        "schemeId": "sch-54",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 17 of 2025",
+        "description": "CAG found governments claim of electrifying all 18,452 villages used a definition requiring only 10% of households to have power. Actual household electrification was 77% at the time of the ODF declaration. 3.3 crore households in \"electrified\" villages had no connection.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-54-1",
+        "schemeId": "sch-54",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 17 of 2025",
+        "description": "CAG survey in 21 states found rural households received average of 12.5 hours electricity per day despite target of 24 hours. In UP, Bihar and Jharkhand, average supply was 6-8 hours. Rs 2,300 crore of infrastructure was stranded due to state DISCOM non-payment.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-54-2",
+        "schemeId": "sch-54",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 3 of 2022",
+        "description": "Electrification of 819 (10 per cent) out of 7,925 villages taken up under DDUGJY was not completed as of March 2020. Further, 68,417 (32 per cent) out of 2,15,605 DDUGJY connections could not be provided.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-54-3",
+        "schemeId": "sch-54",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 3 of 2022",
+        "description": "Out of 2,339 unelectrified villages sanctioned under the scheme, APDCL electrified only 996 villages; the remaining 1,343 villages were found to be partially electrified while executing the scheme works.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-54-4",
+        "schemeId": "sch-54",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 7 of the year 2022",
+        "description": "Infructuous expenditure of ₹1.18 crore was incurred on installations of M&P boxes under DDUGJY.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-54-5",
+        "schemeId": "sch-54",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 7 of the year 2022",
+        "description": "The works for all 21 DDUGJY projects were awarded with delays ranging between 306 and 657 days, with an average delay of 470 days.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-54-6",
+        "schemeId": "sch-54",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 04 of the year 2024",
+        "description": "The audit identified deficiencies in DDUGJY implementation, including execution of work not conforming to Detailed Project Reports, failure to impose liquidated damages, delays in execution of projects, failure to realise additional grant, discrepancies in beneficiary data and closure reports, and deficiencies in project monitoring.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-54-7",
+        "schemeId": "sch-54",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 7 of 2025",
+        "description": "The objective of separating agriculture and non-agriculture feeders under DDUGJY was not achieved. The audit also reported avoidable expenditure due to execution of unnecessary items and double payment for installation of meters at consumers premises.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-55",
+    "slug": "abdm",
+    "name": "Ayushman Bharat Digital Mission (ABDM)",
+    "hindiName": "Ayushman Bharat Digital Mission (ABDM)",
+    "ministry": "Ministry of Health and Family Welfare",
+    "launchYear": 2021,
+    "budgetAllocatedCr": 1600,
+    "expenditureCr": 1312,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "All 140 crore citizens of India",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Mission to develop a national digital health ecosystem that supports universal health coverage. Creates a Health ID (ABHA) for every citizen linking all health records digitally.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-57",
+    "slug": "rurban-mission",
+    "name": "Shyama Prasad Mukherji Rurban Mission",
+    "hindiName": "Shyama Prasad Mukherji Rurban Mission",
+    "ministry": "Ministry of Rural Development",
+    "launchYear": 2016,
+    "budgetAllocatedCr": 5142,
+    "expenditureCr": 4216,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "300 rural clusters across 28 states and 7 UTs",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "Mission to stimulate local economic development, enhance basic services, and create well-planned Rurban clusters (rural areas with urban amenities) to bridge rural-urban divide.",
+    "pipeline": [
+      {
+        "id": "pipe-57-0",
+        "schemeId": "sch-57",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 4 of 2024",
+        "description": "For ₹189 crore released by the Government of India during 2016-17 to 2021-22 for the National Rurban Mission, utilisation certificates for ₹45.71 crore had not been submitted as of September 2023.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-56",
+    "slug": "pmgkay",
+    "name": "PM Garib Kalyan Anna Yojana (PMGKAY)",
+    "hindiName": "PM Garib Kalyan Anna Yojana (PMGKAY)",
+    "ministry": "Ministry of Consumer Affairs, Food and Public Distribution",
+    "launchYear": 2020,
+    "budgetAllocatedCr": 391000,
+    "expenditureCr": 320620,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "80 crore National Food Security Act beneficiaries",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "Free food grain scheme launched during COVID-19 pandemic providing additional 5 kg grain per person per month free of cost to NFSA beneficiaries. Extended multiple times, now merged with NFSA from 2023.",
+    "pipeline": [
+      {
+        "id": "pipe-56-0",
+        "schemeId": "sch-56",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 02 of the year 2023",
+        "description": "After implementation of PMGKAY, 31.05 lakh NFSA-PHH beneficiaries with one to three members received no additional rice compared with their pre-PMGKAY entitlement. PHH card holders with more than three members received additional rice at three kg per person instead of the five kg per person envisaged under PMGKAY. Separate stock and distribution registers for PMGKAY were not maintained in 88 per cent of the test-checked Fair Price Shops.",
+        "amountCr": 0,
+        "date": "2023-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-33",
+    "slug": "sagarmala",
+    "name": "Sagarmala Programme",
+    "hindiName": "Sagarmala Programme",
+    "ministry": "Ministry of Ports, Shipping and Waterways",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 579000,
+    "expenditureCr": 474780,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Coastal communities; exporters; logistics industry",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "Programme for port-led development to reduce logistics cost for EXIM and domestic trade with minimal infrastructure investment through optimum utilization of waterways.",
+    "pipeline": [
+      {
+        "id": "pipe-33-0",
+        "schemeId": "sch-33",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 7 of 2025",
+        "description": "Under the Sagarmala Programme, Andhra Pradesh proposed nine jetty projects and committed to bear 50 per cent of the project cost. Only one project, the Bhavani Island jetty, was approved; work was halted after execution of works worth ₹4.79 crore because the State did not release its ₹5 crore share. Of the remaining eight projects, revised DPRs were submitted for only three, while no decision was taken on the other five proposals.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-52",
+    "slug": "pmmvy",
+    "name": "Pradhan Mantri Matru Vandana Yojana (PMMVY)",
+    "hindiName": "Pradhan Mantri Matru Vandana Yojana (PMMVY)",
+    "ministry": "Ministry of Women and Child Development",
+    "launchYear": 2017,
+    "budgetAllocatedCr": 10000,
+    "expenditureCr": 8200,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Pregnant and lactating women (except those in regular employment) for first live birth",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 81,
+    "summary": "Maternity benefit programme providing cash incentive of Rs 5,000 to pregnant and lactating mothers for the first live birth to partly compensate for wage loss and improve health seeking behaviour.",
+    "pipeline": [
+      {
+        "id": "pipe-52-0",
+        "schemeId": "sch-52",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report 3 of 2024",
+        "description": "Implementation of the Pradhan Mantri Matru Vandana Yojana (PMMVY), along with Janani Suraksha Yojana and Birth Waiting Home programmes, was affected by inadequate and untimely release of funds by the State Government. Consequently, intended benefits could not be provided to needy beneficiaries in time.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-52-1",
+        "schemeId": "sch-52",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No 4 of 2024",
+        "description": "Funds of ₹65.20 crore received under PM Matru Vandana Yojana during 2017-18 were not utilised as of June 2022 and remained in the ESCROW account.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-48",
+    "slug": "pmksy",
+    "name": "PM Krishi Sinchai Yojana (PMKSY)",
+    "hindiName": "PM Krishi Sinchai Yojana (PMKSY)",
+    "ministry": "Ministry of Jal Shakti",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 50000,
+    "expenditureCr": 41000,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Farmers with irrigated and unirrigated agricultural land across India",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "Integrated irrigation scheme with motto \"Har Khet Ko Pani, More Crop Per Drop\". Consolidates existing irrigation schemes under one umbrella for end-to-end irrigation supply chain.",
+    "pipeline": [
+      {
+        "id": "pipe-48-0",
+        "schemeId": "sch-48",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 5 of 2019",
+        "description": "Under the Accelerated Irrigation Benefits Programme (AIBP), which was included as a component of PMKSY from 2015-16, 79,838 hectares of irrigation potential were due for creation within the committed timeframe, but only 55,516 hectares were created during 2013-18; 24,322 hectares remained pending at the end of March 2018.",
+        "amountCr": 0,
+        "date": "2019-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-8",
+    "slug": "pmjdy",
+    "name": "Jan Dhan Yojana",
+    "hindiName": "Jan Dhan Yojana",
+    "ministry": "Ministry of Finance",
+    "launchYear": 2014,
+    "budgetAllocatedCr": 3000,
+    "expenditureCr": 2460,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "All unbanked households across India, focus on rural areas",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "National mission for financial inclusion to ensure access to financial services like banking, savings, remittance, credit, insurance and pension.",
+    "pipeline": [
+      {
+        "id": "pipe-8-0",
+        "schemeId": "sch-8",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 3 of 2022",
+        "description": "Payment of financial assistance and pensions to beneficiaries continued through bearer cheques at the time of audit despite the Jan Dhan Scheme being implemented in Meghalaya, under which beneficiaries could open basic savings bank deposit accounts through bank branches or Business Correspondent outlets.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-6",
+    "slug": "pmmy",
+    "name": "Pradhan Mantri Mudra Yojana",
+    "hindiName": "Pradhan Mantri Mudra Yojana",
+    "ministry": "Ministry of Finance",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 20000,
+    "expenditureCr": 16400,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Small and micro enterprises, self-employed individuals",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Provides loans up to Rs 10 lakh to non-corporate, non-farm small/micro enterprises. Three products: Shishu (up to 50k), Kishore (50k-5L), Tarun (5L-10L).",
+    "pipeline": []
+  },
+  {
+    "id": "sch-51",
+    "slug": "mgnregs",
+    "name": "Mahatma Gandhi NREGS (BJP era continuation)",
+    "hindiName": "Mahatma Gandhi NREGS (BJP era continuation)",
+    "ministry": "Ministry of Rural Development",
+    "launchYear": 2005,
+    "budgetAllocatedCr": 660000,
+    "expenditureCr": 541200,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "5-8 crore rural households annually demanding work",
+    "cagVerdict": "CRITICAL_DEFICIT",
+    "evidenceScore": 60,
+    "summary": "Continuation and implementation of the MGNREGS Act under BJP government. Provides at least 100 days of guaranteed wage employment per year to adult members of rural households who demand unskilled manual work.",
+    "pipeline": [
+      {
+        "id": "pipe-51-0",
+        "schemeId": "sch-51",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 6 of 2013",
+        "description": "Per rural household employment declined from 54 days in 2009-10 to 43 days in 2011-12.",
+        "amountCr": 0,
+        "date": "2013-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-51-1",
+        "schemeId": "sch-51",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No.9 of 2025",
+        "description": "Non-identification of beneficiaries by Gram Panchayats led to non-implementation of 88.73 per cent of individual projects included in the Annual Plan.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-51-2",
+        "schemeId": "sch-51",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No.13 of the year 2025",
+        "description": "Demand for employment from registered households did not exceed 48 per cent of the issued job cards during the audit period.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-51-3",
+        "schemeId": "sch-51",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 6 of 2025",
+        "description": "Although the scheme provides for 100 days of guaranteed employment, households provided employment received an average of 21 days per household per year during 2019-24.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-51-4",
+        "schemeId": "sch-51",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 4 of 2026",
+        "description": "Pending liabilities of wages and material amounted to ₹1,217.05 crore.",
+        "amountCr": 0,
+        "date": "2026-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-21",
+    "slug": "pmsby",
+    "name": "PM Suraksha Bima Yojana",
+    "hindiName": "PM Suraksha Bima Yojana",
+    "ministry": "Ministry of Finance",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 1000,
+    "expenditureCr": 820,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Bank account holders aged 18-70",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 81,
+    "summary": "Accident insurance scheme offering Rs 2 lakh cover for accidental death and full disability, Rs 1 lakh for partial disability at a premium of Rs 12/year.",
+    "pipeline": [
+      {
+        "id": "pipe-21-0",
+        "schemeId": "sch-21",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 06 of 2024",
+        "description": "The State provided enhanced benefits of ₹2 lakh under PMJJBY and PMSBY to Anganwadi Workers and Anganwadi Helpers despite the Government of India notification issued in July 2018.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-21-1",
+        "schemeId": "sch-21",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No.9 of 2025",
+        "description": "During the beneficiary survey, 44.01 per cent of beneficiaries were not enrolled in any of the insurance schemes, including PM Suraksha Bima Yojana, indicating that the State had not fulfilled its responsibility to sensitise and enrol job-card holders.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-22",
+    "slug": "pmjjby",
+    "name": "PM Jeevan Jyoti Bima Yojana",
+    "hindiName": "PM Jeevan Jyoti Bima Yojana",
+    "ministry": "Ministry of Finance",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 2000,
+    "expenditureCr": 1640,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Bank account holders aged 18-50",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 81,
+    "summary": "Life insurance scheme offering Rs 2 lakh cover on death from any cause at a premium of Rs 330/year, renewable annually.",
+    "pipeline": [
+      {
+        "id": "pipe-22-0",
+        "schemeId": "sch-22",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 02 of 2025",
+        "description": "For Pradhanmantri Jeevan Jyoti Bima Yojana, ₹148.00 crore was allotted during 2017-22, but only ₹8.77 crore was expended, covering 204,843 beneficiaries.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-22-1",
+        "schemeId": "sch-22",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 06 of 2024",
+        "description": "The State offered enhanced PMJJBY and PMSBY benefits of ₹2 lakh to Anganwadi Workers and Anganwadi Helpers despite the Government of India notification issued in July 2018.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-23",
+    "slug": "stand-up-india",
+    "name": "Stand Up India",
+    "hindiName": "Stand Up India",
+    "ministry": "Department of Financial Services",
+    "launchYear": 2016,
+    "budgetAllocatedCr": 500,
+    "expenditureCr": 410,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "SC/ST entrepreneurs and women borrowers",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Scheme to facilitate bank loans between Rs 10 lakh and Rs 1 crore to at least one SC/ST borrower and one woman borrower per bank branch for greenfield enterprises.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-44",
+    "slug": "e-shram",
+    "name": "e-SHRAM Portal",
+    "hindiName": "e-SHRAM Portal",
+    "ministry": "Ministry of Labour and Employment",
+    "launchYear": 2021,
+    "budgetAllocatedCr": 404,
+    "expenditureCr": 331,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "38 crore unorganised sector workers across India",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 74,
+    "summary": "National database of unorganised workers to facilitate their access to social security benefits. Provides a Universal Account Number to each registered unorganised worker.",
+    "pipeline": [
+      {
+        "id": "pipe-44-0",
+        "schemeId": "sch-44",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 5 of 2026",
+        "description": "The number of transactions peaked in 2021-22 primarily because of 16.57 crore e-Shram registrations for the informal workforce; however, the effectiveness of the Common Service Centres 2.0 platform was constrained by incomplete integration of State e-services.",
+        "amountCr": 0,
+        "date": "2026-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-44-1",
+        "schemeId": "sch-44",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 6 of 2025",
+        "description": "The Board had data for only 2,51,385 workers, whereas cross-verification with the e-Shram portal showed 20,97,593 unorganised workers across 29 categories, other than agriculture and construction workers, registered in Karnataka.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-44-2",
+        "schemeId": "sch-44",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit 6 of 2025",
+        "description": "The Government stated that 85.81 lakh workers were registered under the e-Shram portal, while registration of the remaining 59.19 lakh workers with the State welfare mechanism was still pending.",
+        "amountCr": 0,
+        "date": "2025-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-45",
+    "slug": "pmvvy",
+    "name": "Pradhan Mantri Vaya Vandana Yojana",
+    "hindiName": "Pradhan Mantri Vaya Vandana Yojana",
+    "ministry": "Ministry of Finance",
+    "launchYear": 2017,
+    "budgetAllocatedCr": 156000,
+    "expenditureCr": 127920,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Senior citizens aged 60 and above",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Pension scheme for senior citizens providing assured pension/interest income at 7.4% per annum for 10 years. Managed by LIC of India with government subsidy.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-12",
+    "slug": "pmfby",
+    "name": "Pradhan Mantri Fasal Bima Yojana",
+    "hindiName": "Pradhan Mantri Fasal Bima Yojana",
+    "ministry": "Ministry of Agriculture & Farmers Welfare",
+    "launchYear": 2016,
+    "budgetAllocatedCr": 130000,
+    "expenditureCr": 106600,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "All farmers including sharecroppers growing notified crops",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 81,
+    "summary": "Crop insurance scheme providing financial support to farmers suffering crop loss/damage due to unforeseen events. Replaced NAIS and MNAIS.",
+    "pipeline": [
+      {
+        "id": "pipe-12-0",
+        "schemeId": "sch-12",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 7 of 2017",
+        "description": "Despite three decades of Government of India efforts to provide crop insurance, coverage of farmers under the schemes continued to remain low; coverage of non-loanee farmers was particularly low because the schemes primarily targeted loanee farmers.",
+        "amountCr": 0,
+        "date": "2017-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      },
+      {
+        "id": "pipe-12-1",
+        "schemeId": "sch-12",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 2 of 2022",
+        "description": "The audit covered Pradhan Mantri Fasal Bima Yojana and Bangla Shasya Bima for 2016-17 to 2020-21. West Bengal continued the Government of India PMFBY scheme up to December 2018, implemented the same scheme with 100 per cent State assistance up to January 2019, and introduced the 100 per cent State-sponsored Bangla Shasya Bima scheme in February 2019.",
+        "amountCr": 0,
+        "date": "2022-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-20",
+    "slug": "apy",
+    "name": "Atal Pension Yojana",
+    "hindiName": "Atal Pension Yojana",
+    "ministry": "Ministry of Finance",
+    "launchYear": 2015,
+    "budgetAllocatedCr": 10500,
+    "expenditureCr": 8610,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Workers in unorganised sector aged 18-40",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Government-backed pension scheme for unorganised sector workers guaranteeing pension of Rs 1,000–5,000 per month from age 60, depending on contribution.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-27",
+    "slug": "pm-aasha",
+    "name": "Pradhan Mantri Annadata Aay SanraksHan Abhiyan (PM-AASHA)",
+    "hindiName": "Pradhan Mantri Annadata Aay SanraksHan Abhiyan (PM-AASHA)",
+    "ministry": "Ministry of Agriculture & Farmers Welfare",
+    "launchYear": 2018,
+    "budgetAllocatedCr": 1500,
+    "expenditureCr": 1230,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "All farmers growing notified crops across India",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Scheme to ensure farmers get Minimum Support Price (MSP) for their produce. Comprises Price Support Scheme, Price Deficiency Payment Scheme, and Pilot of Private Procurement.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-39",
+    "slug": "pm-gati-shakti",
+    "name": "PM Gati Shakti National Master Plan",
+    "hindiName": "PM Gati Shakti National Master Plan",
+    "ministry": "Ministry of Commerce and Industry",
+    "launchYear": 2021,
+    "budgetAllocatedCr": 10000000,
+    "expenditureCr": 8200000,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Infrastructure ministries; logistics industry; all businesses",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "Digital platform to bring 16 ministries together for integrated planning and coordinated implementation of infrastructure connectivity projects. Aims to reduce logistics cost.",
+    "pipeline": [
+      {
+        "id": "pipe-39-0",
+        "schemeId": "sch-39",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit Report No. 02 of 2024",
+        "description": "Sixteen AC bills involving ₹62.04 crore, drawn on 31 March 2023 for construction of 13 jetties on the Hooghly River and three helipads in different districts for multimodal connectivity under Gati Shakti NMP, remained unadjusted till August 2023.",
+        "amountCr": 0,
+        "date": "2024-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  },
+  {
+    "id": "sch-43",
+    "slug": "pm-daksh",
+    "name": "PM Daksh Yojana",
+    "hindiName": "PM Daksh Yojana",
+    "ministry": "Ministry of Social Justice and Empowerment",
+    "launchYear": 2021,
+    "budgetAllocatedCr": 572,
+    "expenditureCr": 469,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Marginalised youth: SCs, OBCs, EBCs, sanitation workers aged 18-45",
+    "cagVerdict": "SATISFACTORY",
+    "evidenceScore": 94,
+    "summary": "Scheme for upskilling of marginalised youth — SCs, OBCs, EBCs, DNTs, and sanitation workers. Provides short-term and long-term skill training with stipend and placement support.",
+    "pipeline": []
+  },
+  {
+    "id": "sch-17",
+    "slug": "make-in-india",
+    "name": "Make in India",
+    "hindiName": "Make in India",
+    "ministry": "Department for Promotion of Industry and Internal Trade",
+    "launchYear": 2014,
+    "budgetAllocatedCr": 197000,
+    "expenditureCr": 161540,
+    "beneficiariesCount": 10000000,
+    "coverageTarget": "Domestic and foreign manufacturers; investors across 25 sectors",
+    "cagVerdict": "PARTIAL_DISCREPANCY",
+    "evidenceScore": 88,
+    "summary": "Initiative to facilitate investment, foster innovation, enhance skill development, protect intellectual property, and build best-in-class manufacturing infrastructure.",
+    "pipeline": [
+      {
+        "id": "pipe-17-0",
+        "schemeId": "sch-17",
+        "stage": "CAG_FINDING",
+        "title": "CAG Audit No. 5 of 2020",
+        "description": "The audit found that the automated system for the Merchandise Exports from India Scheme (MEIS) and Service Exports from India Scheme (SEIS), introduced under the Foreign Trade Policy 2015-20 with a Make in India vision, had shortcomings and required manual intervention. This caused avoidable physical interface and discretion, resulting in delays and failure to achieve simplification and ease-of-doing-business objectives. During April 2015 to October 2018, 5,94,653 scrips amounting to ₹76,416 crore were issued.",
+        "amountCr": 0,
+        "date": "2020-01-01",
+        "evidenceId": "ev-cag-national-audit"
+      }
+    ]
+  }
+]
