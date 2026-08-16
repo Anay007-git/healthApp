@@ -182,21 +182,30 @@ export function App() {
     const query = overridePrompt || aiInput;
     if (!query.trim()) return;
     setAiLoading(true);
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 2000);
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: query }),
+        signal: controller.signal,
       });
+      clearTimeout(timer);
       if (res.ok) {
         const json = await res.json();
         if (json.success && json.data) {
           setAiResponse(json.data);
+          setAiLoading(false);
           return;
         }
       }
     } catch {
-      // Fallback to local intelligence engine
+      // Fallback to local ultra-fast intelligence engine
+    } finally {
+      clearTimeout(timer);
     }
 
     try {
