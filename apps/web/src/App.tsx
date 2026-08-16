@@ -2573,26 +2573,43 @@ export function App() {
 
                 {/* Primary Sources & Citations */}
                 {aiResponse.sources && aiResponse.sources.length > 0 && (
-                  <div className="border-t border-[#E8DEC8] pt-5 space-y-3 font-mono">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-[#0F172A] uppercase tracking-wider">
+                  <div className="border-t border-[#E8DEC8] pt-6 space-y-4 font-mono">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                      <span className="text-xs font-bold text-[#0F172A] uppercase tracking-wider flex items-center gap-1.5">
+                        <FileText className="w-4 h-4 text-[#06038D]" />
                         PRIMARY VERIFIED EVIDENCE DOCUMENTS:
                       </span>
                       <span className="text-[11px] text-[#046A38] font-bold">100% Primary Gazette Citations</span>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 text-xs">
                       {aiResponse.sources.map((s: any, idx: number) => (
-                        <div key={idx} className="bg-[#FAF7F0] p-3.5 rounded-lg border border-[#E8DEC8] flex items-center justify-between shadow-2xs hover:border-[#D95300] transition-all">
-                          <div className="pr-2">
-                            <span className="font-bold text-[#0F172A] block truncate">{s.name || s.title}</span>
-                            <span className="text-[11px] text-[#475569] font-sans block mt-0.5">{s.publisher || s.ministry}</span>
+                        <div
+                          key={idx}
+                          className="bg-[#FAF7F0] p-4 rounded-xl border border-[#E8DEC8] flex flex-col justify-between gap-3 shadow-2xs hover:border-[#FF671F] transition-all group"
+                        >
+                          <div className="min-w-0">
+                            <span className="font-serif font-bold text-sm text-[#0F172A] block leading-snug line-clamp-2 group-hover:text-[#06038D] transition-colors">
+                              {s.name || s.title}
+                            </span>
+                            <span className="text-[11px] text-[#64748B] font-mono block mt-1">
+                              {s.publisher || s.ministry}
+                            </span>
                           </div>
-                          <button
-                            onClick={() => handleOpenEvidence(s.id)}
-                            className="text-[#D95300] hover:text-[#06038D] font-bold underline shrink-0 cursor-pointer text-[11px]"
-                          >
-                            View Evidence →
-                          </button>
+
+                          <div className="pt-2 border-t border-[#E8DEC8]/60 flex items-center justify-between">
+                            <span className="text-[10px] font-mono font-bold text-[#046A38] bg-[#046A38]/10 px-2 py-0.5 rounded">
+                              ✓ Verified
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleOpenEvidence(s.id)}
+                              className="text-[#D95300] hover:text-[#06038D] font-mono font-bold text-[11px] flex items-center gap-1 cursor-pointer hover:underline whitespace-nowrap"
+                            >
+                              <span>View Evidence</span>
+                              <ArrowRight className="w-3 h-3" />
+                            </button>
+                          </div>
                         </div>
                       ))}
                     </div>
