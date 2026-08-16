@@ -67,10 +67,10 @@ export const brandConfig: BrandConfig = {
   domain: "anaytech.in",
   url: "https://anaytech.in",
   email: {
-    contact: "biswasanay07@gmail.com",
-    editorial: "biswasanay07@gmail.com",
-    newsletter: "biswasanay07@gmail.com",
-    support: "biswasanay07@gmail.com",
+    contact: "newsletter@anaytech.in",
+    editorial: "newsletter@anaytech.in",
+    newsletter: "newsletter@anaytech.in",
+    support: "newsletter@anaytech.in",
   },
   social: {
     twitter: "https://x.com/civiclens_in",
