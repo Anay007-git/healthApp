@@ -114,15 +114,15 @@ export function App() {
     async function checkDbConnection() {
       const t0 = performance.now();
       try {
-        const dbUrl = "postgresql://neondb_owner:npg_OBj2LtShf1Rv@ep-gentle-king-axtrdlfg-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
-        const url = new URL(dbUrl);
-        const res = await fetch(`https://${url.host}/sql`, {
+        const directHttpUrl = "https://ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/sql";
+        const directConnStr = "postgresql://neondb_owner:npg_OBj2LtShf1Rv@ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require";
+        const res = await fetch(directHttpUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Neon-Connection-String": dbUrl,
+            "Neon-Connection-String": directConnStr,
           },
-          body: JSON.stringify({ query: "SELECT 1 as ping;", params: [] }),
+          body: JSON.stringify({ query: "SELECT 1 as ping;" }),
         });
         const latency = Math.round(performance.now() - t0);
         if (active) {
@@ -212,16 +212,15 @@ export function App() {
     if (!emailInput || !emailInput.includes("@")) return;
     setNewsletterLoading(true);
     try {
-      // Connect to Neon PostgreSQL via HTTP API
-      const dbUrl = "postgresql://neondb_owner:npg_OBj2LtShf1Rv@ep-gentle-king-axtrdlfg-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
-      const url = new URL(dbUrl);
-      const host = url.host;
+      // Connect to Neon PostgreSQL via direct HTTP API
+      const directHttpUrl = "https://ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/sql";
+      const directConnStr = "postgresql://neondb_owner:npg_OBj2LtShf1Rv@ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require";
 
-      const res = await fetch(`https://${host}/sql`, {
+      const res = await fetch(directHttpUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Neon-Connection-String": dbUrl,
+          "Neon-Connection-String": directConnStr,
         },
         body: JSON.stringify({
           query: `INSERT INTO newsletter_subscribers (email, preferences, status) 
@@ -447,36 +446,139 @@ export function App() {
               </div>
 
               {/* Ask the data inline hero */}
-              <div className="lg:col-span-5 bg-[#111827] text-[#FAF7F0] p-6 rounded flex flex-col justify-between space-y-6">
+              <div className="lg:col-span-5 bg-[#111827] text-[#FAF7F0] p-6 rounded-xl flex flex-col justify-between space-y-5 border border-[#374151] shadow-lg">
                 <div>
-                  <span className="font-mono text-xs text-[#D95300] font-bold uppercase tracking-wider block mb-2">
-                    AI DATA ASSISTANT
-                  </span>
-                  <h3 className="font-serif text-3xl font-bold">Ask the Data Anything</h3>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-mono text-xs text-[#FF671F] font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-[#FF671F]" />
+                      AI DATA ASSISTANT
+                    </span>
+                    <span className="font-mono text-[10px] bg-[#1E293B] text-[#94A3B8] px-2 py-0.5 rounded border border-[#334155]">
+                      LIVE ENGINE
+                    </span>
+                  </div>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold leading-tight">
+                    Ask the Data Anything
+                  </h3>
                   <p className="text-xs font-sans text-[#D1C7BD] mt-2 leading-relaxed">
-                    Query schemes, compare state literacy rates, analyze CAG audit findings, and generate structured data charts in real-time.
+                    Query schemes, compare state development metrics, analyze CAG audit disclosures, and generate real-time comparative charts.
                   </p>
                 </div>
 
-                <div className="space-y-3">
+                {/* Interactive Capability Feature Pills */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 py-1">
+                  <div
+                    onClick={() => {
+                      setAiInput("Compare West Bengal and Maharashtra in education");
+                      handleAskAI("Compare West Bengal and Maharashtra in education");
+                      setActiveTab("ask");
+                    }}
+                    className="p-3 bg-[#1E293B]/80 hover:bg-[#1E293B] border border-[#334155] rounded-lg cursor-pointer transition-all hover:border-[#FF671F]/50 group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <BarChart3 className="w-4 h-4 text-[#FF671F] shrink-0" />
+                      <span className="font-serif text-xs font-bold text-[#FAF7F0] group-hover:text-[#FF671F] transition-colors">
+                        State Comparison
+                      </span>
+                    </div>
+                    <p className="text-[11px] font-sans text-[#94A3B8] mt-1 leading-snug">
+                      WB vs MH in literacy, health, and HDI scores.
+                    </p>
+                  </div>
+
+                  <div
+                    onClick={() => {
+                      setAiInput("Jal Jeevan Mission audit discrepancies");
+                      handleAskAI("Jal Jeevan Mission audit discrepancies");
+                      setActiveTab("ask");
+                    }}
+                    className="p-3 bg-[#1E293B]/80 hover:bg-[#1E293B] border border-[#334155] rounded-lg cursor-pointer transition-all hover:border-[#FF671F]/50 group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 text-[#F59E0B] shrink-0" />
+                      <span className="font-serif text-xs font-bold text-[#FAF7F0] group-hover:text-[#F59E0B] transition-colors">
+                        CAG Audit Insights
+                      </span>
+                    </div>
+                    <p className="text-[11px] font-sans text-[#94A3B8] mt-1 leading-snug">
+                      Tap water delivery and financial audit gaps.
+                    </p>
+                  </div>
+
+                  <div
+                    onClick={() => {
+                      setAiInput("Top Electoral Bond corporate donors");
+                      handleAskAI("Top Electoral Bond corporate donors");
+                      setActiveTab("ask");
+                    }}
+                    className="p-3 bg-[#1E293B]/80 hover:bg-[#1E293B] border border-[#334155] rounded-lg cursor-pointer transition-all hover:border-[#FF671F]/50 group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4 text-[#10B981] shrink-0" />
+                      <span className="font-serif text-xs font-bold text-[#FAF7F0] group-hover:text-[#10B981] transition-colors">
+                        Political Funding
+                      </span>
+                    </div>
+                    <p className="text-[11px] font-sans text-[#94A3B8] mt-1 leading-snug">
+                      Corporate donations & party funding shares.
+                    </p>
+                  </div>
+
+                  <div
+                    onClick={() => {
+                      setAiInput("PM Awas Yojana rural housing delivery");
+                      handleAskAI("PM Awas Yojana rural housing delivery");
+                      setActiveTab("ask");
+                    }}
+                    className="p-3 bg-[#1E293B]/80 hover:bg-[#1E293B] border border-[#334155] rounded-lg cursor-pointer transition-all hover:border-[#FF671F]/50 group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-[#60A5FA] shrink-0" />
+                      <span className="font-serif text-xs font-bold text-[#FAF7F0] group-hover:text-[#60A5FA] transition-colors">
+                        Scheme Outlays
+                      </span>
+                    </div>
+                    <p className="text-[11px] font-sans text-[#94A3B8] mt-1 leading-snug">
+                      Budgets, targets, and verified milestones.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-2.5 pt-1">
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="e.g. Compare West Bengal and Maharashtra in education"
+                      placeholder="Ask any question on Indian governance data..."
                       value={aiInput}
                       onChange={(e) => setAiInput(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleAskAI()}
-                      className="w-full bg-[#FFFFFF] text-[#111827] text-xs font-mono px-4 py-3 rounded pr-10 focus:outline-none"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && aiInput.trim()) {
+                          handleAskAI(aiInput);
+                          setActiveTab("ask");
+                        }
+                      }}
+                      className="w-full bg-[#FFFFFF] text-[#111827] text-xs font-mono px-4 py-3 rounded-lg pr-11 focus:outline-none focus:ring-2 focus:ring-[#FF671F] shadow-sm"
                     />
                     <button
-                      onClick={() => handleAskAI()}
-                      className="absolute right-2 top-2 p-1.5 bg-[#D95300] text-[#FFFFFF] rounded hover:bg-[#B34000]"
+                      onClick={() => {
+                        if (aiInput.trim()) {
+                          handleAskAI(aiInput);
+                          setActiveTab("ask");
+                        }
+                      }}
+                      className="absolute right-1.5 top-1.5 p-2 bg-[#D95300] hover:bg-[#B34000] text-[#FFFFFF] rounded-md transition-colors cursor-pointer"
                     >
-                      <Search className="w-4 h-4" />
+                      <Search className="w-3.5 h-3.5" />
                     </button>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {["Compare WB and MH", "Jal Jeevan Mission audit", "CAG findings"].map((prompt) => (
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-[10px] font-mono text-[#9CA3AF]">Suggestions:</span>
+                    {[
+                      "Compare WB & MH",
+                      "Jal Jeevan audit",
+                      "Electoral Bonds",
+                      "Ayushman claims",
+                    ].map((prompt) => (
                       <button
                         key={prompt}
                         onClick={() => {
@@ -484,7 +586,7 @@ export function App() {
                           handleAskAI(prompt);
                           setActiveTab("ask");
                         }}
-                        className="text-[11px] font-mono px-2.5 py-1 bg-[#FFFFFF]/10 text-[#FAF7F0] rounded hover:bg-[#FFFFFF]/20"
+                        className="text-[10.5px] font-mono px-2 py-0.5 bg-[#FFFFFF]/10 text-[#FAF7F0] rounded hover:bg-[#FFFFFF]/20 transition-colors cursor-pointer"
                       >
                         {prompt}
                       </button>
