@@ -10,7 +10,12 @@ export default defineConfig(({ mode }) => {
   const databaseUrl = env.DATABASE_URL || process.env.DATABASE_URL || "postgresql://neondb_owner:npg_OBj2LtShf1Rv@ep-gentle-king-axtrdlfg-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
 
   return {
+    base: "/admin/",
     plugins: [react(), tailwindcss()],
+    build: {
+      outDir: path.resolve(__dirname, "../web/dist/admin"),
+      emptyOutDir: true,
+    },
     define: {
       "process.env.DATABASE_URL": JSON.stringify(databaseUrl),
       "process.env.ADMIN_TOKEN": JSON.stringify(adminToken),
