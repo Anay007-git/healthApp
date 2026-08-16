@@ -89,7 +89,7 @@ export const GenericBarChart: React.FC<ChartProps> = ({
               <CartesianGrid strokeDasharray="3 3" stroke="#E8DEC8" vertical={false} />
               <XAxis
                 dataKey={resolvedXKey}
-                tick={{ fill: "#0F172A", fontSize: 10, fontFamily: "JetBrains Mono", fontWeight: 500 }}
+                tick={{ fill: "#0F172A", fontSize: 10, fontFamily: "JetBrains Mono", fontWeight: 600 }}
                 interval={0}
                 angle={-25}
                 textAnchor="end"
@@ -108,20 +108,22 @@ export const GenericBarChart: React.FC<ChartProps> = ({
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#0F172A",
-                  color: "#FAF7F0",
-                  borderRadius: "8px",
-                  fontSize: "11px",
+                  backgroundColor: "#FFFFFF",
+                  color: "#0F172A",
+                  borderRadius: "10px",
+                  fontSize: "12px",
                   fontFamily: "JetBrains Mono",
-                  border: "1px solid #334155",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                  fontWeight: "bold",
+                  border: "2px solid #0F172A",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+                  padding: "10px 14px",
                 }}
-                itemStyle={{ color: "#FAF7F0" }}
-                labelStyle={{ color: "#FF671F", fontWeight: "bold" }}
+                itemStyle={{ color: "#0F172A", fontWeight: "bold" }}
+                labelStyle={{ color: "#D95300", fontWeight: "bold", marginBottom: "4px" }}
               />
               {barKeys.length > 1 && (
                 <Legend
-                  wrapperStyle={{ paddingTop: "6px", fontSize: "11px", fontFamily: "JetBrains Mono" }}
+                  wrapperStyle={{ paddingTop: "6px", fontSize: "11px", fontFamily: "JetBrains Mono", fontWeight: "bold" }}
                   iconSize={10}
                 />
               )}
@@ -199,7 +201,7 @@ export const GenericLineChart: React.FC<ChartProps> = ({
             <CartesianGrid strokeDasharray="3 3" stroke="#E8DEC8" vertical={false} />
             <XAxis
               dataKey={resolvedXKey}
-              tick={{ fill: "#0F172A", fontSize: 10, fontFamily: "JetBrains Mono" }}
+              tick={{ fill: "#0F172A", fontSize: 10, fontFamily: "JetBrains Mono", fontWeight: 600 }}
               interval="preserveStartEnd"
               minTickGap={16}
               angle={-20}
@@ -214,20 +216,22 @@ export const GenericLineChart: React.FC<ChartProps> = ({
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: "#0F172A",
-                color: "#FAF7F0",
-                borderRadius: "8px",
-                fontSize: "11px",
+                backgroundColor: "#FFFFFF",
+                color: "#0F172A",
+                borderRadius: "10px",
+                fontSize: "12px",
                 fontFamily: "JetBrains Mono",
-                border: "1px solid #334155",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                fontWeight: "bold",
+                border: "2px solid #0F172A",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+                padding: "10px 14px",
               }}
-              itemStyle={{ color: "#FAF7F0" }}
-              labelStyle={{ color: "#FF671F", fontWeight: "bold" }}
+              itemStyle={{ color: "#0F172A", fontWeight: "bold" }}
+              labelStyle={{ color: "#D95300", fontWeight: "bold", marginBottom: "4px" }}
             />
             {lineKeys.length > 1 && (
               <Legend
-                wrapperStyle={{ paddingTop: "6px", fontSize: "11px", fontFamily: "JetBrains Mono" }}
+                wrapperStyle={{ paddingTop: "6px", fontSize: "11px", fontFamily: "JetBrains Mono", fontWeight: "bold" }}
                 iconSize={10}
               />
             )}
@@ -366,42 +370,47 @@ export const PartyIncomeTrendChart: React.FC<PartyIncomeTrendChartProps> = ({
               tickFormatter={(v) => `₹${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
             />
             <Tooltip
+              wrapperStyle={{ outline: "none", zIndex: 1000 }}
               content={({ active, payload, label }) => {
                 if (!active || !payload || !payload.length) return null;
                 const record = payload[0]?.payload;
                 return (
-                  <div className="bg-[#0F172A] text-[#FAF7F0] p-3 rounded-lg shadow-xl border border-[#334155] font-mono text-xs min-w-[210px] space-y-1.5">
-                    <div className="flex items-center justify-between border-b border-[#334155] pb-1">
-                      <span className="font-serif font-bold text-sm text-[#FF671F]">{label} (FY {record?.fy})</span>
-                      <span className="text-[9px] px-1.5 py-0.2 rounded bg-[#1E293B] text-[#94A3B8] font-semibold">{record?.era}</span>
+                  <div className="bg-[#FFFFFF] text-[#0F172A] p-3.5 rounded-xl shadow-2xl border-2 border-[#0F172A] font-mono text-xs min-w-[240px] space-y-2">
+                    <div className="flex items-center justify-between border-b border-[#E8DEC8] pb-1.5">
+                      <span className="font-serif font-bold text-sm text-[#D95300]">{label} (FY {record?.fy})</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-[#0F172A] text-[#FFFFFF] font-bold">{record?.era}</span>
                     </div>
 
                     {record?.isElectionYear && (
-                      <div className="text-[9.5px] bg-[#D95300]/20 text-[#FF671F] px-1.5 py-0.5 rounded font-bold border border-[#D95300]/40">
+                      <div className="text-[10.5px] bg-[#FFF3E0] text-[#D95300] px-2 py-1 rounded font-bold border border-[#FFE0B2]">
                         🗳️ {record.electionNote}
                       </div>
                     )}
 
                     {record?.eventNote && (
-                      <p className="text-[10px] text-[#CBD5E1] font-sans leading-tight border-b border-[#334155] pb-1">
+                      <p className="text-[11px] text-[#475569] font-sans leading-tight border-b border-[#E8DEC8] pb-1.5 font-medium">
                         {record.eventNote}
                       </p>
                     )}
 
-                    <div className="space-y-0.5 pt-0.5">
+                    <div className="space-y-1.5 pt-0.5">
                       {payload.map((entry: any) => (
-                        <div key={entry.dataKey} className="flex justify-between items-center text-[11px]">
-                          <span className="flex items-center gap-1">
-                            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
-                            <span className="font-bold">{entry.dataKey}:</span>
+                        <div key={entry.dataKey} className="flex justify-between items-center text-xs">
+                          <span className="flex items-center gap-1.5">
+                            <span className="w-2.5 h-2.5 rounded-full ring-1 ring-black/10" style={{ backgroundColor: entry.color }} />
+                            <span className="font-bold text-[#0F172A]">{entry.dataKey}:</span>
                           </span>
-                          <span className="font-bold text-[#FAF7F0]">₹{Number(entry.value).toLocaleString()} Cr</span>
+                          <strong className="font-extrabold text-[#0F172A] text-xs">
+                            ₹{Number(entry.value).toLocaleString()} Cr
+                          </strong>
                         </div>
                       ))}
                       {record?.total && (
-                        <div className="flex justify-between items-center text-[11px] border-t border-[#334155] pt-1 font-bold text-[#FFD180]">
-                          <span>All Parties:</span>
-                          <span>₹{record.total.toLocaleString()} Cr</span>
+                        <div className="flex justify-between items-center text-xs border-t-2 border-[#0F172A] pt-1.5 font-bold text-[#0F172A]">
+                          <span className="font-extrabold text-[#0F172A]">All Parties Total:</span>
+                          <strong className="text-[#D95300] font-black text-sm">
+                            ₹{Number(record.total).toLocaleString()} Cr
+                          </strong>
                         </div>
                       )}
                     </div>
