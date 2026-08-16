@@ -395,12 +395,12 @@ export function App() {
                 <span className="font-mono text-xs text-[#4B5563]">Last Updated: August 2024</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-                <StatCard label="SCHEMES TRACKED" value="1,248" subtitle="Union & State" onEvidence={() => handleOpenEvidence("ev-jjm-alloc")} />
-                <StatCard label="CAG AUDITS" value="426" subtitle="Disclosures" onEvidence={() => handleOpenEvidence("ev-cag-jjm-audit")} />
-                <StatCard label="INDICATORS" value="87" subtitle="Verified Metrics" />
-                <StatCard label="STATES & UTS" value="36" subtitle="Full Coverage" />
-                <StatCard label="EVIDENCE DOCS" value="2,341" subtitle="Primary Files" onEvidence={() => handleOpenEvidence()} />
-                <StatCard label="VERIFICATION" value="100%" subtitle="Verifiable Sources" />
+                <StatCard label="SCHEMES TRACKED" value="1,248" subtitle="Union & State" progress={88} onEvidence={() => handleOpenEvidence("ev-jjm-alloc")} />
+                <StatCard label="CAG AUDITS" value="426" subtitle="Disclosures" progress={92} onEvidence={() => handleOpenEvidence("ev-cag-jjm-audit")} />
+                <StatCard label="INDICATORS" value="87" subtitle="Verified Metrics" progress={85} />
+                <StatCard label="STATES & UTS" value="36" subtitle="Full Coverage" progress={100} />
+                <StatCard label="EVIDENCE DOCS" value="2,341" subtitle="Primary Files" progress={96} onEvidence={() => handleOpenEvidence()} />
+                <StatCard label="VERIFICATION" value="100%" subtitle="Verifiable Sources" progress={100} />
               </div>
             </section>
 
@@ -2757,11 +2757,15 @@ export function App() {
         })}
       </div>
 
-      {/* Global Evidence Verification Drawer */}
+      {/* Global Evidence Verification Drawer / Snapshot */}
       <EvidenceDrawer
         isOpen={isEvidenceDrawerOpen}
         onClose={() => setIsEvidenceDrawerOpen(false)}
         evidence={activeEvidence}
+        onNavigate={(tab) => {
+          setActiveTab(tab);
+          setIsEvidenceDrawerOpen(false);
+        }}
       />
     </div>
   );

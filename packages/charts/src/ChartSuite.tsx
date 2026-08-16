@@ -264,22 +264,37 @@ export const StatCard: React.FC<{
   value: string | number;
   change?: string;
   subtitle?: string;
+  progress?: number;
   onEvidence?: () => void;
-}> = ({ label, value, change, subtitle, onEvidence }) => {
+}> = ({ label, value, change, subtitle, progress, onEvidence }) => {
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-4 sm:p-5 rounded-xl shadow-xs font-sans hover:border-[#FF671F] transition-colors relative group">
-      <span className="font-mono text-[11px] text-[#64748B] uppercase tracking-wider block">{label}</span>
-      <div className="flex items-baseline gap-2 mt-1">
-        <span className="font-serif text-2xl sm:text-3xl font-bold text-[#0F172A]">{value}</span>
-        {change && <span className="font-mono text-xs text-[#046A38] font-semibold">{change}</span>}
+    <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-4 sm:p-5 rounded-xl shadow-xs font-sans hover:border-[#FF671F] transition-colors relative group flex flex-col justify-between">
+      <div>
+        <span className="font-mono text-[11px] text-[#64748B] uppercase tracking-wider block font-bold">{label}</span>
+        <div className="flex items-baseline gap-2 mt-1">
+          <span className="font-serif text-2xl sm:text-3xl font-bold text-[#0F172A]">{value}</span>
+          {change && <span className="font-mono text-xs text-[#046A38] font-semibold">{change}</span>}
+        </div>
+        {subtitle && <p className="text-[11px] font-mono text-[#64748B] mt-1">{subtitle}</p>}
       </div>
-      {subtitle && <p className="text-[11px] font-mono text-[#64748B] mt-1.5">{subtitle}</p>}
+
+      {progress !== undefined && (
+        <div className="mt-2.5 space-y-1">
+          <div className="w-full bg-[#E2E8F0] h-1.5 rounded-full overflow-hidden">
+            <div
+              className="bg-[#D95300] h-full rounded-full transition-all duration-500"
+              style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+            />
+          </div>
+        </div>
+      )}
+
       {onEvidence && (
         <button
           onClick={onEvidence}
-          className="mt-2.5 text-[11px] font-mono text-[#D95300] font-bold flex items-center gap-1 hover:underline cursor-pointer"
+          className="mt-3 text-[11px] font-mono text-[#D95300] font-bold flex items-center gap-1 hover:underline cursor-pointer pt-1 border-t border-[#E8DEC8]/50"
         >
-          <Info className="w-3 h-3" /> EVIDENCE REFERENCE →
+          <Info className="w-3 h-3" /> EVIDENCE SNAPSHOT →
         </button>
       )}
     </div>
