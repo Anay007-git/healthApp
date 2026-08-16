@@ -616,8 +616,8 @@ export function App() {
               <span className="font-mono text-xs font-bold text-[#D95300] uppercase tracking-wider">
                 GOVERNMENT SCHEME INTELLIGENCE
               </span>
-              <h2 className="font-serif text-4xl font-bold text-[#111827]">Union & State Schemes</h2>
-              <p className="text-sm text-[#4B5563] font-sans mt-1">
+              <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#111827]">Union & State Schemes</h2>
+              <p className="text-xs sm:text-sm text-[#4B5563] font-sans mt-1">
                 Explore budgetary allocations, beneficiary target outcomes, and CAG audit verdicts.
               </p>
             </div>
@@ -637,14 +637,14 @@ export function App() {
                       {scheme.hindiName && <p className="text-xs font-sans text-[#4B5563]">{scheme.hindiName}</p>}
                     </div>
 
-                    <div className="flex items-center gap-4 font-mono text-xs">
+                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 font-mono text-xs mt-2 md:mt-0">
                       <div className="text-right">
                         <span className="text-[#4B5563] block">BUDGET ALLOCATED</span>
-                        <span className="text-lg font-bold text-[#111827]">₹{scheme.budgetAllocatedCr.toLocaleString()} Cr</span>
+                        <span className="text-base sm:text-lg font-bold text-[#111827]">₹{scheme.budgetAllocatedCr.toLocaleString()} Cr</span>
                       </div>
                       <div className="text-right">
                         <span className="text-[#4B5563] block">EXPENDITURE</span>
-                        <span className="text-lg font-bold text-[#D95300]">₹{scheme.expenditureCr.toLocaleString()} Cr</span>
+                        <span className="text-base sm:text-lg font-bold text-[#D95300]">₹{scheme.expenditureCr.toLocaleString()} Cr</span>
                       </div>
                     </div>
                   </div>
@@ -657,7 +657,7 @@ export function App() {
                       <span className="text-[#D95300] font-bold tracking-wider uppercase block">
                         PROMISE → BUDGET → EXPENDITURE → CAG FINDING → OUTCOME PIPELINE
                       </span>
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                         {scheme.pipeline.map((step) => (
                           <div
                             key={step.id}
@@ -692,11 +692,11 @@ export function App() {
               <div>
                 <span className="font-mono text-xs font-bold text-[#D95300] uppercase tracking-wider flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4" />
-                  NITI AAYOG, CAG & NCRB AUDITED STATE BENCHMARK ENGINE
+                  STATE BENCHMARK ENGINE
                 </span>
-                <h2 className="font-serif text-4xl font-bold text-[#111827]">State Intelligence & Comparison</h2>
-                <p className="text-xs text-[#4B5563] font-mono mt-1">
-                  Compare states side-by-side across HDI, Literacy, Crime Safety, Per Capita Income, Infant Mortality, Economic Growth, Fiscal Deficits, and CAG Audit flags.
+                <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#111827]">State Intelligence & Comparison</h2>
+                <p className="text-xs text-[#4B5563] font-mono mt-1 line-clamp-3">
+                  Compare states side-by-side across HDI, Literacy, CAG Audit flags, and Fiscal Deficits.
                 </p>
               </div>
 
@@ -715,27 +715,27 @@ export function App() {
                 {/* State Selectors & Comparison Header */}
                 <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-6 rounded shadow-xs space-y-4">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E8DEC8] pb-4">
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
                       <select
                         value={compareStates.stateA.code}
                         onChange={(e) => {
                           const res = db.compareStates(e.target.value, compareStates.stateB.code);
                           if (res) setCompareStates(res);
                         }}
-                        className="bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-serif font-bold text-xl px-4 py-2 rounded focus:outline-none focus:border-[#D95300]"
+                        className="w-full sm:w-auto bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-serif font-bold text-base sm:text-xl px-3 sm:px-4 py-2 rounded focus:outline-none focus:border-[#D95300]"
                       >
                         {states.map((st) => (
                           <option key={st.code} value={st.code}>{st.name} ({st.code})</option>
                         ))}
                       </select>
-                      <span className="font-mono text-sm text-[#D95300] font-bold">VS</span>
+                      <span className="font-mono text-sm text-[#D95300] font-bold self-center">VS</span>
                       <select
                         value={compareStates.stateB.code}
                         onChange={(e) => {
                           const res = db.compareStates(compareStates.stateA.code, e.target.value);
                           if (res) setCompareStates(res);
                         }}
-                        className="bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-serif font-bold text-xl px-4 py-2 rounded focus:outline-none focus:border-[#D95300]"
+                        className="w-full sm:w-auto bg-[#FAF7F0] border border-[#E8DEC8] text-[#111827] font-serif font-bold text-base sm:text-xl px-3 sm:px-4 py-2 rounded focus:outline-none focus:border-[#D95300]"
                       >
                         {states.map((st) => (
                           <option key={st.code} value={st.code}>{st.name} ({st.code})</option>
@@ -832,8 +832,8 @@ export function App() {
                     <p className="text-xs text-[#4B5563] font-mono mt-0.5">Audited indicators from NITI Aayog, NCRB, Ministry of Statistics, and ECI filings.</p>
                   </div>
 
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse font-sans text-xs">
+                  <div className="table-scroll">
+                    <table className="w-full min-w-[520px] text-left border-collapse font-sans text-xs">
                       <thead>
                         <tr className="bg-[#FAF7F0] border-b border-[#E8DEC8] font-mono text-[11px] text-[#4B5563] uppercase">
                           <th className="p-3">Key Indicator / KPI</th>
@@ -1086,8 +1086,8 @@ export function App() {
                         </div>
 
                         {/* Schemes List */}
-                        <div className="overflow-x-auto">
-                          <table className="w-full text-left border-collapse font-sans text-xs">
+                        <div className="table-scroll">
+                          <table className="w-full min-w-[560px] text-left border-collapse font-sans text-xs">
                             <thead>
                               <tr className="bg-[#FAF7F0] border-b border-[#E8DEC8] font-mono text-[11px] text-[#4B5563] uppercase">
                                 <th className="p-3">State</th>
@@ -1984,8 +1984,8 @@ export function App() {
               };
 
               return (
-                <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
-                  <div className="bg-[#FAF7F0] border border-[#E8DEC8] rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-6 shadow-2xl relative">
+                <div className="fixed inset-0 bg-black/60 z-50 flex items-start sm:items-center justify-center p-2 sm:p-4 overflow-y-auto">
+                  <div className="bg-[#FAF7F0] border border-[#E8DEC8] rounded-xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-6 space-y-5 shadow-2xl relative mt-2 sm:mt-0">
                     <div className="flex justify-between items-start border-b border-[#E8DEC8] pb-4">
                       <div>
                         <div className="flex items-center gap-2">
@@ -2037,8 +2037,8 @@ export function App() {
                         <h4 className="font-serif text-xl font-bold text-[#111827]">Corporate Donor Breakdown</h4>
                       </div>
 
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-left font-sans text-xs border-collapse">
+                      <div className="table-scroll -mx-1">
+                        <table className="w-full min-w-[520px] text-left font-sans text-xs border-collapse">
                           <thead>
                             <tr className="bg-[#FAF7F0] font-mono text-[11px] text-[#4B5563] uppercase border-b border-[#E8DEC8]">
                               <th className="p-2.5">Donor Company</th>
@@ -2099,8 +2099,8 @@ export function App() {
                 </div>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse font-sans text-xs">
+              <div className="table-scroll">
+                <table className="w-full min-w-[560px] text-left border-collapse font-sans text-xs">
                   <thead>
                     <tr className="bg-[#FAF7F0] border-b border-[#E8DEC8] font-mono text-[11px] text-[#4B5563] uppercase">
                       <th className="p-3">Corporate Donor</th>
@@ -2426,35 +2426,37 @@ export function App() {
                 </button>
               </div>
 
-              {/* Preset prompt pills */}
-              <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-[#E8DEC8]/60">
-                <span className="text-xs font-mono text-[#64748B]">Suggested Queries:</span>
-                {[
-                  "Compare West Bengal and Maharashtra",
-                  "Jal Jeevan Mission audit discrepancies",
-                  "Top Electoral Bond donors and party shares",
-                  "Ayushman Bharat PM-JAY false claims detection",
-                ].map((preset) => (
-                  <button
-                    key={preset}
-                    onClick={() => {
-                      setAiInput(preset);
-                      handleAskAI(preset);
-                    }}
-                    className="text-xs font-mono px-3 py-1 bg-[#FAF7F0] hover:bg-[#F3EDE0] border border-[#E8DEC8] text-[#0F172A] rounded-full transition-colors cursor-pointer"
-                  >
-                    {preset}
-                  </button>
-                ))}
+              {/* Preset prompt pills - horizontally scrollable on mobile */}
+              <div className="border-t border-[#E8DEC8]/60 pt-2">
+                <span className="text-xs font-mono text-[#64748B] block mb-2">Suggested Queries:</span>
+                <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
+                  {[
+                    "Compare West Bengal and Bihar",
+                    "Jal Jeevan Mission audit discrepancies",
+                    "Top Electoral Bond donors and party shares",
+                    "Ayushman Bharat PM-JAY false claims detection",
+                  ].map((preset) => (
+                    <button
+                      key={preset}
+                      onClick={() => {
+                        setAiInput(preset);
+                        handleAskAI(preset);
+                      }}
+                      className="text-xs font-mono px-3 py-1.5 bg-[#FAF7F0] hover:bg-[#F3EDE0] border border-[#E8DEC8] text-[#0F172A] rounded-full transition-colors cursor-pointer whitespace-nowrap shrink-0"
+                    >
+                      {preset}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* AI Response Loading State */}
             {aiLoading && (
-              <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-12 rounded-xl text-center space-y-3 shadow-xs animate-pulse">
+              <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-8 sm:p-12 rounded-xl text-center space-y-3 shadow-xs animate-pulse">
                 <div className="w-10 h-10 border-3 border-[#D95300] border-t-transparent rounded-full animate-spin mx-auto" />
                 <p className="font-mono text-sm text-[#0F172A] font-bold">Querying verified civic records & synthesizing analysis...</p>
-                <p className="font-mono text-xs text-[#64748B]">Cross-referencing CAG audit paras, union budget outlays, and state indicators</p>
+                <p className="font-mono text-xs text-[#64748B] hidden sm:block">Cross-referencing CAG audit paras, union budget outlays, and state indicators</p>
               </div>
             )}
 

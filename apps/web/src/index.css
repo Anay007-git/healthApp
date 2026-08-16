@@ -101,11 +101,52 @@
   border: 1px solid #C7D2FE;
 }
 
-/* Mobile & Touch Optimizations */
+/* ============================
+   MOBILE & TOUCH OPTIMIZATIONS
+   ============================ */
 @media (max-width: 768px) {
   html, body {
     overflow-x: hidden;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent horizontal scroll from wide content */
+  main, section, .overflow-guard {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* All data tables: force horizontal scroll on mobile */
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  thead, tbody, tr {
+    min-width: 480px;
+  }
+
+  /* Section headings scale down on mobile */
+  h2.font-serif {
+    font-size: 1.75rem !important;
+    line-height: 1.15;
+  }
+
+  h3.font-serif {
+    font-size: 1.3rem !important;
+    line-height: 1.2;
+  }
+
+  /* Stat card values scale down on mobile */
+  .stat-value {
+    font-size: 1.25rem !important;
+  }
+
+  /* Keep touch targets a minimum of 44px tall */
+  button, a, [role="button"] {
+    min-height: 36px;
   }
 }
 
@@ -118,3 +159,29 @@
   scrollbar-width: none;
 }
 
+/* Responsive table wrapper utility */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0.5rem;
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
