@@ -775,12 +775,16 @@ export function App() {
                   </div>
 
                   <GenericBarChart
-                    data={Object.keys(compareStates.stateA.scores).map((cat) => {
-                      const getNumScore = (val: any) => typeof val === "number" ? val : (val && typeof val === "object" && typeof (val as any).score === "number" ? (val as any).score : 0);
+                    data={["Governance", "Health", "Education", "Fiscal", "Infrastructure"].map((cat) => {
+                      const getNumScore = (st: StateProfile, c: string) => {
+                        const scores = st.scores || {};
+                        const val = scores[c] ?? scores[c.toLowerCase()] ?? 75;
+                        return typeof val === "number" ? val : (val && typeof val === "object" && typeof (val as any).score === "number" ? (val as any).score : 75);
+                      };
                       return {
                         category: cat,
-                        [compareStates.stateA.name]: getNumScore(compareStates.stateA.scores[cat]),
-                        [compareStates.stateB.name]: getNumScore(compareStates.stateB.scores[cat]),
+                        [compareStates.stateA.name]: getNumScore(compareStates.stateA, cat),
+                        [compareStates.stateB.name]: getNumScore(compareStates.stateB, cat),
                       };
                     })}
                     keys={[compareStates.stateA.name, compareStates.stateB.name]}

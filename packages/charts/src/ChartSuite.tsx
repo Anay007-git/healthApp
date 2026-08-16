@@ -75,8 +75,8 @@ export const GenericBarChart: React.FC<ChartProps> = ({
           {subtitle && <p className="text-xs font-mono text-[#4B5563] mt-0.5">{subtitle}</p>}
         </div>
       )}
-      <div className="h-72 w-full min-h-[280px]">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="w-full min-h-[290px]">
+        <ResponsiveContainer width="100%" height={290} minHeight={280}>
           <RechartsBarChart data={data} margin={{ top: 15, right: 25, left: 10, bottom: 30 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E0D8" vertical={false} />
             <XAxis
@@ -168,8 +168,8 @@ export const GenericLineChart: React.FC<ChartProps> = ({
           {subtitle && <p className="text-xs font-mono text-[#4B5563] mt-0.5">{subtitle}</p>}
         </div>
       )}
-      <div className="h-72 w-full min-h-[280px]">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="w-full min-h-[290px]">
+        <ResponsiveContainer width="100%" height={290} minHeight={280}>
           <RechartsLineChart data={data} margin={{ top: 15, right: 25, left: 10, bottom: 30 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E0D8" vertical={false} />
             <XAxis
