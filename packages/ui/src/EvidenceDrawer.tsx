@@ -114,7 +114,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
             </p>
             {evidence.verifiedAt && (
               <span className="font-mono text-[11px] text-[#64748B] block pt-1">
-                Audited & Logged: <strong>{evidence.verifiedAt}</strong>
+                Audited & Logged: <strong>{evidence.verifiedAt}</strong> by <strong>{evidence.verifiedBy || "Orange-Chasma Audit Desk"}</strong>
               </span>
             )}
           </div>
@@ -131,40 +131,56 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-              {/* Score 1 */}
-              <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-1.5">
-                <div className="flex justify-between items-center text-xs font-mono">
-                  <span className="text-[#64748B] text-[10px] font-bold uppercase">Evidence Match</span>
-                  <span className="font-bold text-[#046A38]">98%</span>
-                </div>
-                <div className="w-full bg-[#E2E8F0] h-2 rounded-full overflow-hidden">
-                  <div className="bg-[#046A38] h-full rounded-full w-[98%]" />
-                </div>
-              </div>
+            {(() => {
+              const matchScore = evidence.evidenceMatchScore ?? 98;
+              const traceScore = evidence.auditTraceabilityScore ?? 94;
+              const deliveryScore = evidence.groundDeliveryScore ?? 82;
+              return (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                  {/* Score 1 */}
+                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-1.5">
+                    <div className="flex justify-between items-center text-xs font-mono">
+                      <span className="text-[#64748B] text-[10px] font-bold uppercase">Evidence Match</span>
+                      <span className="font-bold text-[#046A38]">{matchScore}%</span>
+                    </div>
+                    <div className="w-full bg-[#E2E8F0] h-2 rounded-full overflow-hidden">
+                      <div
+                        className="bg-[#046A38] h-full rounded-full transition-all duration-500"
+                        style={{ width: `${Math.min(100, Math.max(0, matchScore))}%` }}
+                      />
+                    </div>
+                  </div>
 
-              {/* Score 2 */}
-              <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-1.5">
-                <div className="flex justify-between items-center text-xs font-mono">
-                  <span className="text-[#64748B] text-[10px] font-bold uppercase">Audit Traceability</span>
-                  <span className="font-bold text-[#D95300]">94%</span>
-                </div>
-                <div className="w-full bg-[#E2E8F0] h-2 rounded-full overflow-hidden">
-                  <div className="bg-[#D95300] h-full rounded-full w-[94%]" />
-                </div>
-              </div>
+                  {/* Score 2 */}
+                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-1.5">
+                    <div className="flex justify-between items-center text-xs font-mono">
+                      <span className="text-[#64748B] text-[10px] font-bold uppercase">Audit Traceability</span>
+                      <span className="font-bold text-[#D95300]">{traceScore}%</span>
+                    </div>
+                    <div className="w-full bg-[#E2E8F0] h-2 rounded-full overflow-hidden">
+                      <div
+                        className="bg-[#D95300] h-full rounded-full transition-all duration-500"
+                        style={{ width: `${Math.min(100, Math.max(0, traceScore))}%` }}
+                      />
+                    </div>
+                  </div>
 
-              {/* Score 3 */}
-              <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-1.5">
-                <div className="flex justify-between items-center text-xs font-mono">
-                  <span className="text-[#64748B] text-[10px] font-bold uppercase">Ground Delivery</span>
-                  <span className="font-bold text-[#06038D]">82%</span>
+                  {/* Score 3 */}
+                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-1.5">
+                    <div className="flex justify-between items-center text-xs font-mono">
+                      <span className="text-[#64748B] text-[10px] font-bold uppercase">Ground Delivery</span>
+                      <span className="font-bold text-[#06038D]">{deliveryScore}%</span>
+                    </div>
+                    <div className="w-full bg-[#E2E8F0] h-2 rounded-full overflow-hidden">
+                      <div
+                        className="bg-[#06038D] h-full rounded-full transition-all duration-500"
+                        style={{ width: `${Math.min(100, Math.max(0, deliveryScore))}%` }}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="w-full bg-[#E2E8F0] h-2 rounded-full overflow-hidden">
-                  <div className="bg-[#06038D] h-full rounded-full w-[82%]" />
-                </div>
-              </div>
-            </div>
+              );
+            })()}
           </div>
 
           {/* Evidence Summary Card */}

@@ -24,6 +24,9 @@ export interface Evidence {
   verificationStatus: VerificationStatus;
   verifiedAt?: string;
   verifiedBy?: string;
+  evidenceMatchScore?: number;
+  auditTraceabilityScore?: number;
+  groundDeliveryScore?: number;
 }
 
 export type PipelineStage =

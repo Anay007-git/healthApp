@@ -163,15 +163,7 @@ export function App() {
   ];
 
   const handleOpenEvidence = (evidenceId?: string) => {
-    if (!evidenceId) {
-      const ev = db.getEvidenceById("ev-jjm-alloc");
-      if (ev) {
-        setActiveEvidence(ev);
-        setIsEvidenceDrawerOpen(true);
-      }
-      return;
-    }
-    const ev = db.getEvidenceById(evidenceId);
+    const ev = db.getEvidenceById(evidenceId || "ev-schemes-tracked");
     if (ev) {
       setActiveEvidence(ev);
       setIsEvidenceDrawerOpen(true);
@@ -395,12 +387,12 @@ export function App() {
                 <span className="font-mono text-xs text-[#4B5563]">Last Updated: August 2024</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-                <StatCard label="SCHEMES TRACKED" value="1,248" subtitle="Union & State" progress={88} onEvidence={() => handleOpenEvidence("ev-jjm-alloc")} />
-                <StatCard label="CAG AUDITS" value="426" subtitle="Disclosures" progress={92} onEvidence={() => handleOpenEvidence("ev-cag-jjm-audit")} />
-                <StatCard label="INDICATORS" value="87" subtitle="Verified Metrics" progress={85} />
-                <StatCard label="STATES & UTS" value="36" subtitle="Full Coverage" progress={100} />
-                <StatCard label="EVIDENCE DOCS" value="2,341" subtitle="Primary Files" progress={96} onEvidence={() => handleOpenEvidence()} />
-                <StatCard label="VERIFICATION" value="100%" subtitle="Verifiable Sources" progress={100} />
+                <StatCard label="SCHEMES TRACKED" value="1,248" subtitle="Union & State" progress={88} onEvidence={() => handleOpenEvidence("ev-schemes-tracked")} />
+                <StatCard label="CAG AUDITS" value="426" subtitle="Disclosures" progress={92} onEvidence={() => handleOpenEvidence("ev-cag-audits")} />
+                <StatCard label="INDICATORS" value="87" subtitle="Verified Metrics" progress={85} onEvidence={() => handleOpenEvidence("ev-indicators")} />
+                <StatCard label="STATES & UTS" value="36" subtitle="Full Coverage" progress={100} onEvidence={() => handleOpenEvidence("ev-states-coverage")} />
+                <StatCard label="EVIDENCE DOCS" value="2,341" subtitle="Primary Files" progress={96} onEvidence={() => handleOpenEvidence("ev-doc-files")} />
+                <StatCard label="VERIFICATION" value="100%" subtitle="Verifiable Sources" progress={100} onEvidence={() => handleOpenEvidence("ev-verification-100")} />
               </div>
             </section>
 
