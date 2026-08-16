@@ -147,18 +147,10 @@
 }
 
 /* ============================
-   CHARTS — MOBILE CONSTRAINTS
+   CHARTS — MOBILE RESILIENCE
    ============================ */
-@media (max-width: 640px) {
-  /* Recharts: prevent infinite height loops on mobile */
-  .recharts-wrapper {
-    min-height: 220px !important;
-  }
-
-  .recharts-responsive-container {
-    height: 240px !important;
-    min-height: 240px !important;
-  }
+.recharts-wrapper {
+  max-width: 100% !important;
 }
 
 /* Hide scrollbar for clean horizontal pill sliders */
