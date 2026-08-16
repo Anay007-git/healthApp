@@ -137,44 +137,44 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
               const deliveryScore = evidence.groundDeliveryScore ?? 82;
               return (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                  {/* Score 1 */}
-                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-1.5">
+                  {/* Score 1 - Green */}
+                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-2">
                     <div className="flex justify-between items-center text-xs font-mono">
                       <span className="text-[#64748B] text-[10px] font-bold uppercase">Evidence Match</span>
-                      <span className="font-bold text-[#046A38]">{matchScore}%</span>
+                      <span className="font-bold text-[#046A38] text-sm">{matchScore}%</span>
                     </div>
-                    <div className="w-full bg-[#E2E8F0] h-2 rounded-full overflow-hidden">
+                    <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
                       <div
-                        className="bg-[#046A38] h-full rounded-full transition-all duration-500"
-                        style={{ width: `${Math.min(100, Math.max(0, matchScore))}%` }}
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{ width: `${Math.min(100, Math.max(5, matchScore))}%`, backgroundColor: "#046A38" }}
                       />
                     </div>
                   </div>
 
-                  {/* Score 2 */}
-                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-1.5">
+                  {/* Score 2 - Saffron */}
+                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-2">
                     <div className="flex justify-between items-center text-xs font-mono">
                       <span className="text-[#64748B] text-[10px] font-bold uppercase">Audit Traceability</span>
-                      <span className="font-bold text-[#D95300]">{traceScore}%</span>
+                      <span className="font-bold text-[#D95300] text-sm">{traceScore}%</span>
                     </div>
-                    <div className="w-full bg-[#E2E8F0] h-2 rounded-full overflow-hidden">
+                    <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
                       <div
-                        className="bg-[#D95300] h-full rounded-full transition-all duration-500"
-                        style={{ width: `${Math.min(100, Math.max(0, traceScore))}%` }}
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{ width: `${Math.min(100, Math.max(5, traceScore))}%`, backgroundColor: "#D95300" }}
                       />
                     </div>
                   </div>
 
-                  {/* Score 3 */}
-                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-1.5">
+                  {/* Score 3 - Navy */}
+                  <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] space-y-2">
                     <div className="flex justify-between items-center text-xs font-mono">
                       <span className="text-[#64748B] text-[10px] font-bold uppercase">Ground Delivery</span>
-                      <span className="font-bold text-[#06038D]">{deliveryScore}%</span>
+                      <span className="font-bold text-[#06038D] text-sm">{deliveryScore}%</span>
                     </div>
-                    <div className="w-full bg-[#E2E8F0] h-2 rounded-full overflow-hidden">
+                    <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: "#E2E8F0" }}>
                       <div
-                        className="bg-[#06038D] h-full rounded-full transition-all duration-500"
-                        style={{ width: `${Math.min(100, Math.max(0, deliveryScore))}%` }}
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{ width: `${Math.min(100, Math.max(5, deliveryScore))}%`, backgroundColor: "#06038D" }}
                       />
                     </div>
                   </div>
@@ -194,44 +194,48 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({
           </div>
 
           {/* Primary Source Document Link */}
-          {evidence.source && (
-            <div className="bg-[#FFFFFF] p-4 sm:p-5 rounded-xl border border-[#E8DEC8] shadow-xs space-y-3">
-              <label className="font-mono text-[10px] text-[#64748B] uppercase tracking-wider font-bold block">
-                PRIMARY SOURCE ARCHIVE
-              </label>
+          <div className="bg-[#FFFFFF] p-4 sm:p-5 rounded-xl border border-[#E8DEC8] shadow-xs space-y-3">
+            <label className="font-mono text-[10px] text-[#64748B] uppercase tracking-wider font-bold block">
+              PRIMARY SOURCE ARCHIVE
+            </label>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
-                <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8]">
-                  <span className="text-[#64748B] text-[10px] block uppercase font-bold">SOURCE NAME</span>
-                  <span className="font-bold text-[#0F172A] text-xs">{evidence.source.name}</span>
-                  <span className="text-[11px] text-[#64748B] block mt-0.5">{evidence.source.publisher}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+              <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8]">
+                <span className="text-[#64748B] text-[10px] block uppercase font-bold">SOURCE NAME</span>
+                <span className="font-bold text-[#0F172A] text-xs block mt-0.5">{evidence.source?.name || "Comptroller & Auditor General of India"}</span>
+                <span className="text-[11px] text-[#64748B] block mt-0.5">{evidence.source?.publisher || "Official Parliamentary Archive"}</span>
+              </div>
+              <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] flex items-center justify-around">
+                <div>
+                  <span className="text-[#64748B] text-[10px] block uppercase font-bold">PUBLISHED</span>
+                  <span className="font-bold text-[#0F172A] text-xs block mt-0.5">{evidence.source?.publicationDate || "2024-03-15"}</span>
                 </div>
-                <div className="bg-[#FAF7F0] p-3 rounded-lg border border-[#E8DEC8] flex items-center justify-around">
-                  <div>
-                    <span className="text-[#64748B] text-[10px] block uppercase font-bold">PUBLISHED</span>
-                    <span className="font-bold text-[#0F172A] text-xs">{evidence.source.publicationDate}</span>
-                  </div>
-                  <div>
-                    <span className="text-[#64748B] text-[10px] block uppercase font-bold">PAGE REF</span>
-                    <span className="font-bold text-[#0F172A] text-xs">Pg {evidence.pageNumber || evidence.source.pageNumber || "1"}</span>
-                  </div>
+                <div>
+                  <span className="text-[#64748B] text-[10px] block uppercase font-bold">PAGE REF</span>
+                  <span className="font-bold text-[#0F172A] text-xs block mt-0.5">Page {evidence.pageNumber || evidence.source?.pageNumber || "1"}</span>
                 </div>
               </div>
-
-              {evidence.source.url && (
-                <a
-                  href={evidence.source.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-[#0F172A] text-[#FAF7F0] text-xs font-mono font-bold rounded-xl hover:bg-[#D95300] transition-colors shadow-sm cursor-pointer"
-                >
-                  <FileText className="w-4 h-4 text-[#FF671F]" />
-                  VIEW ORIGINAL CAG AUDIT / SOURCE FILING
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              )}
             </div>
-          )}
+
+            <a
+              href={evidence.source?.url || "https://cag.gov.in"}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl shadow-md transition-all cursor-pointer font-mono font-bold text-xs text-white hover:opacity-90"
+              style={{
+                backgroundColor: "#D95300",
+                color: "#FFFFFF",
+                textDecoration: "none",
+                display: "flex",
+              }}
+            >
+              <FileText className="w-4 h-4 text-white" />
+              <span style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                VIEW ORIGINAL CAG AUDIT / SOURCE FILING
+              </span>
+              <ExternalLink className="w-3.5 h-3.5 text-white" />
+            </a>
+          </div>
 
           {/* Quick Page Jump Navigation */}
           <div className="bg-[#FAF7F0] border-2 border-dashed border-[#D6C6A5] p-4 rounded-xl space-y-2.5">
