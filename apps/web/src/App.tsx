@@ -2716,7 +2716,7 @@ export function App() {
 
             {/* AI Response Card - Modern Neo-Brutalist Realism UI */}
             {!aiLoading && aiResponse && (
-              <div className="bg-[#FFFDF9] border-2 border-black p-5 sm:p-8 rounded-2xl shadow-[6px_6px_0px_#000000] space-y-6">
+              <div className="bg-[#FFFDF9] border-2 border-black p-3.5 sm:p-6 md:p-8 rounded-2xl shadow-[4px_4px_0px_#000000] sm:shadow-[6px_6px_0px_#000000] space-y-5 sm:space-y-6 max-w-full overflow-hidden">
                 {/* Header with confidence badge */}
                 <div className="bg-[#06038D] text-white border-2 border-black p-4 sm:p-5 rounded-xl shadow-[4px_4px_0px_#000000] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
@@ -2900,141 +2900,272 @@ export function App() {
                         const worksListA = fullA.keyWorks || [];
                         const worksListB = fullB.keyWorks || [];
 
+                        const showA = mobileCompareTab === "BOTH" || mobileCompareTab === "A";
+                        const showB = mobileCompareTab === "BOTH" || mobileCompareTab === "B";
+
+                        const pillars = [
+                          {
+                            title: "Scheme & Infra Delivery",
+                            weight: "40%",
+                            scoreA: dScoreA,
+                            scoreB: dScoreB,
+                            color: "#00E599",
+                            icon: "🏗️",
+                            desc: "Capital projects execution, DBT welfare delivery & union/state program reach",
+                          },
+                          {
+                            title: "Clean Governance & Integrity",
+                            weight: "30%",
+                            scoreA: iScoreA,
+                            scoreB: iScoreB,
+                            color: "#FF671F",
+                            icon: "🛡️",
+                            desc: "CAG audit compliance, absence of CBI/ED charges & financial transparency",
+                          },
+                          {
+                            title: "Policy Competence & Vision",
+                            weight: "15%",
+                            scoreA: pScoreA,
+                            scoreB: pScoreB,
+                            color: "#3B82F6",
+                            icon: "📊",
+                            desc: "Legislative debates, reform enactment & policy formulation index",
+                          },
+                          {
+                            title: "Public Responsiveness",
+                            weight: "15%",
+                            scoreA: rScoreA,
+                            scoreB: rScoreB,
+                            color: "#A855F7",
+                            icon: "🤝",
+                            desc: "Grievance redressal speed, constituency accessibility & townhalls",
+                          },
+                        ];
+
                         return (
-                          <div className="space-y-4">
+                          <div className="space-y-4 sm:space-y-5 max-w-full overflow-hidden">
                             {/* COMPARISON HERO TITLE */}
-                            <div className="bg-gradient-to-r from-[#06038D] via-[#1a1a8c] to-[#FF671F] border-2 border-black p-4 sm:p-5 rounded-2xl shadow-[5px_5px_0px_#000000] flex flex-wrap items-center justify-between gap-3">
-                              <div className="flex items-center gap-3">
-                                <span className="text-2xl sm:text-3xl">⚔️</span>
-                                <div>
-                                  <h3 className="font-serif font-black text-white text-base sm:text-xl md:text-2xl leading-tight">
+                            <div className="bg-gradient-to-r from-[#06038D] via-[#1a1a8c] to-[#FF671F] border-2 border-black p-3.5 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                              <div className="flex items-center gap-3 min-w-0">
+                                <span className="text-2xl sm:text-3xl p-1.5 bg-white/10 rounded-xl border border-white/20 shrink-0">⚔️</span>
+                                <div className="min-w-0">
+                                  <h3 className="font-serif font-black text-white text-base sm:text-xl md:text-2xl leading-tight truncate">
                                     HEAD-TO-HEAD NETA COMPARISON
                                   </h3>
-                                  <p className="font-mono text-[11px] text-white/70 font-semibold mt-0.5">
+                                  <p className="font-mono text-[11px] sm:text-xs text-white/80 font-semibold mt-0.5 break-words">
                                     {fullA.name} vs. {fullB.name} — ECI & Governance Audit
                                   </p>
                                 </div>
                               </div>
-                              <span className="px-3 py-1.5 bg-[#FFE877] text-black font-mono text-[11px] font-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000000] uppercase">LIVE DOSSIER</span>
-                            </div>
-
-                            {/* PROFILES GRID */}
-                            <div className="bg-white border-2 border-black p-3 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-3">
-                              <div className="grid grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4 items-stretch">
-                                {/* LEADER A */}
-                                <div className="bg-[#FAF7F0] border-2 border-black p-2.5 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2 sm:space-y-3">
-                                  <div className="flex items-center gap-3">
-                                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-white border-2 border-black shrink-0 shadow-[2px_2px_0px_#000000]">
-                                      <img
-                                        src={getPhotoUrl(fullA)}
-                                        alt={fullA.name}
-                                        referrerPolicy="no-referrer"
-                                        className="w-full h-full object-cover object-top"
-                                        onError={(e) => {
-                                          (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullA.name || "Leader")}&background=06038D&color=fff&size=256`;
-                                        }}
-                                      />
-                                    </div>
-                                    <div className="min-w-0 flex-1">
-                                      <h4 className="font-serif text-sm sm:text-lg md:text-xl font-black text-black truncate">{fullA.name}</h4>
-                                      <span className="inline-block px-2 py-0.5 bg-[#06038D] text-white font-mono text-[10px] font-bold rounded border border-black truncate max-w-full">
-                                        {fullA.party}
-                                      </span>
-                                      <p className="text-[11px] font-mono text-[#475569] truncate mt-0.5">{fullA.constituency || "Public Office"}</p>
-                                    </div>
-                                  </div>
-
-                                  <div className="space-y-1.5 border-t border-black/20 pt-2 font-mono text-xs">
-                                    <div className="flex items-center justify-between">
-                                      <span className="font-bold text-[#475569]">Composite Score:</span>
-                                      <span className={`px-2 py-0.5 font-black rounded border border-black shadow-[1px_1px_0px_#000] ${
-                                        scoreA >= 80 ? "bg-[#00E599] text-black" : "bg-[#FFC000] text-black"
-                                      }`}>
-                                        {scoreA}/100
-                                      </span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                      <span className="font-bold text-[#475569]">ECI Form 26 Cases:</span>
-                                      <span className={`px-1.5 py-0.2 font-black rounded text-[10px] ${
-                                        (fullA.criminalCases || 0) > 0 ? "bg-[#FF4D4D] text-white" : "bg-[#00E599] text-black"
-                                      }`}>
-                                        {(fullA.criminalCases || 0) > 0 ? `${fullA.criminalCases} Cases (${fullA.seriousCriminalCases || 0} Serious)` : "0 (Clean)"}
-                                      </span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                      <span className="font-bold text-[#475569]">Declared Net Assets:</span>
-                                      <span className="font-black text-black">₹{fullA.declaredAssetsCr || fullA.totalAssetsCr || 0} Cr</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                      <span className="font-bold text-[#475569]">Education:</span>
-                                      <span className="font-semibold text-black text-right truncate max-w-[160px]" title={fullA.education}>{fullA.education || "Graduate Degree"}</span>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {/* VS BADGE */}
-                                <div className="flex items-center justify-center">
-                                  <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FF671F] text-black font-black font-mono text-[10px] sm:text-xs border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_#000000] shrink-0">
-                                    VS
-                                  </span>
-                                </div>
-
-                                {/* LEADER B */}
-                                <div className="bg-[#FAF7F0] border-2 border-black p-2.5 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2 sm:space-y-3">
-                                  <div className="flex items-center gap-3">
-                                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-white border-2 border-black shrink-0 shadow-[2px_2px_0px_#000000]">
-                                      <img
-                                        src={getPhotoUrl(fullB)}
-                                        alt={fullB.name}
-                                        referrerPolicy="no-referrer"
-                                        className="w-full h-full object-cover object-top"
-                                        onError={(e) => {
-                                          (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullB.name || "Leader")}&background=06038D&color=fff&size=256`;
-                                        }}
-                                      />
-                                    </div>
-                                    <div className="min-w-0 flex-1">
-                                      <h4 className="font-serif text-sm sm:text-lg md:text-xl font-black text-black truncate">{fullB.name}</h4>
-                                      <span className="inline-block px-2 py-0.5 bg-[#06038D] text-white font-mono text-[10px] font-bold rounded border border-black truncate max-w-full">
-                                        {fullB.party}
-                                      </span>
-                                      <p className="text-[11px] font-mono text-[#475569] truncate mt-0.5">{fullB.constituency || "Public Office"}</p>
-                                    </div>
-                                  </div>
-
-                                  <div className="space-y-1.5 border-t border-black/20 pt-2 font-mono text-xs">
-                                    <div className="flex items-center justify-between">
-                                      <span className="font-bold text-[#475569]">Composite Score:</span>
-                                      <span className={`px-2 py-0.5 font-black rounded border border-black shadow-[1px_1px_0px_#000] ${
-                                        scoreB >= 80 ? "bg-[#00E599] text-black" : "bg-[#FFC000] text-black"
-                                      }`}>
-                                        {scoreB}/100
-                                      </span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                      <span className="font-bold text-[#475569]">ECI Form 26 Cases:</span>
-                                      <span className={`px-1.5 py-0.2 font-black rounded text-[10px] ${
-                                        (fullB.criminalCases || 0) > 0 ? "bg-[#FF4D4D] text-white" : "bg-[#00E599] text-black"
-                                      }`}>
-                                        {(fullB.criminalCases || 0) > 0 ? `${fullB.criminalCases} Cases (${fullB.seriousCriminalCases || 0} Serious)` : "0 (Clean)"}
-                                      </span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                      <span className="font-bold text-[#475569]">Declared Net Assets:</span>
-                                      <span className="font-black text-black">₹{fullB.declaredAssetsCr || fullB.totalAssetsCr || 0} Cr</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                      <span className="font-bold text-[#475569]">Education:</span>
-                                      <span className="font-semibold text-black text-right truncate max-w-[160px]" title={fullB.education}>{fullB.education || "Graduate Degree"}</span>
-                                    </div>
-                                  </div>
-                                </div>
+                              <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
+                                <span className="px-2.5 py-1 bg-[#FFE877] text-black font-mono text-[10px] sm:text-[11px] font-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000000] uppercase">
+                                  LIVE DOSSIER
+                                </span>
+                                <span className="px-2 py-1 bg-black/40 text-white font-mono text-[10px] font-bold border border-white/30 rounded-lg">
+                                  ECI CERTIFIED
+                                </span>
                               </div>
                             </div>
 
-                            {/* 2. SIDE-BY-SIDE 4-PILLAR PERFORMANCE COMPARISON */}
-                            <div className="bg-[#EEF2FF] border-2 border-black p-4 sm:p-6 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-4">
-                              <div className="bg-[#06038D] text-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] flex items-center justify-between">
+                            {/* MOBILE / RESPONSIVE VIEW TOGGLE */}
+                            <div className="bg-[#FAF7F0] border-2 border-black p-1.5 rounded-xl shadow-[3px_3px_0px_#000000] flex items-center gap-1.5 font-mono text-xs font-black overflow-x-auto">
+                              <button
+                                onClick={() => setMobileCompareTab("BOTH")}
+                                className={`flex-1 min-w-[110px] py-1.5 px-2.5 rounded-lg border-2 text-center transition-all cursor-pointer truncate ${
+                                  mobileCompareTab === "BOTH"
+                                    ? "bg-[#06038D] text-white border-black shadow-[2px_2px_0px_#000000]"
+                                    : "bg-white text-black border-transparent hover:border-black/30"
+                                }`}
+                              >
+                                ⚔️ Side-by-Side
+                              </button>
+                              <button
+                                onClick={() => setMobileCompareTab("A")}
+                                className={`flex-1 min-w-[110px] py-1.5 px-2.5 rounded-lg border-2 text-center transition-all cursor-pointer truncate ${
+                                  mobileCompareTab === "A"
+                                    ? "bg-[#FF671F] text-black border-black shadow-[2px_2px_0px_#000000]"
+                                    : "bg-white text-black border-transparent hover:border-black/30"
+                                }`}
+                              >
+                                👤 {fullA.name}
+                              </button>
+                              <button
+                                onClick={() => setMobileCompareTab("B")}
+                                className={`flex-1 min-w-[110px] py-1.5 px-2.5 rounded-lg border-2 text-center transition-all cursor-pointer truncate ${
+                                  mobileCompareTab === "B"
+                                    ? "bg-[#00E599] text-black border-black shadow-[2px_2px_0px_#000000]"
+                                    : "bg-white text-black border-transparent hover:border-black/30"
+                                }`}
+                              >
+                                👤 {fullB.name}
+                              </button>
+                            </div>
+
+                            {/* 1. PROFILES COMPARISON GRID */}
+                            <div className="bg-white border-2 border-black p-3 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-3">
+                              <div className={`grid ${mobileCompareTab === "BOTH" ? "grid-cols-1 md:grid-cols-[1fr_auto_1fr]" : "grid-cols-1"} gap-3 sm:gap-4 items-stretch`}>
+                                {/* LEADER A CARD */}
+                                {showA && (
+                                  <div className="bg-[#FAF7F0] border-2 border-black p-3 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-3 flex flex-col justify-between">
+                                    <div className="flex items-start gap-3">
+                                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-white border-2 border-black shrink-0 shadow-[2px_2px_0px_#000000]">
+                                        <img
+                                          src={getPhotoUrl(fullA)}
+                                          alt={fullA.name}
+                                          referrerPolicy="no-referrer"
+                                          className="w-full h-full object-cover object-top"
+                                          onError={(e) => {
+                                            (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullA.name || "Leader")}&background=06038D&color=fff&size=256`;
+                                          }}
+                                        />
+                                      </div>
+                                      <div className="min-w-0 flex-1">
+                                        <div className="flex items-start justify-between gap-1">
+                                          <h4 className="font-serif text-base sm:text-lg md:text-xl font-black text-black leading-tight break-words">
+                                            {fullA.name}
+                                          </h4>
+                                          <span className={`px-2 py-0.5 font-mono text-xs font-black rounded border border-black shadow-[1px_1px_0px_#000] shrink-0 ${
+                                            scoreA >= 80 ? "bg-[#00E599] text-black" : "bg-[#FFC000] text-black"
+                                          }`}>
+                                            {scoreA}/100
+                                          </span>
+                                        </div>
+                                        <div className="mt-1">
+                                          <span className="inline-block px-2 py-0.5 bg-[#06038D] text-white font-mono text-[10px] font-bold rounded border border-black leading-tight break-words">
+                                            {fullA.party}
+                                          </span>
+                                        </div>
+                                        <p className="text-[11px] font-mono text-[#475569] leading-snug break-words mt-1">
+                                          {fullA.constituency || "Public Office"}
+                                        </p>
+                                      </div>
+                                    </div>
+
+                                    {/* Stats Key-Value Grid */}
+                                    <div className="space-y-2 border-t border-black/20 pt-2.5 font-mono text-xs">
+                                      <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+                                        <div className="bg-white border border-black/30 p-2 rounded-lg text-center sm:text-left">
+                                          <span className="text-[9px] sm:text-[10px] text-[#64748B] font-bold uppercase block leading-tight">Score</span>
+                                          <span className="font-black text-black text-xs sm:text-sm block mt-0.5">{scoreA}/100</span>
+                                        </div>
+                                        <div className="bg-white border border-black/30 p-2 rounded-lg text-center sm:text-left">
+                                          <span className="text-[9px] sm:text-[10px] text-[#64748B] font-bold uppercase block leading-tight">ECI Cases</span>
+                                          <span className={`inline-block mt-0.5 px-1 sm:px-1.5 py-0.2 font-black rounded text-[9px] sm:text-[10px] ${
+                                            (fullA.criminalCases || 0) > 0 ? "bg-[#FF4D4D] text-white" : "bg-[#00E599] text-black"
+                                          }`}>
+                                            {(fullA.criminalCases || 0) > 0 ? `${fullA.criminalCases} Cases (${fullA.seriousCriminalCases || 0} Serious)` : "0 Clean"}
+                                          </span>
+                                        </div>
+                                        <div className="bg-white border border-black/30 p-2 rounded-lg text-center sm:text-left">
+                                          <span className="text-[9px] sm:text-[10px] text-[#64748B] font-bold uppercase block leading-tight">Net Assets</span>
+                                          <span className="font-black text-black text-xs sm:text-sm block mt-0.5">₹{fullA.declaredAssetsCr || fullA.totalAssetsCr || 0} Cr</span>
+                                        </div>
+                                      </div>
+
+                                      {/* Full Width Education Box */}
+                                      <div className="bg-white border border-black/30 p-2.5 rounded-lg space-y-1">
+                                        <div className="flex items-center gap-1.5 text-[10px] text-[#64748B] font-bold uppercase">
+                                          <GraduationCap className="w-3.5 h-3.5 text-[#06038D] shrink-0" />
+                                          <span>Education</span>
+                                        </div>
+                                        <p className="font-bold text-black text-xs leading-relaxed font-mono break-words">
+                                          {fullA.education || fullA.educationDetails?.summary || fullA.educationDetails?.degree || "Graduate Degree"}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* VS BADGE */}
+                                {mobileCompareTab === "BOTH" && (
+                                  <div className="flex items-center justify-center py-1 md:py-0">
+                                    <div className="flex items-center md:flex-col gap-2 w-full md:w-auto">
+                                      <div className="flex-1 h-[2px] bg-black/20 md:hidden" />
+                                      <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FF671F] text-black font-black font-mono text-xs border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_#000000] shrink-0">
+                                        VS
+                                      </span>
+                                      <div className="flex-1 h-[2px] bg-black/20 md:hidden" />
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* LEADER B CARD */}
+                                {showB && (
+                                  <div className="bg-[#FAF7F0] border-2 border-black p-3 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-3 flex flex-col justify-between">
+                                    <div className="flex items-start gap-3">
+                                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-white border-2 border-black shrink-0 shadow-[2px_2px_0px_#000000]">
+                                        <img
+                                          src={getPhotoUrl(fullB)}
+                                          alt={fullB.name}
+                                          referrerPolicy="no-referrer"
+                                          className="w-full h-full object-cover object-top"
+                                          onError={(e) => {
+                                            (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullB.name || "Leader")}&background=06038D&color=fff&size=256`;
+                                          }}
+                                        />
+                                      </div>
+                                      <div className="min-w-0 flex-1">
+                                        <div className="flex items-start justify-between gap-1">
+                                          <h4 className="font-serif text-base sm:text-lg md:text-xl font-black text-black leading-tight break-words">
+                                            {fullB.name}
+                                          </h4>
+                                          <span className={`px-2 py-0.5 font-mono text-xs font-black rounded border border-black shadow-[1px_1px_0px_#000] shrink-0 ${
+                                            scoreB >= 80 ? "bg-[#00E599] text-black" : "bg-[#FFC000] text-black"
+                                          }`}>
+                                            {scoreB}/100
+                                          </span>
+                                        </div>
+                                        <div className="mt-1">
+                                          <span className="inline-block px-2 py-0.5 bg-[#06038D] text-white font-mono text-[10px] font-bold rounded border border-black leading-tight break-words">
+                                            {fullB.party}
+                                          </span>
+                                        </div>
+                                        <p className="text-[11px] font-mono text-[#475569] leading-snug break-words mt-1">
+                                          {fullB.constituency || "Public Office"}
+                                        </p>
+                                      </div>
+                                    </div>
+
+                                    {/* Stats Key-Value Grid */}
+                                    <div className="space-y-2 border-t border-black/20 pt-2.5 font-mono text-xs">
+                                      <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+                                        <div className="bg-white border border-black/30 p-2 rounded-lg text-center sm:text-left">
+                                          <span className="text-[9px] sm:text-[10px] text-[#64748B] font-bold uppercase block leading-tight">Score</span>
+                                          <span className="font-black text-black text-xs sm:text-sm block mt-0.5">{scoreB}/100</span>
+                                        </div>
+                                        <div className="bg-white border border-black/30 p-2 rounded-lg text-center sm:text-left">
+                                          <span className="text-[9px] sm:text-[10px] text-[#64748B] font-bold uppercase block leading-tight">ECI Cases</span>
+                                          <span className={`inline-block mt-0.5 px-1 sm:px-1.5 py-0.2 font-black rounded text-[9px] sm:text-[10px] ${
+                                            (fullB.criminalCases || 0) > 0 ? "bg-[#FF4D4D] text-white" : "bg-[#00E599] text-black"
+                                          }`}>
+                                            {(fullB.criminalCases || 0) > 0 ? `${fullB.criminalCases} Cases (${fullB.seriousCriminalCases || 0} Serious)` : "0 Clean"}
+                                          </span>
+                                        </div>
+                                        <div className="bg-white border border-black/30 p-2 rounded-lg text-center sm:text-left">
+                                          <span className="text-[9px] sm:text-[10px] text-[#64748B] font-bold uppercase block leading-tight">Net Assets</span>
+                                          <span className="font-black text-black text-xs sm:text-sm block mt-0.5">₹{fullB.declaredAssetsCr || fullB.totalAssetsCr || 0} Cr</span>
+                                        </div>
+                                      </div>
+
+                                      {/* Full Width Education Box */}
+                                      <div className="bg-white border border-black/30 p-2.5 rounded-lg space-y-1">
+                                        <div className="flex items-center gap-1.5 text-[10px] text-[#64748B] font-bold uppercase">
+                                          <GraduationCap className="w-3.5 h-3.5 text-[#06038D] shrink-0" />
+                                          <span>Education</span>
+                                        </div>
+                                        <p className="font-bold text-black text-xs leading-relaxed font-mono break-words">
+                                          {fullB.education || fullB.educationDetails?.summary || fullB.educationDetails?.degree || "Graduate Degree"}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* 2. 4-PILLAR PERFORMANCE COMPARISON (PILLAR MATRIX) */}
+                            <div className="bg-[#EEF2FF] border-2 border-black p-3.5 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-3.5">
+                              <div className="bg-[#06038D] text-white border-2 border-black p-3 sm:p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] flex flex-wrap items-center justify-between gap-2">
                                 <div className="flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase text-white">
                                   <Activity className="w-4 h-4 text-[#FF671F] shrink-0" />
                                   <span>COMPARATIVE GOVERNANCE PILLAR SCORES</span>
@@ -3044,126 +3175,118 @@ export function App() {
                                 </span>
                               </div>
 
-                              <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                                {/* PILLAR COLUMN A */}
-                                <div className="bg-white border-2 border-black p-2.5 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2 sm:space-y-3 font-mono">
-                                  <div className="flex items-center justify-between border-b border-black/20 pb-2">
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-8 h-8 rounded-lg overflow-hidden border border-black shrink-0">
-                                        <img src={getPhotoUrl(fullA)} alt={fullA.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
-                                      </div>
-                                      <div>
-                                        <h5 className="font-black text-black text-sm">{fullA.name}</h5>
-                                        <span className="text-[10px] text-[#475569]">{fullA.party}</span>
-                                      </div>
-                                    </div>
-                                    <span className="text-sm font-black px-2 py-0.5 bg-[#00E599] text-black rounded border border-black">
-                                      {scoreA}/100
-                                    </span>
+                              {/* Overall Score Comparison Banner */}
+                              <div className="bg-white border-2 border-black p-2.5 sm:p-4 rounded-xl shadow-[2px_2px_0px_#000000] flex items-center justify-between gap-1.5 sm:gap-3 font-mono">
+                                <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
+                                  <div className="w-8 h-8 rounded-lg overflow-hidden border border-black shrink-0">
+                                    <img src={getPhotoUrl(fullA)} alt={fullA.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
                                   </div>
-
-                                  <div className="space-y-2.5 text-xs">
-                                    <div>
-                                      <div className="flex justify-between font-bold text-black mb-1">
-                                        <span>Scheme & Infra Delivery (40%)</span>
-                                        <span>{dScoreA}%</span>
-                                      </div>
-                                      <div className="h-2.5 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#00E599] border-r border-black" style={{ width: `${dScoreA}%` }} />
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <div className="flex justify-between font-bold text-black mb-1">
-                                        <span>Clean Governance & Integrity (30%)</span>
-                                        <span>{iScoreA}%</span>
-                                      </div>
-                                      <div className="h-2.5 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#FF671F] border-r border-black" style={{ width: `${iScoreA}%` }} />
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <div className="flex justify-between font-bold text-black mb-1">
-                                        <span>Policy Competence & Vision (15%)</span>
-                                        <span>{pScoreA}%</span>
-                                      </div>
-                                      <div className="h-2.5 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#3B82F6] border-r border-black" style={{ width: `${pScoreA}%` }} />
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <div className="flex justify-between font-bold text-black mb-1">
-                                        <span>Public Responsiveness (15%)</span>
-                                        <span>{rScoreA}%</span>
-                                      </div>
-                                      <div className="h-2.5 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#A855F7] border-r border-black" style={{ width: `${rScoreA}%` }} />
-                                      </div>
-                                    </div>
+                                  <div className="min-w-0 flex-1">
+                                    <h6 className="font-black text-black text-xs sm:text-sm truncate">{fullA.name}</h6>
+                                    <span className="text-[10px] text-[#475569] block truncate">{fullA.party}</span>
                                   </div>
                                 </div>
-
-                                {/* PILLAR COLUMN B */}
-                                <div className="bg-white border-2 border-black p-2.5 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2 sm:space-y-3 font-mono">
-                                  <div className="flex items-center justify-between border-b border-black/20 pb-2">
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-8 h-8 rounded-lg overflow-hidden border border-black shrink-0">
-                                        <img src={getPhotoUrl(fullB)} alt={fullB.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
-                                      </div>
-                                      <div>
-                                        <h5 className="font-black text-black text-sm">{fullB.name}</h5>
-                                        <span className="text-[10px] text-[#475569]">{fullB.party}</span>
-                                      </div>
-                                    </div>
-                                    <span className="text-sm font-black px-2 py-0.5 bg-[#00E599] text-black rounded border border-black">
-                                      {scoreB}/100
-                                    </span>
+                                <div className="flex items-center gap-1 sm:gap-2 shrink-0 px-0.5">
+                                  <span className={`text-[11px] sm:text-sm font-black px-1.5 sm:px-2 py-0.5 rounded border border-black shadow-[1px_1px_0px_#000] ${
+                                    scoreA >= 80 ? "bg-[#00E599] text-black" : "bg-[#FFC000] text-black"
+                                  }`}>
+                                    {scoreA}/100
+                                  </span>
+                                  <span className="font-black text-[10px] sm:text-xs text-[#94A3B8]">VS</span>
+                                  <span className={`text-[11px] sm:text-sm font-black px-1.5 sm:px-2 py-0.5 rounded border border-black shadow-[1px_1px_0px_#000] ${
+                                    scoreB >= 80 ? "bg-[#00E599] text-black" : "bg-[#FFC000] text-black"
+                                  }`}>
+                                    {scoreB}/100
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-end gap-1.5 sm:gap-2 min-w-0 flex-1 text-right">
+                                  <div className="min-w-0 flex-1">
+                                    <h6 className="font-black text-black text-xs sm:text-sm truncate">{fullB.name}</h6>
+                                    <span className="text-[10px] text-[#475569] block truncate">{fullB.party}</span>
                                   </div>
-
-                                  <div className="space-y-2.5 text-xs">
-                                    <div>
-                                      <div className="flex justify-between font-bold text-black mb-1">
-                                        <span>Scheme & Infra Delivery (40%)</span>
-                                        <span>{dScoreB}%</span>
-                                      </div>
-                                      <div className="h-2.5 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#00E599] border-r border-black" style={{ width: `${dScoreB}%` }} />
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <div className="flex justify-between font-bold text-black mb-1">
-                                        <span>Clean Governance & Integrity (30%)</span>
-                                        <span>{iScoreB}%</span>
-                                      </div>
-                                      <div className="h-2.5 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#FF671F] border-r border-black" style={{ width: `${iScoreB}%` }} />
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <div className="flex justify-between font-bold text-black mb-1">
-                                        <span>Policy Competence & Vision (15%)</span>
-                                        <span>{pScoreB}%</span>
-                                      </div>
-                                      <div className="h-2.5 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#3B82F6] border-r border-black" style={{ width: `${pScoreB}%` }} />
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <div className="flex justify-between font-bold text-black mb-1">
-                                        <span>Public Responsiveness (15%)</span>
-                                        <span>{rScoreB}%</span>
-                                      </div>
-                                      <div className="h-2.5 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
-                                        <div className="h-full bg-[#A855F7] border-r border-black" style={{ width: `${rScoreB}%` }} />
-                                      </div>
-                                    </div>
+                                  <div className="w-8 h-8 rounded-lg overflow-hidden border border-black shrink-0">
+                                    <img src={getPhotoUrl(fullB)} alt={fullB.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
                                   </div>
                                 </div>
                               </div>
+
+                              {/* Pillar by Pillar Breakdown Cards */}
+                              <div className="space-y-2.5">
+                                {pillars.map((p, idx) => {
+                                  const diff = p.scoreB - p.scoreA;
+                                  const leaderNameA = fullA.name?.split(" ")[0] || "Leader A";
+                                  const leaderNameB = fullB.name?.split(" ")[0] || "Leader B";
+
+                                  return (
+                                    <div key={idx} className="bg-white border-2 border-black p-3 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5 font-mono">
+                                      <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-black/10 pb-1.5">
+                                        <div className="flex items-center gap-1.5 min-w-0">
+                                          <span className="text-sm">{p.icon}</span>
+                                          <span className="font-black text-black text-xs sm:text-sm truncate">{p.title}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5">
+                                          <span className="text-[10px] font-black bg-[#FAF7F0] text-[#06038D] px-2 py-0.5 border border-black rounded">
+                                            Weight: {p.weight}
+                                          </span>
+                                          {diff !== 0 ? (
+                                            <span className={`text-[10px] font-black px-2 py-0.5 rounded border border-black ${
+                                              diff > 0 ? "bg-[#DCFCE7] text-[#166534]" : "bg-[#FEF3C7] text-[#92400E]"
+                                            }`}>
+                                              {diff > 0 ? `${leaderNameB} +${diff}%` : `${leaderNameA} +${Math.abs(diff)}%`}
+                                            </span>
+                                          ) : (
+                                            <span className="text-[10px] font-black px-2 py-0.5 rounded border border-black bg-[#F1F5F9] text-[#475569]">
+                                              Tied
+                                            </span>
+                                          )}
+                                        </div>
+                                      </div>
+
+                                      <p className="text-[11px] text-[#64748B] font-sans leading-tight">{p.desc}</p>
+
+                                      {/* Comparison Progress Bars */}
+                                      <div className="space-y-2 pt-1 text-xs">
+                                        {/* Leader A Bar */}
+                                        {showA && (
+                                          <div>
+                                            <div className="flex items-center justify-between font-bold text-black mb-0.5 text-[11px] sm:text-xs">
+                                              <span className="truncate max-w-[75%] font-black">{fullA.name} <span className="font-medium text-[#475569]">({fullA.party})</span></span>
+                                              <span className="font-black shrink-0 ml-2">{p.scoreA}%</span>
+                                            </div>
+                                            <div className="h-3 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
+                                              <div
+                                                className="h-full border-r border-black transition-all"
+                                                style={{ width: `${p.scoreA}%`, backgroundColor: p.color }}
+                                              />
+                                            </div>
+                                          </div>
+                                        )}
+
+                                        {/* Leader B Bar */}
+                                        {showB && (
+                                          <div>
+                                            <div className="flex items-center justify-between font-bold text-black mb-0.5 text-[11px] sm:text-xs">
+                                              <span className="truncate max-w-[75%] font-black">{fullB.name} <span className="font-medium text-[#475569]">({fullB.party})</span></span>
+                                              <span className="font-black shrink-0 ml-2">{p.scoreB}%</span>
+                                            </div>
+                                            <div className="h-3 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
+                                              <div
+                                                className="h-full border-r border-black transition-all"
+                                                style={{ width: `${p.scoreB}%`, backgroundColor: p.color }}
+                                              />
+                                            </div>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
                             </div>
 
-                            {/* 3. SIDE-BY-SIDE AUDITED SCAMS & LEGAL RECORD */}
-                            <div className="bg-[#FFF5F5] border-2 border-black p-4 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-3.5">
-                              <div className="bg-[#FF4D4D] text-white border-2 border-black p-3 rounded-xl shadow-[3px_3px_0px_#000000] flex items-center justify-between">
+                            {/* 3. AUDITED SCAMS & LEGAL RECORD */}
+                            <div className="bg-[#FFF5F5] border-2 border-black p-3.5 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-3.5">
+                              <div className="bg-[#FF4D4D] text-white border-2 border-black p-3 rounded-xl shadow-[3px_3px_0px_#000000] flex flex-wrap items-center justify-between gap-2">
                                 <div className="flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase text-white">
                                   <AlertTriangle className="w-4 h-4 text-black shrink-0" />
                                   <span>AUDITED SCAMS, INQUIRIES & LEGAL RECORD</span>
@@ -3173,102 +3296,110 @@ export function App() {
                                 </span>
                               </div>
 
-                              <div className="grid grid-cols-2 gap-2 sm:gap-4 items-start">
+                              <div className={`grid ${mobileCompareTab === "BOTH" ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"} gap-3.5 sm:gap-4 items-start`}>
                                 {/* SCAMS A */}
-                                <div className="space-y-3">
-                                  <div className="flex items-center gap-2 font-mono text-xs font-black bg-white border-2 border-black p-2.5 rounded-lg">
-                                    <div className="w-6 h-6 rounded overflow-hidden border border-black shrink-0">
-                                      <img src={getPhotoUrl(fullA)} alt={fullA.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
+                                {showA && (
+                                  <div className="space-y-3">
+                                    <div className="flex items-center gap-2 font-mono text-xs font-black bg-white border-2 border-black p-2.5 rounded-lg shadow-[2px_2px_0px_#000]">
+                                      <div className="w-7 h-7 rounded overflow-hidden border border-black shrink-0">
+                                        <img src={getPhotoUrl(fullA)} alt={fullA.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
+                                      </div>
+                                      <span className="truncate flex-1 font-bold text-black">{fullA.name} ({fullA.party})</span>
+                                      <span className="text-[10px] px-2 py-0.5 bg-[#FFEAEA] text-[#DC2626] rounded border border-black shrink-0">
+                                        {fullA.criminalCases || 0} Cases
+                                      </span>
                                     </div>
-                                    <span className="truncate">{fullA.name} ({fullA.party})</span>
-                                    <span className="ml-auto text-[10px] px-2 py-0.5 bg-[#FFEAEA] text-[#DC2626] rounded border border-black">
-                                      {fullA.criminalCases || 0} Cases
-                                    </span>
-                                  </div>
 
-                                  {scamsListA.length > 0 ? (
-                                    scamsListA.map((s: any, idx: number) => (
-                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
-                                        <div className="border-b border-[#E2E8F0] pb-2 space-y-1.5">
-                                          <div className="flex items-start gap-2">
-                                            <span className="w-5 h-5 rounded bg-[#FF4D4D] text-white font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
-                                              #{String(idx + 1).padStart(2, "0")}
-                                            </span>
-                                            <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{s.title}</h6>
+                                    {scamsListA.length > 0 ? (
+                                      scamsListA.map((s: any, idx: number) => (
+                                        <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
+                                          <div className="border-b border-[#E2E8F0] pb-2 space-y-2">
+                                            <div className="flex items-start gap-2">
+                                              <span className="w-6 h-6 rounded bg-[#FF4D4D] text-white font-mono text-[11px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
+                                                #{String(idx + 1).padStart(2, "0")}
+                                              </span>
+                                              <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{s.title}</h6>
+                                            </div>
+                                            {s.financialImpact && (
+                                              <div className="flex items-center">
+                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#FEE2E2] text-[#991B1B] font-mono text-[11px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words">
+                                                  <span>⚠️</span> <span>{s.financialImpact}</span>
+                                                </span>
+                                              </div>
+                                            )}
                                           </div>
-                                          {s.financialImpact && (
-                                            <div className="flex items-center pl-7">
-                                              <span className="inline-block px-2 py-0.5 bg-[#FEE2E2] text-[#991B1B] font-mono text-[10px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words max-w-full">
-                                                ⚠️ {s.financialImpact}
+                                          <p className="text-xs text-[#334155] leading-relaxed font-sans">{s.description}</p>
+                                          {s.status && (
+                                            <div className="pt-1">
+                                              <span className="inline-block text-[10px] font-mono font-bold text-[#64748B] bg-[#F1F5F9] px-2.5 py-1 rounded-md border border-black/20 break-words max-w-full">
+                                                Status: {s.status}
                                               </span>
                                             </div>
                                           )}
                                         </div>
-                                        <p className="text-xs text-[#334155] leading-relaxed font-sans">{s.description}</p>
-                                        {s.status && (
-                                          <span className="inline-block text-[10px] font-mono font-bold text-[#64748B] bg-[#F1F5F9] px-2 py-0.5 rounded border border-black/20">
-                                            Status: {s.status}
-                                          </span>
-                                        )}
+                                      ))
+                                    ) : (
+                                      <div className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] text-center text-xs text-[#166534] font-mono font-bold">
+                                        🛡️ Zero major scam convictions or CBI inquiries on record in certified filings.
                                       </div>
-                                    ))
-                                  ) : (
-                                    <div className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] text-center text-xs text-[#166534] font-mono font-bold">
-                                      🛡️ Zero major scam convictions or CBI inquiries on record in certified filings.
-                                    </div>
-                                  )}
-                                </div>
+                                    )}
+                                  </div>
+                                )}
 
                                 {/* SCAMS B */}
-                                <div className="space-y-3">
-                                  <div className="flex items-center gap-2 font-mono text-xs font-black bg-white border-2 border-black p-2.5 rounded-lg">
-                                    <div className="w-6 h-6 rounded overflow-hidden border border-black shrink-0">
-                                      <img src={getPhotoUrl(fullB)} alt={fullB.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
+                                {showB && (
+                                  <div className="space-y-3">
+                                    <div className="flex items-center gap-2 font-mono text-xs font-black bg-white border-2 border-black p-2.5 rounded-lg shadow-[2px_2px_0px_#000]">
+                                      <div className="w-7 h-7 rounded overflow-hidden border border-black shrink-0">
+                                        <img src={getPhotoUrl(fullB)} alt={fullB.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
+                                      </div>
+                                      <span className="truncate flex-1 font-bold text-black">{fullB.name} ({fullB.party})</span>
+                                      <span className="text-[10px] px-2 py-0.5 bg-[#FFEAEA] text-[#DC2626] rounded border border-black shrink-0">
+                                        {fullB.criminalCases || 0} Cases
+                                      </span>
                                     </div>
-                                    <span className="truncate">{fullB.name} ({fullB.party})</span>
-                                    <span className="ml-auto text-[10px] px-2 py-0.5 bg-[#FFEAEA] text-[#DC2626] rounded border border-black">
-                                      {fullB.criminalCases || 0} Cases
-                                    </span>
-                                  </div>
 
-                                  {scamsListB.length > 0 ? (
-                                    scamsListB.map((s: any, idx: number) => (
-                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
-                                        <div className="border-b border-[#E2E8F0] pb-2 space-y-1.5">
-                                          <div className="flex items-start gap-2">
-                                            <span className="w-5 h-5 rounded bg-[#FF4D4D] text-white font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
-                                              #{String(idx + 1).padStart(2, "0")}
-                                            </span>
-                                            <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{s.title}</h6>
+                                    {scamsListB.length > 0 ? (
+                                      scamsListB.map((s: any, idx: number) => (
+                                        <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
+                                          <div className="border-b border-[#E2E8F0] pb-2 space-y-2">
+                                            <div className="flex items-start gap-2">
+                                              <span className="w-6 h-6 rounded bg-[#FF4D4D] text-white font-mono text-[11px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
+                                                #{String(idx + 1).padStart(2, "0")}
+                                              </span>
+                                              <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{s.title}</h6>
+                                            </div>
+                                            {s.financialImpact && (
+                                              <div className="flex items-center">
+                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#FEE2E2] text-[#991B1B] font-mono text-[11px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words">
+                                                  <span>⚠️</span> <span>{s.financialImpact}</span>
+                                                </span>
+                                              </div>
+                                            )}
                                           </div>
-                                          {s.financialImpact && (
-                                            <div className="flex items-center pl-7">
-                                              <span className="inline-block px-2 py-0.5 bg-[#FEE2E2] text-[#991B1B] font-mono text-[10px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words max-w-full">
-                                                ⚠️ {s.financialImpact}
+                                          <p className="text-xs text-[#334155] leading-relaxed font-sans">{s.description}</p>
+                                          {s.status && (
+                                            <div className="pt-1">
+                                              <span className="inline-block text-[10px] font-mono font-bold text-[#64748B] bg-[#F1F5F9] px-2.5 py-1 rounded-md border border-black/20 break-words max-w-full">
+                                                Status: {s.status}
                                               </span>
                                             </div>
                                           )}
                                         </div>
-                                        <p className="text-xs text-[#334155] leading-relaxed font-sans">{s.description}</p>
-                                        {s.status && (
-                                          <span className="inline-block text-[10px] font-mono font-bold text-[#64748B] bg-[#F1F5F9] px-2 py-0.5 rounded border border-black/20">
-                                            Status: {s.status}
-                                          </span>
-                                        )}
+                                      ))
+                                    ) : (
+                                      <div className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] text-center text-xs text-[#166534] font-mono font-bold">
+                                        🛡️ Zero major scam convictions or CBI inquiries on record in certified filings.
                                       </div>
-                                    ))
-                                  ) : (
-                                    <div className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] text-center text-xs text-[#166534] font-mono font-bold">
-                                      🛡️ Zero major scam convictions or CBI inquiries on record in certified filings.
-                                    </div>
-                                  )}
-                                </div>
+                                    )}
+                                  </div>
+                                )}
                               </div>
                             </div>
 
-                            {/* 4. SIDE-BY-SIDE LANDMARK WORKS & KEY ACHIEVEMENTS */}
-                            <div className="bg-[#F0FDF4] border-2 border-black p-4 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-3.5">
-                              <div className="bg-[#00E599] text-black border-2 border-black p-3 rounded-xl shadow-[3px_3px_0px_#000000] flex items-center justify-between">
+                            {/* 4. LANDMARK WORKS & KEY ACHIEVEMENTS */}
+                            <div className="bg-[#F0FDF4] border-2 border-black p-3.5 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-3.5">
+                              <div className="bg-[#00E599] text-black border-2 border-black p-3 rounded-xl shadow-[3px_3px_0px_#000000] flex flex-wrap items-center justify-between gap-2">
                                 <div className="flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase text-black">
                                   <CheckSquare className="w-4 h-4 text-black shrink-0" />
                                   <span>LANDMARK DELIVERY & INFRASTRUCTURE TRACK RECORD</span>
@@ -3278,86 +3409,90 @@ export function App() {
                                 </span>
                               </div>
 
-                              <div className="grid grid-cols-2 gap-2 sm:gap-4 items-start">
+                              <div className={`grid ${mobileCompareTab === "BOTH" ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"} gap-3.5 sm:gap-4 items-start`}>
                                 {/* WORKS A */}
-                                <div className="space-y-3">
-                                  <div className="flex items-center gap-2 font-mono text-xs font-black bg-white border-2 border-black p-2.5 rounded-lg">
-                                    <div className="w-6 h-6 rounded overflow-hidden border border-black shrink-0">
-                                      <img src={getPhotoUrl(fullA)} alt={fullA.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
-                                    </div>
-                                    <span className="truncate">{fullA.name} ({fullA.party})</span>
-                                    <span className="ml-auto text-[10px] px-2 py-0.5 bg-[#DCFCE7] text-[#166534] rounded border border-black font-mono">
-                                      Score: {scoreA}
-                                    </span>
-                                  </div>
-
-                                  {worksListA.length > 0 ? (
-                                    worksListA.map((w: any, idx: number) => (
-                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
-                                        <div className="border-b border-[#E2E8F0] pb-2 space-y-1.5">
-                                          <div className="flex items-start gap-2">
-                                            <span className="w-5 h-5 rounded bg-[#00E599] text-black font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
-                                              #{String(idx + 1).padStart(2, "0")}
-                                            </span>
-                                            <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{w.achievement}</h6>
-                                          </div>
-                                          {w.outlay && (
-                                            <div className="flex items-center pl-7">
-                                              <span className="inline-block px-2 py-0.5 bg-[#D1FAE5] text-[#065F46] font-mono text-[10px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words max-w-full">
-                                                ⚡ {w.outlay}
-                                              </span>
-                                            </div>
-                                          )}
-                                        </div>
-                                        <p className="text-xs text-[#334155] leading-relaxed font-sans">{w.description || w.status}</p>
+                                {showA && (
+                                  <div className="space-y-3">
+                                    <div className="flex items-center gap-2 font-mono text-xs font-black bg-white border-2 border-black p-2.5 rounded-lg shadow-[2px_2px_0px_#000]">
+                                      <div className="w-7 h-7 rounded overflow-hidden border border-black shrink-0">
+                                        <img src={getPhotoUrl(fullA)} alt={fullA.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
                                       </div>
-                                    ))
-                                  ) : (
-                                    <div className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] text-center text-xs text-[#334155] font-mono font-bold">
-                                      Core portfolio allocations and state/national welfare scheme implementation.
+                                      <span className="truncate flex-1 font-bold text-black">{fullA.name} ({fullA.party})</span>
+                                      <span className="text-[10px] px-2 py-0.5 bg-[#DCFCE7] text-[#166534] rounded border border-black font-mono shrink-0">
+                                        Score: {scoreA}/100
+                                      </span>
                                     </div>
-                                  )}
-                                </div>
+
+                                    {worksListA.length > 0 ? (
+                                      worksListA.map((w: any, idx: number) => (
+                                        <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
+                                          <div className="border-b border-[#E2E8F0] pb-2 space-y-2">
+                                            <div className="flex items-start gap-2">
+                                              <span className="w-6 h-6 rounded bg-[#00E599] text-black font-mono text-[11px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
+                                                #{String(idx + 1).padStart(2, "0")}
+                                              </span>
+                                              <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{w.achievement}</h6>
+                                            </div>
+                                            {w.outlay && (
+                                              <div className="flex items-center">
+                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#D1FAE5] text-[#065F46] font-mono text-[11px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words">
+                                                  <span>⚡</span> <span>{w.outlay}</span>
+                                                </span>
+                                              </div>
+                                            )}
+                                          </div>
+                                          <p className="text-xs text-[#334155] leading-relaxed font-sans">{w.description || w.status}</p>
+                                        </div>
+                                      ))
+                                    ) : (
+                                      <div className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] text-center text-xs text-[#334155] font-mono font-bold">
+                                        Core portfolio allocations and state/national welfare scheme implementation.
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
 
                                 {/* WORKS B */}
-                                <div className="space-y-3">
-                                  <div className="flex items-center gap-2 font-mono text-xs font-black bg-white border-2 border-black p-2.5 rounded-lg">
-                                    <div className="w-6 h-6 rounded overflow-hidden border border-black shrink-0">
-                                      <img src={getPhotoUrl(fullB)} alt={fullB.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
-                                    </div>
-                                    <span className="truncate">{fullB.name} ({fullB.party})</span>
-                                    <span className="ml-auto text-[10px] px-2 py-0.5 bg-[#DCFCE7] text-[#166534] rounded border border-black font-mono">
-                                      Score: {scoreB}
-                                    </span>
-                                  </div>
-
-                                  {worksListB.length > 0 ? (
-                                    worksListB.map((w: any, idx: number) => (
-                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
-                                        <div className="border-b border-[#E2E8F0] pb-2 space-y-1.5">
-                                          <div className="flex items-start gap-2">
-                                            <span className="w-5 h-5 rounded bg-[#00E599] text-black font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
-                                              #{String(idx + 1).padStart(2, "0")}
-                                            </span>
-                                            <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{w.achievement}</h6>
-                                          </div>
-                                          {w.outlay && (
-                                            <div className="flex items-center pl-7">
-                                              <span className="inline-block px-2 py-0.5 bg-[#D1FAE5] text-[#065F46] font-mono text-[10px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words max-w-full">
-                                                ⚡ {w.outlay}
-                                              </span>
-                                            </div>
-                                          )}
-                                        </div>
-                                        <p className="text-xs text-[#334155] leading-relaxed font-sans">{w.description || w.status}</p>
+                                {showB && (
+                                  <div className="space-y-3">
+                                    <div className="flex items-center gap-2 font-mono text-xs font-black bg-white border-2 border-black p-2.5 rounded-lg shadow-[2px_2px_0px_#000]">
+                                      <div className="w-7 h-7 rounded overflow-hidden border border-black shrink-0">
+                                        <img src={getPhotoUrl(fullB)} alt={fullB.name} referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
                                       </div>
-                                    ))
-                                  ) : (
-                                    <div className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] text-center text-xs text-[#334155] font-mono font-bold">
-                                      Core portfolio allocations and state/national welfare scheme implementation.
+                                      <span className="truncate flex-1 font-bold text-black">{fullB.name} ({fullB.party})</span>
+                                      <span className="text-[10px] px-2 py-0.5 bg-[#DCFCE7] text-[#166534] rounded border border-black font-mono shrink-0">
+                                        Score: {scoreB}/100
+                                      </span>
                                     </div>
-                                  )}
-                                </div>
+
+                                    {worksListB.length > 0 ? (
+                                      worksListB.map((w: any, idx: number) => (
+                                        <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
+                                          <div className="border-b border-[#E2E8F0] pb-2 space-y-2">
+                                            <div className="flex items-start gap-2">
+                                              <span className="w-6 h-6 rounded bg-[#00E599] text-black font-mono text-[11px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
+                                                #{String(idx + 1).padStart(2, "0")}
+                                              </span>
+                                              <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{w.achievement}</h6>
+                                            </div>
+                                            {w.outlay && (
+                                              <div className="flex items-center">
+                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#D1FAE5] text-[#065F46] font-mono text-[11px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words">
+                                                  <span>⚡</span> <span>{w.outlay}</span>
+                                                </span>
+                                              </div>
+                                            )}
+                                          </div>
+                                          <p className="text-xs text-[#334155] leading-relaxed font-sans">{w.description || w.status}</p>
+                                        </div>
+                                      ))
+                                    ) : (
+                                      <div className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] text-center text-xs text-[#334155] font-mono font-bold">
+                                        Core portfolio allocations and state/national welfare scheme implementation.
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -3482,8 +3617,8 @@ export function App() {
                                 </div>
                                 <div className="bg-[#FAF7F0] border-2 border-black p-3 rounded-xl shadow-[2px_2px_0px_#000]">
                                   <span className="text-[#64748B] block text-[10px] uppercase font-bold">Education Level</span>
-                                  <span className="text-base sm:text-lg font-black text-black block mt-0.5 truncate" title={matchedLeader.educationDetails?.degree || matchedLeader.education}>
-                                    {matchedLeader.educationDetails?.degree || (matchedLeader.education ? "Graduate" : "Verified")}
+                                  <span className="text-xs sm:text-sm font-black text-black block mt-0.5 break-words" title={matchedLeader.educationDetails?.degree || matchedLeader.education}>
+                                    {matchedLeader.education || matchedLeader.educationDetails?.degree || "Graduate"}
                                   </span>
                                 </div>
                               </div>
