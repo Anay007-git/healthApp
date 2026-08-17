@@ -96,6 +96,7 @@ export function App() {
   const [aiResponse, setAiResponse] = useState<AIStructuredResponse | null>(null);
   const [selectedCompareLeader, setSelectedCompareLeader] = useState<string>("");
   const [compareSearchFilter, setCompareSearchFilter] = useState<string>("");
+  const [mobileCompareTab, setMobileCompareTab] = useState<"BOTH" | "A" | "B">("BOTH");
 
   // Dedicated search states (separate from AI chat)
   const [ministerSearch, setMinisterSearch] = useState<string>("");
