@@ -2913,9 +2913,9 @@ export function App() {
                                 </span>
                               </div>
 
-                              <div className="grid grid-cols-1 md:grid-cols-11 gap-4 items-center">
+                              <div className="grid grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4 items-stretch">
                                 {/* LEADER A */}
-                                <div className="md:col-span-5 bg-[#FAF7F0] border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-3">
+                                <div className="bg-[#FAF7F0] border-2 border-black p-2.5 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2 sm:space-y-3">
                                   <div className="flex items-center gap-3">
                                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-white border-2 border-black shrink-0 shadow-[2px_2px_0px_#000000]">
                                       <img
@@ -2929,7 +2929,7 @@ export function App() {
                                       />
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                      <h4 className="font-serif text-lg sm:text-xl font-black text-black truncate">{fullA.name}</h4>
+                                      <h4 className="font-serif text-sm sm:text-lg md:text-xl font-black text-black truncate">{fullA.name}</h4>
                                       <span className="inline-block px-2 py-0.5 bg-[#06038D] text-white font-mono text-[10px] font-bold rounded border border-black truncate max-w-full">
                                         {fullA.party}
                                       </span>
@@ -2966,14 +2966,14 @@ export function App() {
                                 </div>
 
                                 {/* VS BADGE */}
-                                <div className="md:col-span-1 flex items-center justify-center">
-                                  <span className="w-10 h-10 rounded-full bg-[#FF671F] text-black font-black font-mono text-xs border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_#000000]">
+                                <div className="flex items-center justify-center">
+                                  <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FF671F] text-black font-black font-mono text-[10px] sm:text-xs border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_#000000] shrink-0">
                                     VS
                                   </span>
                                 </div>
 
                                 {/* LEADER B */}
-                                <div className="md:col-span-5 bg-[#FAF7F0] border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-3">
+                                <div className="bg-[#FAF7F0] border-2 border-black p-2.5 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2 sm:space-y-3">
                                   <div className="flex items-center gap-3">
                                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-white border-2 border-black shrink-0 shadow-[2px_2px_0px_#000000]">
                                       <img
@@ -2987,7 +2987,7 @@ export function App() {
                                       />
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                      <h4 className="font-serif text-lg sm:text-xl font-black text-black truncate">{fullB.name}</h4>
+                                      <h4 className="font-serif text-sm sm:text-lg md:text-xl font-black text-black truncate">{fullB.name}</h4>
                                       <span className="inline-block px-2 py-0.5 bg-[#06038D] text-white font-mono text-[10px] font-bold rounded border border-black truncate max-w-full">
                                         {fullB.party}
                                       </span>
@@ -3037,9 +3037,9 @@ export function App() {
                                 </span>
                               </div>
 
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="grid grid-cols-2 gap-2 sm:gap-4">
                                 {/* PILLAR COLUMN A */}
-                                <div className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-3 font-mono">
+                                <div className="bg-white border-2 border-black p-2.5 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2 sm:space-y-3 font-mono">
                                   <div className="flex items-center justify-between border-b border-black/20 pb-2">
                                     <div className="flex items-center gap-2">
                                       <div className="w-8 h-8 rounded-lg overflow-hidden border border-black shrink-0">
@@ -3096,7 +3096,7 @@ export function App() {
                                 </div>
 
                                 {/* PILLAR COLUMN B */}
-                                <div className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-3 font-mono">
+                                <div className="bg-white border-2 border-black p-2.5 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2 sm:space-y-3 font-mono">
                                   <div className="flex items-center justify-between border-b border-black/20 pb-2">
                                     <div className="flex items-center gap-2">
                                       <div className="w-8 h-8 rounded-lg overflow-hidden border border-black shrink-0">
@@ -3166,7 +3166,7 @@ export function App() {
                                 </span>
                               </div>
 
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+                              <div className="grid grid-cols-2 gap-2 sm:gap-4 items-start">
                                 {/* SCAMS A */}
                                 <div className="space-y-3">
                                   <div className="flex items-center gap-2 font-mono text-xs font-black bg-white border-2 border-black p-2.5 rounded-lg">
@@ -3271,7 +3271,7 @@ export function App() {
                                 </span>
                               </div>
 
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+                              <div className="grid grid-cols-2 gap-2 sm:gap-4 items-start">
                                 {/* WORKS A */}
                                 <div className="space-y-3">
                                   <div className="flex items-center gap-2 font-mono text-xs font-black bg-white border-2 border-black p-2.5 rounded-lg">
