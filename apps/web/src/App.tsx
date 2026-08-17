@@ -2901,18 +2901,25 @@ export function App() {
                         const worksListB = fullB.keyWorks || [];
 
                         return (
-                          <div className="space-y-6">
-                            {/* 1. DUAL HERO CARD */}
-                            <div className="bg-white border-2 border-black p-4 sm:p-6 rounded-2xl shadow-[5px_5px_0px_#000000] space-y-5">
-                              <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-3">
-                                <span className="px-3 py-1 bg-[#FFE877] text-black font-mono text-xs font-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000000] uppercase flex items-center gap-1.5">
-                                  ⚔️ DUAL NETA HEAD-TO-HEAD COMPARISON
-                                </span>
-                                <span className="px-2.5 py-1 bg-[#EEF2FF] text-[#06038D] font-mono text-[10px] font-black border-2 border-black rounded-lg uppercase">
-                                  ECI FORM 26 AUDITED
-                                </span>
+                          <div className="space-y-4">
+                            {/* COMPARISON HERO TITLE */}
+                            <div className="bg-gradient-to-r from-[#06038D] via-[#1a1a8c] to-[#FF671F] border-2 border-black p-4 sm:p-5 rounded-2xl shadow-[5px_5px_0px_#000000] flex flex-wrap items-center justify-between gap-3">
+                              <div className="flex items-center gap-3">
+                                <span className="text-2xl sm:text-3xl">⚔️</span>
+                                <div>
+                                  <h3 className="font-serif font-black text-white text-base sm:text-xl md:text-2xl leading-tight">
+                                    HEAD-TO-HEAD NETA COMPARISON
+                                  </h3>
+                                  <p className="font-mono text-[11px] text-white/70 font-semibold mt-0.5">
+                                    {fullA.name} vs. {fullB.name} — ECI & Governance Audit
+                                  </p>
+                                </div>
                               </div>
+                              <span className="px-3 py-1.5 bg-[#FFE877] text-black font-mono text-[11px] font-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000000] uppercase">LIVE DOSSIER</span>
+                            </div>
 
+                            {/* PROFILES GRID */}
+                            <div className="bg-white border-2 border-black p-3 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-3">
                               <div className="grid grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4 items-stretch">
                                 {/* LEADER A */}
                                 <div className="bg-[#FAF7F0] border-2 border-black p-2.5 sm:p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2 sm:space-y-3">
