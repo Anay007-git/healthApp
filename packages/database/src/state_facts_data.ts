@@ -22843,58 +22843,19 @@ export const STATE_FACTS: any[] = [
     "capital": "Kolkata",
     "region": "East",
     "newGovtYear": 2026,
+    "newGovtLabel": "New CM sworn in May 2026 — BJP forms government in West Bengal",
     "newGovtDetails": {
       "cm": {
         "name": "Suvendu Adhikari",
         "party": "BJP",
         "since": "May 2026",
-        "note": "BJP ends 15 years of TMC rule — Suvendu Adhikari becomes West Bengal's first BJP Chief Minister. Former TMC leader who crossed over to BJP in December 2020.",
-        "criminalCases": 0,
-        "education": "M.A. (Political Science), Rabindra Bharati University, Kolkata",
+        "note": "Suvendu Adhikari sworn in as Chief Minister of West Bengal following the 2026 West Bengal Assembly elections, leading the BJP to power in the state. Mamata Banerjee (AITC) served as Chief Minister for 3 consecutive terms (2011–2026).",
+        "criminalCases": 3,
+        "seriousCriminalCases": 1,
+        "education": "MA Political Science, Rabindra Bharati University, Kolkata; BA, Calcutta University",
         "educationScore": 82
       },
-      "cabinet": [
-        {
-          "name": "Dilip Ghosh",
-          "party": "BJP",
-          "portfolio": "Rural Development",
-          "criminalCases": 0,
-          "education": "B.A., Calcutta University",
-          "educationScore": 75
-        },
-        {
-          "name": "Agnimitra Paul",
-          "party": "BJP",
-          "portfolio": "Women & Child Development",
-          "criminalCases": 0,
-          "education": "Fashion Design, NIFT New Delhi",
-          "educationScore": 82
-        },
-        {
-          "name": "Ashoke Dinda",
-          "party": "BJP",
-          "portfolio": "Agriculture",
-          "criminalCases": 0,
-          "education": "B.Sc., Calcutta University",
-          "educationScore": 75
-        },
-        {
-          "name": "Suvendu Mondal",
-          "party": "BJP",
-          "portfolio": "Finance",
-          "criminalCases": 0,
-          "education": "B.Com., Calcutta University",
-          "educationScore": 75
-        },
-        {
-          "name": "Swapan Dasgupta",
-          "party": "BJP",
-          "portfolio": "Industries & Commerce",
-          "criminalCases": 0,
-          "education": "M.A. (History), Oxford University",
-          "educationScore": 96
-        }
-      ]
+      "cabinet": []
     },
     "cm": {
       "name": "Mamata Banerjee",
@@ -22902,8 +22863,8 @@ export const STATE_FACTS: any[] = [
       "party": "AITC",
       "since": "2011",
       "criminalCases": 0,
-      "criminalCaseNote": "Declared 0 pending criminal cases in her 2021 West Bengal Assembly election affidavit. Several cases registered during her political opposition years (1990s–2000s) were either withdrawn or resulted in acquittal.",
-      "education": "B.A. (History), Jogamaya Devi College, Calcutta University; LL.B., Jogesh Chandra Chaudhuri Law College, Calcutta",
+      "criminalCaseNote": "Declared 0 pending criminal cases in her 2021 West Bengal Assembly election affidavit. Lowest declared assets among all Indian Chief Ministers.",
+      "education": "B.A. (History), Jogamaya Devi College, Calcutta University; LL.B., Jogesh Chandra Chaudhuri Law College, Calcutta; M.A. Islamic History, Calcutta University",
       "educationScore": 82,
       "affidavitYear": 2021
     },

@@ -104,34 +104,48 @@ export class CivicLensAIEngine {
     // 2. MINISTERS & NETAS COMPREHENSIVE DOSSIER (e.g. "score card of Mamata Banerjee", "Narendra Modi", "Amit Shah", "Nitin Gadkari", "Arvind Kejriwal", "Rahul Gandhi", "Yogi Adityanath", "Nirmala Sitharaman")
     if (
       q.includes("minister") || q.includes("neta") || q.includes("leader") || q.includes("score card") || q.includes("scorecard") ||
-      q.includes("mamata") || q.includes("modi") || q.includes("amit shah") || q.includes("gadkari") || q.includes("sitharaman") ||
-      q.includes("kejriwal") || q.includes("rahul gandhi") || q.includes("yogi") || q.includes("rajnath") || q.includes("jaishankar") ||
-      q.includes("nadda") || q.includes("stalin") || q.includes("siddaramaiah") || q.includes("shinde") || q.includes("nitish")
+      q.includes("mamata") || q.includes("suvendu") || q.includes("adhikari") || q.includes("modi") || q.includes("amit shah") ||
+      q.includes("gadkari") || q.includes("sitharaman") || q.includes("kejriwal") || q.includes("rahul") || q.includes("yogi") ||
+      q.includes("rajnath") || q.includes("jaishankar") || q.includes("nadda") || q.includes("stalin") || q.includes("siddaramaiah") ||
+      q.includes("shinde") || q.includes("nitish")
     ) {
       const allMinisters = [...db.getMinisters(), ...db.getAllStateMinisters()];
       
-      // Match specific leader by name or slug
-      const matched = allMinisters.find((m: any) => {
-        const name = (m.name || "").toLowerCase();
-        const slug = (m.slug || "").toLowerCase();
-        const ministry = (m.ministry || "").toLowerCase();
-        return (
-          (q.includes("mamata") && (name.includes("mamata") || slug.includes("mamata"))) ||
-          (q.includes("modi") && (name.includes("narendra") || slug.includes("modi"))) ||
-          (q.includes("amit shah") && (name.includes("amit") || slug.includes("amit"))) ||
-          (q.includes("gadkari") && (name.includes("gadkari") || slug.includes("gadkari"))) ||
-          (q.includes("sitharaman") && (name.includes("sitharaman") || slug.includes("sitharaman"))) ||
-          (q.includes("kejriwal") && (name.includes("kejriwal") || slug.includes("kejriwal"))) ||
-          (q.includes("rahul") && (name.includes("rahul") || slug.includes("rahul"))) ||
-          (q.includes("yogi") && (name.includes("yogi") || slug.includes("yogi") || name.includes("adityanath"))) ||
-          (q.includes("rajnath") && name.includes("rajnath")) ||
-          (q.includes("jaishankar") && name.includes("jaishankar")) ||
-          (q.includes("nadda") && name.includes("nadda")) ||
-          q.includes(name) ||
-          q.includes(slug) ||
-          (ministry && q.includes(ministry))
-        );
-      });
+      // Match specific leader by name or slug with strict priority
+      let matched: any = null;
+      if (q.includes("suvendu") || q.includes("adhikari")) {
+        matched = COMPREHENSIVE_LEADERS["suvendu-adhikari"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("suvendu"));
+      } else if (q.includes("mamata") || q.includes("banerjee")) {
+        matched = COMPREHENSIVE_LEADERS["mamata-banerjee"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("mamata"));
+      } else if (q.includes("modi") || q.includes("narendra")) {
+        matched = COMPREHENSIVE_LEADERS["narendra-modi"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("modi"));
+      } else if (q.includes("amit shah") || (q.includes("shah") && !q.includes("shashi"))) {
+        matched = COMPREHENSIVE_LEADERS["amit-shah"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("amit"));
+      } else if (q.includes("gadkari") || q.includes("nitin")) {
+        matched = COMPREHENSIVE_LEADERS["nitin-gadkari"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("gadkari"));
+      } else if (q.includes("sitharaman") || q.includes("nirmala")) {
+        matched = COMPREHENSIVE_LEADERS["nirmala-sitharaman"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("sitharaman"));
+      } else if (q.includes("kejriwal") || q.includes("arvind")) {
+        matched = COMPREHENSIVE_LEADERS["arvind-kejriwal"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("kejriwal"));
+      } else if (q.includes("rahul") || (q.includes("gandhi") && !q.includes("sanjay") && !q.includes("indira"))) {
+        matched = COMPREHENSIVE_LEADERS["rahul-gandhi"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("rahul"));
+      } else if (q.includes("yogi") || q.includes("adityanath")) {
+        matched = COMPREHENSIVE_LEADERS["yogi-adityanath"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("yogi"));
+      } else if (q.includes("rajnath")) {
+        matched = COMPREHENSIVE_LEADERS["rajnath-singh"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("rajnath"));
+      } else if (q.includes("jaishankar")) {
+        matched = COMPREHENSIVE_LEADERS["s-jaishankar"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("jaishankar"));
+      } else if (q.includes("nadda")) {
+        matched = COMPREHENSIVE_LEADERS["j-p-nadda"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("nadda"));
+      } else if (q.includes("stalin")) {
+        matched = COMPREHENSIVE_LEADERS["mk-stalin"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("stalin"));
+      } else {
+        matched = allMinisters.find((m: any) => {
+          const name = (m.name || "").toLowerCase();
+          const slug = (m.slug || "").toLowerCase();
+          return (name && q.includes(name)) || (slug && q.includes(slug));
+        });
+      }
 
       if (matched) {
         const slug = matched.slug || (matched.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");

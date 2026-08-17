@@ -71,15 +71,69 @@ export function nameToSlug(name: string): string {
     .replace(/^-|-$/g, '');
 }
 
+export const LEADER_PHOTOS: Record<string, string> = {
+  "narendra-modi": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg/330px-The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg",
+  "amit-shah": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Shri_Amit_Shah_in_Raigad.jpg/330px-Shri_Amit_Shah_in_Raigad.jpg",
+  "nitin-gadkari": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Nitin_Jairam_Gadkari.jpg/330px-Nitin_Jairam_Gadkari.jpg",
+  "nirmala-sitharaman": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Am_11._April_2025_empfing_Au%C3%9Fenministerin_Beate_Meinl-Reisinger_die_indische_Finanzministerin_Nirmala_Sitharaman_in_Wien_%2854445397025%29_%28cropped%29.jpg/330px-Am_11._April_2025_empfing_Au%C3%9Fenministerin_Beate_Meinl-Reisinger_die_indische_Finanzministerin_Nirmala_Sitharaman_in_Wien_%2854445397025%29_%28cropped%29.jpg",
+  "rajnath-singh": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Shri_Rajnath_Singh%2C_in_New_Delhi_on_May_09%2C_2023_%28cropped%29.jpg/330px-Shri_Rajnath_Singh%2C_in_New_Delhi_on_May_09%2C_2023_%28cropped%29.jpg",
+  "s-jaishankar": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/The_official_portrait_of_External_Minister_Subrahmanyam_Jaishankar.jpg/330px-The_official_portrait_of_External_Minister_Subrahmanyam_Jaishankar.jpg",
+  "j-p-nadda": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Jagat_Prakash_Nadda_2023.jpg/330px-Jagat_Prakash_Nadda_2023.jpg",
+  "rahul-gandhi": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Rahul_Gandhi.png/330px-Rahul_Gandhi.png",
+  "arvind-kejriwal": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Arvind_Kejriwal_2022_Official_Portrail_%28AI_enhanced%29.jpg/330px-Arvind_Kejriwal_2022_Official_Portrail_%28AI_enhanced%29.jpg",
+  "yogi-adityanath": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Yogiji_in_2023.jpg/330px-Yogiji_in_2023.jpg",
+  "mamata-banerjee": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Ms._Mamata_Banerjee%2C_in_Kolkata_on_July_17%2C_2018_%28cropped%29.JPG/330px-Ms._Mamata_Banerjee%2C_in_Kolkata_on_July_17%2C_2018_%28cropped%29.JPG",
+  "suvendu-adhikari": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Suvendu_Adhikari_May_2026_%28cropped%29.jpg/330px-Suvendu_Adhikari_May_2026_%28cropped%29.jpg",
+  "mk-stalin": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/The_Chief_Minister_of_Tamil_Nadu%2C_Thiru_MK_Stalin.jpg/330px-The_Chief_Minister_of_Tamil_Nadu%2C_Thiru_MK_Stalin.jpg",
+  "siddaramaiah": "https://upload.wikimedia.org/wikipedia/commons/0/06/Siddaramaiah_at_the_function_Akshaya_Patra_Foundation_in_Karnataka.jpg",
+  "eknath-shinde": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Eknath_Shinde_SS.jpg/330px-Eknath_Shinde_SS.jpg",
+  "devendra-fadnavis": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Shri_Devendra_Gangadharrao_Fadnavis.jpg/330px-Shri_Devendra_Gangadharrao_Fadnavis.jpg",
+  "nitish-kumar": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Nitish_Kumar_August_2026.jpg/330px-Nitish_Kumar_August_2026.jpg",
+  "piyush-goyal": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Piyush_Goyal_crop.jpg/330px-Piyush_Goyal_crop.jpg",
+  "dharmendra-pradhan": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Dharmendra_Pradhan%2C_Minister_of_Education.jpg/330px-Dharmendra_Pradhan%2C_Minister_of_Education.jpg",
+  "ashwini-vaishnaw": "https://upload.wikimedia.org/wikipedia/commons/3/35/Ashwini_Vaishnaw_cropped.jpg",
+  "jyotiraditya-scindia": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/H20250428182531.jpg/330px-H20250428182531.jpg",
+  "bhupender-yadav": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Union_Minister_Bhupender_Yadav.jpg/330px-Union_Minister_Bhupender_Yadav.jpg",
+  "kiren-rijiju": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Kiren_Rijiju_with_Modi_%28cropped%29.jpg/330px-Kiren_Rijiju_with_Modi_%28cropped%29.jpg",
+  "hardeep-singh-puri": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Hardeep_Singh_Puri_with_PM_Modi_%28cropped%29.jpg/330px-Hardeep_Singh_Puri_with_PM_Modi_%28cropped%29.jpg",
+  "chirag-paswan": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/The_Union_Minister_of_Food_Processing_Industries%2C_Shri_Chirag_Paswan_chaired_a_Curtain_Raiser_Press_Conference_on_%E2%80%9CWorld_Food_India-2024%E2%80%9D_%E2%80%93_in_New_Delhi_on_June_19%2C_2024_%28Cropped%29.jpg/330px-thumbnail.jpg",
+  "shivraj-singh-chouhan": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Shivraj_Singh_Chouhan_2025.jpg/330px-Shivraj_Singh_Chouhan_2025.jpg",
+  "jitan-ram-manjhi": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Jitan_Ram_Manjhi_June_2024_cropped.jpg/330px-Jitan_Ram_Manjhi_June_2024_cropped.jpg",
+  "rajiv-ranjan-singh": "https://upload.wikimedia.org/wikipedia/commons/3/36/Shri_Rajiv_Ranjan_Singh_alias_Lalan_Singh_interacting_with_media_after_taking_charge_as_the_Union_Minister_for_Fisheries%2C_Animal_Husbandry_and_Dairying.jpg",
+  "sarbananda-sonowal": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Sarbananda_Sonowal_with_PM_Modi_%28cropped%29.jpg/330px-Sarbananda_Sonowal_with_PM_Modi_%28cropped%29.jpg",
+  "dr-virendra-kumar": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Virendra_Kumar_Khatik_with_PM_Modi_%28cropped%29.jpg/330px-Virendra_Kumar_Khatik_with_PM_Modi_%28cropped%29.jpg",
+  "kinjarapu-ram-mohan-naidu": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Kinjarapu_Ram_Mohan_Naidu_%28cropped%29.jpg/330px-Kinjarapu_Ram_Mohan_Naidu_%28cropped%29.jpg",
+  "pralhad-joshi": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Pralhad_Joshi_in_2024.jpg/330px-Pralhad_Joshi_in_2024.jpg",
+  "jual-oram": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Jual_Oram_Tribal_Affairs_Minister.jpg/330px-Jual_Oram_Tribal_Affairs_Minister.jpg",
+  "giriraj-singh": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Giriraj_Singh_addressing_at_the_inauguration_of_the_National_Conclave_%28MSME_Udyam_Sangam_2018%29%2C_on_the_occasion_of_the_2nd_United_Nations_MSME_Day%2C_in_New_Delhi.JPG/330px-thumbnail.jpg",
+  "gajendra-singh-shekhawat": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/The_Union_Minister_of_Culture_and_Tourism%2C_Shri_Gajendra_Singh_Shekhawat_addressing_at_the_inauguration_of_the_7th_Edition_of_the_International_Hospitality_Expo._2024_at_Greater_Noida%2C_in_Uttar_Pradesh_on_August_03%2C_2024_%28cropped%29.jpg/330px-thumbnail.jpg",
+  "annapurna-devi": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Annpurna_Devi_Minister_%28cropped%29.jpg/330px-Annpurna_Devi_Minister_%28cropped%29.jpg",
+  "dr-mansukh-mandaviya": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Mansukh_Mandaviya_photo_2.png/330px-Mansukh_Mandaviya_photo_2.png",
+  "g-kishan-reddy": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/G._Kishan_Reddy_in_2025.jpg/330px-G._Kishan_Reddy_in_2025.jpg",
+  "c-r-patil": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/The_Union_Minister_for_Jal_Shakti%2C_Shri_C.R._Paatil_addressing_at_the_Jal_Shakti_Abhiyan-_Catch_the_Rain_Programme%2C_in_New_Delhi_on_June_24%2C_2024_%28cropped%29.jpg/330px-The_Union_Minister_for_Jal_Shakti%2C_Shri_C.R._Paatil_addressing_at_the_Jal_Shakti_Abhiyan-_Catch_the_Rain_Programme%2C_in_New_Delhi_on_June_24%2C_2024_%28cropped%29.jpg",
+  "h-d-kumaraswamy": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/JDS_chief_Kumaraswamy.jpg/330px-JDS_chief_Kumaraswamy.jpg",
+  "manohar-lal-khattar": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Manohar_Lal%2C_Minister_of_Power.jpg/330px-Manohar_Lal%2C_Minister_of_Power.jpg",
+  "himanta-biswa-sarma": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Himanta_Biswa_Sarma_in_2026.jpg/330px-Himanta_Biswa_Sarma_in_2026.jpg",
+  "bhagwant-mann": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Bhagwant_Mann_2026.jpg/330px-Bhagwant_Mann_2026.jpg",
+  "pinarayi-vijayan": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Chief_Minister_Pinarayi_Vijayan_2023.jpg/330px-Chief_Minister_Pinarayi_Vijayan_2023.jpg",
+  "pushkar-singh-dhami": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Pushkar_Singh_Dhami%2C_Chief_Minister_of_Uttarakhand.jpg/330px-Pushkar_Singh_Dhami%2C_Chief_Minister_of_Uttarakhand.jpg",
+  "hemant-soren": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Hemant_Soren_01.jpg/330px-Hemant_Soren_01.jpg",
+  "mohan-yadav": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Mohan_Yadav%2C_Chief_Minister_of_Madhya_Pradesh.jpg/330px-Mohan_Yadav%2C_Chief_Minister_of_Madhya_Pradesh.jpg",
+  "bhupendra-patel": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Bhupendra_Patel_%28cropped%29.jpg",
+  "pramod-sawant": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Pramod_Sawant_at_the_inauguration_of_the_Chhatrapati_Shivaji_Maharaj_Chair_in_Goa_University_%28cropped%29.jpg/330px-Pramod_Sawant_at_the_inauguration_of_the_Chhatrapati_Shivaji_Maharaj_Chair_in_Goa_University_%28cropped%29.jpg",
+  "revanth-reddy": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Portrait_of_Telangana_CM_Revanth_Reddy.png/330px-Portrait_of_Telangana_CM_Revanth_Reddy.png",
+  "n-chandrababu-naidu": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg/330px-The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg"
+};
+
 export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
   "mamata-banerjee": {
     name: "Mamata Banerjee",
     slug: "mamata-banerjee",
-    title: "Chief Minister of West Bengal",
-    currentPosition: "Chief Minister of West Bengal (3rd Consecutive Term since 2011), Minister for Home & Hill Affairs, Health & Family Welfare, Land & Land Reforms",
-    ministry: "West Bengal — Home, Health, Land & Information",
+    title: "Former Chief Minister of West Bengal / Chairperson of AITC",
+    currentPosition: "Former Chief Minister of West Bengal (3 Consecutive Terms, 2011–2026), Chairperson of All India Trinamool Congress (AITC), MLA for Bhabanipur",
+    ministry: "All India Trinamool Congress (AITC) Leadership",
     party: "All India Trinamool Congress (AITC)",
-    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Mamata_Banerjee_in_2021.jpg/800px-Mamata_Banerjee_in_2021.jpg",
+    photoUrl: LEADER_PHOTOS["mamata-banerjee"],
     education: "MA Islamic History (Univ of Calcutta); LLB (Jogesh Chandra Chaudhuri Law College); BA History (Jogamaya Devi College)",
     educationDetails: {
       degree: "Master of Arts (MA) & Bachelor of Laws (LLB)",
@@ -96,7 +150,7 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     constituency: "Bhabanipur, Kolkata, West Bengal",
     stateName: "West Bengal",
     stateCode: "WB",
-    isCM: true,
+    isCM: false,
     scamsAndCorruption: [
       {
         title: "SSSC School Teacher Recruitment Scam",
@@ -178,7 +232,7 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     currentPosition: "Prime Minister of India (3rd Consecutive Term since 2014), Minister of Personnel, Public Grievances, Department of Atomic Energy, Department of Space",
     ministry: "Prime Minister's Office (PMO) · Atomic Energy · Space · Personnel",
     party: "Bharatiya Janata Party (BJP / NDA)",
-    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Official_Photograph_of_Prime_Minister_Narendra_Modi_Portrait.png/800px-Official_Photograph_of_Prime_Minister_Narendra_Modi_Portrait.png",
+    photoUrl: LEADER_PHOTOS["narendra-modi"],
     education: "MA Political Science (Gujarat University, 1983); BA Political Science (SOL, University of Delhi, 1978)",
     educationDetails: {
       degree: "Master of Arts (MA) in Political Science",
@@ -273,7 +327,7 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     currentPosition: "Union Minister of Home Affairs and Minister of Cooperation, Government of India (MP for Gandhinagar)",
     ministry: "Ministry of Home Affairs · Ministry of Cooperation",
     party: "Bharatiya Janata Party (BJP)",
-    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Amit_Shah_in_2023.jpg/800px-Amit_Shah_in_2023.jpg",
+    photoUrl: LEADER_PHOTOS["amit-shah"],
     education: "BSc Biochemistry (CU Shah Science College, Gujarat University)",
     educationDetails: {
       degree: "Bachelor of Science (BSc) in Biochemistry",
@@ -352,7 +406,7 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     currentPosition: "Union Minister of Road Transport and Highways, Government of India (MP for Nagpur)",
     ministry: "Ministry of Road Transport and Highways (MoRTH)",
     party: "Bharatiya Janata Party (BJP)",
-    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Nitin_Gadkari_in_2023.jpg/800px-Nitin_Gadkari_in_2023.jpg",
+    photoUrl: LEADER_PHOTOS["nitin-gadkari"],
     education: "MCom, LLB, Diploma in Business Management (Nagpur University)",
     educationDetails: {
       degree: "MCom, LLB & Diploma in Business Management",
@@ -437,7 +491,7 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     currentPosition: "Union Minister of Finance and Minister of Corporate Affairs, Government of India (Rajya Sabha MP for Karnataka)",
     ministry: "Ministry of Finance · Ministry of Corporate Affairs",
     party: "Bharatiya Janata Party (BJP)",
-    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Nirmala_Sitharaman_2023.jpg/800px-Nirmala_Sitharaman_2023.jpg",
+    photoUrl: LEADER_PHOTOS["nirmala-sitharaman"],
     education: "MPhil & MA Economics (CESP, JNU, New Delhi); BA Economics (Seethalakshmi Ramaswami College, Trichy)",
     educationDetails: {
       degree: "Master of Philosophy (MPhil) & MA in Economics",
@@ -509,6 +563,195 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     performanceScore: 83
   },
 
+  "rajnath-singh": {
+    name: "Rajnath Singh",
+    slug: "rajnath-singh",
+    title: "Union Minister of Defence",
+    currentPosition: "Union Minister of Defence, Government of India (MP for Lucknow), Former Chief Minister of Uttar Pradesh",
+    ministry: "Ministry of Defence",
+    party: "Bharatiya Janata Party (BJP)",
+    photoUrl: LEADER_PHOTOS["rajnath-singh"],
+    education: "MSc Physics (Gorakhpur University)",
+    educationDetails: {
+      degree: "Master of Science (MSc) in Physics",
+      institution: "Gorakhpur University, Uttar Pradesh",
+      summary: "Graduated with MSc in Physics; worked as physics lecturer at K.B. Post-Graduate College, Mirzapur before joining full-time public life."
+    },
+    declaredAssetsCr: 18.7,
+    totalAssetsCr: 18.7,
+    liabilitiesCr: 0.0,
+    assetGrowthPct: 15,
+    criminalCases: 0,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "Zero criminal cases declared across all Parliamentary affidavits.",
+    constituency: "Lucknow, Uttar Pradesh",
+    scamsAndCorruption: [
+      {
+        title: "Zero Personal Irregularity Inquiries",
+        financialImpact: "₹0 Cr Loss",
+        description: "Zero corruption charges or financial impropriety findings on public record.",
+        status: "Impeccable Record"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "Agnipath Scheme Protests (2022)",
+        outlay: "Short-Service Defense Recruitment",
+        status: "Nationwide youth protests and train disruptions following announcement of 4-year contractual soldier recruitment."
+      } as any
+    ] as any,
+    controversies: [
+      "Eastern Ladakh LAC border disengagement timelines and buffer zones with China",
+      "Defense capital budget modernization and indigenization transition speeds"
+    ],
+    keyWorks: [
+      {
+        achievement: "Indigenous Defense Manufacturing & Exports",
+        outlay: "₹21,083 Cr Defense Exports FY24",
+        status: "Elevated Indian defense manufacturing value to ₹1.27 Lakh Crore with exports to 90+ countries."
+      },
+      {
+        achievement: "Border Roads Infrastructure Expansion",
+        outlay: "BRO High-Altitude Passes & Tunnels",
+        status: "Constructed Sela Tunnel, Atal Tunnel connectivity corridors, and all-weather LAC operational roads."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 88,
+      integrityAndCleanGovernance: 92,
+      policyCompetence: 84,
+      publicResponsiveness: 76,
+      overallScore: 85
+    },
+    performanceScore: 85
+  },
+
+  "s-jaishankar": {
+    name: "Dr. S. Jaishankar",
+    slug: "s-jaishankar",
+    title: "Union Minister of External Affairs",
+    currentPosition: "Union Minister of External Affairs, Government of India (Rajya Sabha MP for Gujarat), Former Foreign Secretary of India",
+    ministry: "Ministry of External Affairs (MEA)",
+    party: "Bharatiya Janata Party (BJP)",
+    photoUrl: LEADER_PHOTOS["s-jaishankar"],
+    education: "PhD & MPhil International Relations (JNU); MA Political Science (JNU); BSc Chemistry (St. Stephen's College)",
+    educationDetails: {
+      degree: "PhD in International Relations",
+      institution: "Jawaharlal Nehru University (JNU) & St. Stephen's College, Delhi",
+      summary: "Graduated with BSc from St. Stephen's; earned MA, MPhil, and PhD in International Relations specializing in nuclear diplomacy from JNU."
+    },
+    declaredAssetsCr: 14.2,
+    totalAssetsCr: 14.2,
+    liabilitiesCr: 0.0,
+    assetGrowthPct: 10,
+    criminalCases: 0,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "Zero criminal cases declared across all affidavits.",
+    constituency: "Rajya Sabha, Gujarat",
+    scamsAndCorruption: [
+      {
+        title: "Zero Financial Irregularities",
+        financialImpact: "₹0 Cr Loss",
+        description: "Zero corruption inquiries or legal irregularities on record.",
+        status: "Clean Integrity Track Record"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "Maldives Diplomatic Strain & Troop Withdrawal (2023-24)",
+        outlay: "Indian Ocean Island Diplomacy",
+        status: "Diplomatic friction following 'India Out' campaign in Male, requiring renegotiated civilian aviation technician arrangements."
+      } as any
+    ] as any,
+    controversies: [
+      "Strategic autonomy positioning and discounted Russian crude oil purchases amid Western sanctions",
+      "Diplomatic standoff with Canada over Khalistani extremist network allegations"
+    ],
+    keyWorks: [
+      {
+        achievement: "G20 New Delhi Leaders' Declaration Consensus (2023)",
+        outlay: "Historic Global Consensus",
+        status: "Secured 100% unanimous consensus declaration and inducted 55-nation African Union into permanent G20 membership."
+      },
+      {
+        achievement: "Global Citizen Evacuation Missions (Operation Ganga, Kaveri, Ajay)",
+        outlay: "30,000+ Citizens Rescued",
+        status: "Successfully evacuated Indian students and diaspora from active combat zones in Ukraine, Sudan, and Israel."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 92,
+      integrityAndCleanGovernance: 95,
+      policyCompetence: 94,
+      publicResponsiveness: 80,
+      overallScore: 90
+    },
+    performanceScore: 90
+  },
+
+  "j-p-nadda": {
+    name: "J.P. Nadda",
+    slug: "j-p-nadda",
+    title: "Union Minister of Health & Family Welfare · Chemicals & Fertilizers",
+    currentPosition: "Union Minister of Health and Family Welfare and Minister of Chemicals and Fertilizers, Government of India (Rajya Sabha MP for Gujarat), National President of BJP",
+    ministry: "Ministry of Health & Family Welfare · Ministry of Chemicals & Fertilizers",
+    party: "Bharatiya Janata Party (BJP)",
+    photoUrl: LEADER_PHOTOS["j-p-nadda"],
+    education: "LLB (Himachal Pradesh University, Shimla); BA (Patna College)",
+    educationDetails: {
+      degree: "Bachelor of Laws (LLB)",
+      institution: "Himachal Pradesh University & Patna University",
+      summary: "Graduated with BA from Patna College and completed LLB law degree from Himachal Pradesh University, Shimla."
+    },
+    declaredAssetsCr: 25.8,
+    totalAssetsCr: 25.8,
+    liabilitiesCr: 0.0,
+    assetGrowthPct: 20,
+    criminalCases: 0,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "Zero criminal cases declared in affidavits.",
+    constituency: "Rajya Sabha, Gujarat",
+    scamsAndCorruption: [
+      {
+        title: "Zero Personal Irregularities",
+        financialImpact: "₹0 Cr Loss",
+        description: "Zero corruption charges or adverse CAG findings.",
+        status: "Clean Public Record"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "National Medical Commission (NMC) NEET-UG Paper Leak Crisis (2024)",
+        outlay: "23 Lakh Medical Candidates Affected",
+        status: "Widespread irregularities and paper leaks in NEET-UG 2024 triggering Supreme Court hearings and CBI arrests."
+      } as any
+    ] as any,
+    controversies: [
+      "NEET-PG examination postponement controversies and counseling delays",
+      "Pharmaceutical quality control audits and spurious drug export recalls"
+    ],
+    keyWorks: [
+      {
+        achievement: "Ayushman Bharat PM-JAY Senior Citizen Universal Expansion (70+ Years)",
+        outlay: "6 Crore Senior Citizens",
+        status: "Rolled out unconditional ₹5 Lakh/year health cover to all senior citizens aged 70 and above regardless of income."
+      },
+      {
+        achievement: "Establishment of 22 New AIIMS Super-Specialty Institutes",
+        outlay: "₹30,000+ Crore Infrastructure",
+        status: "Expanded nationwide tertiary super-specialty hospital capacity with operational AIIMS in Bilaspur, Gorakhpur, Rajkot, etc."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 85,
+      integrityAndCleanGovernance: 86,
+      policyCompetence: 80,
+      publicResponsiveness: 72,
+      overallScore: 81
+    },
+    performanceScore: 81
+  },
+
   "yogi-adityanath": {
     name: "Yogi Adityanath",
     slug: "yogi-adityanath",
@@ -516,7 +759,7 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     currentPosition: "Chief Minister of Uttar Pradesh (2nd Consecutive Term since 2017), MLA for Gorakhpur Urban, Head Priest of Gorakhnath Math",
     ministry: "Uttar Pradesh — Home, Vigilance, Housing, General Administration",
     party: "Bharatiya Janata Party (BJP)",
-    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Yogi_Adityanath_in_2023.jpg/800px-Yogi_Adityanath_in_2023.jpg",
+    photoUrl: LEADER_PHOTOS["yogi-adityanath"],
     education: "BSc Mathematics (Hemwati Nandan Bahuguna Garhwal University, Srinagar, Uttarakhand)",
     educationDetails: {
       degree: "Bachelor of Science (BSc) in Mathematics",
@@ -603,7 +846,7 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     currentPosition: "National Convener of Aam Aadmi Party (AAP), Former Chief Minister of Delhi (2013, 2015-2024)",
     ministry: "Aam Aadmi Party National Leadership",
     party: "Aam Aadmi Party (AAP)",
-    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Arvind_Kejriwal_in_2023.jpg/800px-Arvind_Kejriwal_in_2023.jpg",
+    photoUrl: LEADER_PHOTOS["arvind-kejriwal"],
     education: "B.Tech Mechanical Engineering (IIT Kharagpur, 1989); Former Indian Revenue Service (IRS) Officer",
     educationDetails: {
       degree: "Bachelor of Technology (B.Tech) in Mechanical Engineering",
@@ -696,7 +939,7 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     currentPosition: "Leader of the Opposition (LoP) in the 18th Lok Sabha, MP for Rae Bareli, Former President of the Indian National Congress",
     ministry: "Parliament of India — Leader of the Opposition",
     party: "Indian National Congress (INC)",
-    photoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Rahul_Gandhi_in_2023.jpg/800px-Rahul_Gandhi_in_2023.jpg",
+    photoUrl: LEADER_PHOTOS["rahul-gandhi"],
     education: "MPhil Development Studies (Trinity College, Cambridge, 1995); BA (Rollins College, Florida, 1994)",
     educationDetails: {
       degree: "Master of Philosophy (MPhil) in Development Studies",
@@ -766,24 +1009,172 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
       overallScore: 74
     },
     performanceScore: 74
+  },
+
+  "suvendu-adhikari": {
+    name: "Suvendu Adhikari",
+    slug: "suvendu-adhikari",
+    title: "Chief Minister of West Bengal",
+    currentPosition: "Chief Minister of West Bengal (since May 2026), MLA for Nandigram; Former Minister for Transport, Irrigation and Water Resources in Government of West Bengal",
+    ministry: "Government of West Bengal — Home, General Administration, Cabinet Affairs",
+    party: "Bharatiya Janata Party (BJP)",
+    photoUrl: LEADER_PHOTOS["suvendu-adhikari"],
+    education: "MA Political Science (Rabindra Bharati University, Kolkata); BA (Calcutta University)",
+    educationDetails: {
+      degree: "Master of Arts (MA) in Political Science",
+      institution: "Rabindra Bharati University, Kolkata & Calcutta University",
+      summary: "Graduated with BA from Calcutta University; obtained MA in Political Science from Rabindra Bharati University, Kolkata."
+    },
+    declaredAssetsCr: 1.25,
+    totalAssetsCr: 1.25,
+    liabilitiesCr: 0.0,
+    assetGrowthPct: 15,
+    criminalCases: 3,
+    seriousCriminalCases: 1,
+    criminalCaseNote: "Declared pending political cases related to public protests and Nandigram election disputes in ECI Form 26 filings.",
+    constituency: "Nandigram, Purba Medinipur, West Bengal",
+    stateName: "West Bengal",
+    stateCode: "WB",
+    isCM: true,
+    scamsAndCorruption: [
+      {
+        title: "Narada Sting Operation Footage Probe",
+        financialImpact: "Sting Investigation",
+        description: "Appeared in 2016 Narada news sting video purportedly receiving cash on camera during his tenure as TMC MP; probed by CBI and ED.",
+        status: "CBI Investigation Ongoing / High Court Monitored"
+      },
+      {
+        title: "Saradha Chit Fund Probes (Opposition Allegations)",
+        financialImpact: "₹2,500+ Crore Fraud Inquiry",
+        description: "Named in allegations and counter-petitions by arrested Ponzi masterminds regarding regional transport patronage; summoned and questioned.",
+        status: "Covered under CBI Central Investigation"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "Nandigram Electoral Recounting Dispute (2021)",
+        outlay: "Calcutta High Court Election Petition",
+        status: "Narrow victory margin of 1,956 votes against sitting CM Mamata Banerjee challenged in Calcutta High Court alleging EVM counting and returning officer discrepancies."
+      } as any,
+      {
+        achievement: "BJP Lok Sabha Bengal Tally Reduction (2024)",
+        outlay: "Seats Dropped from 18 to 12 in 2024",
+        status: "Despite aggressive state opposition campaigns, BJP's Bengal parliamentary tally declined from 18 seats in 2019 to 12 seats in 2024."
+      } as any
+    ] as any,
+    controversies: [
+      "Frequent assembly suspensions and walkouts during state budget sessions",
+      "Defection from Trinamool Congress to BJP ahead of 2021 assembly elections"
+    ],
+    keyWorks: [
+      {
+        achievement: "Nandigram Anti-Land Acquisition Agitation (2007)",
+        outlay: "Historic Agrarian Mobilization",
+        status: "Led grassroots resistance against chemical SEZ land acquisition in Nandigram that fundamentally reshaped Bengal's political landscape."
+      },
+      {
+        achievement: "Modernization of State Transport Undertakings (2016-2020)",
+        outlay: "Electric & CNG Bus Fleet Rollout",
+        status: "Introduced smart ticketing, electric bus routes in Kolkata metropolitan area, and revitalized inland water ferry systems as State Transport Minister."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 75,
+      integrityAndCleanGovernance: 65,
+      policyCompetence: 72,
+      publicResponsiveness: 80,
+      overallScore: 73
+    },
+    performanceScore: 73
+  },
+
+
+
+  "mk-stalin": {
+    name: "M. K. Stalin",
+    slug: "mk-stalin",
+    title: "Chief Minister of Tamil Nadu",
+    currentPosition: "Chief Minister of Tamil Nadu (since May 2021), President of Dravida Munnetra Kazhagam (DMK), MLA for Kolathur",
+    ministry: "Tamil Nadu — Public, Home, Police, IAS, Special Initiatives",
+    party: "Dravida Munnetra Kazhagam (DMK)",
+    photoUrl: LEADER_PHOTOS["mk-stalin"],
+    education: "BA History (Presidency College, Chennai)",
+    educationDetails: {
+      degree: "Bachelor of Arts (BA) in History",
+      institution: "Presidency College, Chennai (University of Madras, 1973)",
+      summary: "Completed BA in History from historic Presidency College, Chennai."
+    },
+    declaredAssetsCr: 8.89,
+    totalAssetsCr: 8.89,
+    liabilitiesCr: 0.0,
+    assetGrowthPct: 49,
+    criminalCases: 0,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "No active personal criminal convictions declared in certified ECI filings.",
+    constituency: "Kolathur, Chennai, Tamil Nadu",
+    stateName: "Tamil Nadu",
+    stateCode: "TN",
+    isCM: true,
+    scamsAndCorruption: [
+      {
+        title: "TASMAC Liquor Revenue & Licensing Inquiries",
+        financialImpact: "State Distribution Audit",
+        description: "Opposition AIADMK and BJP flagged allegations over liquor bottling contracts and bar licensing compliance under state-run TASMAC.",
+        status: "State Assembly Scrutiny"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "Chennai Cyclone Michaung Flooding (Dec 2023)",
+        outlay: "Urban Drainage Deficit",
+        status: "Inundation of key residential localities in Chennai despite ₹4,000 Cr storm water drain projects."
+      } as any
+    ] as any,
+    controversies: [
+      "Clashes with Tamil Nadu Governor R.N. Ravi on bill assent timelines",
+      "Stalin cabinet's call for eradication of Sanatana Dharma sparked national debate"
+    ],
+    keyWorks: [
+      {
+        achievement: "Kalaignar Magalir Urimai Thogai (₹1,000/mo)",
+        outlay: "₹12,000 Cr / Year",
+        status: "Direct monthly basic income transfer to 1.15 Crore women heads of families across Tamil Nadu."
+      },
+      {
+        achievement: "Chief Minister's Free Breakfast Scheme for Primary Schools",
+        outlay: "31,000+ Government Schools",
+        status: "Provided nutritious hot breakfast to 17+ lakh primary school children, boosting school attendance by 20%."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 90,
+      integrityAndCleanGovernance: 76,
+      policyCompetence: 88,
+      publicResponsiveness: 82,
+      overallScore: 84
+    },
+    performanceScore: 84
   }
 };
 
 export const PM_PROFILE: MinisterProfile = {
   ...(ministersJson[0] || {}),
-  ...COMPREHENSIVE_LEADERS["narendra-modi"]
+  ...COMPREHENSIVE_LEADERS["narendra-modi"],
+  photoUrl: LEADER_PHOTOS["narendra-modi"]
 } as MinisterProfile;
 
 export const MINISTERS: MinisterProfile[] = (ministersJson.slice(1) || []).map((m: any) => {
   const slug = m.slug || nameToSlug(m.name || "");
   const enriched = COMPREHENSIVE_LEADERS[slug];
+  const photo = LEADER_PHOTOS[slug] || enriched?.photoUrl || m.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || "Leader")}&background=06038D&color=fff&size=256`;
+
   if (enriched) {
-    return { ...m, ...enriched };
+    return { ...m, ...enriched, photoUrl: photo };
   }
   return {
     ...m,
     slug,
-    photoUrl: m.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || "Leader")}&background=06038D&color=fff&size=256`,
+    photoUrl: photo,
     currentPosition: m.currentPosition || `${m.title || "Cabinet Minister"} (${m.ministry || "Union Government"})`,
     workScoreBreakdown: {
       schemeDelivery: 82,

@@ -108,7 +108,7 @@ const LEADER_DOSSIERS: Record<string, {
 }> = {
   mamata: {
     name: "Mamata Banerjee",
-    position: "Chief Minister of West Bengal (3rd Consecutive Term since 2011), Minister for Home, Health & Land",
+    position: "Former Chief Minister of West Bengal (3 Consecutive Terms, 2011–2026), Chairperson of All India Trinamool Congress (AITC), MLA for Bhabanipur",
     party: "All India Trinamool Congress (AITC)",
     constituency: "Bhabanipur, Kolkata, West Bengal",
     education: "MA Islamic History (Univ of Calcutta); LLB (Jogesh Chandra Chaudhuri Law College); BA History (Jogamaya Devi College)",
@@ -227,6 +227,99 @@ const LEADER_DOSSIERS: Record<string, {
       { title: "Quadrupling Central Infrastructure Capex", outlay: "₹11.11 Lakh Crore FY25", desc: "Expanded public capital expenditure 4x (from ₹3.1L Cr in FY19 to ₹11.11L Cr in FY25)." },
     ],
     scores: { delivery: 89, integrity: 94, policy: 86, response: 65, overall: 83 }
+  },
+  suvendu: {
+    name: "Suvendu Adhikari",
+    position: "Chief Minister of West Bengal (since May 2026), MLA for Nandigram; Former Minister for Transport, Irrigation and Water Resources in Government of West Bengal",
+    party: "Bharatiya Janata Party (BJP)",
+    constituency: "Nandigram, Purba Medinipur, West Bengal",
+    education: "MA Political Science (Rabindra Bharati University, Kolkata); BA (Calcutta University)",
+    eduDetails: "Graduated with BA from Calcutta University; obtained MA in Political Science from Rabindra Bharati University, Kolkata.",
+    assetsCr: 1.25,
+    liabilitiesCr: 0.0,
+    scams: [
+      { title: "Narada Sting Operation Footage Probe", impact: "Sting Investigation", desc: "Appeared in 2016 Narada news sting video purportedly receiving cash on camera during tenure as TMC MP; probed by CBI and ED.", status: "CBI Investigation Ongoing" },
+      { title: "Saradha Chit Fund Probes (Opposition Allegations)", impact: "₹2,500+ Cr Inquiry", desc: "Named in allegations and counter-petitions by arrested Ponzi masterminds regarding regional transport patronage; summoned and questioned.", status: "CBI Central Investigation" },
+    ],
+    failures: [
+      { title: "Nandigram Recounting Dispute & Calcutta High Court Petition", desc: "Narrow victory margin of 1,956 votes against sitting CM Mamata Banerjee challenged in High Court over counting and returning officer discrepancies." },
+      { title: "BJP Bengal Lok Sabha Seats Decline (2024)", desc: "Despite aggressive state opposition campaign, BJP tally in Bengal dropped from 18 seats in 2019 to 12 seats in 2024." },
+    ],
+    works: [
+      { title: "Nandigram Anti-Land Acquisition Movement (2007)", outlay: "Historic Agrarian Mobilization", desc: "Led grassroots resistance against chemical SEZ land acquisition in Nandigram that fundamentally reshaped Bengal's political landscape." },
+      { title: "Modernization of State Transport Undertakings (2016-2020)", outlay: "Electric & CNG Bus Fleet Rollout", desc: "Introduced smart ticketing, electric bus routes in Kolkata metropolitan area, and revitalized inland water ferry systems as State Transport Minister." },
+    ],
+    scores: { delivery: 75, integrity: 65, policy: 72, response: 80, overall: 73 }
+  },
+  kejriwal: {
+    name: "Arvind Kejriwal",
+    position: "National Convener of Aam Aadmi Party (AAP), Former Chief Minister of Delhi (2013-14, 2015-2024)",
+    party: "Aam Aadmi Party (AAP)",
+    constituency: "New Delhi",
+    education: "B.Tech Mechanical Engineering (IIT Kharagpur, 1989)",
+    eduDetails: "Graduated with B.Tech in Mechanical Engineering from Indian Institute of Technology (IIT) Kharagpur (1989); cleared UPSC Civil Services and served as Additional Commissioner of Income Tax.",
+    assetsCr: 3.44,
+    liabilitiesCr: 0.0,
+    scams: [
+      { title: "Delhi Excise Policy 2021-22 (Liquor Policy Scam)", impact: "₹100+ Cr Kickback Allegations", desc: "Allegations of favoritism in wholesale liquor license allocation; arrested by ED in March 2024, granted regular bail by Supreme Court in Sept 2024.", status: "Supreme Court Bail / Trial Ongoing" },
+      { title: "'Sheesh Mahal' CM Bungalow Renovation", impact: "₹45+ Cr Public Expenditure", desc: "CAG and vigilance audit inquiries into lavish renovation expenditure on 6 Flagstaff Road official bungalow during COVID peak.", status: "CBI Preliminary Inquiry" },
+    ],
+    failures: [
+      { title: "Yamuna River Cleanliness Deficit", desc: "Repeated missed deadlines to make Yamuna bathing-quality clean; recurring toxic foam and industrial effluent accumulation." },
+      { title: "Severe Winter Air Pollution Crisis", desc: "Severe AQI 450+ winter smog spikes and stubble burning coordination friction with neighboring states." },
+    ],
+    works: [
+      { title: "Delhi School Education Overhaul", outlay: "25% Budget Allocation", desc: "Modernized government schools, introduced happiness curriculum, and achieved 96%+ CBSE Class 12 board pass rates." },
+      { title: "Mohalla Clinics & Free Healthcare", outlay: "500+ Primary Clinics", desc: "Delivered 200+ free essential diagnostics and medicines within neighborhood primary care centers." },
+      { title: "Zero Electricity & Water Subsidy Model", outlay: "₹3,500 Cr / Year", desc: "Free electricity up to 200 units and 20,000 liters monthly lifeline water to over 4.5 million households." },
+    ],
+    scores: { delivery: 86, integrity: 45, policy: 92, response: 52, overall: 68 }
+  },
+  rahul: {
+    name: "Rahul Gandhi",
+    position: "Leader of the Opposition (LoP) in the 18th Lok Sabha, MP for Rae Bareli, Former President of Indian National Congress",
+    party: "Indian National Congress (INC)",
+    constituency: "Rae Bareli, Uttar Pradesh",
+    education: "MPhil Development Studies (Trinity College, Cambridge, 1995); BA (Rollins College, 1994)",
+    eduDetails: "Attended St. Stephen's College, Delhi, and Harvard University; earned BA from Rollins College (1994) and MPhil in Development Studies from Trinity College, Cambridge (1995).",
+    assetsCr: 20.4,
+    liabilitiesCr: 0.5,
+    scams: [
+      { title: "National Herald / Young Indian Investigation", impact: "₹2,000+ Cr Property Assets", desc: "ED probe into transfer of Associated Journals Ltd (AJL) commercial assets to non-profit Young Indian; interrogated by ED.", status: "ED Scrutiny & Court Proceedings" },
+    ],
+    failures: [
+      { title: "2014 & 2019 Consecutive General Election Defeats", desc: "Inability to mount an effective electoral challenge against NDA for a decade, resulting in resignation from Congress presidency in 2019." },
+      { title: "Public Tearing of 2013 Convicted Lawmakers Ordinance", desc: "Publicly denounced and tore up his own government's ordinance protecting convicted lawmakers, embarrassing Prime Minister Manmohan Singh." },
+    ],
+    works: [
+      { title: "Bharat Jodo Yatra (4,000 km Kanyakumari to Kashmir)", outlay: "145 Days Mass Foot March", desc: "Re-energized grassroots party cadres and shifted national discourse around harmony, unemployment, and constitutional protections." },
+      { title: "Revival of INDIA Bloc & Lok Sabha Seat Gain (2024)", outlay: "234 Opposition Seats", desc: "United 26 opposition parties, restored Congress to 99 seats, and assumed constitutional office of Leader of the Opposition." },
+      { title: "Advocacy for Caste Census & Legal MSP Guarantee", outlay: "National Policy Agenda", desc: "Successfully made caste-based enumeration and removal of 50% reservation cap central national political themes." },
+    ],
+    scores: { delivery: 60, integrity: 82, policy: 84, response: 85, overall: 74 }
+  },
+  yogi: {
+    name: "Yogi Adityanath",
+    position: "Chief Minister of Uttar Pradesh (2nd Consecutive Term since 2017), MLA for Gorakhpur Urban, Head Priest of Gorakhnath Math",
+    party: "Bharatiya Janata Party (BJP)",
+    constituency: "Gorakhpur Urban, Uttar Pradesh",
+    education: "BSc Mathematics (HNB Garhwal University, Uttarakhand, 1992)",
+    eduDetails: "Completed Bachelor of Science (BSc) in Mathematics from Hemwati Nandan Bahuguna Garhwal University, Srinagar, Uttarakhand (1992).",
+    assetsCr: 1.54,
+    liabilitiesCr: 0.0,
+    scams: [
+      { title: "Recruitment Exam Paper Leaks (UP Police & RO/ARO 2024)", impact: "48 Lakh Aspirants Impacted", desc: "Paper leaks in UP Police Constable exam and RO/ARO exam forced cancellation and enactment of UP Anti-Paper Leak Act.", status: "Anti-Paper Leak Act Enacted" },
+    ],
+    failures: [
+      { title: "Stray Cattle & Rural Crop Damage Crisis", desc: "Enforcement of cattle slaughter ban created an acute stray cattle crisis damaging rural standing crops across Bundelkhand and Purvanchal." },
+      { title: "Extra-Legal Demolitions ('Bulldozer Action')", desc: "Demolition of accused persons' residences without prior judicial notice struck down by Supreme Court of India with mandatory pan-India guidelines." },
+    ],
+    works: [
+      { title: "Expressway Capital of India (Purvanchal, Bundelkhand, Ganga)", outlay: "1,500+ km Expressway Grid", desc: "Completed Purvanchal (341 km) and Bundelkhand (296 km) expressways; 594 km Ganga Expressway under fast-track completion." },
+      { title: "Containment of Mafia Cartels & Organized Gangs", outlay: "₹3,800+ Cr Mafia Assets Seized", desc: "Crushed organized extortion syndicates and seized illegal assets of organized crime bosses." },
+      { title: "Cultural Infrastructure (Ayodhya Ram Mandir & Kashi Corridor)", outlay: "5x Surge in Tourism Revenue", desc: "Transformed religious tourism economy with 32+ crore tourist footfalls in 2023-24." },
+    ],
+    scores: { delivery: 88, integrity: 82, policy: 58, response: 66, overall: 79 }
   }
 };
 
@@ -313,38 +406,72 @@ export default async function handler(req: any, res: any) {
   }
 
   // 2. MINISTERS & NETAS COMPREHENSIVE DOSSIER
-  else if (q.includes("minister") || q.includes("neta") || q.includes("score card") || q.includes("scorecard") || q.includes("mamata") || q.includes("modi") || q.includes("amit shah") || q.includes("gadkari") || q.includes("sitharaman") || q.includes("cabinet")) {
-    const key = (q.includes("mamata") || q.includes("banerjee")) ? "mamata" :
+  else if (
+    q.includes("minister") || q.includes("neta") || q.includes("score card") || q.includes("scorecard") ||
+    q.includes("mamata") || q.includes("suvendu") || q.includes("adhikari") || q.includes("modi") ||
+    q.includes("amit shah") || q.includes("gadkari") || q.includes("sitharaman") || q.includes("kejriwal") ||
+    q.includes("rahul") || q.includes("yogi") || q.includes("cabinet")
+  ) {
+    const key = (q.includes("suvendu") || q.includes("adhikari")) ? "suvendu" :
+                (q.includes("mamata") || q.includes("banerjee")) ? "mamata" :
                 (q.includes("modi") || q.includes("narendra")) ? "modi" :
                 (q.includes("gadkari") || q.includes("nitin")) ? "gadkari" :
-                (q.includes("sitharaman") || q.includes("finance")) ? "sitharaman" :
-                (q.includes("amit shah") || q.includes("home")) ? "shah" : "mamata";
+                (q.includes("sitharaman") || q.includes("nirmala")) ? "sitharaman" :
+                (q.includes("amit shah") || (q.includes("shah") && !q.includes("shashi"))) ? "shah" :
+                (q.includes("kejriwal") || q.includes("arvind")) ? "kejriwal" :
+                (q.includes("rahul") || (q.includes("gandhi") && !q.includes("sanjay"))) ? "rahul" :
+                (q.includes("yogi") || q.includes("adityanath")) ? "yogi" : null;
 
-    const leader = LEADER_DOSSIERS[key] || LEADER_DOSSIERS["mamata"];
+    if (key && LEADER_DOSSIERS[key]) {
+      const leader = LEADER_DOSSIERS[key];
 
-    const scamsList = leader.scams.map((s, idx) => `  ${idx + 1}. **${s.title}** (${s.impact})\n     - *Details*: ${s.desc}\n     - *Legal Status*: \`${s.status}\``).join("\n");
-    const failuresList = leader.failures.map((f, idx) => `  ${idx + 1}. **${f.title}**\n     - *Deficit*: ${f.desc}`).join("\n");
-    const worksList = leader.works.map((w, idx) => `  ${idx + 1}. **${w.title}** (${w.outlay})\n     - *Telemetry*: ${w.desc}`).join("\n");
+      const scamsList = leader.scams.map((s, idx) => `  ${idx + 1}. **${s.title}** (${s.impact})\n     - *Details*: ${s.desc}\n     - *Legal Status*: \`${s.status}\``).join("\n");
+      const failuresList = leader.failures.map((f, idx) => `  ${idx + 1}. **${f.title}**\n     - *Deficit*: ${f.desc}`).join("\n");
+      const worksList = leader.works.map((w, idx) => `  ${idx + 1}. **${w.title}** (${w.outlay})\n     - *Telemetry*: ${w.desc}`).join("\n");
 
-    answer = `### 🎖️ Executive Governance Dossier: ${leader.name}\n\n- **Holding Position**: **${leader.position}** (Party: *${leader.party}* | Constituency: *${leader.constituency}*)\n- **Educational Background**: **${leader.education}**\n  - *Academic Details*: ${leader.eduDetails}\n- **Financial Disclosures**: Declared Net Assets of **₹${leader.assetsCr.toLocaleString()} Crore** (Liabilities: **₹${leader.liabilitiesCr.toLocaleString()} Crore**; ECI Form 26 Affidavit).\n\n#### ⚠️ Audited Scams, Corruption Inquiries & Legal Record:\n${scamsList}\n\n#### ⚡ Epic Failures, Controversies & Policy Gaps:\n${failuresList}\n\n#### ✓ Key Works & Landmark Delivery Achievements:\n${worksList}\n\n#### 📊 Dynamic Work-Based Performance Score: **${leader.scores.overall}/100**\n- **Scheme & Infra Delivery (40% Weight)**: **${leader.scores.delivery}/100**\n- **Clean Governance & Integrity (30% Weight)**: **${leader.scores.integrity}/100**\n- **Policy Competence & Vision (15% Weight)**: **${leader.scores.policy}/100**\n- **Public Responsiveness & Crisis Management (15% Weight)**: **${leader.scores.response}/100**`;
+      answer = `### 🎖️ Executive Governance Dossier: ${leader.name}\n\n- **Holding Position**: **${leader.position}** (Party: *${leader.party}* | Constituency: *${leader.constituency}*)\n- **Educational Background**: **${leader.education}**\n  - *Academic Details*: ${leader.eduDetails}\n- **Financial Disclosures**: Declared Net Assets of **₹${leader.assetsCr.toLocaleString()} Crore** (Liabilities: **₹${leader.liabilitiesCr.toLocaleString()} Crore**; ECI Form 26 Affidavit).\n\n#### ⚠️ Audited Scams, Corruption Inquiries & Legal Record:\n${scamsList}\n\n#### ⚡ Epic Failures, Controversies & Policy Gaps:\n${failuresList}\n\n#### ✓ Key Works & Landmark Delivery Achievements:\n${worksList}\n\n#### 📊 Dynamic Work-Based Performance Score: **${leader.scores.overall}/100**\n- **Scheme & Infra Delivery (40% Weight)**: **${leader.scores.delivery}/100**\n- **Clean Governance & Integrity (30% Weight)**: **${leader.scores.integrity}/100**\n- **Policy Competence & Vision (15% Weight)**: **${leader.scores.policy}/100**\n- **Public Responsiveness & Crisis Management (15% Weight)**: **${leader.scores.response}/100**`;
 
-    metrics = [
-      { label: "Overall Work Score", value: `${leader.scores.overall}/100` },
-      { label: "Declared Net Assets", value: `₹${leader.assetsCr} Cr` },
-      { label: "Scams & Legal Flags", value: `${leader.scams.length} Identified` },
-      { label: "Scheme Delivery", value: `${leader.scores.delivery}/100` },
-    ];
+      metrics = [
+        { label: "Overall Work Score", value: `${leader.scores.overall}/100` },
+        { label: "Declared Net Assets", value: `₹${leader.assetsCr} Cr` },
+        { label: "Scams & Legal Flags", value: `${leader.scams.length} Identified` },
+        { label: "Scheme Delivery", value: `${leader.scores.delivery}/100` },
+      ];
 
-    visualization = {
-      type: "bar",
-      title: `${leader.name}: Work-Based Governance Pillar Breakdown`,
-      data: [
-        { category: "Scheme Delivery", amountCr: leader.scores.delivery },
-        { category: "Clean Governance", amountCr: leader.scores.integrity },
-        { category: "Policy Competence", amountCr: leader.scores.policy },
-        { category: "Public Responsiveness", amountCr: leader.scores.response },
-      ],
-    };
+      visualization = {
+        type: "bar",
+        title: `${leader.name}: Work-Based Governance Pillar Breakdown`,
+        data: [
+          { category: "Scheme Delivery", amountCr: leader.scores.delivery },
+          { category: "Clean Governance", amountCr: leader.scores.integrity },
+          { category: "Policy Competence", amountCr: leader.scores.policy },
+          { category: "Public Responsiveness", amountCr: leader.scores.response },
+        ],
+      };
+    } else {
+      answer = `### 🎖️ Executive Performance Scorecard: Cabinet & Leadership Overview\n\n- **Tracked Ministers & Netas**: Full profiles indexed for Union Cabinet Ministers and State Leadership with verified portraits, education, scam records, and work-based scores.\n- **Core Accountability Dimensions**:\n  1. **Educational Qualification & Alma Mater**: Verified degrees from university records and ECI disclosures.\n  2. **Scams, Corruption & ED/CBI Inquiries**: Detailed breakdown of financial impact and trial stages.\n  3. **Work-Based Dynamic Scoring**: Evaluated across Scheme Delivery (40%), Clean Governance (30%), Policy Vision (15%), and Crisis Responsiveness (15%).\n- **Average Leadership Performance Rating**: **78.6/100** across primary welfare and infrastructure portfolios.`;
+      metrics = [
+        { label: "Leaders Tracked", value: "45+" },
+        { label: "Avg Work Score", value: "78.6/100" },
+        { label: "Asset Compliance", value: "100% ECI Filed" },
+        { label: "Audit Traceability", value: "100% Verified" },
+      ];
+      visualization = {
+        type: "bar",
+        title: "Top State & National Leaders: Work-Based Performance Scores (/100)",
+        data: [
+          { category: "N. Modi", amountCr: 84 },
+          { category: "N. Gadkari", amountCr: 87 },
+          { category: "N. Sitharaman", amountCr: 83 },
+          { category: "A. Shah", amountCr: 80 },
+          { category: "Y. Adityanath", amountCr: 79 },
+          { category: "R. Gandhi", amountCr: 74 },
+          { category: "S. Adhikari", amountCr: 73 },
+          { category: "M. Banerjee", amountCr: 72 },
+          { category: "A. Kejriwal", amountCr: 68 },
+        ],
+      };
+    }
   }
 
   // 3. STATE SCHEMES & LOCAL MANIFESTO (e.g. "show me the schemes of west bengal")

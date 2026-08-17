@@ -1359,6 +1359,7 @@ export function App() {
                           <img
                             src={photo}
                             alt={m.name}
+                            referrerPolicy="no-referrer"
                             className="w-full h-full object-cover object-top"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || "Leader")}&background=06038D&color=fff&size=256`;
@@ -1492,6 +1493,7 @@ export function App() {
                           <img
                             src={photo}
                             alt={m.name}
+                            referrerPolicy="no-referrer"
                             className="w-full h-full object-cover object-top"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || "Leader")}&background=06038D&color=fff&size=256`;
@@ -2739,24 +2741,44 @@ export function App() {
 
                 {/* Structured Narrative Breakdown */}
                 {(() => {
-                  // Check if this response is for a specific leader
+                  const ansText = aiResponse.answer || "";
+                  const ansLow = ansText.toLowerCase();
                   const qLow = aiInput.toLowerCase();
                   const allLeaders = [...db.getMinisters(), ...db.getAllStateMinisters()];
-                  const matchedLeader = allLeaders.find((l: any) => {
+
+                  // Match specifically from the AI answer header first, then query
+                  let matchedLeader = allLeaders.find((l: any) => {
                     const name = (l.name || "").toLowerCase();
-                    const slug = (l.slug || "").toLowerCase();
-                    return (
-                      (qLow.includes("mamata") && (name.includes("mamata") || slug.includes("mamata"))) ||
-                      (qLow.includes("modi") && (name.includes("narendra") || slug.includes("modi"))) ||
-                      (qLow.includes("gadkari") && (name.includes("gadkari") || slug.includes("gadkari"))) ||
-                      (qLow.includes("shah") && (name.includes("amit") || slug.includes("amit"))) ||
-                      (qLow.includes("sitharaman") && (name.includes("sitharaman") || slug.includes("sitharaman"))) ||
-                      (qLow.includes("kejriwal") && (name.includes("kejriwal") || slug.includes("kejriwal"))) ||
-                      (qLow.includes("rahul") && (name.includes("rahul") || slug.includes("rahul"))) ||
-                      (qLow.includes("yogi") && (name.includes("yogi") || slug.includes("yogi"))) ||
-                      (name && qLow.includes(name))
-                    );
+                    return ansLow.includes(`dossier: ${name}`) || ansLow.includes(`dossier: **${name}`) || ansLow.includes(`scorecard: ${name}`);
                   });
+
+                  if (!matchedLeader) {
+                    if (qLow.includes("suvendu") || qLow.includes("adhikari")) {
+                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("suvendu") || (l.slug || "").includes("suvendu"));
+                    } else if (qLow.includes("mamata") || qLow.includes("banerjee")) {
+                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("mamata") || (l.slug || "").includes("mamata"));
+                    } else if (qLow.includes("modi") || qLow.includes("narendra")) {
+                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("narendra") || (l.slug || "").includes("modi"));
+                    } else if (qLow.includes("gadkari") || qLow.includes("nitin")) {
+                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("gadkari") || (l.slug || "").includes("gadkari"));
+                    } else if (qLow.includes("shah") && !qLow.includes("shashi")) {
+                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("amit") || (l.slug || "").includes("amit"));
+                    } else if (qLow.includes("sitharaman") || qLow.includes("nirmala")) {
+                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("sitharaman") || (l.slug || "").includes("sitharaman"));
+                    } else if (qLow.includes("kejriwal") || qLow.includes("arvind")) {
+                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("kejriwal") || (l.slug || "").includes("kejriwal"));
+                    } else if (qLow.includes("rahul") || (qLow.includes("gandhi") && !qLow.includes("sanjay"))) {
+                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("rahul") || (l.slug || "").includes("rahul"));
+                    } else if (qLow.includes("yogi") || qLow.includes("adityanath")) {
+                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("yogi") || (l.slug || "").includes("adityanath"));
+                    } else {
+                      matchedLeader = allLeaders.find((l: any) => {
+                        const name = (l.name || "").toLowerCase();
+                        const slug = (l.slug || "").toLowerCase();
+                        return (name && qLow.includes(name)) || (slug && qLow.includes(slug));
+                      });
+                    }
+                  }
 
                   return (
                     <div className="bg-[#FAF7F0] p-5 sm:p-6 rounded-xl border border-[#E8DEC8] space-y-4 font-sans text-sm sm:text-base leading-relaxed text-[#1F2937]">
@@ -2767,6 +2789,7 @@ export function App() {
                             <img
                               src={matchedLeader.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(matchedLeader.name || "Leader")}&background=06038D&color=fff&size=256`}
                               alt={matchedLeader.name}
+                              referrerPolicy="no-referrer"
                               className="w-full h-full object-cover object-top"
                               onError={(e) => {
                                 (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(matchedLeader.name || "Leader")}&background=06038D&color=fff&size=256`;

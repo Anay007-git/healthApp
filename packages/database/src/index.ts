@@ -11,7 +11,7 @@ import {
   seedPartyFunding,
   seedCorporateDonors,
 } from "./seed";
-import { MINISTERS, PM_PROFILE, COMPREHENSIVE_LEADERS, nameToSlug } from "./ministers_data";
+import { MINISTERS, PM_PROFILE, COMPREHENSIVE_LEADERS, LEADER_PHOTOS, nameToSlug } from "./ministers_data";
 import { PARTY_FUNDING, TOP_DONORS, BONDS_META } from "./funding_data";
 import {
   Scheme,
@@ -324,15 +324,17 @@ export class CivicLensDatabase {
     const fact = this.getStateFactsByCode(stateCode);
     if (!fact) return null;
 
+    // 1. Current CM from new government / election if present
     if (fact.newGovtDetails?.cm) {
       return {
         name: fact.newGovtDetails.cm.name,
         title: fact.newGovtDetails.cm.title || "Chief Minister",
         party: fact.newGovtDetails.cm.party,
-        since: fact.newGovtDetails.cm.since,
+        since: fact.newGovtDetails.cm.since || (fact.newGovtYear ? `${fact.newGovtYear}` : "2026"),
       };
     }
 
+    // 2. Incumbent CM
     if (fact.cm) {
       return {
         name: fact.cm.name,
@@ -368,68 +370,110 @@ export class CivicLensDatabase {
 
   getAllStateMinisters() {
     const ministers: any[] = [];
+    const addedSlugs = new Set<string>();
+
     this.stateFactsData.forEach((st: any) => {
-      // 1. Current 2026 government if available (e.g. Suvendu Adhikari in WB, C. Joseph Vijay in TN)
-      if (st.newGovtDetails?.cm) {
-        const newCm = st.newGovtDetails.cm;
+      const hasNewGovt = Boolean(st.newGovtDetails?.cm);
+
+      // 1. Current Chief Minister (newGovtDetails.cm if present, else st.cm)
+      if (hasNewGovt && st.newGovtDetails.cm) {
+        const currentCm = st.newGovtDetails.cm;
+        const slug = nameToSlug(currentCm.name || "");
+        const enriched = COMPREHENSIVE_LEADERS[slug] || {};
+        addedSlugs.add(slug);
         ministers.push({
-          ...newCm,
+          ...currentCm,
+          ...enriched,
           id: `cm-${st.stateCode || st.name}`,
+          slug,
           stateName: st.name,
           stateCode: st.stateCode,
           isCM: true,
-          title: "Chief Minister",
-          ministry: `${st.name} — Chief Minister`,
-          constituency: `${st.name}`,
-          totalAssetsCr: newCm.totalAssetsCr ?? newCm.declaredAssetsCr ?? (newCm.criminalCases * 1.5 + 5.2),
-          liabilitiesCr: newCm.liabilitiesCr ?? 0,
-          assetGrowthPercent: newCm.assetGrowthPercent ?? newCm.assetGrowthPct ?? 22,
-          criminalCaseNote: newCm.criminalCaseNote || newCm.note,
+          title: enriched.title || "Chief Minister",
+          ministry: enriched.ministry || `${st.name} — Chief Minister`,
+          constituency: enriched.constituency || `${st.name}`,
+          totalAssetsCr: enriched.totalAssetsCr ?? currentCm.totalAssetsCr ?? currentCm.declaredAssetsCr ?? (currentCm.criminalCases * 1.5 + 4.2),
+          liabilitiesCr: enriched.liabilitiesCr ?? currentCm.liabilitiesCr ?? 0,
+          assetGrowthPercent: enriched.assetGrowthPct ?? currentCm.assetGrowthPercent ?? currentCm.assetGrowthPct ?? 22,
+          photoUrl: enriched.photoUrl || LEADER_PHOTOS[slug] || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentCm.name)}&background=06038D&color=fff&size=256`,
+          currentPosition: enriched.currentPosition || `Chief Minister of ${st.name} (since ${currentCm.since || "2026"})`,
+        });
+      } else if (st.cm) {
+        const slug = nameToSlug(st.cm.name || "");
+        const enriched = COMPREHENSIVE_LEADERS[slug] || {};
+        addedSlugs.add(slug);
+        ministers.push({
+          ...st.cm,
+          ...enriched,
+          id: `cm-${st.stateCode || st.name}`,
+          slug,
+          stateName: st.name,
+          stateCode: st.stateCode,
+          isCM: true,
+          title: enriched.title || "Chief Minister",
+          ministry: enriched.ministry || `${st.name} — Chief Minister`,
+          constituency: enriched.constituency || `${st.name}`,
+          totalAssetsCr: enriched.totalAssetsCr ?? st.cm.totalAssetsCr ?? st.cm.declaredAssetsCr ?? (st.cm.criminalCases * 1.5 + 4.2),
+          liabilitiesCr: enriched.liabilitiesCr ?? st.cm.liabilitiesCr ?? 0,
+          assetGrowthPercent: enriched.assetGrowthPct ?? st.cm.assetGrowthPercent ?? st.cm.assetGrowthPct ?? 22,
+          photoUrl: enriched.photoUrl || LEADER_PHOTOS[slug] || st.cm.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(st.cm.name)}&background=06038D&color=fff&size=256`,
+          currentPosition: enriched.currentPosition || `Chief Minister of ${st.name}`,
         });
       }
 
-      // 2. New cabinet ministers (e.g. BJP cabinet in WB, TVK/INC cabinet in TN)
-      if (Array.isArray(st.newGovtDetails?.cabinet)) {
-        st.newGovtDetails.cabinet.forEach((cab: any, idx: number) => {
-          ministers.push({
-            ...cab,
-            id: `cab-${st.stateCode || st.name}-${idx}-${cab.name}`,
-            stateName: st.name,
-            stateCode: st.stateCode,
-            title: cab.portfolio || "Cabinet Minister",
-            ministry: `${st.name} — ${cab.portfolio || "Cabinet Minister"}`,
-            constituency: `${st.name}`,
-            totalAssetsCr: cab.totalAssetsCr ?? cab.declaredAssetsCr ?? (cab.criminalCases * 1.2 + 3.2),
-            liabilitiesCr: cab.liabilitiesCr ?? 0,
-            assetGrowthPercent: cab.assetGrowthPercent ?? cab.assetGrowthPct ?? 18,
-          });
-        });
-      }
+      // 2. Former Chief Minister (if newGovtDetails rotated leadership)
+      if (hasNewGovt && st.cm) {
+        const formerCm = st.cm;
+        const slug = nameToSlug(formerCm.name || "");
+        const isSame = st.newGovtDetails.cm.name.toLowerCase() === formerCm.name.toLowerCase();
 
-      // 3. Fallback or former CM
-      if (st.cm) {
-        const hasNewCm = Boolean(st.newGovtDetails?.cm);
-        const isSameName = hasNewCm && st.newGovtDetails.cm.name.toLowerCase() === st.cm.name.toLowerCase();
-        if (!isSameName) {
-          const slug = nameToSlug(st.cm.name || "");
+        if (!isSame && !addedSlugs.has(slug)) {
           const enriched = COMPREHENSIVE_LEADERS[slug] || {};
+          addedSlugs.add(slug);
           ministers.push({
-            ...st.cm,
+            ...formerCm,
             ...enriched,
-            id: hasNewCm ? `former-cm-${st.stateCode || st.name}` : `cm-${st.stateCode || st.name}`,
+            id: `former-cm-${st.stateCode || st.name}`,
+            slug,
             stateName: st.name,
             stateCode: st.stateCode,
-            isCM: !hasNewCm,
-            title: enriched.title || (hasNewCm ? "Former Chief Minister" : "Chief Minister"),
-            ministry: enriched.ministry || `${st.name} — ${hasNewCm ? "Former Chief Minister" : "Chief Minister"}`,
+            isCM: false,
+            title: enriched.title || `Former Chief Minister of ${st.name}`,
+            ministry: enriched.ministry || `${formerCm.party} State Leadership`,
             constituency: enriched.constituency || `${st.name}`,
-            totalAssetsCr: enriched.totalAssetsCr ?? st.cm.totalAssetsCr ?? st.cm.declaredAssetsCr ?? (st.cm.criminalCases * 1.5 + 4.2),
-            liabilitiesCr: enriched.liabilitiesCr ?? st.cm.liabilitiesCr ?? 0,
-            assetGrowthPercent: enriched.assetGrowthPct ?? st.cm.assetGrowthPercent ?? st.cm.assetGrowthPct ?? 22,
-            photoUrl: enriched.photoUrl || st.cm.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(st.cm.name)}&background=06038D&color=fff&size=256`,
-            currentPosition: enriched.currentPosition || `${hasNewCm ? "Former Chief Minister" : "Chief Minister"} of ${st.name}`,
+            totalAssetsCr: enriched.totalAssetsCr ?? formerCm.totalAssetsCr ?? formerCm.declaredAssetsCr ?? (formerCm.criminalCases * 1.5 + 4.2),
+            liabilitiesCr: enriched.liabilitiesCr ?? formerCm.liabilitiesCr ?? 0,
+            assetGrowthPercent: enriched.assetGrowthPct ?? formerCm.assetGrowthPercent ?? formerCm.assetGrowthPct ?? 22,
+            photoUrl: enriched.photoUrl || LEADER_PHOTOS[slug] || formerCm.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(formerCm.name)}&background=06038D&color=fff&size=256`,
+            currentPosition: enriched.currentPosition || `Former Chief Minister of ${st.name} (${formerCm.since || "2011"}-2026)`,
           });
         }
+      }
+
+      // 3. Cabinet Ministers
+      if (Array.isArray(st.newGovtDetails?.cabinet)) {
+        st.newGovtDetails.cabinet.forEach((cab: any, idx: number) => {
+          const slug = nameToSlug(cab.name || "");
+          if (!addedSlugs.has(slug)) {
+            const enriched = COMPREHENSIVE_LEADERS[slug] || {};
+            addedSlugs.add(slug);
+            ministers.push({
+              ...cab,
+              ...enriched,
+              id: `cab-${st.stateCode || st.name}-${idx}-${cab.name}`,
+              slug,
+              stateName: st.name,
+              stateCode: st.stateCode,
+              title: cab.portfolio || "Cabinet Minister",
+              ministry: `${st.name} — ${cab.portfolio || "Cabinet Minister"}`,
+              constituency: `${st.name}`,
+              totalAssetsCr: enriched.totalAssetsCr ?? cab.totalAssetsCr ?? cab.declaredAssetsCr ?? (cab.criminalCases * 1.2 + 3.2),
+              liabilitiesCr: enriched.liabilitiesCr ?? cab.liabilitiesCr ?? 0,
+              assetGrowthPercent: enriched.assetGrowthPct ?? cab.assetGrowthPercent ?? cab.assetGrowthPct ?? 18,
+              photoUrl: enriched.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(cab.name)}&background=06038D&color=fff&size=256`,
+            });
+          }
+        });
       }
 
       // 4. State officials and legislative leaders
@@ -439,28 +483,55 @@ export class CivicLensDatabase {
             grp.officials.forEach((off: any, idx: number) => {
               if (!off.title?.includes("Governor")) {
                 const slug = nameToSlug(off.name || "");
-                const enriched = COMPREHENSIVE_LEADERS[slug] || {};
-                ministers.push({
-                  ...off,
-                  ...enriched,
-                  id: `off-${st.stateCode || st.name}-${idx}-${off.name}`,
-                  stateName: st.name,
-                  stateCode: st.stateCode,
-                  groupName: grp.group,
-                  ministry: enriched.ministry || `${st.name} — ${off.title}`,
-                  constituency: enriched.constituency || `${st.name}`,
-                  totalAssetsCr: enriched.totalAssetsCr ?? off.totalAssetsCr ?? off.declaredAssetsCr ?? (off.criminalCases * 1.2 + 2.5),
-                  liabilitiesCr: enriched.liabilitiesCr ?? off.liabilitiesCr ?? 0,
-                  assetGrowthPercent: enriched.assetGrowthPct ?? off.assetGrowthPercent ?? off.assetGrowthPct ?? 18,
-                  photoUrl: enriched.photoUrl || off.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(off.name)}&background=06038D&color=fff&size=256`,
-                  currentPosition: enriched.currentPosition || `${off.title} (${st.name})`,
-                });
+                if (!addedSlugs.has(slug)) {
+                  const enriched = COMPREHENSIVE_LEADERS[slug] || {};
+                  addedSlugs.add(slug);
+                  ministers.push({
+                    ...off,
+                    ...enriched,
+                    id: `off-${st.stateCode || st.name}-${idx}-${off.name}`,
+                    stateName: st.name,
+                    stateCode: st.stateCode,
+                    groupName: grp.group,
+                    ministry: enriched.ministry || `${st.name} — ${off.title}`,
+                    constituency: enriched.constituency || `${st.name}`,
+                    totalAssetsCr: enriched.totalAssetsCr ?? off.totalAssetsCr ?? off.declaredAssetsCr ?? (off.criminalCases * 1.2 + 2.5),
+                    liabilitiesCr: enriched.liabilitiesCr ?? off.liabilitiesCr ?? 0,
+                    assetGrowthPercent: enriched.assetGrowthPct ?? off.assetGrowthPercent ?? off.assetGrowthPct ?? 18,
+                    photoUrl: enriched.photoUrl || off.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(off.name)}&background=06038D&color=fff&size=256`,
+                    currentPosition: enriched.currentPosition || `${off.title} (${st.name})`,
+                  });
+                }
               }
             });
           }
         });
       }
     });
+
+    // 5. Ensure all national opposition and state leaders from COMPREHENSIVE_LEADERS are included
+    Object.entries(COMPREHENSIVE_LEADERS).forEach(([slug, leader]: [string, any]) => {
+      if (!addedSlugs.has(slug)) {
+        addedSlugs.add(slug);
+        ministers.push({
+          ...leader,
+          id: `comp-${slug}`,
+          slug,
+          stateName: leader.stateName || "National",
+          stateCode: leader.stateCode || "IN",
+          isCM: leader.isCM ?? false,
+          title: leader.title || leader.currentPosition || "Political Leader",
+          ministry: leader.ministry || leader.currentPosition || "Public Office",
+          constituency: leader.constituency || "National",
+          totalAssetsCr: leader.totalAssetsCr ?? leader.declaredAssetsCr ?? 0,
+          liabilitiesCr: leader.liabilitiesCr ?? 0,
+          assetGrowthPercent: leader.assetGrowthPct ?? 15,
+          photoUrl: leader.photoUrl || LEADER_PHOTOS[slug] || `https://ui-avatars.com/api/?name=${encodeURIComponent(leader.name)}&background=06038D&color=fff&size=256`,
+          currentPosition: leader.currentPosition || leader.title || "Political Leader",
+        });
+      }
+    });
+
     return ministers;
   }
 
@@ -909,4 +980,4 @@ export class CivicLensDatabase {
 }
 
 export const db = new CivicLensDatabase();
-export { COMPREHENSIVE_LEADERS };
+export { COMPREHENSIVE_LEADERS, LEADER_PHOTOS };
