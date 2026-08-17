@@ -1095,23 +1095,51 @@ export function App() {
 
                     return (
                       <>
-                        {/* Summary Stats */}
+                        {/* Summary Stats - Clickable interactive filters */}
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
-                          <div className="bg-[#D1FAE5] p-3 rounded border border-[#A7F3D0] text-center">
+                          <div
+                            onClick={() => setStateSchemeFilter(stateSchemeFilter === "implemented" ? "ALL" : "implemented")}
+                            className={`p-3 rounded border text-center cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98] ${
+                              stateSchemeFilter === "implemented"
+                                ? "bg-[#D1FAE5] border-[#059669] ring-2 ring-[#059669] shadow-sm"
+                                : "bg-[#D1FAE5]/80 border-[#A7F3D0] hover:bg-[#D1FAE5]"
+                            }`}
+                          >
                             <span className="text-[#065F46] font-bold block">✓ IMPLEMENTED</span>
-                            <span className="text-lg font-extrabold text-[#065F46]">{implemented}</span>
+                            <span className="text-xl font-extrabold text-[#065F46]">{implemented}</span>
                           </div>
-                          <div className="bg-[#DBEAFE] p-3 rounded border border-[#BFDBFE] text-center">
+                          <div
+                            onClick={() => setStateSchemeFilter(stateSchemeFilter === "in-progress" ? "ALL" : "in-progress")}
+                            className={`p-3 rounded border text-center cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98] ${
+                              stateSchemeFilter === "in-progress"
+                                ? "bg-[#DBEAFE] border-[#2563EB] ring-2 ring-[#2563EB] shadow-sm"
+                                : "bg-[#DBEAFE]/80 border-[#BFDBFE] hover:bg-[#DBEAFE]"
+                            }`}
+                          >
                             <span className="text-[#1E40AF] font-bold block">⚡ IN PROGRESS</span>
-                            <span className="text-lg font-extrabold text-[#1E40AF]">{inProgress}</span>
+                            <span className="text-xl font-extrabold text-[#1E40AF]">{inProgress}</span>
                           </div>
-                          <div className="bg-[#FEE2E2] p-3 rounded border border-[#FCA5A5] text-center">
+                          <div
+                            onClick={() => setStateSchemeFilter(stateSchemeFilter === "pending" ? "ALL" : "pending")}
+                            className={`p-3 rounded border text-center cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98] ${
+                              stateSchemeFilter === "pending"
+                                ? "bg-[#FEE2E2] border-[#DC2626] ring-2 ring-[#DC2626] shadow-sm"
+                                : "bg-[#FEE2E2]/80 border-[#FCA5A5] hover:bg-[#FEE2E2]"
+                            }`}
+                          >
                             <span className="text-[#D95300] font-bold block">✗ PENDING</span>
-                            <span className="text-lg font-extrabold text-[#D95300]">{pending}</span>
+                            <span className="text-xl font-extrabold text-[#D95300]">{pending}</span>
                           </div>
-                          <div className="bg-[#FEF3C7] p-3 rounded border border-[#FDE68A] text-center">
+                          <div
+                            onClick={() => setStateSchemeFilter(stateSchemeFilter === "partial" ? "ALL" : "partial")}
+                            className={`p-3 rounded border text-center cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98] ${
+                              stateSchemeFilter === "partial"
+                                ? "bg-[#FEF3C7] border-[#D97706] ring-2 ring-[#D97706] shadow-sm"
+                                : "bg-[#FEF3C7]/80 border-[#FDE68A] hover:bg-[#FEF3C7]"
+                            }`}
+                          >
                             <span className="text-[#92400E] font-bold block">◐ PARTIAL</span>
-                            <span className="text-lg font-extrabold text-[#92400E]">{partial}</span>
+                            <span className="text-xl font-extrabold text-[#92400E]">{partial}</span>
                           </div>
                         </div>
 
