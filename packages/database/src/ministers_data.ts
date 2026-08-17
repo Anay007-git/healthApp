@@ -123,12 +123,12 @@ export const LEADER_PHOTOS: Record<string, string> = {
   "pramod-sawant": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Pramod_Sawant_at_the_inauguration_of_the_Chhatrapati_Shivaji_Maharaj_Chair_in_Goa_University_%28cropped%29.jpg/330px-Pramod_Sawant_at_the_inauguration_of_the_Chhatrapati_Shivaji_Maharaj_Chair_in_Goa_University_%28cropped%29.jpg",
   "revanth-reddy": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Portrait_of_Telangana_CM_Revanth_Reddy.png/330px-Portrait_of_Telangana_CM_Revanth_Reddy.png",
   "n-chandrababu-naidu": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg/330px-The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg",
-  "abhishek-banerjee": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Abhishek_Banerjee_MP_photo.jpg/330px-Abhishek_Banerjee_MP_photo.jpg",
-  "akhilesh-yadav": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Akhilesh_Yadav_official_portrait_2024.jpg/330px-Akhilesh_Yadav_official_portrait_2024.jpg",
-  "mahua-moitra": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Mahua_Moitra_2023.jpg/330px-Mahua_Moitra_2023.jpg",
-  "tejashwi-yadav": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Tejashwi_Yadav_in_2023.jpg/330px-Tejashwi_Yadav_in_2023.jpg",
-  "shashi-tharoor": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Shashi_Tharoor_in_2023.jpg/330px-Shashi_Tharoor_in_2023.jpg",
-  "asaduddin-owaisi": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Asaduddin_Owaisi_in_2024.jpg/330px-Asaduddin_Owaisi_in_2024.jpg"
+  "abhishek-banerjee": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Abhishek_Banerjee_Photo.jpg/500px-Abhishek_Banerjee_Photo.jpg",
+  "akhilesh-yadav": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Akhilesh_Yadav_544.jpg/500px-Akhilesh_Yadav_544.jpg",
+  "mahua-moitra": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Mahua_Moitra.jpg",
+  "tejashwi-yadav": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Tejaswi_Yadav_2023.jpg",
+  "shashi-tharoor": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Shashi_Tharoor_2025.jpg/500px-Shashi_Tharoor_2025.jpg",
+  "asaduddin-owaisi": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Asaduddin.jpg/500px-Asaduddin.jpg"
 };
 
 export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
