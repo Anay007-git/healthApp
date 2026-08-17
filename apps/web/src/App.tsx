@@ -3180,18 +3180,20 @@ export function App() {
 
                                   {scamsListA.length > 0 ? (
                                     scamsListA.map((s: any, idx: number) => (
-                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2">
-                                        <div className="flex items-start justify-between gap-2 border-b border-[#E2E8F0] pb-1.5">
-                                          <div className="flex items-center gap-1.5">
-                                            <span className="w-5 h-5 rounded bg-[#FF4D4D] text-white font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0">
+                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
+                                        <div className="border-b border-[#E2E8F0] pb-2 space-y-1.5">
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-5 h-5 rounded bg-[#FF4D4D] text-white font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
                                               #{String(idx + 1).padStart(2, "0")}
                                             </span>
-                                            <h6 className="font-bold text-black text-xs sm:text-sm">{s.title}</h6>
+                                            <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{s.title}</h6>
                                           </div>
                                           {s.financialImpact && (
-                                            <span className="px-2 py-0.5 bg-[#FEE2E2] text-[#991B1B] font-mono text-[10px] font-black border border-black rounded shrink-0">
-                                              {s.financialImpact}
-                                            </span>
+                                            <div className="flex items-center pl-7">
+                                              <span className="inline-block px-2 py-0.5 bg-[#FEE2E2] text-[#991B1B] font-mono text-[10px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words max-w-full">
+                                                ⚠️ {s.financialImpact}
+                                              </span>
+                                            </div>
                                           )}
                                         </div>
                                         <p className="text-xs text-[#334155] leading-relaxed font-sans">{s.description}</p>
@@ -3223,18 +3225,20 @@ export function App() {
 
                                   {scamsListB.length > 0 ? (
                                     scamsListB.map((s: any, idx: number) => (
-                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2">
-                                        <div className="flex items-start justify-between gap-2 border-b border-[#E2E8F0] pb-1.5">
-                                          <div className="flex items-center gap-1.5">
-                                            <span className="w-5 h-5 rounded bg-[#FF4D4D] text-white font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0">
+                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
+                                        <div className="border-b border-[#E2E8F0] pb-2 space-y-1.5">
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-5 h-5 rounded bg-[#FF4D4D] text-white font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
                                               #{String(idx + 1).padStart(2, "0")}
                                             </span>
-                                            <h6 className="font-bold text-black text-xs sm:text-sm">{s.title}</h6>
+                                            <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{s.title}</h6>
                                           </div>
                                           {s.financialImpact && (
-                                            <span className="px-2 py-0.5 bg-[#FEE2E2] text-[#991B1B] font-mono text-[10px] font-black border border-black rounded shrink-0">
-                                              {s.financialImpact}
-                                            </span>
+                                            <div className="flex items-center pl-7">
+                                              <span className="inline-block px-2 py-0.5 bg-[#FEE2E2] text-[#991B1B] font-mono text-[10px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words max-w-full">
+                                                ⚠️ {s.financialImpact}
+                                              </span>
+                                            </div>
                                           )}
                                         </div>
                                         <p className="text-xs text-[#334155] leading-relaxed font-sans">{s.description}</p>
@@ -3281,18 +3285,20 @@ export function App() {
 
                                   {worksListA.length > 0 ? (
                                     worksListA.map((w: any, idx: number) => (
-                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2">
-                                        <div className="flex items-start justify-between gap-2 border-b border-[#E2E8F0] pb-1.5">
-                                          <div className="flex items-center gap-1.5">
-                                            <span className="w-5 h-5 rounded bg-[#00E599] text-black font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0">
+                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
+                                        <div className="border-b border-[#E2E8F0] pb-2 space-y-1.5">
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-5 h-5 rounded bg-[#00E599] text-black font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
                                               #{String(idx + 1).padStart(2, "0")}
                                             </span>
-                                            <h6 className="font-bold text-black text-xs sm:text-sm">{w.achievement}</h6>
+                                            <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{w.achievement}</h6>
                                           </div>
                                           {w.outlay && (
-                                            <span className="px-2 py-0.5 bg-[#D1FAE5] text-[#065F46] font-mono text-[10px] font-black border border-black rounded shrink-0">
-                                              {w.outlay}
-                                            </span>
+                                            <div className="flex items-center pl-7">
+                                              <span className="inline-block px-2 py-0.5 bg-[#D1FAE5] text-[#065F46] font-mono text-[10px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words max-w-full">
+                                                ⚡ {w.outlay}
+                                              </span>
+                                            </div>
                                           )}
                                         </div>
                                         <p className="text-xs text-[#334155] leading-relaxed font-sans">{w.description || w.status}</p>
@@ -3319,18 +3325,20 @@ export function App() {
 
                                   {worksListB.length > 0 ? (
                                     worksListB.map((w: any, idx: number) => (
-                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2">
-                                        <div className="flex items-start justify-between gap-2 border-b border-[#E2E8F0] pb-1.5">
-                                          <div className="flex items-center gap-1.5">
-                                            <span className="w-5 h-5 rounded bg-[#00E599] text-black font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0">
+                                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] space-y-2.5">
+                                        <div className="border-b border-[#E2E8F0] pb-2 space-y-1.5">
+                                          <div className="flex items-start gap-2">
+                                            <span className="w-5 h-5 rounded bg-[#00E599] text-black font-mono text-[10px] font-black flex items-center justify-center border border-black shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
                                               #{String(idx + 1).padStart(2, "0")}
                                             </span>
-                                            <h6 className="font-bold text-black text-xs sm:text-sm">{w.achievement}</h6>
+                                            <h6 className="font-bold text-black text-xs sm:text-sm leading-snug flex-1 break-words">{w.achievement}</h6>
                                           </div>
                                           {w.outlay && (
-                                            <span className="px-2 py-0.5 bg-[#D1FAE5] text-[#065F46] font-mono text-[10px] font-black border border-black rounded shrink-0">
-                                              {w.outlay}
-                                            </span>
+                                            <div className="flex items-center pl-7">
+                                              <span className="inline-block px-2 py-0.5 bg-[#D1FAE5] text-[#065F46] font-mono text-[10px] font-black border border-black rounded shadow-[1px_1px_0px_#000] break-words max-w-full">
+                                                ⚡ {w.outlay}
+                                              </span>
+                                            </div>
                                           )}
                                         </div>
                                         <p className="text-xs text-[#334155] leading-relaxed font-sans">{w.description || w.status}</p>
