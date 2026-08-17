@@ -125,7 +125,10 @@ export class CivicLensAIEngine {
       if (t.includes("gadkari") || t.includes("nitin") || t.includes("ethanol") || t.includes("purti") || t.includes("dwarka expressway")) {
         return COMPREHENSIVE_LEADERS["nitin-gadkari"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("gadkari"));
       }
-      if (t.includes("dharmendra") || t.includes("pradhan") || t.includes("neet") || t.includes("ugc net") || t.includes("paper leak") || (t.includes("education") && t.includes("minister"))) {
+      if (t.includes("sonam") || t.includes("wangchuk") || t.includes("secmol") || (t.includes("ladakh") && !t.includes("stalin"))) {
+        return COMPREHENSIVE_LEADERS["sonam-wangchuk"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("wangchuk"));
+      }
+      if (t.includes("dharmendra") || t.includes("pradhan") || t.includes("neet") || t.includes("ugc net") || t.includes("paper leak") || t.includes("cjp") || (t.includes("education") && t.includes("minister"))) {
         return COMPREHENSIVE_LEADERS["dharmendra-pradhan"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("dharmendra") || (m.name || "").toLowerCase().includes("pradhan"));
       }
       if (t.includes("sitharaman") || t.includes("nirmala")) {

@@ -128,7 +128,8 @@ export const LEADER_PHOTOS: Record<string, string> = {
   "mahua-moitra": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Mahua_Moitra.jpg",
   "tejashwi-yadav": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Tejaswi_Yadav_2023.jpg",
   "shashi-tharoor": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Shashi_Tharoor_2025.jpg/500px-Shashi_Tharoor_2025.jpg",
-  "asaduddin-owaisi": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Asaduddin.jpg/500px-Asaduddin.jpg"
+  "asaduddin-owaisi": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Asaduddin.jpg/500px-Asaduddin.jpg",
+  "sonam-wangchuk": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Sonam_Wangchuk_in_2023.jpg/440px-Sonam_Wangchuk_in_2023.jpg"
 };
 
 export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
@@ -520,10 +521,10 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     constituency: "Sambalpur, Odisha",
     scamsAndCorruption: [
       {
-        title: "NEET-UG 2024 Paper Leak & NTA Institutional Crisis",
+        title: "NEET-UG 2024 Paper Leak, CJI Supreme Court Scrutiny & NTA Crisis",
         financialImpact: "24+ Lakh Medical Aspirants Affected",
-        description: "Massive nationwide crisis and protests following paper leak in NEET-UG 2024 exam centers in Patna (Oasis School) and Godhra, arbitrary grace marks awarded to 1,563 candidates, and an unprecedented 67 students securing Rank 1 (perfect 720/720 score). The Supreme Court termed NTA conduct suspect, CBI arrested 40+ solver gang kingpins across Bihar and Gujarat, the Union Government removed NTA Director General Subodh Kumar Singh, and student unions (AISA, NSUI, ABVP) alongside Parliamentary Opposition staged mass walkouts demanding Education Minister Dharmendra Pradhan's resignation.",
-        status: "CBI Investigation & Supreme Court Directives"
+        description: "Massive nationwide crisis and protests following confirmed question paper leaks in NEET-UG 2024 exam centers in Patna (Oasis School) and Godhra, arbitrary grace marks awarded to 1,563 candidates, and an unprecedented 67 students securing Rank 1 (perfect 720/720 score). The Supreme Court bench headed by the Chief Justice of India (CJI D.Y. Chandrachud) termed NTA's conduct suspect and breached exam sanctity, directing a 7-member high-level panel under Dr. K. Radhakrishnan. Renowned innovator and education reformer Sonam Wangchuk publicly protested against the Ministry of Education's centralized exam mismanagement and staged solidarity appeals, while civil society groups including Citizens for Justice and Peace (CJP) and student unions (AISA, NSUI, ABVP) held nationwide agitations demanding Education Minister Dharmendra Pradhan's immediate resignation.",
+        status: "CBI Criminal Investigation & CJI Supreme Court Directives"
       },
       {
         title: "UGC-NET & CSIR-NET 2024 Darknet Leak & Nationwide Cancellation",
@@ -534,9 +535,9 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     ],
     epicFailures: [
       {
-        achievement: "NEET-UG 2024 Oversight Breakdown & Resignation Calls",
+        achievement: "NEET-UG 2024 Oversight Breakdown & High-Level Resignation Demands",
         outlay: "National Examination Crisis",
-        status: "Severe political backlash and parliamentary disruption with opposition demanding Education Minister Dharmendra Pradhan's immediate resignation over supervisory negligence and failure to prevent solver cartels."
+        status: "Severe political and civil society backlash with education reformer Sonam Wangchuk, student unions, and opposition parties holding street protests and parliamentary boycotts demanding Dharmendra Pradhan's resignation over supervisory negligence and failure to prevent solver cartels."
       } as any,
       {
         achievement: "CUET Center Cancellations & Academic Calendar Delays",
@@ -545,7 +546,8 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
       } as any
     ] as any,
     controversies: [
-      "Nationwide student protests and opposition demands for Dharmendra Pradhan's resignation over NEET paper leak",
+      "Nationwide student protests, Sonam Wangchuk's public agitation, and CJI Supreme Court hearings on Dharmendra Pradhan's NTA oversight",
+      "Civil society interventions and CJP scrutiny over exam integrity and transparency",
       "Controversy over NCERT textbook syllabus rationalization (removal of Mughal chapters, Darwin's evolution theory, Periodic Table)",
       "Non-BJP states (Tamil Nadu, Karnataka, West Bengal) opposing National Education Policy (NEP 2020) and 3-language formula",
       "UGC draft guidelines allowing de-reservation of reserved category faculty seats (revoked following intense public backlash)"
@@ -1663,7 +1665,72 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
       publicResponsiveness: 85,
       overallScore: 81
     },
-    performanceScore: 81
+  },
+  "sonam-wangchuk": {
+    name: "Sonam Wangchuk",
+    slug: "sonam-wangchuk",
+    title: "Innovator, Education Reformer & Climate Activist",
+    currentPosition: "Founding Director of SECMOL (Students' Educational and Cultural Movement of Ladakh), Ramon Magsaysay Award Laureate, Climate Activist & Advocate for Constitutional Protections (Sixth Schedule for Ladakh)",
+    ministry: "Civil Society Leadership, SECMOL & Himalayan Institute of Alternatives (HIAL)",
+    party: "Independent / Civil Society & Educational Reformer",
+    photoUrl: LEADER_PHOTOS["sonam-wangchuk"],
+    education: "B.Tech Mechanical Engineering (National Institute of Technology, Srinagar, 1987) & Earthen Architecture (Grenoble, France)",
+    educationDetails: {
+      degree: "B.Tech in Mechanical Engineering & Specialized Earthen Architecture",
+      institution: "NIT Srinagar (1987) & CRATerre, School of Architecture, Grenoble, France",
+      summary: "Graduated with B.Tech in Mechanical Engineering from NIT Srinagar; pioneered indigenous solar-heated earthen architecture and localized pedagogy in the Himalayas."
+    },
+    declaredAssetsCr: 3.50,
+    totalAssetsCr: 3.50,
+    liabilitiesCr: 0.0,
+    assetGrowthPct: 5,
+    criminalCases: 0,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "Zero criminal convictions. Detained under Delhi Police Section 65 BP Act during peaceful 2024 Delhi Chalo climate padayatra.",
+    constituency: "Leh, Ladakh (Civil Society Representative)",
+    stateName: "Ladakh",
+    stateCode: "LA",
+    isCM: false,
+    scamsAndCorruption: [
+      {
+        title: "Zero Financial Scam or Corruption Inquiries",
+        financialImpact: "Ramon Magsaysay Laureate",
+        description: "Zero corruption charges or financial irregularities on record across 35+ years of philanthropic education innovation, SECMOL school operations, and sustainable Himalayan engineering.",
+        status: "Exemplary Clean Public Record"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "Dialogue Impasse with Ministry of Home Affairs on 6th Schedule (2024)",
+        outlay: "Ladakh Statehood & Autonomy Talks",
+        status: "Extended 21-day hunger strikes and peaceful climate fasts in sub-zero Leh weather encountered bureaucratic delays and stalled tripartite talks with the Central Government."
+      } as any
+    ] as any,
+    controversies: [
+      "Staged 21-day climate fasts and Delhi Chalo Padayatra demanding 6th Schedule and ecological safeguards for fragile Himalayan ecosystems",
+      "Vocal public protest against Ministry of Education's centralized NTA examination failures and student distress during 2024 NEET paper leaks",
+      "Detained along with 150 Ladakhi marchers at Singhu border under Section 65 before being released following Supreme Court and national civil society outcry"
+    ],
+    keyWorks: [
+      {
+        achievement: "Ice Stupa Artificial Glaciers & Solar-Heated Buildings",
+        outlay: "Global Climate Adaptation Innovation",
+        status: "Invented conical ice stupas storing millions of liters of winter meltwater for spring agriculture; designed passive solar mud buildings requiring zero fossil fuel heating at -30°C."
+      },
+      {
+        achievement: "SECMOL Alternative Education Revolution & Operation New Hope",
+        outlay: "Ladakh Educational Transformation",
+        status: "Transformed matriculation pass rates in Ladakh government schools from 5% to over 75% through practical, mother-tongue, contextualized student-led learning."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 92,
+      integrityAndCleanGovernance: 96,
+      policyCompetence: 90,
+      publicResponsiveness: 95,
+      overallScore: 93
+    },
+    performanceScore: 93
   }
 };
 

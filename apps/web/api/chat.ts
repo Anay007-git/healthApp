@@ -501,6 +501,31 @@ const LEADER_DOSSIERS: Record<string, {
       { title: "Outstanding Parliamentary Debater Record (Sansad Ratna)", outlay: "Lok Sabha Debates", desc: "Maintained 90%+ attendance record and participated in 120+ major constitutional and legislative debates in Lok Sabha." },
     ],
     scores: { delivery: 80, integrity: 74, policy: 86, response: 85, overall: 81 }
+  },
+  wangchuk: {
+    name: "Sonam Wangchuk",
+    position: "Innovator, Education Reformer & Climate Activist, Founding Director of SECMOL & HIAL",
+    party: "Independent / Civil Society & Educational Reformer",
+    constituency: "Leh, Ladakh",
+    education: "B.Tech Mechanical Engineering (NIT Srinagar, 1987) & Earthen Architecture (Grenoble, France)",
+    eduDetails: "Completed B.Tech in Mechanical Engineering from NIT Srinagar; pioneered solar-heated mud architecture and contextualized Himalayan learning pedagogy.",
+    assetsCr: 3.50,
+    liabilitiesCr: 0.0,
+    criminalCases: 0,
+    seriousCases: 0,
+    criminalNote: "Zero criminal convictions on record. Detained at Singhu border under Section 65 during peaceful 2024 climate march before release.",
+    scams: [
+      { title: "Zero Financial Scam or Corruption Charges", impact: "Ramon Magsaysay Laureate", desc: "Exemplary 35+ year clean record across philanthropic education innovation, SECMOL school operations, and sustainable engineering.", status: "Impeccable Public Record" }
+    ],
+    failures: [
+      { title: "Dialogue Impasse on Ladakh 6th Schedule (2024)", desc: "21-day hunger fasts and Delhi Chalo climate march faced bureaucratic delays in tripartite autonomy negotiations." }
+    ],
+    works: [
+      { title: "Ice Stupa Artificial Glaciers & Solar Architecture", outlay: "Global Climate Innovation", desc: "Invented conical ice stupas storing millions of liters of winter meltwater for spring farming; designed passive solar buildings requiring zero fossil fuel at -30°C." },
+      { title: "SECMOL Alternative Education Revolution & Operation New Hope", outlay: "Ladakh School Reform", desc: "Transformed government school pass rates from 5% to over 75% via practical, mother-tongue, student-led pedagogy." },
+      { title: "Advocacy against Centralized Testing & NEET Crisis Support", outlay: "National Student Solidarity", desc: "Vocal public resistance against coaching cartels, centralized NTA monopolies, and ministerial mishandling of 24+ lakh NEET aspirants." }
+    ],
+    scores: { delivery: 92, integrity: 96, policy: 90, response: 95, overall: 93 }
   }
 };
 
@@ -591,18 +616,19 @@ export default async function handler(req: any, res: any) {
   else if (
     (q.includes("compare") || q.includes(" vs ") || q.includes(" vs. ") || q.includes("versus") || q.includes("difference between") || q.includes("head to head")) &&
     (q.includes("abhishek") || q.includes("suvendu") || q.includes("mamata") || q.includes("modi") || q.includes("rahul") ||
-     q.includes("amit shah") || q.includes("gadkari") || q.includes("dharmendra") || q.includes("pradhan") || q.includes("kejriwal") || q.includes("yogi") || q.includes("akhilesh") ||
+     q.includes("amit shah") || q.includes("gadkari") || q.includes("dharmendra") || q.includes("pradhan") || q.includes("sonam") || q.includes("wangchuk") || q.includes("kejriwal") || q.includes("yogi") || q.includes("akhilesh") ||
      q.includes("tejashwi") || q.includes("tharoor") || q.includes("mahua") || q.includes("owaisi"))
   ) {
     const findKey = (text: string) => {
       const t = text.toLowerCase();
+      if (t.includes("sonam") || t.includes("wangchuk") || t.includes("secmol") || (t.includes("ladakh") && !t.includes("stalin"))) return "wangchuk";
       if (t.includes("abhishek") || t.includes("diamond harbour")) return "abhishek";
       if (t.includes("suvendu") || t.includes("adhikari")) return "suvendu";
       if (t.includes("mamata") || t.includes("didi") || (t.includes("banerjee") && !t.includes("abhishek"))) return "mamata";
       if (t.includes("modi") || t.includes("narendra")) return "modi";
       if (t.includes("amit shah") || (t.includes("shah") && !t.includes("shashi"))) return "shah";
       if (t.includes("gadkari") || t.includes("nitin") || t.includes("ethanol") || t.includes("purti")) return "gadkari";
-      if (t.includes("dharmendra") || t.includes("pradhan") || t.includes("neet") || t.includes("paper leak") || (t.includes("education") && t.includes("minister"))) return "dharmendra";
+      if (t.includes("dharmendra") || t.includes("pradhan") || t.includes("neet") || t.includes("paper leak") || t.includes("cjp") || (t.includes("education") && t.includes("minister"))) return "dharmendra";
       if (t.includes("sitharaman") || t.includes("nirmala")) return "sitharaman";
       if (t.includes("kejriwal") || t.includes("arvind")) return "kejriwal";
       if (t.includes("rahul") || (t.includes("gandhi") && !t.includes("sanjay"))) return "rahul";
@@ -620,7 +646,7 @@ export default async function handler(req: any, res: any) {
     let keyB = parts.length >= 2 ? findKey(parts.slice(1).join(" ")) : null;
 
     if (!keyA || !keyB || keyA === keyB) {
-      const candidateKeys = ["abhishek", "suvendu", "mamata", "modi", "rahul", "shah", "gadkari", "dharmendra", "pradhan", "sitharaman", "kejriwal", "yogi", "akhilesh", "tejashwi", "tharoor", "mahua", "owaisi"];
+      const candidateKeys = ["abhishek", "suvendu", "mamata", "modi", "rahul", "shah", "gadkari", "dharmendra", "pradhan", "wangchuk", "sonam", "sitharaman", "kejriwal", "yogi", "akhilesh", "tejashwi", "tharoor", "mahua", "owaisi"];
       const foundKeys = candidateKeys.filter((k) => q.includes(k));
       if (foundKeys.length >= 2) {
         keyA = findKey(foundKeys[0]);
@@ -700,16 +726,18 @@ ${worksB}`;
     q.includes("score card") || q.includes("scorecard") || q.includes("abhishek") || q.includes("mamata") ||
     q.includes("suvendu") || q.includes("adhikari") || q.includes("modi") || q.includes("amit shah") ||
     q.includes("gadkari") || q.includes("ethanol") || q.includes("purti") || q.includes("dharmendra") || q.includes("pradhan") ||
-    q.includes("neet") || q.includes("paper leak") || q.includes("sitharaman") || q.includes("kejriwal") || q.includes("rahul") ||
+    q.includes("sonam") || q.includes("wangchuk") || q.includes("secmol") || q.includes("ladakh") ||
+    q.includes("neet") || q.includes("paper leak") || q.includes("cjp") || q.includes("sitharaman") || q.includes("kejriwal") || q.includes("rahul") ||
     q.includes("yogi") || q.includes("akhilesh") || q.includes("tejashwi") || q.includes("tharoor") ||
     q.includes("mahua") || q.includes("owaisi") || q.includes("cabinet")
   ) {
-    const key = (q.includes("abhishek") || q.includes("diamond harbour")) ? "abhishek" :
+    const key = (q.includes("sonam") || q.includes("wangchuk") || q.includes("secmol") || (q.includes("ladakh") && !q.includes("stalin"))) ? "wangchuk" :
+                (q.includes("abhishek") || q.includes("diamond harbour")) ? "abhishek" :
                 (q.includes("suvendu") || q.includes("adhikari")) ? "suvendu" :
                 (q.includes("mamata") || q.includes("didi") || (q.includes("banerjee") && !q.includes("abhishek"))) ? "mamata" :
                 (q.includes("modi") || q.includes("narendra")) ? "modi" :
                 (q.includes("gadkari") || q.includes("nitin") || q.includes("ethanol") || q.includes("purti")) ? "gadkari" :
-                (q.includes("dharmendra") || q.includes("pradhan") || q.includes("neet") || q.includes("paper leak") || (q.includes("education") && q.includes("minister"))) ? "dharmendra" :
+                (q.includes("dharmendra") || q.includes("pradhan") || q.includes("neet") || q.includes("paper leak") || q.includes("cjp") || (q.includes("education") && q.includes("minister"))) ? "dharmendra" :
                 (q.includes("sitharaman") || q.includes("nirmala")) ? "sitharaman" :
                 (q.includes("amit shah") || (q.includes("shah") && !q.includes("shashi"))) ? "shah" :
                 (q.includes("kejriwal") || q.includes("arvind")) ? "kejriwal" :
