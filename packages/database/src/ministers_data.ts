@@ -122,7 +122,13 @@ export const LEADER_PHOTOS: Record<string, string> = {
   "bhupendra-patel": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Bhupendra_Patel_%28cropped%29.jpg",
   "pramod-sawant": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Pramod_Sawant_at_the_inauguration_of_the_Chhatrapati_Shivaji_Maharaj_Chair_in_Goa_University_%28cropped%29.jpg/330px-Pramod_Sawant_at_the_inauguration_of_the_Chhatrapati_Shivaji_Maharaj_Chair_in_Goa_University_%28cropped%29.jpg",
   "revanth-reddy": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Portrait_of_Telangana_CM_Revanth_Reddy.png/330px-Portrait_of_Telangana_CM_Revanth_Reddy.png",
-  "n-chandrababu-naidu": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg/330px-The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg"
+  "n-chandrababu-naidu": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg/330px-The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg",
+  "abhishek-banerjee": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Abhishek_Banerjee_MP_photo.jpg/330px-Abhishek_Banerjee_MP_photo.jpg",
+  "akhilesh-yadav": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Akhilesh_Yadav_official_portrait_2024.jpg/330px-Akhilesh_Yadav_official_portrait_2024.jpg",
+  "mahua-moitra": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Mahua_Moitra_2023.jpg/330px-Mahua_Moitra_2023.jpg",
+  "tejashwi-yadav": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Tejashwi_Yadav_in_2023.jpg/330px-Tejashwi_Yadav_in_2023.jpg",
+  "shashi-tharoor": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Shashi_Tharoor_in_2023.jpg/330px-Shashi_Tharoor_in_2023.jpg",
+  "asaduddin-owaisi": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Asaduddin_Owaisi_in_2024.jpg/330px-Asaduddin_Owaisi_in_2024.jpg"
 };
 
 export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
@@ -1154,6 +1160,418 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
       overallScore: 84
     },
     performanceScore: 84
+  },
+  "abhishek-banerjee": {
+    name: "Abhishek Banerjee",
+    slug: "abhishek-banerjee",
+    title: "Member of Parliament (Lok Sabha) & National General Secretary of AITC",
+    currentPosition: "Member of Parliament for Diamond Harbour (3rd Consecutive Term since 2014), National General Secretary of All India Trinamool Congress (AITC)",
+    ministry: "Parliamentary Representation & AITC National Leadership",
+    party: "All India Trinamool Congress (AITC)",
+    photoUrl: LEADER_PHOTOS["abhishek-banerjee"],
+    education: "BBA & MBA (Indian Institute of Planning and Management, New Delhi)",
+    educationDetails: {
+      degree: "Bachelor & Master of Business Administration (BBA, MBA)",
+      institution: "Indian Institute of Planning and Management (IIPM), New Delhi",
+      summary: "Earned undergraduate and postgraduate degrees in business management prior to entering parliamentary politics in 2014."
+    },
+    declaredAssetsCr: 1.52,
+    totalAssetsCr: 1.52,
+    liabilitiesCr: 0.0,
+    assetGrowthPct: 14,
+    criminalCases: 1,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "Declared 1 pending political defamation/protest case in certified 2024 ECI Form 26 filing; questioned by ED in coal extraction and cattle transport investigations without trial court chargesheet to date.",
+    constituency: "Diamond Harbour, South 24 Parganas, West Bengal",
+    stateName: "West Bengal",
+    stateCode: "WB",
+    isCM: false,
+    scamsAndCorruption: [
+      {
+        title: "Coal Extraction & Smuggling PMLA Inquiry",
+        financialImpact: "₹1,352 Crore Probe",
+        description: "Enforcement Directorate and CBI registered PMLA inquiries regarding illegal coal extraction in Eastern Coalfields leasehold areas; questioned Abhishek Banerjee in New Delhi & Kolkata offices.",
+        status: "ED Inquiries & Supreme Court Review"
+      },
+      {
+        title: "Cattle Smuggling Financial Channel Inquiries",
+        financialImpact: "Interstate Syndicate Investigation",
+        description: "Central agencies probed bank accounts and administrative access regarding border transport networks; summoned for formal witness statements.",
+        status: "Sub-judice Central Investigation"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "TMC Yuva Organization Friction (2018–2021)",
+        outlay: "Internal Party Restructuring",
+        status: "Factional disputes during structural overhaul of youth wing before 2021 assembly elections."
+      } as any,
+      {
+        achievement: "Central Agency Protests & High Court Litigation",
+        outlay: "Administrative Gridlock",
+        status: "Prolonged legal tussles over summons jurisdiction between Calcutta High Court and Supreme Court."
+      } as any
+    ] as any,
+    controversies: [
+      "Target of relentless opposition rhetoric regarding party succession and dynastic politics",
+      "Led high-voltage sit-in protests outside Raj Bhavan Kolkata over MGNREGA dues"
+    ],
+    keyWorks: [
+      {
+        achievement: "Diamond Harbour Health & Telemedicine Model",
+        outlay: "₹180+ Crore Welfare Network",
+        status: "Pioneered localized universal health screening, free medicines distribution, and Covid containment model across Diamond Harbour constituency."
+      },
+      {
+        achievement: "Trinamool Naba Jowar Grassroots Campaign (2023)",
+        outlay: "60-Day 4,000+ km State Outreach",
+        status: "Conducted statewide outreach to select local rural panchayat election candidates via direct grassroots secret-ballot voting."
+      },
+      {
+        achievement: "Parliamentary Voice for State Financial Allocations",
+        outlay: "Lok Sabha Debates",
+        status: "Consistently raised 100-day work MGNREGA and Awas Yojana central release demands in Lok Sabha floor debates."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 81,
+      integrityAndCleanGovernance: 66,
+      policyCompetence: 78,
+      publicResponsiveness: 85,
+      overallScore: 77
+    },
+    performanceScore: 77
+  },
+  "akhilesh-yadav": {
+    name: "Akhilesh Yadav",
+    slug: "akhilesh-yadav",
+    title: "Member of Parliament (Lok Sabha) & President of Samajwadi Party",
+    currentPosition: "Leader of Opposition in Lok Sabha, President of Samajwadi Party (SP), Former Chief Minister of Uttar Pradesh (2012–2017)",
+    ministry: "Samajwadi Party National Leadership & Parliamentary Opposition",
+    party: "Samajwadi Party (SP)",
+    photoUrl: LEADER_PHOTOS["akhilesh-yadav"],
+    education: "B.Tech Civil Environmental Engineering (JSS Academy, Mysore) & Master of Environmental Engineering (University of Sydney, Australia)",
+    educationDetails: {
+      degree: "B.Tech Civil Engineering & M.Eng Environmental Engineering",
+      institution: "JSS Academy of Technical Education, Mysore & University of Sydney, Australia",
+      summary: "Completed Bachelor of Engineering in Mysore, followed by Master's degree in Environmental Engineering from University of Sydney."
+    },
+    declaredAssetsCr: 42.04,
+    totalAssetsCr: 42.04,
+    liabilitiesCr: 0.0,
+    assetGrowthPct: 18,
+    criminalCases: 0,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "Zero criminal cases declared in certified 2024 Lok Sabha ECI Form 26 affidavit; clean personal legal filing.",
+    constituency: "Kannauj, Uttar Pradesh",
+    stateName: "Uttar Pradesh",
+    stateCode: "UP",
+    isCM: false,
+    scamsAndCorruption: [
+      {
+        title: "Gomti Riverfront Development Project Inquiries",
+        financialImpact: "₹1,500 Crore Audit Inquiry",
+        description: "CBI preliminary enquiry into cost overruns and tender approvals for Gomti Riverfront beautification during 2012–2017 tenure.",
+        status: "CBI Inquiries & State Scrutiny"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "Muzaffarnagar Riots (2013)",
+        outlay: "Law & Order Breakdown",
+        status: "Severe communal clashes resulting in 60+ fatalities and mass displacement, leading to intense judicial scrutiny."
+      } as any
+    ] as any,
+    controversies: [
+      "Samajwadi Party internal family succession feud (2016-2017) prior to assembly elections"
+    ],
+    keyWorks: [
+      {
+        achievement: "Agra-Lucknow Expressway (302 km)",
+        outlay: "₹13,200 Crore",
+        status: "Constructed India's longest 6-lane access-controlled expressway in a record 36 months with emergency fighter jet landing strip."
+      },
+      {
+        achievement: "UP Dial 100 / 112 Emergency Police Response System",
+        outlay: "Statewide Integrated Telemetry",
+        status: "Modernized centralized police dispatch and emergency fleet response across all 75 districts of Uttar Pradesh."
+      },
+      {
+        achievement: "Lucknow Metro Phase 1 Construction",
+        outlay: "₹6,928 Crore",
+        status: "Completed North-South corridor metro transit network connecting CCS Airport to Munshi Pulia."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 84,
+      integrityAndCleanGovernance: 76,
+      policyCompetence: 82,
+      publicResponsiveness: 80,
+      overallScore: 81
+    },
+    performanceScore: 81
+  },
+  "mahua-moitra": {
+    name: "Mahua Moitra",
+    slug: "mahua-moitra",
+    title: "Member of Parliament (Lok Sabha, Krishnanagar)",
+    currentPosition: "Member of Parliament for Krishnanagar, West Bengal (Re-elected 2024), All India Trinamool Congress (AITC)",
+    ministry: "Parliamentary Representation & Standing Committee on Communications/IT",
+    party: "All India Trinamool Congress (AITC)",
+    photoUrl: LEADER_PHOTOS["mahua-moitra"],
+    education: "BA in Economics & Mathematics (Mount Holyoke College, Massachusetts, USA)",
+    educationDetails: {
+      degree: "Bachelor of Arts in Economics & Mathematics",
+      institution: "Mount Holyoke College, South Hadley, Massachusetts, USA",
+      summary: "Graduated with dual majors in Economics and Mathematics; worked as Vice President at JPMorgan Chase in New York & London before entering Indian politics."
+    },
+    declaredAssetsCr: 4.15,
+    totalAssetsCr: 4.15,
+    liabilitiesCr: 0.0,
+    assetGrowthPct: 12,
+    criminalCases: 1,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "Declared 1 pending political protest case in 2024 ECI Form 26 filing; faced cash-for-query parliamentary ethics expulsion in Dec 2023 before being re-elected by 56,000+ margin in 2024.",
+    constituency: "Krishnanagar, Nadia, West Bengal",
+    stateName: "West Bengal",
+    stateCode: "WB",
+    isCM: false,
+    scamsAndCorruption: [
+      {
+        title: "Cash-for-Query Parliamentary Ethics Inquiry",
+        financialImpact: "Ethics Committee & CBI Preliminary Enquiry",
+        description: "Expelled from 17th Lok Sabha in Dec 2023 over sharing parliamentary portal login credentials with businessman Darshan Hiranandani; CBI initiated preliminary inquiry.",
+        status: "CBI Scrutiny & Supreme Court Challenge"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "Parliamentary Expulsion (Dec 2023)",
+        outlay: "Lok Sabha Ethics Verdict",
+        status: "Expelled on ethics committee recommendations before vindication via direct public mandate in 2024 general election."
+      } as any
+    ] as any,
+    controversies: [
+      "Fiery parliamentary debates criticizing corporate monopolies and central regulatory bodies"
+    ],
+    keyWorks: [
+      {
+        achievement: "Krishnanagar Rural Electrification & Nadia Road Infra",
+        outlay: "₹120+ Crore MPLAD & State Schemes",
+        status: "Completed extensive rural bridge connectivity, piped drinking water, and hospital modernization in Krishnanagar."
+      },
+      {
+        achievement: "Parliamentary Scrutiny on Corporate Governance & Data Privacy",
+        outlay: "Lok Sabha Debates",
+        status: "Spearheaded national legislative debates on Pegasus spyware, privacy rights, and corporate conglomerate disclosures."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 78,
+      integrityAndCleanGovernance: 70,
+      policyCompetence: 88,
+      publicResponsiveness: 80,
+      overallScore: 78
+    },
+    performanceScore: 78
+  },
+  "tejashwi-yadav": {
+    name: "Tejashwi Yadav",
+    slug: "tejashwi-yadav",
+    title: "Leader of Opposition in Bihar Assembly / RJD Leader",
+    currentPosition: "Leader of Opposition in Bihar Legislative Assembly, Former Deputy Chief Minister of Bihar (2015–2017, 2022–2024), MLA for Raghopur",
+    ministry: "Rashtriya Janata Dal (RJD) Leadership",
+    party: "Rashtriya Janata Dal (RJD)",
+    photoUrl: LEADER_PHOTOS["tejashwi-yadav"],
+    education: "Secondary Schooling (Class 9, Delhi Public School, R.K. Puram, New Delhi)",
+    educationDetails: {
+      degree: "Secondary School Education (Class 9)",
+      institution: "Delhi Public School (DPS), R.K. Puram, New Delhi",
+      summary: "Pursued secondary education in New Delhi; professional cricketer (Delhi Daredevils squad) prior to entering public life in 2015."
+    },
+    declaredAssetsCr: 6.88,
+    totalAssetsCr: 6.88,
+    liabilitiesCr: 0.42,
+    assetGrowthPct: 15,
+    criminalCases: 11,
+    seriousCriminalCases: 3,
+    criminalCaseNote: "Declared 11 pending cases (including IRCTC hotel lease and land-for-jobs PMLA investigations) in certified ECI Form 26 affidavit; denies allegations as politically motivated.",
+    constituency: "Raghopur, Vaishali, Bihar",
+    stateName: "Bihar",
+    stateCode: "BR",
+    isCM: false,
+    scamsAndCorruption: [
+      {
+        title: "Land-for-Jobs Railway Recruitment Case",
+        financialImpact: "₹600 Crore Alleged Asset Transfers",
+        description: "CBI & ED chargesheets alleging transfer of land parcels in Patna at throwaway prices in exchange for Group D railway appointments during 2004–2009.",
+        status: "Special CBI Court Trial & Bail Granted"
+      },
+      {
+        title: "IRCTC Hotel Tender PMLA Inquiry",
+        financialImpact: "Commercial Lease Dispute",
+        description: "CBI inquiry into transfer of operational rights of two IRCTC railway hotels in Ranchi and Puri.",
+        status: "Special Court Proceedings"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "Mahagathbandhan Government Collapse (Jan 2024)",
+        outlay: "Coalition Instability",
+        status: "Collapse of Mahagathbandhan government after Nitish Kumar's realignment with NDA."
+      } as any
+    ] as any,
+    controversies: [
+      "Intense political scrutiny regarding criminal cases and generational political lineage"
+    ],
+    keyWorks: [
+      {
+        achievement: "4.5 Lakh Bihar Government Teacher & Civil Appointments (2022–2023)",
+        outlay: "Statewide Recruitment Drive",
+        status: "Spearheaded fast-track transparent recruitment of 4.5 lakh government school teachers and civil officers via BPSC in 15 months."
+      },
+      {
+        achievement: "Bihar Caste-Based Economic Survey (2023)",
+        outlay: "Statewide Socio-Economic Census",
+        status: "Successfully executed India's first comprehensive state socio-economic caste survey leading to expanded 75% reservation structure."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 82,
+      integrityAndCleanGovernance: 58,
+      policyCompetence: 76,
+      publicResponsiveness: 86,
+      overallScore: 74
+    },
+    performanceScore: 74
+  },
+  "shashi-tharoor": {
+    name: "Shashi Tharoor",
+    slug: "shashi-tharoor",
+    title: "Member of Parliament (Lok Sabha, Thiruvananthapuram)",
+    currentPosition: "Member of Parliament for Thiruvananthapuram (4 Consecutive Terms since 2009), Chairman of Parliamentary Standing Committee on Chemicals & Fertilisers, INC",
+    ministry: "Parliamentary Representation & International Affairs",
+    party: "Indian National Congress (INC)",
+    photoUrl: LEADER_PHOTOS["shashi-tharoor"],
+    education: "BA History (St. Stephen's College, Delhi), MA, MALD & Ph.D. in International Relations (Fletcher School of Law and Diplomacy, Tufts University, USA)",
+    educationDetails: {
+      degree: "Ph.D., Master of Arts in Law and Diplomacy (MALD) & BA History",
+      institution: "St. Stephen's College, Delhi & Fletcher School of Law and Diplomacy, Tufts University, USA",
+      summary: "Earned Doctorate at age 22 from Tufts University; served as Under-Secretary-General of the United Nations (1978–2007) and author of 25+ bestselling books."
+    },
+    declaredAssetsCr: 55.45,
+    totalAssetsCr: 55.45,
+    liabilitiesCr: 0.0,
+    assetGrowthPct: 16,
+    criminalCases: 0,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "Zero criminal convictions declared in 2024 ECI Form 26 affidavit; fully discharged by Delhi High Court in Sunanda Pushkar case in Aug 2021 with clean judicial verdict.",
+    constituency: "Thiruvananthapuram, Kerala",
+    stateName: "Kerala",
+    stateCode: "KL",
+    isCM: false,
+    scamsAndCorruption: [
+      {
+        title: "IPL Kochi Tuskers Sweat Equity Controversy (2010)",
+        financialImpact: "Franchise Bidding Scrutiny",
+        description: "Opposition allegations regarding advisory sweat equity in Rendezvous Sports World; resigned as MoS External Affairs in 2010. No formal financial charges sustained.",
+        status: "Resolved / No Charges"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "Congress Presidential Election Defeat (Oct 2022)",
+        outlay: "Internal Party Election",
+        status: "Contested INC presidential poll against Mallikarjun Kharge securing 1,072 delegate votes (11.9%)."
+      } as any
+    ] as any,
+    controversies: [
+      "Frequent intellectual debates and frank critiques of national policy narratives"
+    ],
+    keyWorks: [
+      {
+        achievement: "Vizhinjam International Transshipment Deepwater Seaport",
+        outlay: "₹7,700 Crore Maritime Infrastructure",
+        status: "Championed central cabotage waivers and environmental clearances for India's first automated mega-container transshipment port."
+      },
+      {
+        achievement: "Thiruvananthapuram IT Technopark Expansion & AI Corridor",
+        outlay: "₹2,500+ Crore Tech Investments",
+        status: "Attracted major multinational tech hubs (Nissan Digital Hub, Taurus Downtown) creating 35,000+ high-tech jobs."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 84,
+      integrityAndCleanGovernance: 82,
+      policyCompetence: 92,
+      publicResponsiveness: 84,
+      overallScore: 86
+    },
+    performanceScore: 86
+  },
+  "asaduddin-owaisi": {
+    name: "Asaduddin Owaisi",
+    slug: "asaduddin-owaisi",
+    title: "Member of Parliament (Lok Sabha) & President of AIMIM",
+    currentPosition: "Member of Parliament for Hyderabad (5 Consecutive Terms since 2004), President of All India Majlis-e-Ittehadul Muslimeen (AIMIM)",
+    ministry: "AIMIM National Leadership & Parliamentary Representation",
+    party: "All India Majlis-e-Ittehadul Muslimeen (AIMIM)",
+    photoUrl: LEADER_PHOTOS["asaduddin-owaisi"],
+    education: "BA (Nizam College, Osmania University) & Barrister-at-Law (Lincolns Inn, London, UK)",
+    educationDetails: {
+      degree: "Bachelor of Arts & Barrister-at-Law",
+      institution: "Nizam College, Osmania University & Honourable Society of Lincoln's Inn, London, UK",
+      summary: "Graduated with BA from Osmania University and called to the Bar at Lincoln's Inn, London, practicing law before entering full-time politics."
+    },
+    declaredAssetsCr: 19.82,
+    totalAssetsCr: 19.82,
+    liabilitiesCr: 4.30,
+    assetGrowthPct: 18,
+    criminalCases: 5,
+    seriousCriminalCases: 1,
+    criminalCaseNote: "Declared 5 pending political protest and public demonstration cases in certified 2024 ECI Form 26 affidavit; zero criminal convictions.",
+    constituency: "Hyderabad, Telangana",
+    stateName: "Telangana",
+    stateCode: "TG",
+    isCM: false,
+    scamsAndCorruption: [
+      {
+        title: "Public Demonstration & Protest Cases",
+        financialImpact: "No Financial Scam Charges",
+        description: "Cases registered under section 188 / 143 for unauthorized public rallies and political demonstrations in Hyderabad and Medak.",
+        status: "Magistrate Court Proceedings"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "Electoral Expansions in UP and Bengal (2021–2022)",
+        outlay: "National Footprint Strategy",
+        status: "Failed to win seats in UP and West Bengal assembly elections despite intense campaign mobilization."
+      } as any
+    ] as any,
+    controversies: [
+      "Stirring debates on constitutional secularism, minority rights, and CAA/NRC implementation"
+    ],
+    keyWorks: [
+      {
+        achievement: "Hyderabad Old City Infrastructure & Owaisi Hospital Network",
+        outlay: "₹450+ Crore Healthcare & Urban Roads",
+        status: "Developed extensive subsidized super-specialty medical hospitals, Deccan College of Medical Sciences, and flyover networks in Old Hyderabad."
+      },
+      {
+        achievement: "Outstanding Parliamentary Debater Record (Sansad Ratna)",
+        outlay: "Lok Sabha Debates",
+        status: "Maintained 90%+ attendance record and participated in 120+ major constitutional and legislative debates in Lok Sabha."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 80,
+      integrityAndCleanGovernance: 74,
+      policyCompetence: 86,
+      publicResponsiveness: 85,
+      overallScore: 81
+    },
+    performanceScore: 81
   }
 };
 

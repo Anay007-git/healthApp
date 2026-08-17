@@ -323,6 +323,154 @@ const LEADER_DOSSIERS: Record<string, {
       { title: "Cultural Infrastructure (Ayodhya Ram Mandir & Kashi Corridor)", outlay: "5x Surge in Tourism Revenue", desc: "Transformed religious tourism economy with 32+ crore tourist footfalls in 2023-24." },
     ],
     scores: { delivery: 88, integrity: 82, policy: 58, response: 66, overall: 79 }
+  },
+  abhishek: {
+    name: "Abhishek Banerjee",
+    position: "Member of Parliament for Diamond Harbour (3rd Consecutive Term since 2014), National General Secretary of AITC",
+    party: "All India Trinamool Congress (AITC)",
+    constituency: "Diamond Harbour, South 24 Parganas, West Bengal",
+    education: "BBA & MBA (Indian Institute of Planning and Management, New Delhi)",
+    eduDetails: "Completed undergraduate and postgraduate degrees in business management in New Delhi prior to parliamentary election in 2014.",
+    assetsCr: 1.52,
+    liabilitiesCr: 0.0,
+    criminalCases: 1,
+    seriousCases: 0,
+    criminalNote: "Declared 1 pending political protest case in certified 2024 ECI Form 26 filing; questioned by ED in coal and cattle smuggling inquiries without trial court conviction.",
+    scams: [
+      { title: "Coal Smuggling & Illegal Sand Mining PMLA Inquiries", impact: "₹1,352 Crore Probe", desc: "Enforcement Directorate and CBI probed illegal extraction in Eastern Coalfields; questioned Abhishek Banerjee in New Delhi and Kolkata offices.", status: "ED Inquiries & Supreme Court Review" },
+      { title: "Cattle Smuggling Financial Channel Inquiries", impact: "Interstate Syndicate Probe", desc: "Central agencies probed bank records regarding border transport networks; summoned for formal witness statements.", status: "Sub-judice Central Investigation" },
+    ],
+    failures: [
+      { title: "TMC Yuva Structural Friction (2018–2021)", desc: "Factional disputes during structural overhaul of youth wing before 2021 assembly elections." },
+      { title: "Prolonged Central Agency Legal Impasse", desc: "High-voltage protests and protracted legal tussles over summons jurisdiction between Calcutta High Court and Supreme Court." },
+    ],
+    works: [
+      { title: "Diamond Harbour Health & Telemedicine Model", outlay: "₹180+ Crore Welfare Network", desc: "Pioneered localized universal health screening, free medicines distribution, and Covid containment model across Diamond Harbour constituency." },
+      { title: "Trinamool Naba Jowar Grassroots Campaign (2023)", outlay: "60-Day 4,000+ km State Outreach", desc: "Conducted statewide outreach to select local rural panchayat election candidates via direct grassroots secret-ballot voting." },
+      { title: "Parliamentary Voice for State Financial Allocations", outlay: "Lok Sabha Debates", desc: "Consistently raised 100-day work MGNREGA and Awas Yojana central release demands in Lok Sabha floor debates." },
+    ],
+    scores: { delivery: 81, integrity: 66, policy: 78, response: 85, overall: 77 }
+  },
+  akhilesh: {
+    name: "Akhilesh Yadav",
+    position: "Leader of Opposition in Lok Sabha, President of Samajwadi Party (SP), Former Chief Minister of UP (2012–2017)",
+    party: "Samajwadi Party (SP)",
+    constituency: "Kannauj, Uttar Pradesh",
+    education: "B.Tech Civil Environmental Engineering (JSS Mysore) & M.Eng Environmental Engineering (Univ of Sydney, Australia)",
+    eduDetails: "Completed Bachelor of Engineering in Mysore, followed by Master's degree in Environmental Engineering from University of Sydney.",
+    assetsCr: 42.04,
+    liabilitiesCr: 0.0,
+    criminalCases: 0,
+    seriousCases: 0,
+    criminalNote: "Zero criminal cases declared in certified 2024 Lok Sabha ECI Form 26 affidavit; clean personal legal filing.",
+    scams: [
+      { title: "Gomti Riverfront Development Project Inquiries", impact: "₹1,500 Crore Audit Inquiry", desc: "CBI preliminary enquiry into cost overruns and tender approvals for Gomti Riverfront beautification during 2012–2017 tenure.", status: "CBI Inquiries & State Scrutiny" },
+    ],
+    failures: [
+      { title: "Muzaffarnagar Riots (2013)", desc: "Severe communal clashes resulting in 60+ fatalities and mass displacement, leading to intense judicial scrutiny." },
+    ],
+    works: [
+      { title: "Agra-Lucknow Expressway (302 km)", outlay: "₹13,200 Crore", desc: "Constructed India's longest 6-lane access-controlled expressway in a record 36 months with emergency fighter jet landing strip." },
+      { title: "UP Dial 100 / 112 Emergency Police Response System", outlay: "Statewide Integrated Telemetry", desc: "Modernized centralized police dispatch and emergency fleet response across all 75 districts of Uttar Pradesh." },
+      { title: "Lucknow Metro Phase 1 Construction", outlay: "₹6,928 Crore", desc: "Completed North-South corridor metro transit network connecting CCS Airport to Munshi Pulia." },
+    ],
+    scores: { delivery: 84, integrity: 76, policy: 82, response: 80, overall: 81 }
+  },
+  mahua: {
+    name: "Mahua Moitra",
+    position: "Member of Parliament for Krishnanagar (Re-elected 2024), All India Trinamool Congress (AITC)",
+    party: "All India Trinamool Congress (AITC)",
+    constituency: "Krishnanagar, Nadia, West Bengal",
+    education: "BA Economics & Mathematics (Mount Holyoke College, Massachusetts, USA)",
+    eduDetails: "Dual major in Economics and Mathematics; former Vice President at JPMorgan Chase in New York & London before entering Indian politics.",
+    assetsCr: 4.15,
+    liabilitiesCr: 0.0,
+    criminalCases: 1,
+    seriousCases: 0,
+    criminalNote: "Declared 1 pending political protest case in 2024 ECI Form 26 filing; expelled from 17th Lok Sabha on ethics allegations before re-election by 56,000+ margin in 2024.",
+    scams: [
+      { title: "Cash-for-Query Parliamentary Ethics Inquiry", impact: "Ethics Committee & CBI Preliminary Enquiry", desc: "Expelled from 17th Lok Sabha in Dec 2023 over sharing parliamentary portal login credentials with businessman Darshan Hiranandani.", status: "CBI Scrutiny & Supreme Court Challenge" },
+    ],
+    failures: [
+      { title: "Parliamentary Expulsion (Dec 2023)", desc: "Expelled on ethics committee recommendations before vindication via direct public mandate in 2024 general election." },
+    ],
+    works: [
+      { title: "Krishnanagar Rural Electrification & Nadia Road Infra", outlay: "₹120+ Crore MPLAD & State Schemes", desc: "Completed extensive rural bridge connectivity, piped drinking water, and hospital modernization in Krishnanagar." },
+      { title: "Parliamentary Scrutiny on Corporate Governance & Data Privacy", outlay: "Lok Sabha Debates", desc: "Spearheaded national legislative debates on Pegasus spyware, privacy rights, and corporate conglomerate disclosures." },
+    ],
+    scores: { delivery: 78, integrity: 70, policy: 88, response: 80, overall: 78 }
+  },
+  tejashwi: {
+    name: "Tejashwi Yadav",
+    position: "Leader of Opposition in Bihar Assembly, Former Deputy Chief Minister of Bihar (2015–2017, 2022–2024), MLA for Raghopur",
+    party: "Rashtriya Janata Dal (RJD)",
+    constituency: "Raghopur, Vaishali, Bihar",
+    education: "Secondary Schooling (Class 9, DPS R.K. Puram, New Delhi)",
+    eduDetails: "Pursued secondary education in New Delhi; professional cricketer (Delhi Daredevils squad) prior to entering public life in 2015.",
+    assetsCr: 6.88,
+    liabilitiesCr: 0.42,
+    criminalCases: 11,
+    seriousCases: 3,
+    criminalNote: "Declared 11 pending cases (including IRCTC hotel lease and land-for-jobs PMLA investigations) in certified ECI Form 26 affidavit.",
+    scams: [
+      { title: "Land-for-Jobs Railway Recruitment Case", impact: "₹600 Crore Alleged Asset Transfers", desc: "CBI & ED chargesheets alleging transfer of land parcels in Patna at throwaway prices in exchange for Group D railway appointments during 2004–2009.", status: "Special CBI Court Trial & Bail Granted" },
+    ],
+    failures: [
+      { title: "Mahagathbandhan Government Collapse (Jan 2024)", desc: "Collapse of Mahagathbandhan government after Nitish Kumar's realignment with NDA." },
+    ],
+    works: [
+      { title: "4.5 Lakh Bihar Government Teacher & Civil Appointments (2022–2023)", outlay: "Statewide Recruitment Drive", desc: "Spearheaded fast-track transparent recruitment of 4.5 lakh government school teachers and civil officers via BPSC in 15 months." },
+      { title: "Bihar Caste-Based Economic Survey (2023)", outlay: "Statewide Socio-Economic Census", desc: "Successfully executed India's first comprehensive state socio-economic caste survey leading to expanded 75% reservation structure." },
+    ],
+    scores: { delivery: 82, integrity: 58, policy: 76, response: 86, overall: 74 }
+  },
+  tharoor: {
+    name: "Shashi Tharoor",
+    position: "Member of Parliament for Thiruvananthapuram (4 Consecutive Terms since 2009), Chairman of Parliamentary Committee on Chemicals & Fertilisers",
+    party: "Indian National Congress (INC)",
+    constituency: "Thiruvananthapuram, Kerala",
+    education: "BA History (St. Stephen's College) & Ph.D. in International Relations (Fletcher School, Tufts University, USA)",
+    eduDetails: "Earned Doctorate at age 22 from Tufts University; served as Under-Secretary-General of the United Nations (1978–2007) and author of 25+ bestselling books.",
+    assetsCr: 55.45,
+    liabilitiesCr: 0.0,
+    criminalCases: 0,
+    seriousCases: 0,
+    criminalNote: "Zero criminal convictions declared in 2024 ECI Form 26 affidavit; fully discharged by Delhi High Court in Sunanda Pushkar case in Aug 2021.",
+    scams: [
+      { title: "IPL Kochi Tuskers Sweat Equity Controversy (2010)", impact: "Franchise Bidding Scrutiny", desc: "Opposition allegations regarding advisory sweat equity in Rendezvous Sports World; resigned as MoS External Affairs in 2010. No formal financial charges sustained.", status: "Resolved / No Charges" },
+    ],
+    failures: [
+      { title: "Congress Presidential Election Defeat (Oct 2022)", desc: "Contested INC presidential poll against Mallikarjun Kharge securing 1,072 delegate votes (11.9%)." },
+    ],
+    works: [
+      { title: "Vizhinjam International Transshipment Deepwater Seaport", outlay: "₹7,700 Crore Maritime Infrastructure", desc: "Championed central cabotage waivers and environmental clearances for India's first automated mega-container transshipment port." },
+      { title: "Thiruvananthapuram IT Technopark Expansion & AI Corridor", outlay: "₹2,500+ Crore Tech Investments", desc: "Attracted major multinational tech hubs creating 35,000+ high-tech jobs." },
+    ],
+    scores: { delivery: 84, integrity: 82, policy: 92, response: 84, overall: 86 }
+  },
+  owaisi: {
+    name: "Asaduddin Owaisi",
+    position: "Member of Parliament for Hyderabad (5 Consecutive Terms since 2004), President of AIMIM",
+    party: "All India Majlis-e-Ittehadul Muslimeen (AIMIM)",
+    constituency: "Hyderabad, Telangana",
+    education: "BA (Osmania University) & Barrister-at-Law (Lincolns Inn, London, UK)",
+    eduDetails: "Graduated with BA from Osmania University and called to the Bar at Lincoln's Inn, London, practicing law before entering full-time politics.",
+    assetsCr: 19.82,
+    liabilitiesCr: 4.30,
+    criminalCases: 5,
+    seriousCases: 1,
+    criminalNote: "Declared 5 pending political protest and public demonstration cases in certified 2024 ECI Form 26 affidavit; zero criminal convictions.",
+    scams: [
+      { title: "Public Demonstration & Protest Cases", impact: "No Financial Scam Charges", desc: "Cases registered under section 188 / 143 for unauthorized public rallies and political demonstrations in Hyderabad and Medak.", status: "Magistrate Court Proceedings" },
+    ],
+    failures: [
+      { title: "Electoral Expansions in UP and Bengal (2021–2022)", desc: "Failed to win seats in UP and West Bengal assembly elections despite intense campaign mobilization." },
+    ],
+    works: [
+      { title: "Hyderabad Old City Infrastructure & Owaisi Hospital Network", outlay: "₹450+ Crore Healthcare & Urban Roads", desc: "Developed extensive subsidized super-specialty medical hospitals and flyover networks in Old Hyderabad." },
+      { title: "Outstanding Parliamentary Debater Record (Sansad Ratna)", outlay: "Lok Sabha Debates", desc: "Maintained 90%+ attendance record and participated in 120+ major constitutional and legislative debates in Lok Sabha." },
+    ],
+    scores: { delivery: 80, integrity: 74, policy: 86, response: 85, overall: 81 }
   }
 };
 
@@ -409,21 +557,136 @@ export default async function handler(req: any, res: any) {
   }
 
   // 2. MINISTERS & NETAS COMPREHENSIVE DOSSIER
+  // NETA VS NETA COMPARISON QUERY
   else if (
-    q.includes("minister") || q.includes("neta") || q.includes("score card") || q.includes("scorecard") ||
-    q.includes("mamata") || q.includes("suvendu") || q.includes("adhikari") || q.includes("modi") ||
-    q.includes("amit shah") || q.includes("gadkari") || q.includes("sitharaman") || q.includes("kejriwal") ||
-    q.includes("rahul") || q.includes("yogi") || q.includes("cabinet")
+    (q.includes("compare") || q.includes(" vs ") || q.includes(" vs. ") || q.includes("versus") || q.includes("difference between") || q.includes("head to head")) &&
+    (q.includes("abhishek") || q.includes("suvendu") || q.includes("mamata") || q.includes("modi") || q.includes("rahul") ||
+     q.includes("amit shah") || q.includes("gadkari") || q.includes("kejriwal") || q.includes("yogi") || q.includes("akhilesh") ||
+     q.includes("tejashwi") || q.includes("tharoor") || q.includes("mahua") || q.includes("owaisi"))
   ) {
-    const key = (q.includes("suvendu") || q.includes("adhikari")) ? "suvendu" :
-                (q.includes("mamata") || q.includes("banerjee")) ? "mamata" :
+    const findKey = (text: string) => {
+      const t = text.toLowerCase();
+      if (t.includes("abhishek") || t.includes("diamond harbour")) return "abhishek";
+      if (t.includes("suvendu") || t.includes("adhikari")) return "suvendu";
+      if (t.includes("mamata") || t.includes("didi") || (t.includes("banerjee") && !t.includes("abhishek"))) return "mamata";
+      if (t.includes("modi") || t.includes("narendra")) return "modi";
+      if (t.includes("amit shah") || (t.includes("shah") && !t.includes("shashi"))) return "shah";
+      if (t.includes("gadkari") || t.includes("nitin")) return "gadkari";
+      if (t.includes("sitharaman") || t.includes("nirmala")) return "sitharaman";
+      if (t.includes("kejriwal") || t.includes("arvind")) return "kejriwal";
+      if (t.includes("rahul") || (t.includes("gandhi") && !t.includes("sanjay"))) return "rahul";
+      if (t.includes("yogi") || t.includes("adityanath")) return "yogi";
+      if (t.includes("akhilesh") || (t.includes("yadav") && !t.includes("tejashwi"))) return "akhilesh";
+      if (t.includes("tejashwi")) return "tejashwi";
+      if (t.includes("tharoor") || t.includes("shashi")) return "tharoor";
+      if (t.includes("mahua") || t.includes("moitra")) return "mahua";
+      if (t.includes("owaisi") || t.includes("asaduddin")) return "owaisi";
+      return null;
+    };
+
+    const parts = q.split(/\s+(?:and|vs|vs\.|versus|against|to|with)\s+/i);
+    let keyA = parts.length >= 2 ? findKey(parts[0]) : null;
+    let keyB = parts.length >= 2 ? findKey(parts.slice(1).join(" ")) : null;
+
+    if (!keyA || !keyB || keyA === keyB) {
+      const candidateKeys = ["abhishek", "suvendu", "mamata", "modi", "rahul", "shah", "gadkari", "sitharaman", "kejriwal", "yogi", "akhilesh", "tejashwi", "tharoor", "mahua", "owaisi"];
+      const foundKeys = candidateKeys.filter((k) => q.includes(k));
+      if (foundKeys.length >= 2) {
+        keyA = foundKeys[0];
+        keyB = foundKeys[1];
+      }
+    }
+
+    if (keyA && keyB && keyA !== keyB && LEADER_DOSSIERS[keyA] && LEADER_DOSSIERS[keyB]) {
+      const lA = LEADER_DOSSIERS[keyA];
+      const lB = LEADER_DOSSIERS[keyB];
+
+      const scoreA = lA.scores.overall;
+      const scoreB = lB.scores.overall;
+      const crimA = lA.criminalCases || 0;
+      const crimB = lB.criminalCases || 0;
+
+      const scamsA = lA.scams.slice(0, 2).map((s) => `  - **${s.title}** (${s.impact}): ${s.desc}`).join("\n");
+      const scamsB = lB.scams.slice(0, 2).map((s) => `  - **${s.title}** (${s.impact}): ${s.desc}`).join("\n");
+      const worksA = lA.works.slice(0, 2).map((w) => `  - **${w.title}** (${w.outlay}): ${w.desc}`).join("\n");
+      const worksB = lB.works.slice(0, 2).map((w) => `  - **${w.title}** (${w.outlay}): ${w.desc}`).join("\n");
+
+      answer = `### ⚔️ Head-to-Head Neta Comparison: ${lA.name} vs. ${lB.name}
+
+- **Comparative Leadership Overview**:
+  - **${lA.name}**: ${lA.position} (Party: **${lA.party}** | Constituency: **${lA.constituency}**)
+  - **${lB.name}**: ${lB.position} (Party: **${lB.party}** | Constituency: **${lB.constituency}**)
+
+- **Educational Qualifications**:
+  - **${lA.name}**: **${lA.education}**
+  - **${lB.name}**: **${lB.education}**
+
+- **Financial & Criminal Disclosures (ECI Form 26)**:
+  - **${lA.name}**: Declared Net Assets of **₹${lA.assetsCr.toLocaleString()} Cr** | **${crimA} Criminal Case(s)** (${lA.seriousCases || 0} Serious IPC)
+  - **${lB.name}**: Declared Net Assets of **₹${lB.assetsCr.toLocaleString()} Cr** | **${crimB} Criminal Case(s)** (${lB.seriousCases || 0} Serious IPC)
+
+#### 📊 Comparative Governance Pillar Scores:
+- **Composite Work Rating**: **${lA.name} (${scoreA}/100)** vs **${lB.name} (${scoreB}/100)**
+- **Scheme & Infra Delivery (40% Weight)**: **${lA.name}: ${lA.scores.delivery}%** | **${lB.name}: ${lB.scores.delivery}%**
+- **Clean Governance & Integrity (30% Weight)**: **${lA.name}: ${lA.scores.integrity}%** | **${lB.name}: ${lB.scores.integrity}%**
+- **Policy Competence & Vision (15% Weight)**: **${lA.name}: ${lA.scores.policy}%** | **${lB.name}: ${lB.scores.policy}%**
+- **Public Responsiveness & Crisis Management (15% Weight)**: **${lA.name}: ${lA.scores.response}%** | **${lB.name}: ${lB.scores.response}%**
+
+#### ⚠️ Audited Scams, Inquiries & Legal Record:
+- **${lA.name}**:
+${scamsA}
+- **${lB.name}**:
+${scamsB}
+
+#### ✓ Landmark Delivery & Key Achievements:
+- **${lA.name}**:
+${worksA}
+- **${lB.name}**:
+${worksB}`;
+
+      metrics = [
+        { label: `${lA.name} Score`, value: `${scoreA}/100` },
+        { label: `${lB.name} Score`, value: `${scoreB}/100` },
+        { label: `${lA.name} Cases`, value: crimA > 0 ? `${crimA} Cases` : "0 (Clean)" },
+        { label: `${lB.name} Cases`, value: crimB > 0 ? `${crimB} Cases` : "0 (Clean)" },
+      ];
+
+      visualization = {
+        type: "bar",
+        title: `${lA.name} vs. ${lB.name}: Governance Pillars Comparison (/100)`,
+        data: [
+          { category: "Scheme Delivery", [lA.name]: lA.scores.delivery, [lB.name]: lB.scores.delivery, amountCr: lA.scores.delivery },
+          { category: "Clean Governance", [lA.name]: lA.scores.integrity, [lB.name]: lB.scores.integrity, amountCr: lA.scores.integrity },
+          { category: "Policy Competence", [lA.name]: lA.scores.policy, [lB.name]: lB.scores.policy, amountCr: lA.scores.policy },
+          { category: "Public Response", [lA.name]: lA.scores.response, [lB.name]: lB.scores.response, amountCr: lA.scores.response },
+        ],
+        keys: [lA.name, lB.name]
+      };
+    }
+  }
+  else if (
+    q.includes("minister") || q.includes("neta") || q.includes("leader") || q.includes("mp") || q.includes("mla") ||
+    q.includes("score card") || q.includes("scorecard") || q.includes("abhishek") || q.includes("mamata") ||
+    q.includes("suvendu") || q.includes("adhikari") || q.includes("modi") || q.includes("amit shah") ||
+    q.includes("gadkari") || q.includes("sitharaman") || q.includes("kejriwal") || q.includes("rahul") ||
+    q.includes("yogi") || q.includes("akhilesh") || q.includes("tejashwi") || q.includes("tharoor") ||
+    q.includes("mahua") || q.includes("owaisi") || q.includes("cabinet")
+  ) {
+    const key = (q.includes("abhishek") || q.includes("diamond harbour")) ? "abhishek" :
+                (q.includes("suvendu") || q.includes("adhikari")) ? "suvendu" :
+                (q.includes("mamata") || q.includes("didi") || (q.includes("banerjee") && !q.includes("abhishek"))) ? "mamata" :
                 (q.includes("modi") || q.includes("narendra")) ? "modi" :
                 (q.includes("gadkari") || q.includes("nitin")) ? "gadkari" :
                 (q.includes("sitharaman") || q.includes("nirmala")) ? "sitharaman" :
                 (q.includes("amit shah") || (q.includes("shah") && !q.includes("shashi"))) ? "shah" :
                 (q.includes("kejriwal") || q.includes("arvind")) ? "kejriwal" :
                 (q.includes("rahul") || (q.includes("gandhi") && !q.includes("sanjay"))) ? "rahul" :
-                (q.includes("yogi") || q.includes("adityanath")) ? "yogi" : null;
+                (q.includes("yogi") || q.includes("adityanath")) ? "yogi" :
+                (q.includes("akhilesh") || (q.includes("yadav") && !q.includes("tejashwi"))) ? "akhilesh" :
+                (q.includes("tejashwi")) ? "tejashwi" :
+                (q.includes("tharoor") || q.includes("shashi")) ? "tharoor" :
+                (q.includes("mahua") || q.includes("moitra")) ? "mahua" :
+                (q.includes("owaisi") || q.includes("asaduddin")) ? "owaisi" : null;
 
     if (key && LEADER_DOSSIERS[key]) {
       const leader = LEADER_DOSSIERS[key];

@@ -94,6 +94,7 @@ export function App() {
   const [aiInput, setAiInput] = useState<string>("");
   const [aiLoading, setAiLoading] = useState<boolean>(false);
   const [aiResponse, setAiResponse] = useState<AIStructuredResponse | null>(null);
+  const [selectedCompareLeader, setSelectedCompareLeader] = useState<string>("");
 
   // Dedicated search states (separate from AI chat)
   const [ministerSearch, setMinisterSearch] = useState<string>("");
@@ -2754,46 +2755,232 @@ export function App() {
                   const qLow = aiInput.toLowerCase();
                   const allLeaders = [...db.getMinisters(), ...db.getAllStateMinisters()];
 
-                  // Match specifically from the AI answer header first, then query
-                  let matchedLeader = allLeaders.find((l: any) => {
-                    const name = (l.name || "").toLowerCase();
-                    return ansLow.includes(`dossier: ${name}`) || ansLow.includes(`dossier: **${name}`) || ansLow.includes(`scorecard: ${name}`);
-                  });
+                  const resolveLeader = (text: string) => {
+                    const t = text.toLowerCase();
+                    if (t.includes("abhishek") || t.includes("diamond harbour")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("abhishek") || (l.slug || "").includes("abhishek"));
+                    }
+                    if (t.includes("suvendu") || t.includes("adhikari") || t.includes("nandigram")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("suvendu") || (l.slug || "").includes("suvendu"));
+                    }
+                    if (t.includes("mamata") || t.includes("didi") || (t.includes("banerjee") && !t.includes("abhishek"))) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("mamata") || (l.slug || "").includes("mamata"));
+                    }
+                    if (t.includes("modi") || t.includes("narendra")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("narendra") || (l.slug || "").includes("modi"));
+                    }
+                    if (t.includes("amit shah") || (t.includes("shah") && !t.includes("shashi"))) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("amit") || (l.slug || "").includes("amit"));
+                    }
+                    if (t.includes("gadkari") || t.includes("nitin")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("gadkari") || (l.slug || "").includes("gadkari"));
+                    }
+                    if (t.includes("sitharaman") || t.includes("nirmala")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("sitharaman") || (l.slug || "").includes("sitharaman"));
+                    }
+                    if (t.includes("kejriwal") || t.includes("arvind")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("kejriwal") || (l.slug || "").includes("kejriwal"));
+                    }
+                    if (t.includes("rahul") || (t.includes("gandhi") && !t.includes("sanjay"))) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("rahul") || (l.slug || "").includes("rahul"));
+                    }
+                    if (t.includes("yogi") || t.includes("adityanath")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("yogi") || (l.slug || "").includes("adityanath"));
+                    }
+                    if (t.includes("akhilesh") || (t.includes("yadav") && !t.includes("tejashwi"))) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("akhilesh") || (l.slug || "").includes("akhilesh"));
+                    }
+                    if (t.includes("tejashwi")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("tejashwi") || (l.slug || "").includes("tejashwi"));
+                    }
+                    if (t.includes("tharoor") || t.includes("shashi")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("tharoor") || (l.slug || "").includes("tharoor"));
+                    }
+                    if (t.includes("mahua") || t.includes("moitra")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("mahua") || (l.slug || "").includes("mahua"));
+                    }
+                    if (t.includes("owaisi") || t.includes("asaduddin")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("owaisi") || (l.slug || "").includes("owaisi"));
+                    }
+                    return allLeaders.find((l: any) => {
+                      const name = (l.name || "").toLowerCase();
+                      const slug = (l.slug || "").toLowerCase();
+                      return (name && t.includes(name)) || (slug && t.includes(slug));
+                    });
+                  };
 
-                  if (!matchedLeader) {
-                    if (qLow.includes("suvendu") || qLow.includes("adhikari")) {
-                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("suvendu") || (l.slug || "").includes("suvendu"));
-                    } else if (qLow.includes("mamata") || qLow.includes("banerjee")) {
-                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("mamata") || (l.slug || "").includes("mamata"));
-                    } else if (qLow.includes("modi") || qLow.includes("narendra")) {
-                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("narendra") || (l.slug || "").includes("modi"));
-                    } else if (qLow.includes("gadkari") || qLow.includes("nitin")) {
-                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("gadkari") || (l.slug || "").includes("gadkari"));
-                    } else if (qLow.includes("shah") && !qLow.includes("shashi")) {
-                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("amit") || (l.slug || "").includes("amit"));
-                    } else if (qLow.includes("sitharaman") || qLow.includes("nirmala")) {
-                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("sitharaman") || (l.slug || "").includes("sitharaman"));
-                    } else if (qLow.includes("kejriwal") || qLow.includes("arvind")) {
-                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("kejriwal") || (l.slug || "").includes("kejriwal"));
-                    } else if (qLow.includes("rahul") || (qLow.includes("gandhi") && !qLow.includes("sanjay"))) {
-                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("rahul") || (l.slug || "").includes("rahul"));
-                    } else if (qLow.includes("yogi") || qLow.includes("adityanath")) {
-                      matchedLeader = allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("yogi") || (l.slug || "").includes("adityanath"));
-                    } else {
-                      matchedLeader = allLeaders.find((l: any) => {
-                        const name = (l.name || "").toLowerCase();
-                        const slug = (l.slug || "").toLowerCase();
-                        return (name && qLow.includes(name)) || (slug && qLow.includes(slug));
-                      });
+                  // Check if this is a Head-to-Head Comparison Query
+                  const isHeadToHead = ansLow.includes("head-to-head") || ansLow.includes("⚔️ head-to-head") ||
+                    qLow.includes(" vs ") || qLow.includes(" vs. ") || qLow.includes("versus") ||
+                    (qLow.includes("compare") && (qLow.includes(" and ") || qLow.includes(" with ") || qLow.includes(" to ") || qLow.includes(" vs ")));
+
+                  let leaderA: any = null;
+                  let leaderB: any = null;
+
+                  if (isHeadToHead) {
+                    const matchHeader = ansText.match(/Head-to-Head Neta Comparison:\s*(.*?)\s+vs\.?\s+(.*)/i);
+                    if (matchHeader) {
+                      leaderA = resolveLeader(matchHeader[1]);
+                      leaderB = resolveLeader(matchHeader[2]);
+                    }
+                    if (!leaderA || !leaderB) {
+                      const parts = qLow.split(/\s+(?:and|vs|vs\.|versus|against|to|with)\s+/i);
+                      if (parts.length >= 2) {
+                        leaderA = resolveLeader(parts[0]);
+                        leaderB = resolveLeader(parts.slice(1).join(" "));
+                      }
                     }
                   }
 
+                  // Single Leader Resolution
+                  let matchedLeader = !isHeadToHead
+                    ? allLeaders.find((l: any) => {
+                        const name = (l.name || "").toLowerCase();
+                        return ansLow.includes(`dossier: ${name}`) || ansLow.includes(`dossier: **${name}`) || ansLow.includes(`scorecard: ${name}`);
+                      }) || resolveLeader(qLow)
+                    : null;
+
                   const score = matchedLeader ? calculateMinisterScore(matchedLeader) : 78;
+                  const scoreA = leaderA ? calculateMinisterScore(leaderA) : 78;
+                  const scoreB = leaderB ? calculateMinisterScore(leaderB) : 78;
+
+                  const getSuggestedOpponents = (l: any) => {
+                    const name = (l?.name || "").toLowerCase();
+                    if (name.includes("abhishek")) return ["Suvendu Adhikari", "Mamata Banerjee", "Rahul Gandhi", "Narendra Modi"];
+                    if (name.includes("suvendu")) return ["Abhishek Banerjee", "Mamata Banerjee", "Yogi Adityanath", "Akhilesh Yadav"];
+                    if (name.includes("mamata")) return ["Suvendu Adhikari", "Abhishek Banerjee", "Yogi Adityanath", "Narendra Modi"];
+                    if (name.includes("modi") || name.includes("narendra")) return ["Rahul Gandhi", "Nitin Gadkari", "Arvind Kejriwal", "Mamata Banerjee"];
+                    if (name.includes("rahul")) return ["Narendra Modi", "Akhilesh Yadav", "Shashi Tharoor", "Tejashwi Yadav"];
+                    if (name.includes("yogi")) return ["Akhilesh Yadav", "Mamata Banerjee", "Narendra Modi", "Rahul Gandhi"];
+                    if (name.includes("akhilesh")) return ["Yogi Adityanath", "Rahul Gandhi", "Tejashwi Yadav", "Narendra Modi"];
+                    if (name.includes("tejashwi")) return ["Nitish Kumar", "Chirag Paswan", "Akhilesh Yadav", "Rahul Gandhi"];
+                    if (name.includes("tharoor")) return ["S. Jaishankar", "Rahul Gandhi", "Mahua Moitra", "Asaduddin Owaisi"];
+                    if (name.includes("mahua")) return ["Suvendu Adhikari", "Shashi Tharoor", "Abhishek Banerjee", "Nirmala Sitharaman"];
+                    if (name.includes("owaisi")) return ["Yogi Adityanath", "Rahul Gandhi", "Amit Shah", "Shashi Tharoor"];
+                    return ["Rahul Gandhi", "Narendra Modi", "Mamata Banerjee", "Suvendu Adhikari"];
+                  };
 
                   return (
                     <div className="space-y-6 font-sans">
-                      {/* Prominent Leader Portrait Banner if Leader Matched - Neo Brutal UI */}
-                      {matchedLeader && (
+                      {/* DUAL HEAD-TO-HEAD COMPARISON HERO CARD */}
+                      {isHeadToHead && leaderA && leaderB && (
+                        <div className="bg-white border-2 border-black p-5 sm:p-6 rounded-2xl shadow-[5px_5px_0px_#000000] space-y-5">
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-3">
+                            <span className="px-3 py-1 bg-[#FFE877] text-black font-mono text-xs font-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000000] uppercase flex items-center gap-1.5">
+                              ⚔️ DUAL NETA HEAD-TO-HEAD COMPARISON
+                            </span>
+                            <span className="px-2.5 py-1 bg-[#EEF2FF] text-[#06038D] font-mono text-[10px] font-black border-2 border-black rounded-lg uppercase">
+                              ECI FORM 26 AUDITED
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-11 gap-4 items-center">
+                            {/* LEADER A CARD */}
+                            <div className="md:col-span-5 bg-[#FAF7F0] border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-3">
+                              <div className="flex items-center gap-3">
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-white border-2 border-black shrink-0 shadow-[2px_2px_0px_#000000]">
+                                  <img
+                                    src={leaderA.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(leaderA.name || "Leader")}&background=06038D&color=fff&size=256`}
+                                    alt={leaderA.name}
+                                    referrerPolicy="no-referrer"
+                                    className="w-full h-full object-cover object-top"
+                                    onError={(e) => {
+                                      (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(leaderA.name || "Leader")}&background=06038D&color=fff&size=256`;
+                                    }}
+                                  />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <h4 className="font-serif text-lg sm:text-xl font-black text-black truncate">{leaderA.name}</h4>
+                                  <span className="inline-block px-2 py-0.5 bg-[#06038D] text-white font-mono text-[10px] font-bold rounded border border-black truncate max-w-full">
+                                    {leaderA.party}
+                                  </span>
+                                  <p className="text-[11px] font-mono text-[#475569] truncate mt-0.5">{leaderA.constituency || "Public Office"}</p>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center justify-between border-t border-black/20 pt-2 font-mono text-xs">
+                                <span className="font-bold text-[#475569]">Score:</span>
+                                <span className={`px-2 py-0.5 font-black rounded border border-black shadow-[1px_1px_0px_#000] ${
+                                  scoreA >= 80 ? "bg-[#00E599] text-black" : "bg-[#FFC000] text-black"
+                                }`}>
+                                  {scoreA}/100
+                                </span>
+                              </div>
+
+                              <div className="flex items-center justify-between font-mono text-xs">
+                                <span className="font-bold text-[#475569]">ECI Cases:</span>
+                                <span className={`px-1.5 py-0.2 font-black rounded text-[10px] ${
+                                  (leaderA.criminalCases || 0) > 0 ? "bg-[#FF4D4D] text-white" : "bg-[#00E599] text-black"
+                                }`}>
+                                  {(leaderA.criminalCases || 0) > 0 ? `${leaderA.criminalCases} Cases` : "0 (Clean)"}
+                                </span>
+                              </div>
+
+                              <div className="flex items-center justify-between font-mono text-xs">
+                                <span className="font-bold text-[#475569]">Net Assets:</span>
+                                <span className="font-black text-black">₹{leaderA.declaredAssetsCr || leaderA.totalAssetsCr || 0} Cr</span>
+                              </div>
+                            </div>
+
+                            {/* VS BADGE */}
+                            <div className="md:col-span-1 flex items-center justify-center">
+                              <span className="w-10 h-10 rounded-full bg-[#FF671F] text-black font-black font-mono text-xs border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_#000000]">
+                                VS
+                              </span>
+                            </div>
+
+                            {/* LEADER B CARD */}
+                            <div className="md:col-span-5 bg-[#FAF7F0] border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] space-y-3">
+                              <div className="flex items-center gap-3">
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-white border-2 border-black shrink-0 shadow-[2px_2px_0px_#000000]">
+                                  <img
+                                    src={leaderB.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(leaderB.name || "Leader")}&background=06038D&color=fff&size=256`}
+                                    alt={leaderB.name}
+                                    referrerPolicy="no-referrer"
+                                    className="w-full h-full object-cover object-top"
+                                    onError={(e) => {
+                                      (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(leaderB.name || "Leader")}&background=06038D&color=fff&size=256`;
+                                    }}
+                                  />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <h4 className="font-serif text-lg sm:text-xl font-black text-black truncate">{leaderB.name}</h4>
+                                  <span className="inline-block px-2 py-0.5 bg-[#06038D] text-white font-mono text-[10px] font-bold rounded border border-black truncate max-w-full">
+                                    {leaderB.party}
+                                  </span>
+                                  <p className="text-[11px] font-mono text-[#475569] truncate mt-0.5">{leaderB.constituency || "Public Office"}</p>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center justify-between border-t border-black/20 pt-2 font-mono text-xs">
+                                <span className="font-bold text-[#475569]">Score:</span>
+                                <span className={`px-2 py-0.5 font-black rounded border border-black shadow-[1px_1px_0px_#000] ${
+                                  scoreB >= 80 ? "bg-[#00E599] text-black" : "bg-[#FFC000] text-black"
+                                }`}>
+                                  {scoreB}/100
+                                </span>
+                              </div>
+
+                              <div className="flex items-center justify-between font-mono text-xs">
+                                <span className="font-bold text-[#475569]">ECI Cases:</span>
+                                <span className={`px-1.5 py-0.2 font-black rounded text-[10px] ${
+                                  (leaderB.criminalCases || 0) > 0 ? "bg-[#FF4D4D] text-white" : "bg-[#00E599] text-black"
+                                }`}>
+                                  {(leaderB.criminalCases || 0) > 0 ? `${leaderB.criminalCases} Cases` : "0 (Clean)"}
+                                </span>
+                              </div>
+
+                              <div className="flex items-center justify-between font-mono text-xs">
+                                <span className="font-bold text-[#475569]">Net Assets:</span>
+                                <span className="font-black text-black">₹{leaderB.declaredAssetsCr || leaderB.totalAssetsCr || 0} Cr</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Prominent Leader Portrait Banner if Leader Matched (Single Leader Dossier) - Neo Brutal UI */}
+                      {!isHeadToHead && matchedLeader && (
                         <div className="bg-white border-2 border-black p-5 sm:p-6 rounded-2xl shadow-[5px_5px_0px_#000000] space-y-4">
                           {/* Top Badges */}
                           <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-3">
@@ -3231,6 +3418,100 @@ export function App() {
                             </div>
                           );
                         });
+                      })()}
+
+                      {/* INTERACTIVE HEAD-TO-HEAD COMPARISON RECOMMENDATION BOX */}
+                      {(() => {
+                        const targetLeader = matchedLeader || leaderA;
+                        if (!targetLeader) return null;
+
+                        const suggestions = getSuggestedOpponents(targetLeader);
+                        const otherLeaders = allLeaders.filter((l: any) => (l.name || "").toLowerCase() !== (targetLeader.name || "").toLowerCase());
+
+                        return (
+                          <div className="bg-gradient-to-r from-[#FFFBEB] via-[#FAF7F0] to-[#EFF6FF] border-2 border-black p-5 sm:p-6 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-4 font-mono">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-black pb-3">
+                              <div className="flex items-center gap-2.5">
+                                <span className="p-2 bg-[#FF671F] text-black border border-black rounded-lg shadow-[2px_2px_0px_#000]">
+                                  <Scale className="w-5 h-5 text-black" />
+                                </span>
+                                <div>
+                                  <span className="text-[11px] font-black uppercase text-[#D95300] block tracking-wider">
+                                    AI NETA COMPARISON FEATURE
+                                  </span>
+                                  <h4 className="font-serif text-lg sm:text-xl font-black text-black">
+                                    Do you want to compare {targetLeader.name}?
+                                  </h4>
+                                </div>
+                              </div>
+                              <span className="px-2.5 py-1 bg-[#06038D] text-white text-[10px] font-black rounded-md border border-black w-fit">
+                                4-PILLAR RADAR & AUDIT
+                              </span>
+                            </div>
+
+                            <p className="text-xs text-[#334155] font-sans font-medium leading-relaxed">
+                              Compare governance delivery scores, CAG audit disclosures, declared net assets, and ECI Form 26 criminal cases against other national MPs, MLAs, and Cabinet Ministers.
+                            </p>
+
+                            {/* Quick Action Suggestion Chips */}
+                            <div className="space-y-1.5">
+                              <span className="text-[11px] text-[#475569] font-black uppercase block">
+                                Recommended Comparisons for {targetLeader.name}:
+                              </span>
+                              <div className="flex flex-wrap gap-2 pt-1">
+                                {suggestions.map((oppName) => {
+                                  const oppPrompt = `Compare ${targetLeader.name} and ${oppName}`;
+                                  return (
+                                    <button
+                                      key={oppName}
+                                      onClick={() => {
+                                        setAiInput(oppPrompt);
+                                        handleAskAI(oppPrompt);
+                                        window.scrollTo({ top: 0, behavior: "smooth" });
+                                      }}
+                                      className="px-3 py-1.5 bg-white hover:bg-[#FFE877] text-black font-mono text-xs font-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000000] transition-all hover:-translate-y-0.5 cursor-pointer flex items-center gap-1.5"
+                                    >
+                                      <span>⚔️ vs. {oppName}</span>
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+
+                            {/* Dropdown Selector for Any Custom Neta */}
+                            <div className="pt-2 border-t border-black/20 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                              <span className="text-xs font-black text-black shrink-0">
+                                Or compare against any other Neta:
+                              </span>
+                              <select
+                                value={selectedCompareLeader}
+                                onChange={(e) => setSelectedCompareLeader(e.target.value)}
+                                className="flex-1 bg-white border-2 border-black text-xs font-mono font-bold px-3 py-2 rounded-lg text-black focus:outline-none"
+                              >
+                                <option value="">-- Choose any MP, MLA or Minister --</option>
+                                {otherLeaders.map((l: any) => (
+                                  <option key={l.slug || l.name} value={l.name}>
+                                    {l.name} ({l.party} • {l.currentPosition || l.title || l.ministry || "Public Leader"})
+                                  </option>
+                                ))}
+                              </select>
+                              <button
+                                disabled={!selectedCompareLeader}
+                                onClick={() => {
+                                  if (selectedCompareLeader) {
+                                    const customPrompt = `Compare ${targetLeader.name} and ${selectedCompareLeader}`;
+                                    setAiInput(customPrompt);
+                                    handleAskAI(customPrompt);
+                                    window.scrollTo({ top: 0, behavior: "smooth" });
+                                  }
+                                }}
+                                className="px-4 py-2 bg-[#06038D] hover:bg-[#046A38] text-white text-xs font-mono font-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000000] disabled:opacity-50 transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
+                              >
+                                <span>⚔️ COMPARE NOW</span>
+                              </button>
+                            </div>
+                          </div>
+                        );
                       })()}
                     </div>
                   );
