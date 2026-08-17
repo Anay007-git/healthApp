@@ -155,21 +155,64 @@ export interface ManifestoPromise {
 export interface MinisterProfile {
   id: string;
   name: string;
+  slug?: string;
+  title?: string;
+  currentPosition?: string;
   constituency: string;
   party: string;
   ministry: string;
+  photoUrl?: string;
   education: string;
+  educationDetails?: {
+    degree?: string;
+    institution?: string;
+    summary?: string;
+  };
   totalAssetsCr: number;
+  declaredAssetsCr?: number;
   liabilitiesCr: number;
   assetGrowthPercent: number;
-  declaredCases: {
+  assetGrowthPct?: number;
+  criminalCases?: number;
+  seriousCriminalCases?: number;
+  criminalCaseNote?: string;
+  declaredCases?: {
     pending: number;
     convicted: number;
     acquitted: number;
     details: string[];
   };
-  affidavitSourceUrl: string;
-  timeline: { year: number; role: string; party: string }[];
+  affidavitSourceUrl?: string;
+  timeline?: { year: number; role: string; party: string }[];
+  scamsAndCorruption?: {
+    title: string;
+    financialImpact: string;
+    description: string;
+    status: string;
+  }[];
+  epicFailures?: {
+    achievement: string;
+    outlay: string;
+    status: string;
+  }[];
+  controversies?: string[];
+  keyWorks?: {
+    achievement: string;
+    outlay: string;
+    status: string;
+  }[];
+  workScoreBreakdown?: {
+    schemeDelivery: number;
+    integrityAndCleanGovernance: number;
+    policyCompetence: number;
+    publicResponsiveness: number;
+    overallScore: number;
+  };
+  performanceScore?: number;
+  stateName?: string;
+  stateCode?: string;
+  isCM?: boolean;
+  groupName?: string;
 }
 
 export interface StorySection {
@@ -258,5 +301,87 @@ export interface CorporateDonorRecord {
   primaryRecipientParty?: string;
   recipientBreakdown?: Record<string, number | undefined>;
   cagAuditFlag?: string;
+}
+
+// ----------------------------------------------------
+// TruthCheck™ & Fake News Detection Types
+// ----------------------------------------------------
+
+export type FactCheckVerdict =
+  | "FALSE"
+  | "MISLEADING"
+  | "UNVERIFIED"
+  | "VERIFIED_TRUE"
+  | "SATIRE";
+
+export type ClaimCategory =
+  | "SCHEMES"
+  | "ELECTIONS"
+  | "ECONOMY"
+  | "HEALTH"
+  | "CAG_CORRUPTION"
+  | "GOVERNANCE"
+  | "LEGAL"
+  | "GENERAL";
+
+export interface LinguisticSignal {
+  type: "URGENCY" | "SENSATIONALISM" | "SCAM_LINK" | "AUTHORITY_FABRICATION" | "EMOTIONAL_BAIT";
+  phrase: string;
+  weight: number; // 0 to 1
+  explanation: string;
+}
+
+export interface FactCheckClaim {
+  id: string;
+  title: string;
+  claim: string;
+  claimant: string;
+  verdict: FactCheckVerdict;
+  truthSummary: string;
+  debunkExplanation: string;
+  category: ClaimCategory;
+  viralityScore: number; // 0 to 100
+  confidenceScore: number; // 0 to 100
+  dateReported: string;
+  highlightedRedFlags: string[];
+  officialClarificationUrl?: string;
+  officialSourceLabel?: string;
+  evidenceId?: string;
+  evidence?: Evidence;
+  suggestedAction?: string;
+}
+
+export interface ClaimAnalysisResult {
+  verdict: FactCheckVerdict;
+  confidenceScore: number; // 0 to 100
+  sensationalismScore: number; // 0 to 100
+  truthSummary: string;
+  detailedDebunk: string;
+  groundReality: string;
+  originalClaim: string;
+  signalsDetected: LinguisticSignal[];
+  redFlagPhrases: string[];
+  matchedCivicEntities: {
+    schemes?: string[];
+    ministers?: string[];
+    cagAudits?: string[];
+    states?: string[];
+    monetaryValues?: string[];
+  };
+  primarySources: Source[];
+  evidenceId?: string;
+  shareableDebunkText: string;
+  category: ClaimCategory;
+}
+
+export interface FactCheckSubmission {
+  id: string;
+  claimText: string;
+  sourcePlatform: string;
+  url?: string;
+  userContact?: string;
+  submittedAt: string;
+  upvotes: number;
+  status: "PENDING_REVIEW" | "VERIFIED" | "DEBUNKED";
 }
 

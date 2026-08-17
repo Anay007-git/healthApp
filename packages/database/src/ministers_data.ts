@@ -129,7 +129,10 @@ export const LEADER_PHOTOS: Record<string, string> = {
   "tejashwi-yadav": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Tejaswi_Yadav_2023.jpg",
   "shashi-tharoor": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Shashi_Tharoor_2025.jpg/500px-Shashi_Tharoor_2025.jpg",
   "asaduddin-owaisi": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Asaduddin.jpg/500px-Asaduddin.jpg",
-  "sonam-wangchuk": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Sonam_Wangchuk_in_2023.jpg/440px-Sonam_Wangchuk_in_2023.jpg"
+  "sonam-wangchuk": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Sonam_Wangchuk_in_2023.jpg/440px-Sonam_Wangchuk_in_2023.jpg",
+  "dipak-adhikari": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Dev_at_the_premiere_of_Amazon_Obhijaan.jpg/330px-Dev_at_the_premiere_of_Amazon_Obhijaan.jpg",
+  "dev": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Dev_at_the_premiere_of_Amazon_Obhijaan.jpg/330px-Dev_at_the_premiere_of_Amazon_Obhijaan.jpg",
+  "rahul-narvekar": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Rahul_Narwekar_2022.jpg/330px-Rahul_Narwekar_2022.jpg"
 };
 
 export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
@@ -1744,6 +1747,124 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
       overallScore: 93
     },
     performanceScore: 93
+  },
+
+  "dipak-adhikari": {
+    name: "Dipak Adhikari (Dev)",
+    slug: "dipak-adhikari",
+    title: "Member of Parliament (Lok Sabha) & Cultural Icon",
+    currentPosition: "3-Term Member of Parliament (Lok Sabha) for Ghatal (2014, 2019, 2024), Vice Chairman of West Bengal Film Development Corporation, Leading Philanthropist",
+    ministry: "Parliament of India — Standing Committee on Communications and Information Technology",
+    party: "All India Trinamool Congress (AITC)",
+    photoUrl: LEADER_PHOTOS["dipak-adhikari"],
+    education: "Diploma in Computer Science & Engineering (Bharatiya Vidya Bhavan, Mumbai)",
+    educationDetails: {
+      degree: "Diploma in Computer Engineering",
+      institution: "Bharatiya Vidya Bhavan, Mumbai",
+      summary: "Completed schooling at Purushottam High School, Bandra; earned Diploma in Computer Engineering from Bharatiya Vidya Bhavan before entering the film industry and electoral politics."
+    },
+    declaredAssetsCr: 25.68,
+    totalAssetsCr: 25.68,
+    liabilitiesCr: 1.45,
+    assetGrowthPct: 18,
+    criminalCases: 0,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "Zero criminal charges or convictions declared in 2014, 2019, and 2024 ECI Form 26 affidavits; verified clean public legal record.",
+    constituency: "Ghatal, Paschim Medinipur, West Bengal",
+    stateName: "West Bengal",
+    stateCode: "WB",
+    isCM: false,
+    scamsAndCorruption: [
+      {
+        title: "CBI & ED Cattle Smuggling Inquiry Deposition (Witness Status)",
+        financialImpact: "Witness Deposition / No Charge-sheet",
+        description: "Summoned by CBI and ED in 2022 to record statement regarding movie production financing links with Enamul Haque; cooperated fully and not named as accused or charge-sheeted.",
+        status: "Cleared as Witness / No Charge-sheet"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "Ghatal Master Plan Inter-Governmental Funding Delay",
+        outlay: "₹1,500+ Crore Flood Mitigation Project",
+        status: "Prolonged funding deadlock between Union Ministry of Jal Shakti and State Government over cost-sharing for the century-old Ghatal flood-relief embankment project."
+      } as any
+    ] as any,
+    controversies: [
+      "Parliamentary attendance balance with active Bengali cinematic acting and production commitments",
+      "Publicly offered resignation from parliamentary committees in early 2024 before party leadership convinced him to contest 2024 elections on Ghatal Master Plan commitment"
+    ],
+    keyWorks: [
+      {
+        achievement: "Ghatal Master Plan State Budget Rollout & Sanction",
+        outlay: "₹1,200+ Crore State Commitment",
+        status: "Relentlessly championed the comprehensive flood-control master plan in Parliament, leading to state government budgetary allocation for embankments and dredging."
+      },
+      {
+        achievement: "COVID-19 Humanitarian Operations & Oxygen Plants",
+        outlay: "₹8.5 Crore Community Relief",
+        status: "Deployed personal production resources and MPLADS to set up on-site PSA oxygen plants, free community kitchens, and medical camps across Medinipur during 2020-2021."
+      },
+      {
+        achievement: "Ghatal Super Specialty Hospital & Dialysis Center",
+        outlay: "MPLADS Infrastructure Allocation",
+        status: "Funded modernized dialysis units, maternal health care facilities, and rural connectivity bridges in Ghatal constituency."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 78,
+      integrityAndCleanGovernance: 86,
+      policyCompetence: 76,
+      publicResponsiveness: 88,
+      overallScore: 81
+    },
+    performanceScore: 81
+  },
+
+  "rahul-narvekar": {
+    name: "Rahul Narvekar",
+    slug: "rahul-narvekar",
+    title: "Speaker of the Maharashtra Legislative Assembly",
+    currentPosition: "Speaker of the Maharashtra Legislative Assembly (since 2022), MLA for Colaba, Mumbai",
+    ministry: "Maharashtra Legislative Secretariat — Office of the Speaker",
+    party: "Bharatiya Janata Party (BJP)",
+    photoUrl: LEADER_PHOTOS["rahul-narvekar"],
+    education: "B.Com, LL.B. (Sydenham College of Commerce & Economics; Government Law College, Mumbai); LL.M. (Nagpur University)",
+    educationDetails: {
+      degree: "Bachelor of Laws (LL.B.) & Master of Laws (LL.M.)",
+      institution: "Government Law College, Mumbai & Nagpur University",
+      summary: "Graduated with B.Com from Sydenham College; obtained LL.B. from GLC Mumbai and LL.M. from Nagpur University; practiced as constitutional and criminal law counsel."
+    },
+    declaredAssetsCr: 2.50,
+    totalAssetsCr: 2.50,
+    liabilitiesCr: 0.20,
+    assetGrowthPct: 12,
+    criminalCases: 0,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "Zero criminal convictions or pending serious criminal cases declared in ECI Form 26 filings.",
+    constituency: "Colaba, Mumbai, Maharashtra",
+    stateName: "Maharashtra",
+    stateCode: "MH",
+    isCM: false,
+    scamsAndCorruption: [],
+    epicFailures: [],
+    controversies: [
+      "Speaker adjudication rulings on Shiv Sena and NCP party symbol and anti-defection qualification petitions"
+    ],
+    keyWorks: [
+      {
+        achievement: "Youngest Speaker of Maharashtra Legislative Assembly",
+        outlay: "Constitutional Presiding Office",
+        status: "Elected Speaker at age 45; modernized Vidhan Bhavan digital proceedings and e-Vidhan assembly paperless portal."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 84,
+      integrityAndCleanGovernance: 82,
+      policyCompetence: 88,
+      publicResponsiveness: 78,
+      overallScore: 84
+    },
+    performanceScore: 84
   }
 };
 

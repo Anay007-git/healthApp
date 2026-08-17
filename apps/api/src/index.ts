@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { db } from "@civiclens/database";
 import { aiEngine } from "@civiclens/ai";
-import { newsletterSubscribeSchema, askQuerySchema } from "@civiclens/validation";
+import { newsletterSubscribeSchema, askQuerySchema, claimVerifySchema, claimSubmitSchema } from "@civiclens/validation";
 import { brandConfig } from "@civiclens/config";
 
 const app = express();
@@ -85,6 +85,52 @@ app.post("/api/chat", async (req, res) => {
 
   const response = await aiEngine.processQuery(parsed.data.question);
   res.json({ success: true, data: response });
+});
+
+// TRUTHCHECK & FACT CHECK ENDPOINTS
+app.get("/api/factcheck/feed", (req, res) => {
+  const category = (req.query.category as string) || undefined;
+  const verdict = (req.query.verdict as string) || undefined;
+  const search = (req.query.q as string) || undefined;
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
+
+  const data = db.getFactChecks({ category, verdict, search, limit });
+  res.json({ success: true, count: data.length, data });
+});
+
+app.get("/api/factcheck/trending", (req, res) => {
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
+  res.json({ success: true, data: db.getTrendingDebunks(limit) });
+});
+
+app.get("/api/factcheck/:id", (req, res) => {
+  const claim = db.getFactCheckById(req.params.id);
+  if (!claim) return res.status(404).json({ success: false, error: "Fact check not found" });
+  res.json({ success: true, data: claim });
+});
+
+app.post("/api/factcheck/verify", async (req, res) => {
+  const parsed = claimVerifySchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ success: false, error: parsed.error.format() });
+  }
+
+  const result = await aiEngine.analyzeMisinformation(parsed.data.text);
+  res.json({ success: true, data: result });
+});
+
+app.post("/api/factcheck/submit", (req, res) => {
+  const parsed = claimSubmitSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ success: false, error: parsed.error.format() });
+  }
+
+  const submission = db.submitClaimForReview(parsed.data);
+  res.json({
+    success: true,
+    message: "Suspicious claim queued for editorial verification.",
+    data: submission,
+  });
 });
 
 // NEWSLETTER SUBMISSION

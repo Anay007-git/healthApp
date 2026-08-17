@@ -41,6 +41,7 @@ import {
 } from "lucide-react";
 
 import { aiEngine } from "@civiclens/ai";
+import { TruthCheckModule } from "./TruthCheckModule";
 
 function calculateMinisterScore(m: any): number {
   if (m.workScoreBreakdown?.overallScore) {
@@ -165,7 +166,19 @@ export function App() {
   const states = db.getStates();
   const cagReports = db.getCAGReports();
   const promises = db.getManifestoPromises();
-  const ministers = [...db.getMinisters(), ...db.getAllStateMinisters()];
+  const allMinistersList = (() => {
+    const map = new Map<string, any>();
+    db.getMinisters().forEach((m: any) => {
+      const slug = m.slug || (m.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      map.set(slug, m);
+    });
+    db.getAllStateMinisters().forEach((m: any) => {
+      const slug = m.slug || (m.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      if (!map.has(slug)) map.set(slug, m);
+    });
+    return Array.from(map.values());
+  })();
+  const ministers = allMinistersList;
   const stories = db.getStories();
 
   const navItems = [
@@ -176,6 +189,7 @@ export function App() {
     { id: "cag", label: "CAG Audits", icon: AlertTriangle },
     { id: "manifesto", label: "Manifesto Tracker", icon: FileText },
     { id: "ministers", label: "Ministers", icon: Users },
+    { id: "factcheck", label: "TruthCheck", icon: ShieldAlert },
     { id: "ask", label: "AI Assistant", icon: Bot },
     { id: "newsletter", label: "Newsletter", icon: Mail },
   ];
@@ -398,6 +412,13 @@ export function App() {
                 >
                   <Bot className="w-4 h-4 text-[#FF671F]" />
                   ASK THE DATA AI
+                </button>
+                <button
+                  onClick={() => setActiveTab("factcheck")}
+                  className="px-6 py-3 bg-[#FAF7F0] border-2 border-[#06038D] text-[#06038D] hover:bg-[#06038D] hover:text-[#FFFFFF] text-sm font-mono font-bold rounded transition-all inline-flex items-center gap-2 cursor-pointer shadow-2xs"
+                >
+                  <ShieldAlert className="w-4 h-4 text-[#FF671F]" />
+                  TRUTHCHECK™ RADAR
                 </button>
               </div>
             </section>
@@ -2400,6 +2421,11 @@ export function App() {
           </div>
         )}
 
+        {/* TRUTHCHECK & FAKE NEWS DETECTOR TAB */}
+        {activeTab === "factcheck" && (
+          <TruthCheckModule onOpenEvidence={(evId) => handleOpenEvidence(evId)} />
+        )}
+
         {/* NEWSLETTER SUBSCRIPTION TAB */}
         {activeTab === "newsletter" && (
           <div className="space-y-12 max-w-4xl mx-auto py-6">
@@ -2759,53 +2785,67 @@ export function App() {
 
                   const resolveLeader = (text: string) => {
                     const t = text.toLowerCase();
-                    if (t.includes("abhishek") || t.includes("diamond harbour")) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("abhishek") || (l.slug || "").includes("abhishek"));
+
+                    // 1. Dipak Adhikari (Dev)
+                    if (t.includes("dipak") || t.includes("deepak") || (t.includes("dev") && (t.includes("adhikari") || t.includes("ghatal") || t.includes("mp") || t.includes("actor") || t.includes("bengal"))) || t.includes("ghatal")) {
+                      return allLeaders.find((l: any) => (l.slug || "") === "dipak-adhikari" || (l.name || "").toLowerCase().includes("dipak")) || (COMPREHENSIVE_LEADERS as any)["dipak-adhikari"];
                     }
-                    if (t.includes("suvendu") || t.includes("adhikari") || t.includes("nandigram")) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("suvendu") || (l.slug || "").includes("suvendu"));
+
+                    // 2. Rahul Narvekar vs Rahul Gandhi
+                    if (t.includes("narvekar") || (t.includes("rahul") && (t.includes("speaker") || t.includes("vidhan") || t.includes("maharashtra") || t.includes("colaba")))) {
+                      return allLeaders.find((l: any) => (l.slug || "") === "rahul-narvekar" || (l.name || "").toLowerCase().includes("narvekar")) || (COMPREHENSIVE_LEADERS as any)["rahul-narvekar"];
+                    }
+                    if (t.includes("rahul") || (t.includes("gandhi") && !t.includes("sanjay") && !t.includes("indira") && !t.includes("sonia"))) {
+                      return allLeaders.find((l: any) => (l.slug || "") === "rahul-gandhi" || (l.name || "").toLowerCase().includes("rahul gandhi") || ((l.name || "").toLowerCase().includes("rahul") && !(l.name || "").toLowerCase().includes("narvekar"))) || (COMPREHENSIVE_LEADERS as any)["rahul-gandhi"];
+                    }
+
+                    if (t.includes("abhishek") || t.includes("diamond harbour")) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("abhishek") || (l.slug || "").includes("abhishek")) || (COMPREHENSIVE_LEADERS as any)["abhishek-banerjee"];
+                    }
+                    if (t.includes("suvendu") || (t.includes("adhikari") && !t.includes("dipak") && !t.includes("dev")) || t.includes("nandigram")) {
+                      return allLeaders.find((l: any) => (l.slug || "") === "suvendu-adhikari" || (l.name || "").toLowerCase().includes("suvendu")) || (COMPREHENSIVE_LEADERS as any)["suvendu-adhikari"];
                     }
                     if (t.includes("mamata") || t.includes("didi") || (t.includes("banerjee") && !t.includes("abhishek"))) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("mamata") || (l.slug || "").includes("mamata"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("mamata") || (l.slug || "").includes("mamata")) || (COMPREHENSIVE_LEADERS as any)["mamata-banerjee"];
                     }
                     if (t.includes("modi") || t.includes("narendra")) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("narendra") || (l.slug || "").includes("modi"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("narendra") || (l.slug || "").includes("modi")) || (COMPREHENSIVE_LEADERS as any)["narendra-modi"];
                     }
                     if (t.includes("amit shah") || (t.includes("shah") && !t.includes("shashi"))) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("amit") || (l.slug || "").includes("amit"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("amit") || (l.slug || "").includes("amit")) || (COMPREHENSIVE_LEADERS as any)["amit-shah"];
                     }
                     if (t.includes("gadkari") || t.includes("nitin") || t.includes("ethanol") || t.includes("purti")) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("gadkari") || (l.slug || "").includes("gadkari"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("gadkari") || (l.slug || "").includes("gadkari")) || (COMPREHENSIVE_LEADERS as any)["nitin-gadkari"];
+                    }
+                    if (t.includes("sonam") || t.includes("wangchuk") || t.includes("secmol") || (t.includes("ladakh") && !t.includes("stalin"))) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("wangchuk") || (l.slug || "").includes("wangchuk")) || (COMPREHENSIVE_LEADERS as any)["sonam-wangchuk"];
                     }
                     if (t.includes("dharmendra") || t.includes("pradhan") || t.includes("neet") || t.includes("paper leak") || (t.includes("education") && t.includes("minister"))) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("dharmendra") || (l.slug || "").includes("dharmendra") || (l.name || "").toLowerCase().includes("pradhan"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("dharmendra") || (l.slug || "").includes("dharmendra") || (l.name || "").toLowerCase().includes("pradhan")) || (COMPREHENSIVE_LEADERS as any)["dharmendra-pradhan"];
                     }
                     if (t.includes("sitharaman") || t.includes("nirmala")) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("sitharaman") || (l.slug || "").includes("sitharaman"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("sitharaman") || (l.slug || "").includes("sitharaman")) || (COMPREHENSIVE_LEADERS as any)["nirmala-sitharaman"];
                     }
                     if (t.includes("kejriwal") || t.includes("arvind")) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("kejriwal") || (l.slug || "").includes("kejriwal"));
-                    }
-                    if (t.includes("rahul") || (t.includes("gandhi") && !t.includes("sanjay"))) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("rahul") || (l.slug || "").includes("rahul"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("kejriwal") || (l.slug || "").includes("kejriwal")) || (COMPREHENSIVE_LEADERS as any)["arvind-kejriwal"];
                     }
                     if (t.includes("yogi") || t.includes("adityanath")) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("yogi") || (l.slug || "").includes("adityanath"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("yogi") || (l.slug || "").includes("adityanath")) || (COMPREHENSIVE_LEADERS as any)["yogi-adityanath"];
                     }
                     if (t.includes("akhilesh") || (t.includes("yadav") && !t.includes("tejashwi"))) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("akhilesh") || (l.slug || "").includes("akhilesh"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("akhilesh") || (l.slug || "").includes("akhilesh")) || (COMPREHENSIVE_LEADERS as any)["akhilesh-yadav"];
                     }
                     if (t.includes("tejashwi")) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("tejashwi") || (l.slug || "").includes("tejashwi"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("tejashwi") || (l.slug || "").includes("tejashwi")) || (COMPREHENSIVE_LEADERS as any)["tejashwi-yadav"];
                     }
                     if (t.includes("tharoor") || t.includes("shashi")) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("tharoor") || (l.slug || "").includes("tharoor"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("tharoor") || (l.slug || "").includes("tharoor")) || (COMPREHENSIVE_LEADERS as any)["shashi-tharoor"];
                     }
                     if (t.includes("mahua") || t.includes("moitra")) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("mahua") || (l.slug || "").includes("mahua"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("mahua") || (l.slug || "").includes("mahua")) || (COMPREHENSIVE_LEADERS as any)["mahua-moitra"];
                     }
                     if (t.includes("owaisi") || t.includes("asaduddin")) {
-                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("owaisi") || (l.slug || "").includes("owaisi"));
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("owaisi") || (l.slug || "").includes("owaisi")) || (COMPREHENSIVE_LEADERS as any)["asaduddin-owaisi"];
                     }
                     return allLeaders.find((l: any) => {
                       const name = (l.name || "").toLowerCase();
@@ -4157,6 +4197,7 @@ export function App() {
         {[
           { id: "home", label: "Home", icon: Home },
           { id: "schemes", label: "Schemes", icon: Layers },
+          { id: "factcheck", label: "TruthCheck", icon: ShieldAlert },
           { id: "funding", label: "Funding", icon: TrendingUp },
           { id: "cag", label: "Audits", icon: AlertTriangle },
           { id: "newsletter", label: "Brief", icon: Mail },

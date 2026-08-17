@@ -50,8 +50,30 @@ export const evidenceCreateSchema = z.object({
   verificationStatus: z.enum(["VERIFIED", "REVIEW_PENDING", "UNVERIFIED", "DISPUTED"]).default("REVIEW_PENDING"),
 });
 
+export const claimVerifySchema = z.object({
+  text: z.string().min(3, "Claim text must be at least 3 characters long"),
+  category: z.enum(["SCHEMES", "ELECTIONS", "ECONOMY", "HEALTH", "CAG_CORRUPTION", "GOVERNANCE", "LEGAL", "GENERAL"]).optional(),
+});
+
+export const claimSubmitSchema = z.object({
+  claimText: z.string().min(10, "Claim text must be at least 10 characters long"),
+  sourcePlatform: z.string().min(2, "Platform is required (e.g. WhatsApp, Twitter, YouTube)"),
+  url: z.string().url("Invalid URL format").optional().or(z.literal("")),
+  userContact: z.string().optional(),
+});
+
+export const factCheckFilterSchema = z.object({
+  category: z.string().optional(),
+  verdict: z.string().optional(),
+  search: z.string().optional(),
+  limit: z.number().int().positive().optional().default(20),
+});
+
 export type NewsletterSubscribeInput = z.infer<typeof newsletterSubscribeSchema>;
 export type AskQueryInput = z.infer<typeof askQuerySchema>;
 export type SchemeCreateInput = z.infer<typeof schemeCreateSchema>;
 export type CAGFindingCreateInput = z.infer<typeof cagFindingCreateSchema>;
 export type EvidenceCreateInput = z.infer<typeof evidenceCreateSchema>;
+export type ClaimVerifyInput = z.infer<typeof claimVerifySchema>;
+export type ClaimSubmitInput = z.infer<typeof claimSubmitSchema>;
+export type FactCheckFilterInput = z.infer<typeof factCheckFilterSchema>;

@@ -23,12 +23,16 @@ import {
   Story,
   Evidence,
   Source,
+  FactCheckClaim,
+  FactCheckSubmission,
 } from "@civiclens/types";
 
 import { STATE_FACTS } from "./state_facts_data";
 import { PARTY_ANNUAL_INCOME_DATA, PARTY_META_MAP, PartyAnnualIncomeRecord } from "./party_income_history";
+import { FACT_CHECK_CLAIMS, FACT_CHECK_SOURCES, VIRAL_PATTERNS_DB } from "./fact_check_data";
 export * from "./state_facts_data";
 export * from "./party_income_history";
+export * from "./fact_check_data";
 
 export * from "./seed";
 export * from "./ministers_data";
@@ -294,14 +298,46 @@ function enrichCAGReports(reports: CAGReport[]): CAGReport[] {
 }
 
 export class CivicLensDatabase {
-  private sources: Source[] = [...seedSources];
+  private sources: Source[] = [...seedSources, ...FACT_CHECK_SOURCES];
   private evidences: Evidence[] = [...seedEvidences];
   private schemes: Scheme[] = [...seedSchemes];
   private stateFactsData: any[] = Array.isArray(STATE_FACTS) ? STATE_FACTS : Object.values(STATE_FACTS);
   private states: StateProfile[] = buildStateProfiles(this.stateFactsData, seedStates);
   private cagReports: CAGReport[] = enrichCAGReports([...seedCAGReports]);
   private manifestoPromises: ManifestoPromise[] = [...seedManifestoPromises];
-  private ministersData = [PM_PROFILE, ...MINISTERS];
+  private factCheckClaims: FactCheckClaim[] = [...FACT_CHECK_CLAIMS];
+  private userSubmissions: FactCheckSubmission[] = [];
+  private ministersData = (() => {
+    const leaderMap = new Map<string, MinisterProfile>();
+    [PM_PROFILE, ...MINISTERS].forEach((m) => {
+      const slug = m.slug || nameToSlug(m.name || "");
+      leaderMap.set(slug, { ...m, slug, id: m.id || `m-${slug}` } as MinisterProfile);
+    });
+    Object.entries(COMPREHENSIVE_LEADERS).forEach(([slug, leader]: [string, any]) => {
+      if (!leaderMap.has(slug)) {
+        leaderMap.set(slug, {
+          ...leader,
+          id: `comp-${slug}`,
+          slug,
+          stateName: leader.stateName || "National",
+          stateCode: leader.stateCode || "IN",
+          isCM: leader.isCM ?? false,
+          title: leader.title || leader.currentPosition || "Political Leader",
+          ministry: leader.ministry || leader.currentPosition || "Public Office",
+          constituency: leader.constituency || "National",
+          totalAssetsCr: leader.totalAssetsCr ?? leader.declaredAssetsCr ?? 0,
+          liabilitiesCr: leader.liabilitiesCr ?? 0,
+          assetGrowthPercent: leader.assetGrowthPct ?? 15,
+          photoUrl: leader.photoUrl || LEADER_PHOTOS[slug] || `https://ui-avatars.com/api/?name=${encodeURIComponent(leader.name)}&background=06038D&color=fff&size=256`,
+          currentPosition: leader.currentPosition || leader.title || "Political Leader",
+        } as MinisterProfile);
+      } else {
+        const existing = leaderMap.get(slug)!;
+        leaderMap.set(slug, { ...existing, ...leader, photoUrl: leader.photoUrl || LEADER_PHOTOS[slug] || existing.photoUrl });
+      }
+    });
+    return Array.from(leaderMap.values());
+  })();
   private partyFundingData = PARTY_FUNDING;
   private corporateDonorsData = TOP_DONORS;
   private stories: Story[] = [...seedStories];
@@ -966,6 +1002,81 @@ export class CivicLensDatabase {
     return result;
   }
 
+  // Fact-Check & Misinformation Radar
+  getFactChecks(filter?: { category?: string; verdict?: string; search?: string; limit?: number }): FactCheckClaim[] {
+    let list = [...this.factCheckClaims];
+
+    if (filter?.category && filter.category !== "ALL") {
+      list = list.filter((c) => c.category === filter.category);
+    }
+    if (filter?.verdict && filter.verdict !== "ALL") {
+      list = list.filter((c) => c.verdict === filter.verdict);
+    }
+    if (filter?.search) {
+      const q = filter.search.toLowerCase();
+      list = list.filter(
+        (c) =>
+          c.title.toLowerCase().includes(q) ||
+          c.claim.toLowerCase().includes(q) ||
+          c.truthSummary.toLowerCase().includes(q) ||
+          c.debunkExplanation.toLowerCase().includes(q) ||
+          c.highlightedRedFlags.some((rf) => rf.toLowerCase().includes(q))
+      );
+    }
+
+    // Attach full evidence if available
+    list = list.map((c) => {
+      if (c.evidenceId) {
+        c.evidence = this.getEvidenceById(c.evidenceId);
+      }
+      return c;
+    });
+
+    if (filter?.limit) {
+      return list.slice(0, filter.limit);
+    }
+    return list;
+  }
+
+  getFactCheckById(id: string): FactCheckClaim | undefined {
+    const claim = this.factCheckClaims.find((c) => c.id === id);
+    if (claim && claim.evidenceId) {
+      claim.evidence = this.getEvidenceById(claim.evidenceId);
+    }
+    return claim;
+  }
+
+  getTrendingDebunks(limit: number = 6): FactCheckClaim[] {
+    return [...this.factCheckClaims]
+      .sort((a, b) => (b.viralityScore || 0) - (a.viralityScore || 0))
+      .slice(0, limit)
+      .map((c) => {
+        if (c.evidenceId) {
+          c.evidence = this.getEvidenceById(c.evidenceId);
+        }
+        return c;
+      });
+  }
+
+  submitClaimForReview(submission: { claimText: string; sourcePlatform: string; url?: string; userContact?: string }): FactCheckSubmission {
+    const newSubmission: FactCheckSubmission = {
+      id: `sub-${Date.now()}`,
+      claimText: submission.claimText,
+      sourcePlatform: submission.sourcePlatform,
+      url: submission.url,
+      userContact: submission.userContact,
+      submittedAt: new Date().toISOString().split("T")[0],
+      upvotes: 1,
+      status: "PENDING_REVIEW",
+    };
+    this.userSubmissions.unshift(newSubmission);
+    return newSubmission;
+  }
+
+  getUserSubmissions(): FactCheckSubmission[] {
+    return this.userSubmissions;
+  }
+
   // Search
   search(query: string) {
     const q = query.toLowerCase();
@@ -975,7 +1086,10 @@ export class CivicLensDatabase {
     const states = this.states.filter((st) => st.name.toLowerCase().includes(q) || st.capital.toLowerCase().includes(q));
     const ministers = this.ministersData.filter((m) => m.name.toLowerCase().includes(q) || m.ministry.toLowerCase().includes(q));
     const cag = this.cagReports.filter((r) => r.title.toLowerCase().includes(q));
-    return { schemes, states, ministers, cag };
+    const factChecks = this.factCheckClaims.filter(
+      (fc) => fc.title.toLowerCase().includes(q) || fc.claim.toLowerCase().includes(q) || fc.truthSummary.toLowerCase().includes(q)
+    );
+    return { schemes, states, ministers, cag, factChecks };
   }
 }
 
