@@ -521,10 +521,10 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     constituency: "Sambalpur, Odisha",
     scamsAndCorruption: [
       {
-        title: "NEET-UG 2024 Paper Leak, CJI Supreme Court Scrutiny & NTA Crisis",
+        title: "NEET-UG 2024 Paper Leak & NTA Institutional Crisis",
         financialImpact: "24+ Lakh Medical Aspirants Affected",
-        description: "Massive nationwide crisis and protests following confirmed question paper leaks in NEET-UG 2024 exam centers in Patna (Oasis School) and Godhra, arbitrary grace marks awarded to 1,563 candidates, and an unprecedented 67 students securing Rank 1 (perfect 720/720 score). The Supreme Court bench headed by the Chief Justice of India (CJI D.Y. Chandrachud) termed NTA's conduct suspect and breached exam sanctity, directing a 7-member high-level panel under Dr. K. Radhakrishnan. Renowned innovator and education reformer Sonam Wangchuk publicly protested against the Ministry of Education's centralized exam mismanagement and staged solidarity appeals, while civil society groups including Citizens for Justice and Peace (CJP) and student unions (AISA, NSUI, ABVP) held nationwide agitations demanding Education Minister Dharmendra Pradhan's immediate resignation.",
-        status: "CBI Criminal Investigation & CJI Supreme Court Directives"
+        description: "Nationwide controversy following confirmed question paper leaks in NEET-UG 2024 exam centers in Patna (Oasis School) and Godhra, arbitrary grace marks awarded to 1,563 candidates, and 67 students securing Rank 1. The Supreme Court reviewed NTA examination protocols, while the Union Government replaced NTA Director General Subodh Kumar Singh and constituted a 7-member high-level reform panel chaired by former ISRO chief Dr. K. Radhakrishnan. CBI registered criminal cases arresting solver gang operators across Bihar and Gujarat, and student organizations (NSUI, ABVP, AISA) held nationwide demonstrations demanding structural accountability.",
+        status: "CBI Criminal Investigation & High-Level Reform Panel Formed"
       },
       {
         title: "UGC-NET & CSIR-NET 2024 Darknet Leak & Nationwide Cancellation",
@@ -535,9 +535,9 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     ],
     epicFailures: [
       {
-        achievement: "NEET-UG 2024 Oversight Breakdown & High-Level Resignation Demands",
+        achievement: "NEET-UG 2024 Oversight Breakdown & Administrative Accountability Deficit",
         outlay: "National Examination Crisis",
-        status: "Severe political and civil society backlash with education reformer Sonam Wangchuk, student unions, and opposition parties holding street protests and parliamentary boycotts demanding Dharmendra Pradhan's resignation over supervisory negligence and failure to prevent solver cartels."
+        status: "Severe public criticism and parliamentary debates following structural lapses in National Testing Agency (NTA) exam security protocols, leading to nationwide student agitations."
       } as any,
       {
         achievement: "CUET Center Cancellations & Academic Calendar Delays",
@@ -546,11 +546,11 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
       } as any
     ] as any,
     controversies: [
-      "Nationwide student protests, Sonam Wangchuk's public agitation, and CJI Supreme Court hearings on Dharmendra Pradhan's NTA oversight",
-      "Civil society interventions and CJP scrutiny over exam integrity and transparency",
-      "Controversy over NCERT textbook syllabus rationalization (removal of Mughal chapters, Darwin's evolution theory, Periodic Table)",
-      "Non-BJP states (Tamil Nadu, Karnataka, West Bengal) opposing National Education Policy (NEP 2020) and 3-language formula",
-      "UGC draft guidelines allowing de-reservation of reserved category faculty seats (revoked following intense public backlash)"
+      "Nationwide student protests and parliamentary debates regarding NTA examination oversight and security protocols",
+      "Opposition parties questioning institutional accountability in centralized testing mechanisms",
+      "Controversy over NCERT textbook syllabus rationalization (removal of select history and science chapters)",
+      "Non-BJP states (Tamil Nadu, Karnataka, West Bengal) opposing National Education Policy (NEP 2020) implementation",
+      "UGC draft guidelines regarding reserved category faculty recruitment protocols (withdrawn following public scrutiny)"
     ],
     keyWorks: [
       {
@@ -1708,7 +1708,7 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     ] as any,
     controversies: [
       "Staged 21-day climate fasts and Delhi Chalo Padayatra demanding 6th Schedule and ecological safeguards for fragile Himalayan ecosystems",
-      "Vocal public protest against Ministry of Education's centralized NTA examination failures and student distress during 2024 NEET paper leaks",
+      "Public advocacy on educational reforms, practical contextual learning, and constitutional decentralization",
       "Detained along with 150 Ladakhi marchers at Singhu border under Section 65 before being released following Supreme Court and national civil society outcry"
     ],
     keyWorks: [

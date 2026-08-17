@@ -523,7 +523,7 @@ const LEADER_DOSSIERS: Record<string, {
     works: [
       { title: "Ice Stupa Artificial Glaciers & Solar Architecture", outlay: "Global Climate Innovation", desc: "Invented conical ice stupas storing millions of liters of winter meltwater for spring farming; designed passive solar buildings requiring zero fossil fuel at -30°C." },
       { title: "SECMOL Alternative Education Revolution & Operation New Hope", outlay: "Ladakh School Reform", desc: "Transformed government school pass rates from 5% to over 75% via practical, mother-tongue, student-led pedagogy." },
-      { title: "Advocacy against Centralized Testing & NEET Crisis Support", outlay: "National Student Solidarity", desc: "Vocal public resistance against coaching cartels, centralized NTA monopolies, and ministerial mishandling of 24+ lakh NEET aspirants." }
+      { title: "Educational Reforms & Practical Learning Pedagogy", outlay: "Himalayan Educational Reform", desc: "Advocated for systemic educational reforms replacing rote memorization with practical, experiential problem-solving." }
     ],
     scores: { delivery: 92, integrity: 96, policy: 90, response: 95, overall: 93 }
   }

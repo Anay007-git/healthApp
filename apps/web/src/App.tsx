@@ -95,6 +95,7 @@ export function App() {
   const [aiLoading, setAiLoading] = useState<boolean>(false);
   const [aiResponse, setAiResponse] = useState<AIStructuredResponse | null>(null);
   const [selectedCompareLeader, setSelectedCompareLeader] = useState<string>("");
+  const [compareSearchFilter, setCompareSearchFilter] = useState<string>("");
 
   // Dedicated search states (separate from AI chat)
   const [ministerSearch, setMinisterSearch] = useState<string>("");
@@ -3776,38 +3777,85 @@ export function App() {
                               </div>
                             </div>
 
-                            {/* Dropdown Selector for Any Custom Neta - Mobile Responsive */}
-                            <div className="pt-2 border-t border-black/20 space-y-2 w-full min-w-0 max-w-full">
+                            {/* Search & Selector for Any Custom Neta - Mobile Responsive */}
+                            <div className="pt-3 border-t border-black/20 space-y-2 w-full min-w-0 max-w-full">
                               <span className="text-xs font-black text-black block">
-                                Or compare against any other Neta:
+                                Or search & compare against any other Neta / MP / MLA:
                               </span>
-                              <div className="flex flex-col sm:flex-row items-stretch gap-2 w-full min-w-0 max-w-full">
-                                <select
-                                  value={selectedCompareLeader}
-                                  onChange={(e) => setSelectedCompareLeader(e.target.value)}
-                                  className="flex-1 w-full min-w-0 max-w-full bg-white border-2 border-black text-xs font-mono font-bold px-3 py-2 rounded-lg text-black focus:outline-none truncate"
-                                >
-                                  <option value="">-- Choose any MP, MLA or Minister --</option>
-                                  {otherLeaders.map((l: any) => (
-                                    <option key={l.slug || l.name} value={l.name}>
-                                      {l.name} ({l.party})
-                                    </option>
-                                  ))}
-                                </select>
-                                <button
-                                  disabled={!selectedCompareLeader}
-                                  onClick={() => {
-                                    if (selectedCompareLeader) {
-                                      const customPrompt = `Compare ${targetLeader.name} and ${selectedCompareLeader}`;
-                                      setAiInput(customPrompt);
-                                      handleAskAI(customPrompt);
-                                      window.scrollTo({ top: 0, behavior: "smooth" });
-                                    }
-                                  }}
-                                  className="w-full sm:w-auto px-4 py-2 bg-[#06038D] hover:bg-[#046A38] text-white text-xs font-mono font-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000000] disabled:opacity-50 transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
-                                >
-                                  <span>⚔️ COMPARE NOW</span>
-                                </button>
+                              <div className="space-y-2">
+                                <div className="relative">
+                                  <input
+                                    type="text"
+                                    placeholder="Filter netas by name, party, or role..."
+                                    value={compareSearchFilter}
+                                    onChange={(e) => setCompareSearchFilter(e.target.value)}
+                                    className="w-full bg-white border-2 border-black text-xs font-mono font-bold px-3 py-1.5 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#06038D]"
+                                  />
+                                  {compareSearchFilter && (
+                                    <button
+                                      onClick={() => setCompareSearchFilter("")}
+                                      className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-black text-gray-500 hover:text-black"
+                                    >
+                                      ✕
+                                    </button>
+                                  )}
+                                </div>
+
+                                {compareSearchFilter.trim() && (
+                                  <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto p-1 bg-white border-2 border-black rounded-lg">
+                                    {otherLeaders
+                                      .filter((l: any) =>
+                                        (l.name || "").toLowerCase().includes(compareSearchFilter.toLowerCase()) ||
+                                        (l.party || "").toLowerCase().includes(compareSearchFilter.toLowerCase()) ||
+                                        (l.role || "").toLowerCase().includes(compareSearchFilter.toLowerCase())
+                                      )
+                                      .slice(0, 8)
+                                      .map((l: any) => (
+                                        <button
+                                          key={l.slug || l.name}
+                                          onClick={() => {
+                                            const customPrompt = `Compare ${targetLeader.name} and ${l.name}`;
+                                            setAiInput(customPrompt);
+                                            handleAskAI(customPrompt);
+                                            window.scrollTo({ top: 0, behavior: "smooth" });
+                                          }}
+                                          className="px-2.5 py-1 bg-[#F4F4F0] hover:bg-[#FFE877] text-black font-mono text-[11px] font-bold border border-black rounded shadow-[1px_1px_0px_#000] transition-all flex items-center gap-1 shrink-0"
+                                        >
+                                          <span>⚔️ {l.name}</span>
+                                          <span className="text-[9px] px-1 bg-black text-white rounded font-sans">{l.party}</span>
+                                        </button>
+                                      ))}
+                                  </div>
+                                )}
+
+                                <div className="flex flex-col sm:flex-row items-stretch gap-2 w-full min-w-0 max-w-full">
+                                  <select
+                                    value={selectedCompareLeader}
+                                    onChange={(e) => setSelectedCompareLeader(e.target.value)}
+                                    className="flex-1 w-full min-w-0 max-w-full bg-white border-2 border-black text-xs font-mono font-bold px-3 py-2 rounded-lg text-black focus:outline-none truncate"
+                                  >
+                                    <option value="">-- Choose any MP, MLA or Minister --</option>
+                                    {otherLeaders.map((l: any) => (
+                                      <option key={l.slug || l.name} value={l.name}>
+                                        {l.name} ({l.party}) - {l.role || "Leader"}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <button
+                                    disabled={!selectedCompareLeader}
+                                    onClick={() => {
+                                      if (selectedCompareLeader) {
+                                        const customPrompt = `Compare ${targetLeader.name} and ${selectedCompareLeader}`;
+                                        setAiInput(customPrompt);
+                                        handleAskAI(customPrompt);
+                                        window.scrollTo({ top: 0, behavior: "smooth" });
+                                      }
+                                    }}
+                                    className="w-full sm:w-auto px-4 py-2 bg-[#06038D] hover:bg-[#046A38] text-white text-xs font-mono font-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000000] disabled:opacity-50 transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
+                                  >
+                                    <span>⚔️ COMPARE NOW</span>
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           </div>
