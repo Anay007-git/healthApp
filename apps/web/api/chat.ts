@@ -189,7 +189,7 @@ const LEADER_DOSSIERS: Record<string, {
   },
   dharmendra: {
     name: "Dharmendra Pradhan",
-    position: "Union Minister of Education (since 2021) and Minister of Skill Development and Entrepreneurship, Government of India (MP for Sambalpur, Odisha)",
+    position: "Member of Parliament (Lok Sabha for Sambalpur, Odisha); Former Union Minister of Education (2021–July 2026, resigned following 2026 NEET paper leak crisis) and Minister of Skill Development & Entrepreneurship; Former Petroleum Minister (2014–2021)",
     party: "Bharatiya Janata Party (BJP)",
     constituency: "Sambalpur, Odisha",
     education: "MA Anthropology (Utkal University, Bhubaneswar, 1990)",
@@ -200,10 +200,12 @@ const LEADER_DOSSIERS: Record<string, {
     seriousCases: 0,
     criminalNote: "Zero criminal cases declared in certified 2024 ECI Form 26 parliamentary affidavit.",
     scams: [
+      { title: "2026 NEET-UG Paper Leak Scandal & Minister Resignation", impact: "25+ Lakh Aspirants Affected; 12 Student Suicides", desc: "Massive nationwide examination crisis triggered by confirmed question paper leaks and irregularities in the May 3, 2026 NEET-UG exam leading to cancellation. Widespread protests spearheaded by Cockroach Janta Party (CJP), youth groups, and student unions erupted across India. Environmentalist Sonam Wangchuk joined the CJP-led agitation and staged an indefinite 26-day hunger strike in New Delhi demanding Dharmendra Pradhan's resignation and systemic NTA overhaul. Wangchuk broke his fast at Medanta Hospital on July 24, 2026 after government assurances, and Dharmendra Pradhan submitted his formal resignation to Prime Minister Narendra Modi on July 25, 2026.", status: "Minister Resigned (July 25, 2026) · High-Level Examination Reorganization" },
       { title: "NEET-UG 2024 Paper Leak & NTA Institutional Crisis", impact: "24+ Lakh Medical Aspirants Affected", desc: "Massive nationwide crisis and protests following paper leak in NEET-UG 2024 exam centers in Patna (Oasis School) and Godhra, arbitrary grace marks awarded to 1,563 candidates, and an unprecedented 67 students securing Rank 1 (perfect 720/720 score). The Supreme Court termed NTA conduct suspect, CBI arrested 40+ solver gang kingpins across Bihar and Gujarat, the Union Government removed NTA Director General Subodh Kumar Singh, and student unions (AISA, NSUI, ABVP) alongside Parliamentary Opposition staged mass walkouts demanding Education Minister Dharmendra Pradhan's resignation.", status: "CBI Investigation & Supreme Court Directives" },
       { title: "UGC-NET & CSIR-NET 2024 Darknet Leak & Nationwide Cancellation", impact: "9+ Lakh Candidates Disrupted", desc: "Ministry of Education cancelled the UGC-NET exam within 24 hours of conduct across 317 cities on June 19, 2024 after inputs from MHA Cyber Crime Unit confirmed question paper was leaked on Telegram/darknet for ₹5–₹6 Lakh each; probe transferred to CBI.", status: "CBI Criminal Probe" },
     ],
     failures: [
+      { title: "2026 NEET-UG Collapse & Resignation Following 26-Day Wangchuk Fast", desc: "Forced to resign as Union Education Minister on July 25, 2026 following intense pressure from Cockroach Janta Party (CJP) protests and Sonam Wangchuk's 26-day indefinite hunger strike in Delhi over repeated national exam failures." },
       { title: "NEET-UG 2024 Oversight Breakdown & Resignation Demands", desc: "Severe political backlash and parliamentary disruption with opposition and nationwide student unions demanding Education Minister Dharmendra Pradhan's immediate resignation over supervisory negligence." },
       { title: "CUET Center Cancellations & Academic Calendar Delays", desc: "Technical server glitches, sudden last-minute exam center changes, and normalization disputes delaying university academic sessions across 250+ central universities." },
     ],
@@ -213,7 +215,7 @@ const LEADER_DOSSIERS: Record<string, {
       { title: "National Education Policy (NEP 2020) & NCF Rollout", outlay: "5+3+3+4 Pedagogical Structure", desc: "Rolled out National Curriculum Framework for Foundational Stage (NCF-FS) and bilingual textbooks in 22 regional Indian languages." },
       { title: "Pradhan Mantri Ujjwala Yojana (during Petroleum Ministry)", outlay: "10.35 Crore Connections", desc: "Spearheaded nationwide clean cooking fuel DBT scheme for rural women living below poverty line." },
     ],
-    scores: { delivery: 82, integrity: 65, policy: 78, response: 60, overall: 72 }
+    scores: { delivery: 78, integrity: 52, policy: 72, response: 48, overall: 63 }
   },
   shah: {
     name: "Amit Shah",

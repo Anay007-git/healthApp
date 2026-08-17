@@ -500,9 +500,9 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
   "dharmendra-pradhan": {
     name: "Dharmendra Pradhan",
     slug: "dharmendra-pradhan",
-    title: "Union Minister of Education & Skill Development",
-    currentPosition: "Union Minister of Education (since 2021) and Minister of Skill Development and Entrepreneurship, Government of India (MP for Sambalpur, Odisha); Former Union Minister for Petroleum & Natural Gas (2014–2021)",
-    ministry: "Ministry of Education · Ministry of Skill Development and Entrepreneurship",
+    title: "Former Union Minister of Education & Skill Development (Resigned July 25, 2026)",
+    currentPosition: "Member of Parliament (Lok Sabha for Sambalpur, Odisha); Former Union Minister of Education (2021–July 2026, resigned amid 2026 NEET paper leak crisis) and Minister of Skill Development & Entrepreneurship; Former Union Minister for Petroleum & Natural Gas (2014–2021)",
+    ministry: "Former Ministry of Education · Ministry of Skill Development and Entrepreneurship",
     party: "Bharatiya Janata Party (BJP)",
     photoUrl: LEADER_PHOTOS["dharmendra-pradhan"],
     education: "MA Anthropology (Utkal University, Bhubaneswar, 1990); Higher Secondary (Talcher College)",
@@ -521,6 +521,12 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     constituency: "Sambalpur, Odisha",
     scamsAndCorruption: [
       {
+        title: "2026 NEET-UG Paper Leak Scandal & Minister Resignation",
+        financialImpact: "25+ Lakh Aspirants Affected; 12 Student Suicides Reported",
+        description: "Massive national crisis following the confirmed leak and widespread irregularities in the May 3, 2026 NEET-UG examination, which forced the cancellation of the exam. The crisis sparked fierce nationwide student agitations led by the Cockroach Janta Party (CJP), student unions, and opposition parties. Environmentalist and activist Sonam Wangchuk joined the CJP-led movement, staging a high-profile 26-day indefinite hunger strike in New Delhi demanding systemic NTA reforms, fast-track courts, and Dharmendra Pradhan's immediate resignation. Wangchuk ended his fast on July 24, 2026 at Medanta Hospital after government assurances, and Dharmendra Pradhan formally submitted his resignation to Prime Minister Narendra Modi on July 25, 2026.",
+        status: "Minister Resigned (July 25, 2026) · High-Level Examination Reorganization"
+      },
+      {
         title: "NEET-UG 2024 Paper Leak & NTA Institutional Crisis",
         financialImpact: "24+ Lakh Medical Aspirants Affected",
         description: "Nationwide controversy following confirmed question paper leaks in NEET-UG 2024 exam centers in Patna (Oasis School) and Godhra, arbitrary grace marks awarded to 1,563 candidates, and 67 students securing Rank 1. The Supreme Court reviewed NTA examination protocols, while the Union Government replaced NTA Director General Subodh Kumar Singh and constituted a 7-member high-level reform panel chaired by former ISRO chief Dr. K. Radhakrishnan. CBI registered criminal cases arresting solver gang operators across Bihar and Gujarat, and student organizations (NSUI, ABVP, AISA) held nationwide demonstrations demanding structural accountability.",
@@ -535,6 +541,11 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     ],
     epicFailures: [
       {
+        achievement: "2026 NEET-UG Paper Leak Collapse & Resignation Under Duress",
+        outlay: "National Testing Agency Breakdown",
+        status: "Forced to resign on July 25, 2026 after Sonam Wangchuk's 26-day Delhi hunger strike, Cockroach Janta Party (CJP) protests, and nationwide student agitations over recurrent medical entrance exam leaks."
+      } as any,
+      {
         achievement: "NEET-UG 2024 Oversight Breakdown & Administrative Accountability Deficit",
         outlay: "National Examination Crisis",
         status: "Severe public criticism and parliamentary debates following structural lapses in National Testing Agency (NTA) exam security protocols, leading to nationwide student agitations."
@@ -546,6 +557,8 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
       } as any
     ] as any,
     controversies: [
+      "2026 NEET-UG paper leak leading to cancellation, nationwide protests, Sonam Wangchuk's 26-day fast, and July 25, 2026 resignation",
+      "Cockroach Janta Party (CJP) and student union nationwide agitations over NTA systemic failures and exam leaks",
       "Nationwide student protests and parliamentary debates regarding NTA examination oversight and security protocols",
       "Opposition parties questioning institutional accountability in centralized testing mechanisms",
       "Controversy over NCERT textbook syllabus rationalization (removal of select history and science chapters)",
@@ -575,13 +588,13 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
       }
     ],
     workScoreBreakdown: {
-      schemeDelivery: 82,
-      integrityAndCleanGovernance: 65,
-      policyCompetence: 78,
-      publicResponsiveness: 60,
-      overallScore: 72
+      schemeDelivery: 78,
+      integrityAndCleanGovernance: 52,
+      policyCompetence: 72,
+      publicResponsiveness: 48,
+      overallScore: 63
     },
-    performanceScore: 72
+    performanceScore: 63
   },
 
   "nirmala-sitharaman": {
