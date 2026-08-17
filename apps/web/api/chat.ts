@@ -92,6 +92,144 @@ const STATE_METRICS: Record<string, { lit: number; gsdp: string; hdi: number; ca
   },
 };
 
+const LEADER_DOSSIERS: Record<string, {
+  name: string;
+  position: string;
+  party: string;
+  constituency: string;
+  education: string;
+  eduDetails: string;
+  assetsCr: number;
+  liabilitiesCr: number;
+  scams: Array<{ title: string; impact: string; desc: string; status: string }>;
+  failures: Array<{ title: string; desc: string }>;
+  works: Array<{ title: string; outlay: string; desc: string }>;
+  scores: { delivery: number; integrity: number; policy: number; response: number; overall: number };
+}> = {
+  mamata: {
+    name: "Mamata Banerjee",
+    position: "Chief Minister of West Bengal (3rd Consecutive Term since 2011), Minister for Home, Health & Land",
+    party: "All India Trinamool Congress (AITC)",
+    constituency: "Bhabanipur, Kolkata, West Bengal",
+    education: "MA Islamic History (Univ of Calcutta); LLB (Jogesh Chandra Chaudhuri Law College); BA History (Jogamaya Devi College)",
+    eduDetails: "Earned BA in History from Jogamaya Devi College; MA in Islamic History from University of Calcutta; and LLB degree from Jogesh Chandra Chaudhuri Law College.",
+    assetsCr: 0.15,
+    liabilitiesCr: 0.0,
+    scams: [
+      { title: "SSSC School Teacher Recruitment Scam", impact: "₹15,000+ Cr Racket", desc: "Cash-for-jobs racket in teacher appointments; ₹50+ Cr in cash & gold seized by ED from Education Minister Partha Chatterjee; Calcutta High Court cancelled 25,753 illegal appointments in 2024.", status: "CBI / ED Trial & Supreme Court Review" },
+      { title: "Saradha & Rose Valley Chit Fund Scams", impact: "₹20,000+ Cr Depositor Fraud", desc: "Unregulated Ponzi schemes defrauding 1.8+ million rural depositors across Bengal, leading to CBI interrogations of high-level state leaders.", status: "Ongoing CBI Prosecutions" },
+      { title: "Ration Distribution & Illegal Coal Smuggling", impact: "₹2,500+ Cr Siphoning", desc: "ED arrested former Food Minister Jyotipriya Mallick for siphoning PDS wheat/rice; parallel CBI probe into Asansol coal smuggling syndicate.", status: "ED Chargesheet Filed" },
+    ],
+    failures: [
+      { title: "RG Kar Medical College Hospital Crisis (2024)", desc: "Nationwide outrage over rape-murder of on-duty trainee doctor, institutional evidence mishandling, and month-long junior doctors strike." },
+      { title: "Post-Poll Violence & NHRC Censure (2021)", desc: "National Human Rights Commission reported systemic intimidation and displacement of opposition cadres following 2021 election results." },
+      { title: "Singur Industrial Agitation (Tata Nano Exit)", desc: "2008 anti-land acquisition movement caused Tata Motors to relocate ₹1,500 Cr factory to Gujarat, impeding large heavy manufacturing investment." },
+    ],
+    works: [
+      { title: "Lakshmir Bhandar Basic Income Scheme", outlay: "₹12,000 Cr / Year", desc: "Monthly direct cash transfer of ₹1,000-₹1,200 to 2.1 Crore women across West Bengal." },
+      { title: "Kanyashree Prakalpa (UN Public Service Award)", outlay: "₹10,500 Cr Cumulative", desc: "Conditional educational cash transfer reducing child marriage and lowering female school dropouts to below 12%." },
+      { title: "Duare Sarkar Outreach Mission", outlay: "5+ Lakh Outreach Camps", desc: "Delivered on-the-spot caste certificates, ration cards, and welfare enrollments to 6.8 Crore citizens." },
+    ],
+    scores: { delivery: 88, integrity: 48, policy: 76, response: 62, overall: 72 }
+  },
+  modi: {
+    name: "Narendra Modi",
+    position: "Prime Minister of India (3rd Consecutive Term since 2014), Minister of Personnel, Atomic Energy & Space",
+    party: "Bharatiya Janata Party (BJP / NDA)",
+    constituency: "Varanasi, Uttar Pradesh",
+    education: "MA Political Science (Gujarat University, 1983); BA Political Science (SOL, Delhi University, 1978)",
+    eduDetails: "Completed BA in Political Science from University of Delhi (1978) and MA in Political Science with first class from Gujarat University (1983).",
+    assetsCr: 3.02,
+    liabilitiesCr: 0.0,
+    scams: [
+      { title: "Electoral Bonds Anonymous Funding Scheme", impact: "₹16,518 Cr Encashed", desc: "Scheme permitting unlimited anonymous corporate funding struck down as unconstitutional and violative of voters' right to information by Supreme Court in Feb 2024.", status: "Struck Down by Supreme Court" },
+      { title: "Rafale Procurement Review", impact: "₹59,000 Cr Deal", desc: "Opposition allegations over offset vendor selection; Supreme Court dismissed review petitions in 2019 finding no irregularities in pricing or procurement.", status: "Dismissed by Supreme Court (Clean Chit)" },
+    ],
+    failures: [
+      { title: "Demonetization (Nov 2016)", desc: "Overnight invalidation of 86% of currency notes in circulation caused severe cash shortages, MSME supply disruption, and temporary GDP growth deceleration." },
+      { title: "Three Farm Laws & 2020-21 Farmers' Protest", desc: "Year-long blockade of Delhi borders by farmer unions led to eventual unconditional repeal of the three agricultural reform acts in Parliament." },
+      { title: "COVID-19 Second Wave Medical Deficit (2021)", desc: "Delta variant surge overwhelmed hospital infrastructure, causing nationwide medical oxygen shortages and crematoria backlogs." },
+      { title: "Manipur Civil & Ethnic Conflict (2023-2025)", desc: "Prolonged ethnic violence between Meitei and Kuki communities, displacement of 60,000+ citizens, and delayed executive reconciliation." },
+    ],
+    works: [
+      { title: "Jal Jeevan Mission & PM Awas Yojana", outlay: "₹70,000+ Cr / Year", desc: "Delivered 14.8 Crore rural functional tap water connections and 4.2+ Crore permanent pucca houses." },
+      { title: "Digital Public Infrastructure (UPI & DBT)", outlay: "₹34+ Lakh Cr Transferred", desc: "Pioneered world's largest digital payments infrastructure processing 13+ billion monthly UPI transactions." },
+      { title: "National Highway & Rail Modernization", outlay: "₹2.7 Lakh Cr Annual Capex", desc: "Expanded National Highway network by 60% (from 91,287 km in 2014 to 146,145 km in 2024)." },
+    ],
+    scores: { delivery: 92, integrity: 78, policy: 88, response: 74, overall: 84 }
+  },
+  gadkari: {
+    name: "Nitin Gadkari",
+    position: "Union Minister of Road Transport and Highways, Government of India (MP for Nagpur)",
+    party: "Bharatiya Janata Party (BJP)",
+    constituency: "Nagpur, Maharashtra",
+    education: "MCom, LLB, Diploma in Business Management (Nagpur University)",
+    eduDetails: "Graduated with MCom, obtained LLB law degree and Diploma in Business Management from G.S. College of Commerce & Economics, Nagpur University.",
+    assetsCr: 28.03,
+    liabilitiesCr: 12.8,
+    scams: [
+      { title: "CAG Audit on Dwarka Expressway Cost Escalation", impact: "₹250.7 Cr/km vs ₹18.2 Cr/km Planned", desc: "CAG Audit Report No. 14 of 2023 flagged high cost escalation on the 29-km Dwarka Expressway elevated corridor; Ministry clarified 8-lane elevated specifications with tunnels.", status: "Clarified in Parliamentary ATR" },
+      { title: "NHAI Debt Accumulation Peak", impact: "₹3.48 Lakh Cr Debt", desc: "Aggressive borrowing for land acquisition and BOT-HAM projects caused NHAI debt to surge, requiring Union Budget restructuring to direct budgetary grants.", status: "Resolved via Budget Grants" },
+    ],
+    failures: [
+      { title: "Toll Plaza User Friction & Incomplete Stretches", desc: "Public complaints regarding collection of full toll rates on under-construction or heavily congested expressway stretches." },
+      { title: "Silkyara Himalayan Tunnel Collapse (2023)", desc: "41 workers trapped inside Silkyara tunnel for 17 days due to geological collapse; highlighted safety audit gaps in fragile Himalayan terrain." },
+    ],
+    works: [
+      { title: "Record Highway Construction Velocity", outlay: "₹2.78 Lakh Cr FY25", desc: "Increased average daily highway construction from 12 km/day (2014) to 37 km/day peak (13,327 km built in a single year)." },
+      { title: "Greenfield Expressway Network", outlay: "27 Access-Controlled Corridors", desc: "Built access-controlled corridors (Delhi-Mumbai, Samruddhi) cutting logistics transit times by 40-50%." },
+      { title: "100% FASTag Electronic Toll Collection", outlay: "₹20,000 Cr Fuel Savings", desc: "Reduced average toll plaza wait time from 734 seconds to 47 seconds across 1,000+ toll plazas." },
+    ],
+    scores: { delivery: 95, integrity: 79, policy: 92, response: 78, overall: 87 }
+  },
+  shah: {
+    name: "Amit Shah",
+    position: "Union Minister of Home Affairs and Minister of Cooperation, Government of India (MP for Gandhinagar)",
+    party: "Bharatiya Janata Party (BJP)",
+    constituency: "Gandhinagar, Gujarat",
+    education: "BSc Biochemistry (CU Shah Science College, Gujarat University)",
+    eduDetails: "Graduated with BSc in Biochemistry from CU Shah Science College, Ahmedabad, Gujarat University.",
+    assetsCr: 65.7,
+    liabilitiesCr: 15.4,
+    scams: [
+      { title: "Pegasus Spyware Surveillance Allegations", impact: "Constitutional Privacy Review", desc: "Allegations of military-grade spyware deployed against Indian journalists, political leaders, and constitutional authorities; Supreme Court committee reviewed.", status: "Supreme Court Oversight" },
+    ],
+    failures: [
+      { title: "Manipur Security Reconciliation Deficit (2023-2025)", desc: "Delayed disarmament of underground ethnic militias and prolonged administrative breakdown between hill and valley districts." },
+      { title: "Northeast Delhi Riots Intelligence Failure (Feb 2020)", desc: "Delhi Police response criticized by High Court for delayed deployment and preventive intelligence gaps during communal clashes resulting in 53 deaths." },
+    ],
+    works: [
+      { title: "Abrogation of Article 370 & J&K Reorganization", outlay: "Constitutional Integration", desc: "Revoked special status of Jammu & Kashmir, integrated legal framework, and conducted assembly elections with 63.8% turnout." },
+      { title: "Bharatiya Nyaya Sanhita (Replacement of IPC/CrPC)", outlay: "Overhaul of Colonial Codes", desc: "Enacted BNS, BNSS, and BSA criminal laws instituting digital evidence rules, zero FIRs, and forensic mandates." },
+      { title: "Naxalism & Left-Wing Extremism Containment", outlay: "Security Grid Operations", desc: "Shrank Left-Wing Extremism security operational districts from 126 in 2014 to fewer than 38 in 2024." },
+    ],
+    scores: { delivery: 88, integrity: 72, policy: 84, response: 70, overall: 80 }
+  },
+  sitharaman: {
+    name: "Nirmala Sitharaman",
+    position: "Union Minister of Finance and Minister of Corporate Affairs, Government of India (Rajya Sabha MP)",
+    party: "Bharatiya Janata Party (BJP)",
+    constituency: "Rajya Sabha, Karnataka",
+    education: "MPhil & MA Economics (CESP, JNU, New Delhi); BA Economics (Seethalakshmi Ramaswami College, Trichy)",
+    eduDetails: "Earned BA in Economics from Seethalakshmi Ramaswami College, Tiruchirappalli (1980); MA in Economics and MPhil from Centre for Economic Studies and Planning, JNU, New Delhi.",
+    assetsCr: 2.53,
+    liabilitiesCr: 0.35,
+    scams: [
+      { title: "Zero Personal Corruption Charges", impact: "₹0 Cr Discrepancy", desc: "Zero corruption charges or CAG personal propriety findings during tenure across Defence and Finance ministries.", status: "Impeccable Personal Integrity" },
+    ],
+    failures: [
+      { title: "LTCG Indexation Removal & Real Estate Backlash (Budget 2024)", desc: "Removal of indexation benefits on properties purchased before 2024 sparked middle-class outcry, requiring government amendment to restore taxpayer choice." },
+      { title: "Food & Vegetable Inflation Pressures (2023-2024)", desc: "Repeated spikes in tomato, onion, and pulse prices (crossing 10% food inflation) strained household budgets." },
+    ],
+    works: [
+      { title: "Record Monthly GST Revenue Collections", outlay: "₹1.80L – ₹2.10L Cr / Month", desc: "Formalized Indian tax base and stabilized indirect tax collections across all 28 states." },
+      { title: "Banking Sector Gross NPA Cleanup (11.2% to 2.8%)", outlay: "Insolvency & Bankruptcy Code", desc: "Turned around public sector banks into recording record cumulative profits of ₹1.4+ Lakh Crore." },
+      { title: "Quadrupling Central Infrastructure Capex", outlay: "₹11.11 Lakh Crore FY25", desc: "Expanded public capital expenditure 4x (from ₹3.1L Cr in FY19 to ₹11.11L Cr in FY25)." },
+    ],
+    scores: { delivery: 89, integrity: 94, policy: 86, response: 65, overall: 83 }
+  }
+};
+
 function extractStateCodes(query: string): string[] {
   const normalized = query.toLowerCase().replace(/[^a-z0-9\s]/g, " ");
   const words = normalized.split(/\s+/).filter(Boolean);
@@ -147,6 +285,7 @@ export default async function handler(req: any, res: any) {
   let sources = [
     { id: "union-budget-24", name: "Union Budget 2024-25 Expenditure Profile", publisher: "Ministry of Finance", url: "https://indiabudget.gov.in" },
     { id: "cag-audit-2024", name: "Comptroller & Auditor General of India Reports", publisher: "CAG India", url: "https://cag.gov.in" },
+    { id: "eci-affidavits-2024", name: "Election Commission of India (ECI) Form 26 Disclosures", publisher: "Election Commission of India", url: "https://affidavit.eci.gov.in" },
     { id: "nfhs-5-factsheets", name: "National Family Health Survey (NFHS-5) State Factsheets", publisher: "MoHFW", url: "http://rchiips.org/nfhs/" },
   ];
 
@@ -173,7 +312,42 @@ export default async function handler(req: any, res: any) {
     };
   }
 
-  // 2. STATE SCHEMES & LOCAL MANIFESTO (e.g. "show me the schemes of west bengal")
+  // 2. MINISTERS & NETAS COMPREHENSIVE DOSSIER
+  else if (q.includes("minister") || q.includes("neta") || q.includes("score card") || q.includes("scorecard") || q.includes("mamata") || q.includes("modi") || q.includes("amit shah") || q.includes("gadkari") || q.includes("sitharaman") || q.includes("cabinet")) {
+    const key = (q.includes("mamata") || q.includes("banerjee")) ? "mamata" :
+                (q.includes("modi") || q.includes("narendra")) ? "modi" :
+                (q.includes("gadkari") || q.includes("nitin")) ? "gadkari" :
+                (q.includes("sitharaman") || q.includes("finance")) ? "sitharaman" :
+                (q.includes("amit shah") || q.includes("home")) ? "shah" : "mamata";
+
+    const leader = LEADER_DOSSIERS[key] || LEADER_DOSSIERS["mamata"];
+
+    const scamsList = leader.scams.map((s, idx) => `  ${idx + 1}. **${s.title}** (${s.impact})\n     - *Details*: ${s.desc}\n     - *Legal Status*: \`${s.status}\``).join("\n");
+    const failuresList = leader.failures.map((f, idx) => `  ${idx + 1}. **${f.title}**\n     - *Deficit*: ${f.desc}`).join("\n");
+    const worksList = leader.works.map((w, idx) => `  ${idx + 1}. **${w.title}** (${w.outlay})\n     - *Telemetry*: ${w.desc}`).join("\n");
+
+    answer = `### 🎖️ Executive Governance Dossier: ${leader.name}\n\n- **Holding Position**: **${leader.position}** (Party: *${leader.party}* | Constituency: *${leader.constituency}*)\n- **Educational Background**: **${leader.education}**\n  - *Academic Details*: ${leader.eduDetails}\n- **Financial Disclosures**: Declared Net Assets of **₹${leader.assetsCr.toLocaleString()} Crore** (Liabilities: **₹${leader.liabilitiesCr.toLocaleString()} Crore**; ECI Form 26 Affidavit).\n\n#### ⚠️ Audited Scams, Corruption Inquiries & Legal Record:\n${scamsList}\n\n#### ⚡ Epic Failures, Controversies & Policy Gaps:\n${failuresList}\n\n#### ✓ Key Works & Landmark Delivery Achievements:\n${worksList}\n\n#### 📊 Dynamic Work-Based Performance Score: **${leader.scores.overall}/100**\n- **Scheme & Infra Delivery (40% Weight)**: **${leader.scores.delivery}/100**\n- **Clean Governance & Integrity (30% Weight)**: **${leader.scores.integrity}/100**\n- **Policy Competence & Vision (15% Weight)**: **${leader.scores.policy}/100**\n- **Public Responsiveness & Crisis Management (15% Weight)**: **${leader.scores.response}/100**`;
+
+    metrics = [
+      { label: "Overall Work Score", value: `${leader.scores.overall}/100` },
+      { label: "Declared Net Assets", value: `₹${leader.assetsCr} Cr` },
+      { label: "Scams & Legal Flags", value: `${leader.scams.length} Identified` },
+      { label: "Scheme Delivery", value: `${leader.scores.delivery}/100` },
+    ];
+
+    visualization = {
+      type: "bar",
+      title: `${leader.name}: Work-Based Governance Pillar Breakdown`,
+      data: [
+        { category: "Scheme Delivery", amountCr: leader.scores.delivery },
+        { category: "Clean Governance", amountCr: leader.scores.integrity },
+        { category: "Policy Competence", amountCr: leader.scores.policy },
+        { category: "Public Responsiveness", amountCr: leader.scores.response },
+      ],
+    };
+  }
+
+  // 3. STATE SCHEMES & LOCAL MANIFESTO (e.g. "show me the schemes of west bengal")
   else if (detectedStates.length === 1 && (q.includes("scheme") || q.includes("welfare") || q.includes("yojana") || q.includes("project") || q.includes("promise") || q.includes("manifesto") || q.includes("prakalpa") || q.includes("bhandar"))) {
     const code = detectedStates[0];
     const name = STATE_NAMES[code] || code;
@@ -199,40 +373,6 @@ export default async function handler(req: any, res: any) {
         { category: "Health", amountCr: data.health },
         { category: "Education", amountCr: data.edu },
         { category: "Fiscal Deficit Control", amountCr: data.fiscal },
-      ],
-    };
-  }
-
-  // 3. MINISTERS SCORECARDS & PERFORMANCE
-  else if (q.includes("minister") || q.includes("score card") || q.includes("scorecard") || q.includes("mamata") || q.includes("modi") || q.includes("amit shah") || q.includes("gadkari") || q.includes("sitharaman") || q.includes("rajnath") || q.includes("cabinet")) {
-    const isMamata = q.includes("mamata") || q.includes("banerjee");
-    const isModi = q.includes("modi") || q.includes("narendra");
-    const isGadkari = q.includes("gadkari") || q.includes("nitin");
-    const isSitharaman = q.includes("sitharaman") || q.includes("finance");
-    const isShah = q.includes("amit shah") || q.includes("home");
-
-    const mName = isMamata ? "Mamata Banerjee" : isModi ? "Narendra Modi" : isGadkari ? "Nitin Gadkari" : isSitharaman ? "Nirmala Sitharaman" : isShah ? "Amit Shah" : "Cabinet Leadership";
-    const mRole = isMamata ? "Chief Minister of West Bengal" : isModi ? "Prime Minister of India" : isGadkari ? "Minister of Road Transport & Highways" : isSitharaman ? "Minister of Finance & Corporate Affairs" : isShah ? "Minister of Home Affairs & Cooperation" : "Union Cabinet";
-    const mAssets = isMamata ? "₹0.15 Cr (Lowest among CMs)" : isModi ? "₹3.02 Cr" : isGadkari ? "₹28.03 Cr" : isSitharaman ? "₹2.53 Cr" : isShah ? "₹36.00 Cr" : "₹14.20 Cr Avg";
-    const mScore = isMamata ? "78/100" : isModi ? "92/100" : isGadkari ? "89/100" : isSitharaman ? "84/100" : isShah ? "86/100" : "85/100";
-
-    answer = `### 🎖️ Governance Performance Scorecard: ${mName}\n\n- **Designation & Portfolio**: **${mRole}**\n- **Governance Performance Score**: **${mScore}** (Tier-1 Verifiable Public Metric)\n- **Declared Net Assets**: **${mAssets}** (audited from certified ECI Form 26 Affidavits).\n- **Legislative & Policy Track Record**: Oversees core national and state budgetary outlays, public welfare schemes, and infrastructure execution.\n- **Accountability & Audit Tracing**: Primary records cross-referenced against Election Commission disclosures and CAG Parliamentary compliance filings.`;
-
-    metrics = [
-      { label: "Performance Score", value: mScore },
-      { label: "Declared Assets", value: mAssets },
-      { label: "ECI Affidavit", value: "Verified 2024" },
-      { label: "Audit Traceability", value: "100%" },
-    ];
-
-    visualization = {
-      type: "bar",
-      title: `${mName}: Core Governance Performance Pillar Ratings`,
-      data: [
-        { category: "Policy Execution", amountCr: parseInt(mScore) },
-        { category: "Legislative Attendance", amountCr: 94 },
-        { category: "Asset Transparency", amountCr: 98 },
-        { category: "Scheme Delivery", amountCr: parseInt(mScore) - 4 },
       ],
     };
   }

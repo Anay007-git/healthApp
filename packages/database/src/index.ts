@@ -11,7 +11,7 @@ import {
   seedPartyFunding,
   seedCorporateDonors,
 } from "./seed";
-import { MINISTERS, PM_PROFILE, nameToSlug } from "./ministers_data";
+import { MINISTERS, PM_PROFILE, COMPREHENSIVE_LEADERS, nameToSlug } from "./ministers_data";
 import { PARTY_FUNDING, TOP_DONORS, BONDS_META } from "./funding_data";
 import {
   Scheme,
@@ -411,18 +411,23 @@ export class CivicLensDatabase {
         const hasNewCm = Boolean(st.newGovtDetails?.cm);
         const isSameName = hasNewCm && st.newGovtDetails.cm.name.toLowerCase() === st.cm.name.toLowerCase();
         if (!isSameName) {
+          const slug = nameToSlug(st.cm.name || "");
+          const enriched = COMPREHENSIVE_LEADERS[slug] || {};
           ministers.push({
             ...st.cm,
+            ...enriched,
             id: hasNewCm ? `former-cm-${st.stateCode || st.name}` : `cm-${st.stateCode || st.name}`,
             stateName: st.name,
             stateCode: st.stateCode,
             isCM: !hasNewCm,
-            title: hasNewCm ? "Former Chief Minister" : "Chief Minister",
-            ministry: `${st.name} — ${hasNewCm ? "Former Chief Minister" : "Chief Minister"}`,
-            constituency: `${st.name}`,
-            totalAssetsCr: st.cm.totalAssetsCr ?? st.cm.declaredAssetsCr ?? (st.cm.criminalCases * 1.5 + 4.2),
-            liabilitiesCr: st.cm.liabilitiesCr ?? 0,
-            assetGrowthPercent: st.cm.assetGrowthPercent ?? st.cm.assetGrowthPct ?? 22,
+            title: enriched.title || (hasNewCm ? "Former Chief Minister" : "Chief Minister"),
+            ministry: enriched.ministry || `${st.name} — ${hasNewCm ? "Former Chief Minister" : "Chief Minister"}`,
+            constituency: enriched.constituency || `${st.name}`,
+            totalAssetsCr: enriched.totalAssetsCr ?? st.cm.totalAssetsCr ?? st.cm.declaredAssetsCr ?? (st.cm.criminalCases * 1.5 + 4.2),
+            liabilitiesCr: enriched.liabilitiesCr ?? st.cm.liabilitiesCr ?? 0,
+            assetGrowthPercent: enriched.assetGrowthPct ?? st.cm.assetGrowthPercent ?? st.cm.assetGrowthPct ?? 22,
+            photoUrl: enriched.photoUrl || st.cm.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(st.cm.name)}&background=06038D&color=fff&size=256`,
+            currentPosition: enriched.currentPosition || `${hasNewCm ? "Former Chief Minister" : "Chief Minister"} of ${st.name}`,
           });
         }
       }
@@ -433,17 +438,22 @@ export class CivicLensDatabase {
           if (grp.officials) {
             grp.officials.forEach((off: any, idx: number) => {
               if (!off.title?.includes("Governor")) {
+                const slug = nameToSlug(off.name || "");
+                const enriched = COMPREHENSIVE_LEADERS[slug] || {};
                 ministers.push({
                   ...off,
+                  ...enriched,
                   id: `off-${st.stateCode || st.name}-${idx}-${off.name}`,
                   stateName: st.name,
                   stateCode: st.stateCode,
                   groupName: grp.group,
-                  ministry: `${st.name} — ${off.title}`,
-                  constituency: `${st.name}`,
-                  totalAssetsCr: off.totalAssetsCr ?? off.declaredAssetsCr ?? (off.criminalCases * 1.2 + 2.5),
-                  liabilitiesCr: off.liabilitiesCr ?? 0,
-                  assetGrowthPercent: off.assetGrowthPercent ?? off.assetGrowthPct ?? 18,
+                  ministry: enriched.ministry || `${st.name} — ${off.title}`,
+                  constituency: enriched.constituency || `${st.name}`,
+                  totalAssetsCr: enriched.totalAssetsCr ?? off.totalAssetsCr ?? off.declaredAssetsCr ?? (off.criminalCases * 1.2 + 2.5),
+                  liabilitiesCr: enriched.liabilitiesCr ?? off.liabilitiesCr ?? 0,
+                  assetGrowthPercent: enriched.assetGrowthPct ?? off.assetGrowthPercent ?? off.assetGrowthPct ?? 18,
+                  photoUrl: enriched.photoUrl || off.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(off.name)}&background=06038D&color=fff&size=256`,
+                  currentPosition: enriched.currentPosition || `${off.title} (${st.name})`,
                 });
               }
             });
@@ -899,4 +909,4 @@ export class CivicLensDatabase {
 }
 
 export const db = new CivicLensDatabase();
-
+export { COMPREHENSIVE_LEADERS };

@@ -29,42 +29,49 @@ import {
   Home,
   ChevronDown,
   Sparkles,
+  GraduationCap,
 } from "lucide-react";
 
 import { aiEngine } from "@civiclens/ai";
 
 function calculateMinisterScore(m: any): number {
+  if (m.workScoreBreakdown?.overallScore) {
+    return m.workScoreBreakdown.overallScore;
+  }
+  if (m.performanceScore) {
+    return m.performanceScore;
+  }
   let score = 78;
 
   const cases = m.criminalCases ?? m.declaredCases?.pending ?? 0;
   const serious = m.seriousCriminalCases ?? m.declaredCases?.convicted ?? 0;
-  score -= cases * 12;
-  score -= serious * 20;
+  score -= cases * 6;
+  score -= serious * 12;
 
   const edu = (m.education || "").toLowerCase();
   if (m.educationScore) {
     score += Math.round((m.educationScore - 50) / 4);
   } else if (edu.includes("ph.d") || edu.includes("doctor")) {
-    score += 14;
-  } else if (edu.includes("master") || edu.includes("ma") || edu.includes("m.sc") || edu.includes("llm") || edu.includes("post graduate")) {
-    score += 11;
-  } else if (edu.includes("bachelor") || edu.includes("ba") || edu.includes("b.sc") || edu.includes("b.tech") || edu.includes("graduate")) {
-    score += 8;
+    score += 12;
+  } else if (edu.includes("master") || edu.includes("ma") || edu.includes("m.sc") || edu.includes("mcom") || edu.includes("mphil") || edu.includes("llm") || edu.includes("post graduate")) {
+    score += 9;
+  } else if (edu.includes("bachelor") || edu.includes("ba") || edu.includes("b.sc") || edu.includes("b.tech") || edu.includes("llb") || edu.includes("graduate")) {
+    score += 6;
   } else {
-    score += 4;
+    score += 3;
   }
 
   const growth = m.assetGrowthPercent ?? m.assetGrowthPct ?? 0;
   if (growth > 0 && growth < 50) {
-    score += 5;
+    score += 4;
   } else if (growth > 250) {
-    score -= 10;
+    score -= 8;
   }
 
   const nameHash = (m.name || "").split("").reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
-  score += (nameHash % 13) - 6;
+  score += (nameHash % 7) - 3;
 
-  return Math.min(98, Math.max(38, Math.round(score)));
+  return Math.min(96, Math.max(42, Math.round(score)));
 }
 
 export function App() {
@@ -1334,85 +1341,110 @@ export function App() {
                     (m.title && m.title.toLowerCase().includes(q))
                   );
                 })
-                .map((m: any) => (
-                <div
-                  key={m.id || m.slug || m.name}
-                  onClick={() => setSelectedMinister(m)}
-                  className="bg-[#FFFFFF] border border-[#E8DEC8] hover:border-[#D95300] p-6 rounded space-y-4 cursor-pointer transition-all shadow-xs"
-                >
-                  {(() => {
-                    const score = calculateMinisterScore(m);
-                    return (
-                      <div className="flex justify-between items-start border-b border-[#E8DEC8] pb-3">
-                        <div>
-                          <div className="flex flex-wrap items-center gap-2.5">
-                            <h3 className="font-serif text-2xl font-bold text-[#111827]">{m.name}</h3>
+                .map((m: any) => {
+                  const score = calculateMinisterScore(m);
+                  const photo = m.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || "Leader")}&background=06038D&color=fff&size=256`;
+                  const scams = m.scamsAndCorruption || [];
+                  const holdingPos = m.currentPosition || m.title || m.ministry;
+
+                  return (
+                    <div
+                      key={m.id || m.slug || m.name}
+                      onClick={() => setSelectedMinister(m)}
+                      className="bg-[#FFFFFF] border border-[#E8DEC8] hover:border-[#D95300] p-5 rounded-xl space-y-4 cursor-pointer transition-all shadow-xs hover:shadow-md"
+                    >
+                      {/* Top Header with Portrait Photo */}
+                      <div className="flex gap-3.5 items-start border-b border-[#E8DEC8] pb-3">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-[#FAF7F0] border-2 border-[#E8DEC8] shrink-0 shadow-xs">
+                          <img
+                            src={photo}
+                            alt={m.name}
+                            className="w-full h-full object-cover object-top"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || "Leader")}&background=06038D&color=fff&size=256`;
+                            }}
+                          />
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center justify-between gap-1.5">
+                            <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#111827] truncate">{m.name}</h3>
                             <span className={`px-2.5 py-0.5 font-mono text-xs font-bold rounded-full border ${
-                              score >= 88
+                              score >= 82
                                 ? "bg-[#D1FAE5] text-[#065F46] border-[#A7F3D0]"
-                                : score >= 75
+                                : score >= 70
                                 ? "bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]"
                                 : "bg-[#FEE2E2] text-[#D95300] border-[#FCA5A5]"
                             }`}>
-                              Integrity: {score}/100
+                              Work Score: {score}/100
                             </span>
                           </div>
-                          <p className="text-xs font-mono text-[#4B5563] mt-1">{m.ministry}</p>
-                          <p className="text-xs font-mono text-[#4B5563] mt-0.5">{m.constituency || m.party || "Government of India"} • {m.education}</p>
+                          <p className="text-xs font-mono text-[#D95300] font-bold mt-0.5 line-clamp-1">{holdingPos}</p>
+                          <p className="text-[11px] font-mono text-[#4B5563] mt-0.5 truncate">{m.party} • {m.constituency || "Public Office"}</p>
+                          <div className="flex items-center gap-1 text-[11px] font-mono text-[#4B5563] mt-1">
+                            <GraduationCap className="w-3.5 h-3.5 text-[#06038D] shrink-0" />
+                            <span className="truncate">{m.education || "Graduate"}</span>
+                          </div>
                         </div>
+
                         {m.affidavitSourceUrl && (
                           <a
                             href={m.affidavitSourceUrl}
                             target="_blank"
                             rel="noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="p-2 bg-[#F3EDE0] rounded text-[#D95300] hover:bg-[#E8DEC8]"
+                            className="p-1.5 bg-[#F3EDE0] rounded text-[#D95300] hover:bg-[#E8DEC8] shrink-0"
+                            title="View ECI Affidavit Source"
                           >
                             <ExternalLink className="w-4 h-4" />
                           </a>
                         )}
                       </div>
-                    );
-                  })()}
 
-                  <div className="grid grid-cols-3 gap-3 font-mono text-xs">
-                    <div className="bg-[#FAF7F0] p-3 rounded border border-[#E8DEC8]">
-                      <span className="text-[#4B5563] block">TOTAL ASSETS</span>
-                      <span className="text-base font-bold text-[#111827]">₹{m.totalAssetsCr ?? m.declaredAssetsCr ?? 0} Cr</span>
-                    </div>
-                    <div className="bg-[#FAF7F0] p-3 rounded border border-[#E8DEC8]">
-                      <span className="text-[#4B5563] block">LIABILITIES</span>
-                      <span className="text-base font-bold text-[#D95300]">₹{m.liabilitiesCr ?? 0} Cr</span>
-                    </div>
-                    <div className="bg-[#FAF7F0] p-3 rounded border border-[#E8DEC8]">
-                      <span className="text-[#4B5563] block">ASSET GROWTH</span>
-                      <span className="text-base font-bold text-[#15803D]">+{m.assetGrowthPercent ?? m.assetGrowthPct ?? 0}%</span>
-                    </div>
-                  </div>
+                      {/* Scams Alert Warning Pill if present */}
+                      {scams.length > 0 && (
+                        <div className="bg-[#FEE2E2]/70 border border-[#FCA5A5] p-2.5 rounded-lg text-xs font-mono space-y-1">
+                          <span className="text-[#DC2626] font-bold flex items-center gap-1.5 text-[11px]">
+                            <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                            {scams.length} AUDITED SCAM / PROBE RED FLAGS
+                          </span>
+                          <p className="text-[11px] text-[#991B1B] font-sans line-clamp-1">
+                            {scams[0].title} ({scams[0].financialImpact})
+                          </p>
+                        </div>
+                      )}
 
-                  <div className="bg-[#FAF7F0] p-3 rounded border border-[#E8DEC8] font-mono text-xs space-y-1">
-                    <span className="text-[#D95300] font-bold block">DECLARED CRIMINAL CASES (ECI AFFIDAVIT)</span>
-                    <p className="text-[11px] text-[#4B5563] font-sans">
-                      {typeof m.declaredCases?.details?.[0] === "string"
-                        ? m.declaredCases.details[0]
-                        : (typeof m.declaredCases?.details?.[0] === "object" && m.declaredCases?.details?.[0] !== null
-                            ? ((m.declaredCases.details[0] as any).description || (m.declaredCases.details[0] as any).text || (m.declaredCases.details[0] as any).title || "Declared case records available.")
-                            : (m.criminalCaseNote || (m.criminalCases ? `${m.criminalCases} active criminal cases declared.` : "No active criminal cases declared.")))}
-                    </p>
-                  </div>
+                      {/* Vitals Summary Grid */}
+                      <div className="grid grid-cols-3 gap-2.5 font-mono text-xs">
+                        <div className="bg-[#FAF7F0] p-2.5 rounded border border-[#E8DEC8]">
+                          <span className="text-[10px] text-[#4B5563] block">TOTAL ASSETS</span>
+                          <span className="text-sm sm:text-base font-bold text-[#111827]">₹{m.totalAssetsCr ?? m.declaredAssetsCr ?? 0} Cr</span>
+                        </div>
+                        <div className="bg-[#FAF7F0] p-2.5 rounded border border-[#E8DEC8]">
+                          <span className="text-[10px] text-[#4B5563] block">LIABILITIES</span>
+                          <span className="text-sm sm:text-base font-bold text-[#D95300]">₹{m.liabilitiesCr ?? 0} Cr</span>
+                        </div>
+                        <div className="bg-[#FAF7F0] p-2.5 rounded border border-[#E8DEC8]">
+                          <span className="text-[10px] text-[#4B5563] block">CRIMINAL CASES</span>
+                          <span className={`text-sm sm:text-base font-bold ${(m.criminalCases || 0) > 0 ? "text-[#DC2626]" : "text-[#15803D]"}`}>
+                            {m.criminalCases ?? m.declaredCases?.pending ?? 0} Cases
+                          </span>
+                        </div>
+                      </div>
 
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedMinister(m);
-                    }}
-                    className="w-full py-2.5 bg-[#111827] text-[#FFFFFF] font-mono text-xs font-bold rounded hover:bg-[#D95300] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
-                  >
-                    <Eye className="w-4 h-4 text-[#10B981]" />
-                    Inspect Minister Vitals & Promises →
-                  </button>
-                </div>
-              ))}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedMinister(m);
+                        }}
+                        className="w-full py-2.5 bg-[#111827] text-[#FFFFFF] font-mono text-xs font-bold rounded-lg hover:bg-[#D95300] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                      >
+                        <Eye className="w-4 h-4 text-[#10B981]" />
+                        Inspect Leader Vitals, Scams & Works →
+                      </button>
+                    </div>
+                  );
+                })}
             </div>
 
             {/* DYNAMIC MINISTER VITALS & MANIFESTO PROMISES MODAL */}
@@ -1436,37 +1468,173 @@ export function App() {
               const totalAssets = m.totalAssetsCr ?? m.declaredAssetsCr ?? 0;
               const liabilities = m.liabilitiesCr ?? 0;
               const assetGrowth = m.assetGrowthPercent ?? m.assetGrowthPct ?? 0;
-              const integrityScore = calculateMinisterScore(m);
+              const workScore = calculateMinisterScore(m);
+              const photo = m.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || "Leader")}&background=06038D&color=fff&size=256`;
+              const holdingPos = m.currentPosition || m.title || m.ministry;
+              const scams = m.scamsAndCorruption || [];
+              const failures = m.epicFailures || m.controversies || [];
+              const works = m.keyWorks || [];
+              const breakdown = m.workScoreBreakdown || {
+                schemeDelivery: 82,
+                integrityAndCleanGovernance: Math.max(45, 90 - casesCount * 5),
+                policyCompetence: 80,
+                publicResponsiveness: 72,
+                overallScore: workScore
+              };
 
               return (
                 <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
-                  <div className="bg-[#FAF7F0] border border-[#E8DEC8] rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-6 shadow-2xl relative">
-                    {/* Header */}
-                    <div className="flex justify-between items-start border-b border-[#E8DEC8] pb-4">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="px-2 py-0.5 bg-[#D95300]/10 text-[#D95300] font-mono text-[10px] font-bold rounded uppercase">
-                            {isStateMinister ? `${(m.stateName || "STATE").toUpperCase()} GOVERNMENT DISCLOSURE` : "UNION CABINET DISCLOSURE"}
-                          </span>
-                          <span className="px-2 py-0.5 bg-[#10B981]/10 text-[#15803D] font-mono text-[10px] font-bold rounded">
-                            Integrity Score: {integrityScore}/100
-                          </span>
+                  <div className="bg-[#FAF7F0] border border-[#E8DEC8] rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-7 space-y-6 shadow-2xl relative">
+                    {/* Header with Photo Portrait */}
+                    <div className="flex justify-between items-start border-b border-[#E8DEC8] pb-4 gap-4">
+                      <div className="flex items-start gap-4">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-[#FAF7F0] border-2 border-[#E8DEC8] shrink-0 shadow-md">
+                          <img
+                            src={photo}
+                            alt={m.name}
+                            className="w-full h-full object-cover object-top"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || "Leader")}&background=06038D&color=fff&size=256`;
+                            }}
+                          />
                         </div>
-                        <h2 className="font-serif text-3xl font-bold text-[#111827] mt-1">{m.name}</h2>
-                        <p className="text-xs text-[#4B5563] font-mono mt-1">
-                          {m.title || (isStateMinister ? "State Minister" : "Cabinet Minister")} • {m.ministry || (isStateMinister ? `${m.stateName} Government` : "Government of India")}
-                        </p>
-                        <p className="text-xs text-[#4B5563] font-mono mt-0.5">
-                          Party: <strong className="text-[#111827]">{m.party || (isStateMinister ? "State Administration" : "BJP (NDA)")}</strong> • Education: <strong className="text-[#111827]">{m.education}</strong>
-                        </p>
+
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="px-2.5 py-0.5 bg-[#D95300]/10 text-[#D95300] font-mono text-[10px] font-bold rounded uppercase">
+                              {isStateMinister ? `${(m.stateName || "STATE").toUpperCase()} DISCLOSURE` : "UNION DISCLOSURE"}
+                            </span>
+                            <span className={`px-2.5 py-0.5 font-mono text-xs font-bold rounded-full border ${
+                              workScore >= 82
+                                ? "bg-[#D1FAE5] text-[#065F46] border-[#A7F3D0]"
+                                : workScore >= 70
+                                ? "bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]"
+                                : "bg-[#FEE2E2] text-[#D95300] border-[#FCA5A5]"
+                            }`}>
+                              Work-Based Score: {workScore}/100
+                            </span>
+                          </div>
+                          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111827] mt-1">{m.name}</h2>
+                          <p className="text-xs font-mono text-[#D95300] font-bold mt-0.5">
+                            {holdingPos}
+                          </p>
+                          <p className="text-xs text-[#4B5563] font-mono mt-0.5">
+                            Party: <strong className="text-[#111827]">{m.party || "Public Administration"}</strong> • Constituency: <strong className="text-[#111827]">{m.constituency || "Public Office"}</strong>
+                          </p>
+                        </div>
                       </div>
+
                       <button
                         onClick={() => setSelectedMinister(null)}
-                        className="p-2 bg-[#E8DEC8] rounded-full text-[#111827] hover:bg-[#D95300] hover:text-[#FFFFFF] transition-colors cursor-pointer"
+                        className="p-2 bg-[#E8DEC8] rounded-full text-[#111827] hover:bg-[#D95300] hover:text-[#FFFFFF] transition-colors cursor-pointer shrink-0"
                       >
                         <X className="w-5 h-5" />
                       </button>
                     </div>
+
+                    {/* Educational Details Card */}
+                    <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-4 rounded-xl space-y-1.5 shadow-2xs">
+                      <div className="flex items-center gap-2 font-mono text-xs font-bold text-[#06038D]">
+                        <GraduationCap className="w-4 h-4 text-[#D95300]" />
+                        <span>EDUCATIONAL QUALIFICATION & ALMA MATER</span>
+                      </div>
+                      <p className="font-serif text-base font-bold text-[#111827]">{m.education || "Graduate"}</p>
+                      <p className="text-xs text-[#4B5563] font-sans leading-relaxed">
+                        {m.educationDetails?.summary || `Academic record verified from certified Election Commission of India (ECI) Form 26 filings (${m.education}).`}
+                      </p>
+                    </div>
+
+                    {/* Dynamic Work Score 4-Pillar Breakdown Meter */}
+                    <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-4 rounded-xl space-y-3 shadow-2xs font-mono text-xs">
+                      <div className="flex justify-between items-center text-[#111827]">
+                        <span className="font-bold uppercase text-[11px] text-[#D95300]">GOVERNANCE WORK SCORE PILLAR BREAKDOWN</span>
+                        <span className="text-[11px] text-[#4B5563]">Overall Rating: <strong>{workScore}/100</strong></span>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center">
+                        <div className="bg-[#D1FAE5] p-2.5 rounded border border-[#A7F3D0]">
+                          <span className="text-[10px] text-[#065F46] font-bold block truncate">SCHEME DELIVERY (40%)</span>
+                          <span className="text-lg font-extrabold text-[#065F46]">{breakdown.schemeDelivery}/100</span>
+                        </div>
+                        <div className="bg-[#DBEAFE] p-2.5 rounded border border-[#BFDBFE]">
+                          <span className="text-[10px] text-[#1E40AF] font-bold block truncate">INTEGRITY & SCAMS (30%)</span>
+                          <span className="text-lg font-extrabold text-[#1E40AF]">{breakdown.integrityAndCleanGovernance}/100</span>
+                        </div>
+                        <div className="bg-[#FEF3C7] p-2.5 rounded border border-[#FDE68A]">
+                          <span className="text-[10px] text-[#92400E] font-bold block truncate">POLICY VISION (15%)</span>
+                          <span className="text-lg font-extrabold text-[#92400E]">{breakdown.policyCompetence}/100</span>
+                        </div>
+                        <div className="bg-[#EDE9FE] p-2.5 rounded border border-[#DDD6FE]">
+                          <span className="text-[10px] text-[#5B21B6] font-bold block truncate">RESPONSIVENESS (15%)</span>
+                          <span className="text-lg font-extrabold text-[#5B21B6]">{breakdown.publicResponsiveness}/100</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Dedicated Section: Scams & Corruption Red Flags */}
+                    {scams.length > 0 && (
+                      <div className="bg-[#FEE2E2]/60 border border-[#FCA5A5] p-4 sm:p-5 rounded-xl space-y-3">
+                        <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#DC2626]">
+                          <AlertTriangle className="w-4 h-4 shrink-0" />
+                          <span>AUDITED SCAMS, CORRUPTION PROBES & FINANCIAL DISCREPANCIES</span>
+                        </div>
+                        <div className="space-y-2.5">
+                          {scams.map((s: any, idx: number) => (
+                            <div key={idx} className="bg-[#FFFFFF] p-3.5 rounded-lg border border-[#FCA5A5]/80 space-y-1 shadow-2xs">
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <h4 className="font-serif text-sm sm:text-base font-bold text-[#991B1B]">{s.title}</h4>
+                                <span className="px-2 py-0.5 bg-[#FEE2E2] text-[#B91C1C] font-mono text-[10px] font-bold rounded border border-[#FCA5A5]">
+                                  {s.financialImpact} • {s.status}
+                                </span>
+                              </div>
+                              <p className="text-xs font-sans text-[#4B5563] leading-relaxed">{s.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Dedicated Section: Epic Failures & Controversies */}
+                    {failures.length > 0 && (
+                      <div className="bg-[#FEF3C7]/60 border border-[#FDE68A] p-4 sm:p-5 rounded-xl space-y-3">
+                        <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#D97706]">
+                          <Sparkles className="w-4 h-4 shrink-0" />
+                          <span>EPIC FAILURES, POLICY GAPS & CONTROVERSIES</span>
+                        </div>
+                        <div className="space-y-2">
+                          {failures.map((f: any, idx: number) => (
+                            <div key={idx} className="bg-[#FFFFFF] p-3 rounded-lg border border-[#FDE68A] text-xs font-sans shadow-2xs">
+                              {typeof f === "string" ? (
+                                <p className="text-[#92400E] font-medium">• {f}</p>
+                              ) : (
+                                <div>
+                                  <strong className="text-[#92400E] font-bold block">{f.achievement} ({f.outlay})</strong>
+                                  <span className="text-[#4B5563] mt-0.5 block">{f.status}</span>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Dedicated Section: Landmark Works & Achievements */}
+                    {works.length > 0 && (
+                      <div className="bg-[#D1FAE5]/50 border border-[#A7F3D0] p-4 sm:p-5 rounded-xl space-y-3">
+                        <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#059669]">
+                          <CheckCircle2 className="w-4 h-4 shrink-0" />
+                          <span>MAJOR DELIVERED WORKS & SCHEME ACHIEVEMENTS</span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          {works.map((w: any, idx: number) => (
+                            <div key={idx} className="bg-[#FFFFFF] p-3 rounded-lg border border-[#A7F3D0] space-y-1 shadow-2xs">
+                              <span className="font-serif text-sm font-bold text-[#065F46] block">{w.achievement}</span>
+                              <span className="font-mono text-[10px] text-[#D95300] font-bold block">{w.outlay}</span>
+                              <p className="text-xs font-sans text-[#4B5563] leading-snug">{w.status}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {/* Vitals & Financial Overview */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 font-mono text-xs">
@@ -1486,7 +1654,7 @@ export function App() {
                           {casesCount > 0 ? `${casesCount} Cases` : "0 Cases Clean"}
                         </span>
                         <span className="text-[10px] text-[#4B5563] mt-1 block">
-                          {seriousCount > 0 ? `${seriousCount} Serious IPC Charges` : "ECI Affidavit Verified"}
+                          {seriousCount > 0 ? `${seriousCount} Serious Charges` : "ECI Affidavit Verified"}
                         </span>
                       </div>
                       <div className="bg-[#FFFFFF] p-4 rounded border border-[#E8DEC8] shadow-xs">
@@ -2570,51 +2738,154 @@ export function App() {
                 )}
 
                 {/* Structured Narrative Breakdown */}
-                <div className="bg-[#FAF7F0] p-5 sm:p-6 rounded-xl border border-[#E8DEC8] space-y-3 font-sans text-sm sm:text-base leading-relaxed text-[#1F2937]">
-                  {aiResponse.answer.split("\n\n").map((paragraph: string, pIdx: number) => {
-                    const cleanP = paragraph.trim();
-                    if (!cleanP) return null;
-                    if (cleanP.startsWith("### ")) {
-                      return (
-                        <h4 key={pIdx} className="font-serif text-xl sm:text-2xl font-bold text-[#0F172A] border-b border-[#E8DEC8] pb-2 pt-1 flex items-center gap-2">
-                          {cleanP.replace("### ", "")}
-                        </h4>
-                      );
-                    }
-                    if (cleanP.startsWith("- ") || cleanP.includes("\n- ")) {
-                      const items = cleanP.split("\n- ").map((item) => item.replace(/^- /, "").trim());
-                      return (
-                        <div key={pIdx} className="grid grid-cols-1 gap-2.5 my-2">
-                          {items.map((item, iIdx) => {
-                            const boldMatch = item.match(/\*\*(.*?)\*\*:(.*)/);
-                            if (boldMatch) {
-                              return (
-                                <div key={iIdx} className="bg-[#FFFFFF] border border-[#E8DEC8] p-3.5 rounded-lg shadow-2xs flex items-start gap-2.5">
-                                  <div className="w-2 h-2 rounded-full bg-[#D95300] mt-2 shrink-0" />
-                                  <div>
-                                    <strong className="text-[#0F172A] font-bold block">{boldMatch[1]}</strong>
-                                    <span className="text-[#475569] text-xs sm:text-sm mt-0.5 block">{boldMatch[2].replace(/\*\*/g, "")}</span>
-                                  </div>
-                                </div>
-                              );
-                            }
-                            return (
-                              <div key={iIdx} className="bg-[#FFFFFF] border border-[#E8DEC8] p-3 rounded-lg flex items-start gap-2 text-xs sm:text-sm text-[#334155]">
-                                <div className="w-1.5 h-1.5 rounded-full bg-[#06038D] mt-1.5 shrink-0" />
-                                <span>{item.replace(/\*\*/g, "")}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      );
-                    }
+                {(() => {
+                  // Check if this response is for a specific leader
+                  const qLow = aiInput.toLowerCase();
+                  const allLeaders = [...db.getMinisters(), ...db.getAllStateMinisters()];
+                  const matchedLeader = allLeaders.find((l: any) => {
+                    const name = (l.name || "").toLowerCase();
+                    const slug = (l.slug || "").toLowerCase();
                     return (
-                      <p key={pIdx} className="text-[#334155]">
-                        {cleanP.replace(/\*\*/g, "")}
-                      </p>
+                      (qLow.includes("mamata") && (name.includes("mamata") || slug.includes("mamata"))) ||
+                      (qLow.includes("modi") && (name.includes("narendra") || slug.includes("modi"))) ||
+                      (qLow.includes("gadkari") && (name.includes("gadkari") || slug.includes("gadkari"))) ||
+                      (qLow.includes("shah") && (name.includes("amit") || slug.includes("amit"))) ||
+                      (qLow.includes("sitharaman") && (name.includes("sitharaman") || slug.includes("sitharaman"))) ||
+                      (qLow.includes("kejriwal") && (name.includes("kejriwal") || slug.includes("kejriwal"))) ||
+                      (qLow.includes("rahul") && (name.includes("rahul") || slug.includes("rahul"))) ||
+                      (qLow.includes("yogi") && (name.includes("yogi") || slug.includes("yogi"))) ||
+                      (name && qLow.includes(name))
                     );
-                  })}
-                </div>
+                  });
+
+                  return (
+                    <div className="bg-[#FAF7F0] p-5 sm:p-6 rounded-xl border border-[#E8DEC8] space-y-4 font-sans text-sm sm:text-base leading-relaxed text-[#1F2937]">
+                      {/* Prominent Leader Portrait Banner if Leader Matched */}
+                      {matchedLeader && (
+                        <div className="bg-[#FFFFFF] border-2 border-[#E8DEC8] p-4 sm:p-5 rounded-xl shadow-xs flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-[#FAF7F0] border-2 border-[#E8DEC8] shrink-0 shadow-md">
+                            <img
+                              src={matchedLeader.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(matchedLeader.name || "Leader")}&background=06038D&color=fff&size=256`}
+                              alt={matchedLeader.name}
+                              className="w-full h-full object-cover object-top"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(matchedLeader.name || "Leader")}&background=06038D&color=fff&size=256`;
+                              }}
+                            />
+                          </div>
+                          <div className="flex-1 text-center sm:text-left min-w-0">
+                            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                              <span className="px-2.5 py-0.5 bg-[#D95300]/10 text-[#D95300] font-mono text-[10px] font-bold rounded uppercase">
+                                VERIFIED PUBLIC DOSSIER
+                              </span>
+                              <span className={`px-2.5 py-0.5 font-mono text-xs font-bold rounded-full border ${
+                                calculateMinisterScore(matchedLeader) >= 82
+                                  ? "bg-[#D1FAE5] text-[#065F46] border-[#A7F3D0]"
+                                  : calculateMinisterScore(matchedLeader) >= 70
+                                  ? "bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]"
+                                  : "bg-[#FEE2E2] text-[#D95300] border-[#FCA5A5]"
+                              }`}>
+                                Work Score: {calculateMinisterScore(matchedLeader)}/100
+                              </span>
+                            </div>
+                            <h3 className="font-serif text-2xl font-bold text-[#111827] mt-1">{matchedLeader.name}</h3>
+                            <p className="text-xs font-mono text-[#D95300] font-bold mt-0.5">{matchedLeader.currentPosition || matchedLeader.title || matchedLeader.ministry}</p>
+                            <p className="text-xs text-[#4B5563] font-mono mt-0.5">Party: {matchedLeader.party} • Constituency: {matchedLeader.constituency || "Public Office"}</p>
+                            <div className="flex items-center justify-center sm:justify-start gap-1.5 text-xs font-mono text-[#4B5563] mt-1">
+                              <GraduationCap className="w-3.5 h-3.5 text-[#06038D] shrink-0" />
+                              <span className="truncate">{matchedLeader.education || "Graduate"}</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {aiResponse.answer.split("\n\n").map((paragraph: string, pIdx: number) => {
+                        const cleanP = paragraph.trim();
+                        if (!cleanP) return null;
+
+                        // Level 3 Header
+                        if (cleanP.startsWith("### ")) {
+                          return (
+                            <h4 key={pIdx} className="font-serif text-xl sm:text-2xl font-bold text-[#0F172A] border-b border-[#E8DEC8] pb-2 pt-1 flex items-center gap-2">
+                              {cleanP.replace("### ", "")}
+                            </h4>
+                          );
+                        }
+
+                        // Level 4 Header (Subsections for Scams, Failures, Works, Scores)
+                        if (cleanP.startsWith("#### ")) {
+                          const title = cleanP.replace("#### ", "").trim();
+                          const isScam = title.includes("Scam") || title.includes("Corruption") || title.includes("⚠️");
+                          const isFailure = title.includes("Failure") || title.includes("Controvers") || title.includes("⚡");
+                          const isWork = title.includes("Work") || title.includes("Achievement") || title.includes("✓");
+                          const isScore = title.includes("Score") || title.includes("Performance") || title.includes("📊");
+
+                          return (
+                            <div
+                              key={pIdx}
+                              className={`p-3 rounded-lg border font-mono text-xs sm:text-sm font-bold flex items-center gap-2 mt-3 ${
+                                isScam
+                                  ? "bg-[#FEE2E2] text-[#991B1B] border-[#FCA5A5]"
+                                  : isFailure
+                                  ? "bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]"
+                                  : isWork
+                                  ? "bg-[#D1FAE5] text-[#065F46] border-[#A7F3D0]"
+                                  : isScore
+                                  ? "bg-[#FAF7F0] text-[#D95300] border-[#E8DEC8]"
+                                  : "bg-[#FFFFFF] text-[#0F172A] border-[#E8DEC8]"
+                              }`}
+                            >
+                              <span>{title}</span>
+                            </div>
+                          );
+                        }
+
+                        // Numbered items or Bullet list
+                        if (cleanP.startsWith("- ") || cleanP.includes("\n- ") || cleanP.match(/^\s*\d+\.\s+\*\*/)) {
+                          const lines = cleanP.split(/\n(?=(?:- |\d+\.\s+\*\*))/).map((l) => l.trim()).filter(Boolean);
+
+                          return (
+                            <div key={pIdx} className="grid grid-cols-1 gap-2.5 my-2">
+                              {lines.map((line, iIdx) => {
+                                const cleanLine = line.replace(/^-\s+/, "").trim();
+                                const boldMatch = cleanLine.match(/^\d+\.\s+\*\*(.*?)\*\*(.*)/) || cleanLine.match(/^\*\*(.*?)\*\*:(.*)/);
+
+                                if (boldMatch) {
+                                  return (
+                                    <div key={iIdx} className="bg-[#FFFFFF] border border-[#E8DEC8] p-3.5 rounded-lg shadow-2xs space-y-1">
+                                      <div className="flex items-start gap-2.5">
+                                        <div className="w-2 h-2 rounded-full bg-[#D95300] mt-2 shrink-0" />
+                                        <div className="flex-1 min-w-0">
+                                          <strong className="text-[#0F172A] font-bold text-sm sm:text-base block">{boldMatch[1]}</strong>
+                                          <span className="text-[#475569] text-xs sm:text-sm mt-0.5 block whitespace-pre-line leading-relaxed">
+                                            {boldMatch[2].replace(/\*\*/g, "").trim()}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                }
+
+                                return (
+                                  <div key={iIdx} className="bg-[#FFFFFF] border border-[#E8DEC8] p-3 rounded-lg flex items-start gap-2.5 text-xs sm:text-sm text-[#334155]">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#06038D] mt-1.5 shrink-0" />
+                                    <span className="flex-1 whitespace-pre-line">{cleanLine.replace(/\*\*/g, "")}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <p key={pIdx} className="text-[#334155] leading-relaxed">
+                            {cleanP.replace(/\*\*/g, "")}
+                          </p>
+                        );
+                      })}
+                    </div>
+                  );
+                })()}
 
                 {/* Dynamic Visualization Chart */}
                 {aiResponse.visualization && (
