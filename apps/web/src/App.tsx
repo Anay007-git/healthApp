@@ -2772,8 +2772,11 @@ export function App() {
                     if (t.includes("amit shah") || (t.includes("shah") && !t.includes("shashi"))) {
                       return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("amit") || (l.slug || "").includes("amit"));
                     }
-                    if (t.includes("gadkari") || t.includes("nitin")) {
+                    if (t.includes("gadkari") || t.includes("nitin") || t.includes("ethanol") || t.includes("purti")) {
                       return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("gadkari") || (l.slug || "").includes("gadkari"));
+                    }
+                    if (t.includes("dharmendra") || t.includes("pradhan") || t.includes("neet") || t.includes("paper leak") || (t.includes("education") && t.includes("minister"))) {
+                      return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("dharmendra") || (l.slug || "").includes("dharmendra") || (l.name || "").toLowerCase().includes("pradhan"));
                     }
                     if (t.includes("sitharaman") || t.includes("nirmala")) {
                       return allLeaders.find((l: any) => (l.name || "").toLowerCase().includes("sitharaman") || (l.slug || "").includes("sitharaman"));
@@ -2849,6 +2852,8 @@ export function App() {
                     if (name.includes("abhishek")) return ["Suvendu Adhikari", "Mamata Banerjee", "Rahul Gandhi", "Narendra Modi"];
                     if (name.includes("suvendu")) return ["Abhishek Banerjee", "Mamata Banerjee", "Yogi Adityanath", "Akhilesh Yadav"];
                     if (name.includes("mamata")) return ["Suvendu Adhikari", "Abhishek Banerjee", "Yogi Adityanath", "Narendra Modi"];
+                    if (name.includes("dharmendra") || name.includes("pradhan")) return ["Shashi Tharoor", "Rahul Gandhi", "Nitin Gadkari", "Arvind Kejriwal"];
+                    if (name.includes("gadkari")) return ["Narendra Modi", "Rahul Gandhi", "Dharmendra Pradhan", "Arvind Kejriwal"];
                     if (name.includes("modi") || name.includes("narendra")) return ["Rahul Gandhi", "Nitin Gadkari", "Arvind Kejriwal", "Mamata Banerjee"];
                     if (name.includes("rahul")) return ["Narendra Modi", "Akhilesh Yadav", "Shashi Tharoor", "Tejashwi Yadav"];
                     if (name.includes("yogi")) return ["Akhilesh Yadav", "Mamata Banerjee", "Narendra Modi", "Rahul Gandhi"];

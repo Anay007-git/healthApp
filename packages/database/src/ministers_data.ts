@@ -429,6 +429,12 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     constituency: "Nagpur, Maharashtra",
     scamsAndCorruption: [
       {
+        title: "Purti Group & Ethanol Blending Policy Conflict Allegations",
+        financialImpact: "Subsidies & E20 Mandate Scrutiny",
+        description: "Opposition leaders and investigative reports raised conflict-of-interest allegations regarding the government push for mandatory 20% ethanol blending (E20), flex-fuel vehicle adoption, and soft loan subsidies benefiting private ethanol distilleries and bio-fuel enterprises linked to Purti Power and Sugar Ltd (promoted by the Gadkari family). Nitin Gadkari clarified that bio-fuel policy serves national crude import reduction and farmers' sugarcane value realization without personal impropriety; earlier CAG loan audit (2014) on IREDA was closed without prosecution.",
+        status: "Parliamentary Debate & Policy Clarifications"
+      },
+      {
         title: "CAG Audit on Dwarka Expressway Cost Escalation",
         financialImpact: "₹250.7 Cr/km vs ₹18.2 Cr/km Planned",
         description: "CAG Audit Report No. 14 of 2023 flagged significant cost escalations on the 29-km Dwarka Expressway elevated corridor; Ministry clarified that 8-lane elevated structure with tunnels required specialized engineering specifications.",
@@ -454,9 +460,9 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
       } as any
     ] as any,
     controversies: [
-      "FASTag automated toll deduplication disputes",
-      "Purti Group historical business audit inquiry (cleared in 2013-14)",
-      "Strict vehicle scrappage policy adoption challenges among commercial transporters"
+      "Ethanol blending policy push & Purti Group business conflict-of-interest allegations",
+      "CAG Report flagging ₹250.77 Cr/km Dwarka Expressway cost vs CCEA initial approval",
+      "FASTag automated toll deduplication disputes & strict vehicle scrappage policy friction"
     ],
     keyWorks: [
       {
@@ -482,12 +488,98 @@ export const COMPREHENSIVE_LEADERS: Record<string, Partial<MinisterProfile>> = {
     ],
     workScoreBreakdown: {
       schemeDelivery: 95,
-      integrityAndCleanGovernance: 79,
+      integrityAndCleanGovernance: 76,
       policyCompetence: 92,
       publicResponsiveness: 78,
-      overallScore: 87
+      overallScore: 86
     },
-    performanceScore: 87
+    performanceScore: 86
+  },
+
+  "dharmendra-pradhan": {
+    name: "Dharmendra Pradhan",
+    slug: "dharmendra-pradhan",
+    title: "Union Minister of Education & Skill Development",
+    currentPosition: "Union Minister of Education (since 2021) and Minister of Skill Development and Entrepreneurship, Government of India (MP for Sambalpur, Odisha); Former Union Minister for Petroleum & Natural Gas (2014–2021)",
+    ministry: "Ministry of Education · Ministry of Skill Development and Entrepreneurship",
+    party: "Bharatiya Janata Party (BJP)",
+    photoUrl: LEADER_PHOTOS["dharmendra-pradhan"],
+    education: "MA Anthropology (Utkal University, Bhubaneswar, 1990); Higher Secondary (Talcher College)",
+    educationDetails: {
+      degree: "Master of Arts (MA) in Anthropology",
+      institution: "Utkal University, Bhubaneswar, Odisha (1990)",
+      summary: "Graduated with Higher Secondary from Talcher College; earned MA in Anthropology from Utkal University, entering student leadership via ABVP before national politics."
+    },
+    declaredAssetsCr: 1.45,
+    totalAssetsCr: 1.45,
+    liabilitiesCr: 0.28,
+    assetGrowthPct: 18,
+    criminalCases: 0,
+    seriousCriminalCases: 0,
+    criminalCaseNote: "Zero criminal cases declared in certified 2024 ECI Form 26 parliamentary affidavit.",
+    constituency: "Sambalpur, Odisha",
+    scamsAndCorruption: [
+      {
+        title: "NEET-UG 2024 Paper Leak & NTA Institutional Crisis",
+        financialImpact: "24+ Lakh Medical Aspirants Affected",
+        description: "Massive nationwide crisis and protests following paper leak in NEET-UG 2024 exam centers in Patna (Oasis School) and Godhra, arbitrary grace marks awarded to 1,563 candidates, and an unprecedented 67 students securing Rank 1 (perfect 720/720 score). The Supreme Court termed NTA conduct suspect, CBI arrested 40+ solver gang kingpins across Bihar and Gujarat, the Union Government removed NTA Director General Subodh Kumar Singh, and student unions (AISA, NSUI, ABVP) alongside Parliamentary Opposition staged mass walkouts demanding Education Minister Dharmendra Pradhan's resignation.",
+        status: "CBI Investigation & Supreme Court Directives"
+      },
+      {
+        title: "UGC-NET & CSIR-NET 2024 Darknet Leak & Nationwide Cancellation",
+        financialImpact: "9+ Lakh Candidates Disrupted",
+        description: "Ministry of Education cancelled the UGC-NET exam within 24 hours of conduct across 317 cities on June 19, 2024 after inputs from the Ministry of Home Affairs' Cyber Crime Threat Analytics Unit proved question papers were leaked on Telegram and darknet channels for ₹5–₹6 Lakh each; investigation transferred to CBI.",
+        status: "CBI Criminal Probe & Re-examination Conducted"
+      }
+    ],
+    epicFailures: [
+      {
+        achievement: "NEET-UG 2024 Oversight Breakdown & Resignation Calls",
+        outlay: "National Examination Crisis",
+        status: "Severe political backlash and parliamentary disruption with opposition demanding Education Minister Dharmendra Pradhan's immediate resignation over supervisory negligence and failure to prevent solver cartels."
+      } as any,
+      {
+        achievement: "CUET Center Cancellations & Academic Calendar Delays",
+        outlay: "Central University Admissions",
+        status: "Technical server glitches, sudden last-minute exam center changes, and normalization disputes delaying university academic sessions across 250+ central universities."
+      } as any
+    ] as any,
+    controversies: [
+      "Nationwide student protests and opposition demands for Dharmendra Pradhan's resignation over NEET paper leak",
+      "Controversy over NCERT textbook syllabus rationalization (removal of Mughal chapters, Darwin's evolution theory, Periodic Table)",
+      "Non-BJP states (Tamil Nadu, Karnataka, West Bengal) opposing National Education Policy (NEP 2020) and 3-language formula",
+      "UGC draft guidelines allowing de-reservation of reserved category faculty seats (revoked following intense public backlash)"
+    ],
+    keyWorks: [
+      {
+        achievement: "Enactment of Public Examinations (Anti-Paper Leak) Act, 2024",
+        outlay: "Up to 10 Years Jail & ₹1 Cr Fine",
+        status: "Notified stringent anti-cheating law targeting organized paper leak cartels, malpractices, and unauthorized computer server access."
+      },
+      {
+        achievement: "PM-SHRI Scheme for 14,500 Model Schools",
+        outlay: "₹27,360 Crore Outlay",
+        status: "Upgraded 14,500 government schools into state-of-the-art PM Schools for Rising India equipped with smart classrooms, STEM labs, and NEP curriculum."
+      },
+      {
+        achievement: "National Education Policy (NEP 2020) Implementation & NCF",
+        outlay: "5+3+3+4 Pedagogical Structure",
+        status: "Rolled out National Curriculum Framework for Foundational Stage (NCF-FS) and bilingual textbooks in 22 regional Indian languages."
+      },
+      {
+        achievement: "Pradhan Mantri Ujjwala Yojana (during Petroleum Ministry)",
+        outlay: "10.35 Crore Free LPG Connections",
+        status: "Spearheaded nationwide clean cooking fuel DBT scheme for rural women living below poverty line."
+      }
+    ],
+    workScoreBreakdown: {
+      schemeDelivery: 82,
+      integrityAndCleanGovernance: 65,
+      policyCompetence: 78,
+      publicResponsiveness: 60,
+      overallScore: 72
+    },
+    performanceScore: 72
   },
 
   "nirmala-sitharaman": {

@@ -171,6 +171,7 @@ const LEADER_DOSSIERS: Record<string, {
     assetsCr: 28.03,
     liabilitiesCr: 12.8,
     scams: [
+      { title: "Purti Group & Ethanol Policy Conflict Allegations", impact: "Subsidies & E20 Mandate Scrutiny", desc: "Opposition leaders and investigative reports raised conflict-of-interest allegations regarding the government push for mandatory 20% ethanol blending (E20), flex-fuel vehicle adoption, and soft loan subsidies benefiting private ethanol distilleries and bio-fuel enterprises linked to Purti Power and Sugar Ltd (promoted by the Gadkari family). Nitin Gadkari clarified that bio-fuel policy serves national crude import reduction and farmers' sugarcane value realization without personal impropriety; earlier CAG loan audit (2014) on IREDA was closed without prosecution.", status: "Parliamentary Debate & Policy Clarifications" },
       { title: "CAG Audit on Dwarka Expressway Cost Escalation", impact: "₹250.7 Cr/km vs ₹18.2 Cr/km Planned", desc: "CAG Audit Report No. 14 of 2023 flagged high cost escalation on the 29-km Dwarka Expressway elevated corridor; Ministry clarified 8-lane elevated specifications with tunnels.", status: "Clarified in Parliamentary ATR" },
       { title: "NHAI Debt Accumulation Peak", impact: "₹3.48 Lakh Cr Debt", desc: "Aggressive borrowing for land acquisition and BOT-HAM projects caused NHAI debt to surge, requiring Union Budget restructuring to direct budgetary grants.", status: "Resolved via Budget Grants" },
     ],
@@ -181,9 +182,38 @@ const LEADER_DOSSIERS: Record<string, {
     works: [
       { title: "Record Highway Construction Velocity", outlay: "₹2.78 Lakh Cr FY25", desc: "Increased average daily highway construction from 12 km/day (2014) to 37 km/day peak (13,327 km built in a single year)." },
       { title: "Greenfield Expressway Network", outlay: "27 Access-Controlled Corridors", desc: "Built access-controlled corridors (Delhi-Mumbai, Samruddhi) cutting logistics transit times by 40-50%." },
+      { title: "Ethanol Blending & Flex-Fuel Vehicle Mission", outlay: "20% Ethanol Blending (E20)", desc: "Saved ₹90,000+ Cr in crude oil import foreign exchange while supporting sugarcane farmer incomes." },
       { title: "100% FASTag Electronic Toll Collection", outlay: "₹20,000 Cr Fuel Savings", desc: "Reduced average toll plaza wait time from 734 seconds to 47 seconds across 1,000+ toll plazas." },
     ],
-    scores: { delivery: 95, integrity: 79, policy: 92, response: 78, overall: 87 }
+    scores: { delivery: 95, integrity: 76, policy: 92, response: 78, overall: 86 }
+  },
+  dharmendra: {
+    name: "Dharmendra Pradhan",
+    position: "Union Minister of Education (since 2021) and Minister of Skill Development and Entrepreneurship, Government of India (MP for Sambalpur, Odisha)",
+    party: "Bharatiya Janata Party (BJP)",
+    constituency: "Sambalpur, Odisha",
+    education: "MA Anthropology (Utkal University, Bhubaneswar, 1990)",
+    eduDetails: "Graduated with Higher Secondary from Talcher College; completed MA in Anthropology from Utkal University, entering student leadership via ABVP before national parliamentary career.",
+    assetsCr: 1.45,
+    liabilitiesCr: 0.28,
+    criminalCases: 0,
+    seriousCases: 0,
+    criminalNote: "Zero criminal cases declared in certified 2024 ECI Form 26 parliamentary affidavit.",
+    scams: [
+      { title: "NEET-UG 2024 Paper Leak & NTA Institutional Crisis", impact: "24+ Lakh Medical Aspirants Affected", desc: "Massive nationwide crisis and protests following paper leak in NEET-UG 2024 exam centers in Patna (Oasis School) and Godhra, arbitrary grace marks awarded to 1,563 candidates, and an unprecedented 67 students securing Rank 1 (perfect 720/720 score). The Supreme Court termed NTA conduct suspect, CBI arrested 40+ solver gang kingpins across Bihar and Gujarat, the Union Government removed NTA Director General Subodh Kumar Singh, and student unions (AISA, NSUI, ABVP) alongside Parliamentary Opposition staged mass walkouts demanding Education Minister Dharmendra Pradhan's resignation.", status: "CBI Investigation & Supreme Court Directives" },
+      { title: "UGC-NET & CSIR-NET 2024 Darknet Leak & Nationwide Cancellation", impact: "9+ Lakh Candidates Disrupted", desc: "Ministry of Education cancelled the UGC-NET exam within 24 hours of conduct across 317 cities on June 19, 2024 after inputs from MHA Cyber Crime Unit confirmed question paper was leaked on Telegram/darknet for ₹5–₹6 Lakh each; probe transferred to CBI.", status: "CBI Criminal Probe" },
+    ],
+    failures: [
+      { title: "NEET-UG 2024 Oversight Breakdown & Resignation Demands", desc: "Severe political backlash and parliamentary disruption with opposition and nationwide student unions demanding Education Minister Dharmendra Pradhan's immediate resignation over supervisory negligence." },
+      { title: "CUET Center Cancellations & Academic Calendar Delays", desc: "Technical server glitches, sudden last-minute exam center changes, and normalization disputes delaying university academic sessions across 250+ central universities." },
+    ],
+    works: [
+      { title: "Public Examinations (Anti-Paper Leak) Act, 2024", outlay: "Up to 10 Years Jail & ₹1 Cr Fine", desc: "Notified stringent anti-cheating law targeting organized paper leak cartels, malpractices, and unauthorized computer server access." },
+      { title: "PM-SHRI Scheme for 14,500 Model Schools", outlay: "₹27,360 Crore Outlay", desc: "Upgraded 14,500 government schools into state-of-the-art PM Schools for Rising India equipped with smart classrooms and STEM labs." },
+      { title: "National Education Policy (NEP 2020) & NCF Rollout", outlay: "5+3+3+4 Pedagogical Structure", desc: "Rolled out National Curriculum Framework for Foundational Stage (NCF-FS) and bilingual textbooks in 22 regional Indian languages." },
+      { title: "Pradhan Mantri Ujjwala Yojana (during Petroleum Ministry)", outlay: "10.35 Crore Connections", desc: "Spearheaded nationwide clean cooking fuel DBT scheme for rural women living below poverty line." },
+    ],
+    scores: { delivery: 82, integrity: 65, policy: 78, response: 60, overall: 72 }
   },
   shah: {
     name: "Amit Shah",
@@ -561,7 +591,7 @@ export default async function handler(req: any, res: any) {
   else if (
     (q.includes("compare") || q.includes(" vs ") || q.includes(" vs. ") || q.includes("versus") || q.includes("difference between") || q.includes("head to head")) &&
     (q.includes("abhishek") || q.includes("suvendu") || q.includes("mamata") || q.includes("modi") || q.includes("rahul") ||
-     q.includes("amit shah") || q.includes("gadkari") || q.includes("kejriwal") || q.includes("yogi") || q.includes("akhilesh") ||
+     q.includes("amit shah") || q.includes("gadkari") || q.includes("dharmendra") || q.includes("pradhan") || q.includes("kejriwal") || q.includes("yogi") || q.includes("akhilesh") ||
      q.includes("tejashwi") || q.includes("tharoor") || q.includes("mahua") || q.includes("owaisi"))
   ) {
     const findKey = (text: string) => {
@@ -571,7 +601,8 @@ export default async function handler(req: any, res: any) {
       if (t.includes("mamata") || t.includes("didi") || (t.includes("banerjee") && !t.includes("abhishek"))) return "mamata";
       if (t.includes("modi") || t.includes("narendra")) return "modi";
       if (t.includes("amit shah") || (t.includes("shah") && !t.includes("shashi"))) return "shah";
-      if (t.includes("gadkari") || t.includes("nitin")) return "gadkari";
+      if (t.includes("gadkari") || t.includes("nitin") || t.includes("ethanol") || t.includes("purti")) return "gadkari";
+      if (t.includes("dharmendra") || t.includes("pradhan") || t.includes("neet") || t.includes("paper leak") || (t.includes("education") && t.includes("minister"))) return "dharmendra";
       if (t.includes("sitharaman") || t.includes("nirmala")) return "sitharaman";
       if (t.includes("kejriwal") || t.includes("arvind")) return "kejriwal";
       if (t.includes("rahul") || (t.includes("gandhi") && !t.includes("sanjay"))) return "rahul";
@@ -589,11 +620,11 @@ export default async function handler(req: any, res: any) {
     let keyB = parts.length >= 2 ? findKey(parts.slice(1).join(" ")) : null;
 
     if (!keyA || !keyB || keyA === keyB) {
-      const candidateKeys = ["abhishek", "suvendu", "mamata", "modi", "rahul", "shah", "gadkari", "sitharaman", "kejriwal", "yogi", "akhilesh", "tejashwi", "tharoor", "mahua", "owaisi"];
+      const candidateKeys = ["abhishek", "suvendu", "mamata", "modi", "rahul", "shah", "gadkari", "dharmendra", "pradhan", "sitharaman", "kejriwal", "yogi", "akhilesh", "tejashwi", "tharoor", "mahua", "owaisi"];
       const foundKeys = candidateKeys.filter((k) => q.includes(k));
       if (foundKeys.length >= 2) {
-        keyA = foundKeys[0];
-        keyB = foundKeys[1];
+        keyA = findKey(foundKeys[0]);
+        keyB = findKey(foundKeys[1]);
       }
     }
 
@@ -668,7 +699,8 @@ ${worksB}`;
     q.includes("minister") || q.includes("neta") || q.includes("leader") || q.includes("mp") || q.includes("mla") ||
     q.includes("score card") || q.includes("scorecard") || q.includes("abhishek") || q.includes("mamata") ||
     q.includes("suvendu") || q.includes("adhikari") || q.includes("modi") || q.includes("amit shah") ||
-    q.includes("gadkari") || q.includes("sitharaman") || q.includes("kejriwal") || q.includes("rahul") ||
+    q.includes("gadkari") || q.includes("ethanol") || q.includes("purti") || q.includes("dharmendra") || q.includes("pradhan") ||
+    q.includes("neet") || q.includes("paper leak") || q.includes("sitharaman") || q.includes("kejriwal") || q.includes("rahul") ||
     q.includes("yogi") || q.includes("akhilesh") || q.includes("tejashwi") || q.includes("tharoor") ||
     q.includes("mahua") || q.includes("owaisi") || q.includes("cabinet")
   ) {
@@ -676,7 +708,8 @@ ${worksB}`;
                 (q.includes("suvendu") || q.includes("adhikari")) ? "suvendu" :
                 (q.includes("mamata") || q.includes("didi") || (q.includes("banerjee") && !q.includes("abhishek"))) ? "mamata" :
                 (q.includes("modi") || q.includes("narendra")) ? "modi" :
-                (q.includes("gadkari") || q.includes("nitin")) ? "gadkari" :
+                (q.includes("gadkari") || q.includes("nitin") || q.includes("ethanol") || q.includes("purti")) ? "gadkari" :
+                (q.includes("dharmendra") || q.includes("pradhan") || q.includes("neet") || q.includes("paper leak") || (q.includes("education") && q.includes("minister"))) ? "dharmendra" :
                 (q.includes("sitharaman") || q.includes("nirmala")) ? "sitharaman" :
                 (q.includes("amit shah") || (q.includes("shah") && !q.includes("shashi"))) ? "shah" :
                 (q.includes("kejriwal") || q.includes("arvind")) ? "kejriwal" :

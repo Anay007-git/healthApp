@@ -122,8 +122,11 @@ export class CivicLensAIEngine {
       if (t.includes("amit shah") || (t.includes("shah") && !t.includes("shashi"))) {
         return COMPREHENSIVE_LEADERS["amit-shah"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("amit"));
       }
-      if (t.includes("gadkari") || t.includes("nitin")) {
+      if (t.includes("gadkari") || t.includes("nitin") || t.includes("ethanol") || t.includes("purti") || t.includes("dwarka expressway")) {
         return COMPREHENSIVE_LEADERS["nitin-gadkari"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("gadkari"));
+      }
+      if (t.includes("dharmendra") || t.includes("pradhan") || t.includes("neet") || t.includes("ugc net") || t.includes("paper leak") || (t.includes("education") && t.includes("minister"))) {
+        return COMPREHENSIVE_LEADERS["dharmendra-pradhan"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("dharmendra") || (m.name || "").toLowerCase().includes("pradhan"));
       }
       if (t.includes("sitharaman") || t.includes("nirmala")) {
         return COMPREHENSIVE_LEADERS["nirmala-sitharaman"] || allMinisters.find((m: any) => (m.name || "").toLowerCase().includes("sitharaman"));
@@ -207,7 +210,7 @@ export class CivicLensAIEngine {
 
         const candidateKeys = [
           "abhishek", "suvendu", "mamata", "modi", "rahul", "amit shah", "gadkari",
-          "sitharaman", "kejriwal", "yogi", "akhilesh", "tejashwi", "tharoor",
+          "dharmendra", "pradhan", "sitharaman", "kejriwal", "yogi", "akhilesh", "tejashwi", "tharoor",
           "mahua", "owaisi", "stalin", "siddaramaiah", "shinde", "fadnavis", "nitish", "himanta"
         ];
 
