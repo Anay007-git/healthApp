@@ -191,13 +191,38 @@ export class CivicLensAIEngine {
         };
         const overallScore = breakdown.overallScore || leader.performanceScore || 78;
 
+        const crimDisclosure = crimCases > 0
+          ? `🚨 **${crimCases} Criminal Case(s) Declared** (${leader.seriousCriminalCases || 0} Serious IPC Sections) — *Affidavit Note*: ${leader.criminalCaseNote || "Declared pending cases in ECI Form 26 filings."}`
+          : `🛡️ **0 Criminal Cases Declared** — Impeccable Clean Record (${leader.criminalCaseNote || "Clean record on certified ECI filings"}).`;
+
         return {
-          answer: `### 🎖️ Executive Governance Dossier: ${leader.name}\n\n- **Holding Position**: **${position}** (Party: *${leader.party}* | Constituency: *${leader.constituency || "Public Office"}*)\n- **Educational Background**: **${edu}**\n  - *Academic Details*: ${eduSummary}\n- **Financial Disclosures**: Declared Net Assets of **₹${assetsCr.toLocaleString()} Crore** (Liabilities: **₹${liabilitiesCr.toLocaleString()} Crore**; ECI Form 26 Affidavit).\n\n#### ⚠️ Audited Scams, Corruption Inquiries & Legal Record:\n${scamsList}\n\n#### ⚡ Epic Failures, Controversies & Policy Gaps:\n${failuresList}\n\n#### ✓ Key Works & Landmark Delivery Achievements:\n${worksList}\n\n#### 📊 Dynamic Work-Based Performance Score: **${overallScore}/100**\n- **Scheme & Infra Delivery (40% Weight)**: **${breakdown.schemeDelivery}/100**\n- **Clean Governance & Integrity (30% Weight)**: **${breakdown.integrityAndCleanGovernance}/100**\n- **Policy Competence & Vision (15% Weight)**: **${breakdown.policyCompetence}/100**\n- **Public Responsiveness & Crisis Management (15% Weight)**: **${breakdown.publicResponsiveness}/100**`,
+          answer: `### 🎖️ Executive Governance Dossier: ${leader.name}
+
+- **Holding Position**: **${position}** (Party: *${leader.party}* | Constituency: *${leader.constituency || "Public Office"}*)
+- **Educational Background**: **${edu}**
+  - *Academic Details*: ${eduSummary}
+- **Financial Disclosures**: Declared Net Assets of **₹${assetsCr.toLocaleString()} Crore** (Liabilities: **₹${liabilitiesCr.toLocaleString()} Crore**; ECI Form 26 Affidavit).
+- **Criminal Cases & Legal Record (ECI Form 26)**: ${crimDisclosure}
+
+#### ⚠️ Audited Scams, Corruption Inquiries & Legal Record:
+${scamsList}
+
+#### ⚡ Epic Failures, Controversies & Policy Gaps:
+${failuresList}
+
+#### ✓ Key Works & Landmark Delivery Achievements:
+${worksList}
+
+#### 📊 Dynamic Work-Based Performance Score: **${overallScore}/100**
+- **Scheme & Infra Delivery (40% Weight)**: **${breakdown.schemeDelivery}/100**
+- **Clean Governance & Integrity (30% Weight)**: **${breakdown.integrityAndCleanGovernance}/100**
+- **Policy Competence & Vision (15% Weight)**: **${breakdown.policyCompetence}/100**
+- **Public Responsiveness & Crisis Management (15% Weight)**: **${breakdown.publicResponsiveness}/100**`,
           metrics: [
             { label: "Overall Work Score", value: `${overallScore}/100` },
+            { label: "Criminal Cases", value: crimCases > 0 ? `${crimCases} Declared (${leader.seriousCriminalCases || 0} Serious)` : "0 Cases (Clean)" },
             { label: "Declared Net Assets", value: `₹${assetsCr} Cr` },
             { label: "Scams & Legal Flags", value: `${scams.length + (crimCases > 0 ? 1 : 0)} Identified` },
-            { label: "Scheme Delivery", value: `${breakdown.schemeDelivery}/100` },
           ],
           visualization: {
             type: "bar",

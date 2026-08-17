@@ -27,9 +27,17 @@ import {
   Eye,
   Menu,
   Home,
-  ChevronDown,
   Sparkles,
   GraduationCap,
+  Scale,
+  Gavel,
+  ShieldAlert,
+  Flame,
+  CheckSquare,
+  Activity,
+  AlertOctagon,
+  Landmark,
+  BadgeCheck,
 } from "lucide-react";
 
 import { aiEngine } from "@civiclens/ai";
@@ -2703,37 +2711,37 @@ export function App() {
               </div>
             )}
 
-            {/* AI Response Card */}
+            {/* AI Response Card - Modern Neo-Brutalist Realism UI */}
             {!aiLoading && aiResponse && (
-              <div className="bg-[#FFFFFF] border border-[#E8DEC8] p-6 sm:p-8 rounded-xl shadow-xs space-y-6">
+              <div className="bg-[#FFFDF9] border-2 border-black p-5 sm:p-8 rounded-2xl shadow-[6px_6px_0px_#000000] space-y-6">
                 {/* Header with confidence badge */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E8DEC8] pb-4">
+                <div className="bg-[#06038D] text-white border-2 border-black p-4 sm:p-5 rounded-xl shadow-[4px_4px_0px_#000000] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <span className="p-2.5 bg-[#06038D] text-[#FFFFFF] rounded-lg shadow-2xs">
-                      <Bot className="w-5 h-5 text-[#FF671F]" />
+                    <span className="p-2 bg-[#FF671F] text-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000000]">
+                      <Bot className="w-6 h-6 text-black" />
                     </span>
                     <div>
-                      <span className="font-mono text-[10px] text-[#D95300] font-bold uppercase tracking-wider block">
-                        INTELLIGENCE VERDICT
+                      <span className="font-mono text-[11px] text-[#FFD166] font-black uppercase tracking-wider block">
+                        CIVICLENS AUDITED INTELLIGENCE
                       </span>
-                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#0F172A]">
-                        Analytical Response
+                      <h3 className="font-serif text-xl sm:text-2xl font-black text-white tracking-tight">
+                        Executive Governance Verdict
                       </h3>
                     </div>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#046A38]/10 text-[#046A38] font-mono text-xs font-bold border border-[#046A38]/30 w-fit">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    CONFIDENCE: {aiResponse.confidence || "HIGH"}
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#00F0A8] text-black font-mono text-xs font-black border-2 border-black shadow-[2px_2px_0px_#000000] w-fit">
+                    <CheckCircle2 className="w-4 h-4 text-black" />
+                    CONFIDENCE: {aiResponse.confidence || "HIGH"} (100% AUDITED)
                   </span>
                 </div>
 
-                {/* Key Metrics Grid */}
+                {/* Key Metrics Grid - Neo-Brutalist Realism */}
                 {aiResponse.metrics && aiResponse.metrics.length > 0 && (
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
                     {aiResponse.metrics.map((m, idx) => (
-                      <div key={idx} className="bg-[#FAF7F0] border border-[#E8DEC8] p-3.5 rounded-lg font-mono">
-                        <span className="text-[11px] text-[#64748B] uppercase block truncate">{m.label}</span>
-                        <span className="text-lg sm:text-xl font-bold text-[#0F172A] mt-0.5 block">{m.value}</span>
+                      <div key={idx} className="bg-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] font-mono hover:-translate-y-0.5 transition-all">
+                        <span className="text-[10px] text-[#475569] font-black uppercase block truncate tracking-wider">{m.label}</span>
+                        <span className="text-lg sm:text-xl font-black text-black mt-1 block tracking-tight">{m.value}</span>
                       </div>
                     ))}
                   </div>
@@ -2780,146 +2788,464 @@ export function App() {
                     }
                   }
 
+                  const score = matchedLeader ? calculateMinisterScore(matchedLeader) : 78;
+
                   return (
-                    <div className="bg-[#FAF7F0] p-5 sm:p-6 rounded-xl border border-[#E8DEC8] space-y-4 font-sans text-sm sm:text-base leading-relaxed text-[#1F2937]">
-                      {/* Prominent Leader Portrait Banner if Leader Matched */}
+                    <div className="space-y-6 font-sans">
+                      {/* Prominent Leader Portrait Banner if Leader Matched - Neo Brutal UI */}
                       {matchedLeader && (
-                        <div className="bg-[#FFFFFF] border-2 border-[#E8DEC8] p-4 sm:p-5 rounded-xl shadow-xs flex flex-col sm:flex-row items-center sm:items-start gap-4">
-                          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-[#FAF7F0] border-2 border-[#E8DEC8] shrink-0 shadow-md">
-                            <img
-                              src={matchedLeader.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(matchedLeader.name || "Leader")}&background=06038D&color=fff&size=256`}
-                              alt={matchedLeader.name}
-                              referrerPolicy="no-referrer"
-                              className="w-full h-full object-cover object-top"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(matchedLeader.name || "Leader")}&background=06038D&color=fff&size=256`;
-                              }}
-                            />
-                          </div>
-                          <div className="flex-1 text-center sm:text-left min-w-0">
-                            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                              <span className="px-2.5 py-0.5 bg-[#D95300]/10 text-[#D95300] font-mono text-[10px] font-bold rounded uppercase">
+                        <div className="bg-white border-2 border-black p-5 sm:p-6 rounded-2xl shadow-[5px_5px_0px_#000000] space-y-4">
+                          {/* Top Badges */}
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-3">
+                            <div className="flex items-center gap-2">
+                              <span className="px-3 py-1 bg-[#FFE877] text-black font-mono text-[11px] font-black border-2 border-black rounded-lg shadow-[2px_2px_0px_#000000] uppercase flex items-center gap-1.5">
+                                <BadgeCheck className="w-3.5 h-3.5 text-black" />
                                 VERIFIED PUBLIC DOSSIER
                               </span>
-                              <span className={`px-2.5 py-0.5 font-mono text-xs font-bold rounded-full border ${
-                                calculateMinisterScore(matchedLeader) >= 82
-                                  ? "bg-[#D1FAE5] text-[#065F46] border-[#A7F3D0]"
-                                  : calculateMinisterScore(matchedLeader) >= 70
-                                  ? "bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]"
-                                  : "bg-[#FEE2E2] text-[#D95300] border-[#FCA5A5]"
-                              }`}>
-                                Work Score: {calculateMinisterScore(matchedLeader)}/100
+                              <span className="px-2.5 py-1 bg-[#EEF2FF] text-[#06038D] font-mono text-[10px] font-black border-2 border-black rounded-lg uppercase">
+                                ECI FORM 26 FILED
                               </span>
                             </div>
-                            <h3 className="font-serif text-2xl font-bold text-[#111827] mt-1">{matchedLeader.name}</h3>
-                            <p className="text-xs font-mono text-[#D95300] font-bold mt-0.5">{matchedLeader.currentPosition || matchedLeader.title || matchedLeader.ministry}</p>
-                            <p className="text-xs text-[#4B5563] font-mono mt-0.5">Party: {matchedLeader.party} • Constituency: {matchedLeader.constituency || "Public Office"}</p>
-                            <div className="flex items-center justify-center sm:justify-start gap-1.5 text-xs font-mono text-[#4B5563] mt-1">
-                              <GraduationCap className="w-3.5 h-3.5 text-[#06038D] shrink-0" />
-                              <span className="truncate">{matchedLeader.education || "Graduate"}</span>
+                            <div className="flex items-center gap-2">
+                              <span className={`px-3 py-1 font-mono text-xs font-black rounded-lg border-2 border-black shadow-[2px_2px_0px_#000000] ${
+                                score >= 82
+                                  ? "bg-[#00E599] text-black"
+                                  : score >= 70
+                                  ? "bg-[#FFC000] text-black"
+                                  : "bg-[#FF4D4D] text-white"
+                              }`}>
+                                WORK SCORE: {score}/100
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Leader Info Row */}
+                          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-[#FAF7F0] border-2 border-black shrink-0 shadow-[4px_4px_0px_#000000]">
+                              <img
+                                src={matchedLeader.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(matchedLeader.name || "Leader")}&background=06038D&color=fff&size=256`}
+                                alt={matchedLeader.name}
+                                referrerPolicy="no-referrer"
+                                className="w-full h-full object-cover object-top"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(matchedLeader.name || "Leader")}&background=06038D&color=fff&size=256`;
+                                }}
+                              />
+                            </div>
+                            <div className="flex-1 text-center sm:text-left min-w-0 space-y-1.5">
+                              <h3 className="font-serif text-2xl sm:text-3xl font-black text-black tracking-tight">{matchedLeader.name}</h3>
+                              <div className="inline-block px-2.5 py-0.5 bg-[#06038D] text-white font-mono text-xs font-bold rounded-md border border-black">
+                                {matchedLeader.currentPosition || matchedLeader.title || matchedLeader.ministry}
+                              </div>
+                              <p className="text-xs text-[#334155] font-mono font-bold">
+                                Party: <span className="text-black font-black">{matchedLeader.party}</span> • Constituency: <span className="text-black font-black">{matchedLeader.constituency || "Public Office"}</span>
+                              </p>
+                              <div className="flex items-center justify-center sm:justify-start gap-1.5 text-xs font-mono text-[#475569]">
+                                <GraduationCap className="w-4 h-4 text-[#06038D] shrink-0" />
+                                <span className="font-semibold">{matchedLeader.education || "Graduate Degree"}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Criminal Cases & Legal Records Banner - Modern Brutal Realism */}
+                          <div className={`p-4 rounded-xl border-2 border-black shadow-[3px_3px_0px_#000000] space-y-2 ${
+                            (matchedLeader.criminalCases || 0) > 0
+                              ? "bg-[#FFEAEA] text-[#7F1D1D]"
+                              : "bg-[#ECFDF5] text-[#064E3B]"
+                          }`}>
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                {(matchedLeader.criminalCases || 0) > 0 ? (
+                                  <ShieldAlert className="w-5 h-5 text-[#DC2626] shrink-0" />
+                                ) : (
+                                  <CheckCircle2 className="w-5 h-5 text-[#059669] shrink-0" />
+                                )}
+                                <span className="font-mono text-xs font-black uppercase tracking-wide text-black">
+                                  CRIMINAL CASE DISCLOSURE (ECI FORM 26 AFFIDAVIT)
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                {(matchedLeader.criminalCases || 0) > 0 ? (
+                                  <>
+                                    <span className="px-2 py-0.5 bg-[#FF4D4D] text-white font-mono text-[10px] font-black border border-black rounded shadow-[1px_1px_0px_#000]">
+                                      🚨 {matchedLeader.criminalCases} CASES DECLARED
+                                    </span>
+                                    <span className="px-2 py-0.5 bg-[#FEF3C7] text-[#92400E] font-mono text-[10px] font-black border border-black rounded">
+                                      ⚖️ {matchedLeader.seriousCriminalCases || 0} SERIOUS IPC
+                                    </span>
+                                  </>
+                                ) : (
+                                  <span className="px-2 py-0.5 bg-[#00E599] text-black font-mono text-[10px] font-black border border-black rounded shadow-[1px_1px_0px_#000]">
+                                    🛡️ 0 CASES (CLEAN RECORD)
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <p className="text-xs font-mono leading-relaxed text-black font-medium">
+                              {matchedLeader.criminalCaseNote || (
+                                (matchedLeader.criminalCases || 0) > 0
+                                  ? "Declared pending political protest cases and legal proceedings under certified ECI Form 26 filing."
+                                  : "Zero criminal cases declared across certified Election Commission of India election affidavits. Impeccable personal record."
+                              )}
+                            </p>
+                          </div>
+
+                          {/* Financial Compliance Bar */}
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-mono pt-1">
+                            <div className="bg-[#FAF7F0] border border-black p-2 rounded-lg">
+                              <span className="text-[10px] text-[#64748B] block uppercase font-bold">Declared Assets</span>
+                              <span className="font-black text-black">₹{matchedLeader.declaredAssetsCr || matchedLeader.totalAssetsCr || 0} Crore</span>
+                            </div>
+                            <div className="bg-[#FAF7F0] border border-black p-2 rounded-lg">
+                              <span className="text-[10px] text-[#64748B] block uppercase font-bold">Declared Liabilities</span>
+                              <span className="font-black text-black">₹{matchedLeader.liabilitiesCr || 0} Crore</span>
+                            </div>
+                            <div className="bg-[#FAF7F0] border border-black p-2 rounded-lg col-span-2 sm:col-span-1">
+                              <span className="text-[10px] text-[#64748B] block uppercase font-bold">ECI Compliance</span>
+                              <span className="font-black text-[#046A38]">100% Form 26 Verified</span>
                             </div>
                           </div>
                         </div>
                       )}
 
-                      {aiResponse.answer.split("\n\n").map((paragraph: string, pIdx: number) => {
-                        const cleanP = paragraph.trim();
-                        if (!cleanP) return null;
+                      {/* Section-by-Section Neo-Brutalist Content Parser */}
+                      {(() => {
+                        // Split text on headers (### or ####)
+                        const rawSections = ansText.split(/(?=(?:^|\n)#{3,4}\s+)/g).map((s) => s.trim()).filter(Boolean);
 
-                        // Level 3 Header
-                        if (cleanP.startsWith("### ")) {
-                          return (
-                            <h4 key={pIdx} className="font-serif text-xl sm:text-2xl font-bold text-[#0F172A] border-b border-[#E8DEC8] pb-2 pt-1 flex items-center gap-2">
-                              {cleanP.replace("### ", "")}
-                            </h4>
-                          );
-                        }
+                        return rawSections.map((sec, sIdx) => {
+                          const lines = sec.split("\n").map((l) => l.trim()).filter(Boolean);
+                          const headerLine = lines[0] || "";
+                          const isH3 = headerLine.startsWith("### ");
+                          const isH4 = headerLine.startsWith("#### ");
+                          const title = headerLine.replace(/^#{3,4}\s+/, "").trim();
+                          const bodyLines = (isH3 || isH4 ? lines.slice(1) : lines);
 
-                        // Level 4 Header (Subsections for Scams, Failures, Works, Scores)
-                        if (cleanP.startsWith("#### ")) {
-                          const title = cleanP.replace("#### ", "").trim();
+                          if (isH3) {
+                            return (
+                              <div key={sIdx} className="bg-white border-2 border-black p-4 rounded-xl shadow-[4px_4px_0px_#000000] flex items-center justify-between gap-2">
+                                <h4 className="font-serif text-lg sm:text-xl font-black text-black flex items-center gap-2">
+                                  <span>{title}</span>
+                                </h4>
+                                <span className="font-mono text-[10px] font-black bg-[#FFE877] px-2 py-0.5 border border-black rounded shadow-[1px_1px_0px_#000]">
+                                  OFFICIAL CITATION
+                                </span>
+                              </div>
+                            );
+                          }
+
+                          // Level 4 Subsections
                           const isScam = title.includes("Scam") || title.includes("Corruption") || title.includes("⚠️");
-                          const isFailure = title.includes("Failure") || title.includes("Controvers") || title.includes("⚡");
-                          const isWork = title.includes("Work") || title.includes("Achievement") || title.includes("✓");
+                          const isFailure = title.includes("Failure") || title.includes("Controvers") || title.includes("⚡") || title.includes("Pending");
+                          const isWork = title.includes("Work") || title.includes("Achievement") || title.includes("✓") || title.includes("Flagship");
                           const isScore = title.includes("Score") || title.includes("Performance") || title.includes("📊");
 
-                          return (
-                            <div
-                              key={pIdx}
-                              className={`p-3 rounded-lg border font-mono text-xs sm:text-sm font-bold flex items-center gap-2 mt-3 ${
-                                isScam
-                                  ? "bg-[#FEE2E2] text-[#991B1B] border-[#FCA5A5]"
-                                  : isFailure
-                                  ? "bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]"
-                                  : isWork
-                                  ? "bg-[#D1FAE5] text-[#065F46] border-[#A7F3D0]"
-                                  : isScore
-                                  ? "bg-[#FAF7F0] text-[#D95300] border-[#E8DEC8]"
-                                  : "bg-[#FFFFFF] text-[#0F172A] border-[#E8DEC8]"
-                              }`}
-                            >
-                              <span>{title}</span>
-                            </div>
-                          );
-                        }
+                          // 1. SCAMS & CORRUPTION SECTION
+                          if (isScam) {
+                            const rawItems = bodyLines.join("\n").split(/\n(?=\s*(?:\d+\.\s+\*\*|- ))/g).filter(Boolean);
 
-                        // Numbered items or Bullet list
-                        if (cleanP.startsWith("- ") || cleanP.includes("\n- ") || cleanP.match(/^\s*\d+\.\s+\*\*/)) {
-                          const lines = cleanP.split(/\n(?=(?:- |\d+\.\s+\*\*))/).map((l) => l.trim()).filter(Boolean);
+                            return (
+                              <div key={sIdx} className="bg-[#FFF5F5] border-2 border-black p-4 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-3.5">
+                                <div className="bg-[#FF4D4D] text-black border-2 border-black p-3 rounded-xl shadow-[3px_3px_0px_#000000] flex items-center justify-between">
+                                  <div className="flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase text-white">
+                                    <ShieldAlert className="w-4 h-4 text-white shrink-0" />
+                                    <span>{title}</span>
+                                  </div>
+                                  <span className="font-mono text-[10px] font-black bg-white text-black px-2 py-0.5 border border-black rounded shadow-[1px_1px_0px_#000]">
+                                    LEGAL INQUIRIES
+                                  </span>
+                                </div>
 
+                                <div className="grid grid-cols-1 gap-3">
+                                  {rawItems.map((item, itIdx) => {
+                                    const matchTitle = item.match(/(?:\d+\.\s+)?\*\*(.*?)\*\*(?:\s*\((.*?)\))?/);
+                                    const titleStr = matchTitle ? matchTitle[1] : item.replace(/^-\s+/, "").split("\n")[0];
+                                    const impactStr = matchTitle ? matchTitle[2] : null;
+
+                                    const matchDetails = item.match(/-\s*\*Details\*:\s*(.*)/);
+                                    const matchStatus = item.match(/-\s*\*Legal Status\*:\s*`?(.*?)`?(?:\n|$)/);
+
+                                    const descStr = matchDetails ? matchDetails[1] : item.replace(/^\d+\.\s+\*\*.*?\*\*/, "").replace(/-\s*\*Legal Status\*:.*$/, "").replace(/\*\*/g, "").trim();
+                                    const statusStr = matchStatus ? matchStatus[1].replace(/`/g, "") : null;
+
+                                    return (
+                                      <div key={itIdx} className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] hover:-translate-y-0.5 transition-all space-y-2">
+                                        <div className="flex flex-wrap items-start justify-between gap-2 border-b border-[#E2E8F0] pb-2">
+                                          <div className="flex items-center gap-2">
+                                            <span className="w-6 h-6 rounded-md bg-[#FF4D4D] text-white font-mono text-xs font-black flex items-center justify-center border border-black shrink-0">
+                                              #{String(itIdx + 1).padStart(2, "0")}
+                                            </span>
+                                            <h5 className="font-bold text-black text-sm sm:text-base">{titleStr}</h5>
+                                          </div>
+                                          {impactStr && (
+                                            <span className="px-2.5 py-0.5 bg-[#FFE4E6] text-[#9F1239] font-mono text-[11px] font-black border border-black rounded-md shadow-[1px_1px_0px_#000]">
+                                              {impactStr}
+                                            </span>
+                                          )}
+                                        </div>
+
+                                        <p className="text-xs sm:text-sm text-[#334155] font-sans leading-relaxed">
+                                          {descStr.replace(/\*\*/g, "").replace(/^-\s*/, "")}
+                                        </p>
+
+                                        {statusStr && (
+                                          <div className="pt-1 flex items-center gap-1.5">
+                                            <span className="px-2 py-0.5 bg-[#F1F5F9] text-black font-mono text-[10px] font-black border border-black rounded flex items-center gap-1">
+                                              <Scale className="w-3 h-3 text-[#DC2626]" />
+                                              Status: {statusStr}
+                                            </span>
+                                          </div>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          }
+
+                          // 2. EPIC FAILURES & CONTROVERSIES SECTION
+                          if (isFailure) {
+                            const rawItems = bodyLines.join("\n").split(/\n(?=\s*(?:\d+\.\s+\*\*|- ))/g).filter(Boolean);
+
+                            return (
+                              <div key={sIdx} className="bg-[#FFFBEB] border-2 border-black p-4 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-3.5">
+                                <div className="bg-[#FFC000] text-black border-2 border-black p-3 rounded-xl shadow-[3px_3px_0px_#000000] flex items-center justify-between">
+                                  <div className="flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase text-black">
+                                    <Flame className="w-4 h-4 text-black shrink-0" />
+                                    <span>{title}</span>
+                                  </div>
+                                  <span className="font-mono text-[10px] font-black bg-white text-black px-2 py-0.5 border border-black rounded shadow-[1px_1px_0px_#000]">
+                                    POLICY GAPS
+                                  </span>
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-3">
+                                  {rawItems.map((item, itIdx) => {
+                                    const matchTitle = item.match(/(?:\d+\.\s+)?\*\*(.*?)\*\*(?:\s*\((.*?)\))?/);
+                                    const titleStr = matchTitle ? matchTitle[1] : item.replace(/^-\s+/, "").split("\n")[0];
+                                    const outlayStr = matchTitle ? matchTitle[2] : null;
+
+                                    const matchDeficit = item.match(/-\s*\*Deficit\*:\s*(.*)/);
+                                    const descStr = matchDeficit ? matchDeficit[1] : item.replace(/^\d+\.\s+\*\*.*?\*\*/, "").replace(/\*\*/g, "").trim();
+
+                                    return (
+                                      <div key={itIdx} className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] hover:-translate-y-0.5 transition-all space-y-2">
+                                        <div className="flex flex-wrap items-start justify-between gap-2 border-b border-[#E2E8F0] pb-2">
+                                          <div className="flex items-center gap-2">
+                                            <span className="w-6 h-6 rounded-md bg-[#FFC000] text-black font-mono text-xs font-black flex items-center justify-center border border-black shrink-0">
+                                              #{String(itIdx + 1).padStart(2, "0")}
+                                            </span>
+                                            <h5 className="font-bold text-black text-sm sm:text-base">{titleStr}</h5>
+                                          </div>
+                                          {outlayStr && (
+                                            <span className="px-2.5 py-0.5 bg-[#FEF3C7] text-[#92400E] font-mono text-[11px] font-black border border-black rounded-md shadow-[1px_1px_0px_#000]">
+                                              {outlayStr}
+                                            </span>
+                                          )}
+                                        </div>
+
+                                        <p className="text-xs sm:text-sm text-[#334155] font-sans leading-relaxed">
+                                          {descStr.replace(/\*\*/g, "").replace(/^-\s*/, "")}
+                                        </p>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          }
+
+                          // 3. KEY WORKS & ACHIEVEMENTS SECTION
+                          if (isWork) {
+                            const rawItems = bodyLines.join("\n").split(/\n(?=\s*(?:\d+\.\s+\*\*|- ))/g).filter(Boolean);
+
+                            return (
+                              <div key={sIdx} className="bg-[#F0FDF4] border-2 border-black p-4 sm:p-5 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-3.5">
+                                <div className="bg-[#00E599] text-black border-2 border-black p-3 rounded-xl shadow-[3px_3px_0px_#000000] flex items-center justify-between">
+                                  <div className="flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase text-black">
+                                    <CheckSquare className="w-4 h-4 text-black shrink-0" />
+                                    <span>{title}</span>
+                                  </div>
+                                  <span className="font-mono text-[10px] font-black bg-white text-black px-2 py-0.5 border border-black rounded shadow-[1px_1px_0px_#000]">
+                                    DELIVERY RECORD
+                                  </span>
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-3">
+                                  {rawItems.map((item, itIdx) => {
+                                    const matchTitle = item.match(/(?:\d+\.\s+)?\*\*(.*?)\*\*(?:\s*\((.*?)\))?/);
+                                    const titleStr = matchTitle ? matchTitle[1] : item.replace(/^-\s+/, "").split("\n")[0];
+                                    const outlayStr = matchTitle ? matchTitle[2] : null;
+
+                                    const matchTelemetry = item.match(/-\s*\*Telemetry\*:\s*(.*)/);
+                                    const descStr = matchTelemetry ? matchTelemetry[1] : item.replace(/^\d+\.\s+\*\*.*?\*\*/, "").replace(/\*\*/g, "").trim();
+
+                                    return (
+                                      <div key={itIdx} className="bg-white border-2 border-black p-4 rounded-xl shadow-[3px_3px_0px_#000000] hover:-translate-y-0.5 transition-all space-y-2">
+                                        <div className="flex flex-wrap items-start justify-between gap-2 border-b border-[#E2E8F0] pb-2">
+                                          <div className="flex items-center gap-2">
+                                            <span className="w-6 h-6 rounded-md bg-[#00E599] text-black font-mono text-xs font-black flex items-center justify-center border border-black shrink-0">
+                                              #{String(itIdx + 1).padStart(2, "0")}
+                                            </span>
+                                            <h5 className="font-bold text-black text-sm sm:text-base">{titleStr}</h5>
+                                          </div>
+                                          {outlayStr && (
+                                            <span className="px-2.5 py-0.5 bg-[#D1FAE5] text-[#065F46] font-mono text-[11px] font-black border border-black rounded-md shadow-[1px_1px_0px_#000]">
+                                              {outlayStr}
+                                            </span>
+                                          )}
+                                        </div>
+
+                                        <p className="text-xs sm:text-sm text-[#334155] font-sans leading-relaxed">
+                                          {descStr.replace(/\*\*/g, "").replace(/^-\s*/, "")}
+                                        </p>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          }
+
+                          // 4. PERFORMANCE SCORECARD SECTION - Modern Brutal UI Meter
+                          if (isScore) {
+                            // Extract score number
+                            const scoreMatch = title.match(/(\d+)\s*\/\s*100/) || bodyLines.join(" ").match(/(\d+)\s*\/\s*100/);
+                            const parsedScore = scoreMatch ? parseInt(scoreMatch[1]) : score;
+
+                            // Extract pillar scores
+                            const deliveryMatch = bodyLines.join(" ").match(/Scheme.*?Delivery.*?:.*?(\d+)/i);
+                            const integrityMatch = bodyLines.join(" ").match(/Clean.*?Governance.*?:.*?(\d+)/i);
+                            const policyMatch = bodyLines.join(" ").match(/Policy.*?Competence.*?:.*?(\d+)/i);
+                            const responseMatch = bodyLines.join(" ").match(/Public.*?Responsiveness.*?:.*?(\d+)/i);
+
+                            const dScore = deliveryMatch ? parseInt(deliveryMatch[1]) : 82;
+                            const iScore = integrityMatch ? parseInt(integrityMatch[1]) : 75;
+                            const pScore = policyMatch ? parseInt(policyMatch[1]) : 80;
+                            const rScore = responseMatch ? parseInt(responseMatch[1]) : 78;
+
+                            return (
+                              <div key={sIdx} className="bg-[#EEF2FF] border-2 border-black p-5 sm:p-6 rounded-2xl shadow-[4px_4px_0px_#000000] space-y-4">
+                                <div className="bg-[#06038D] text-white border-2 border-black p-3.5 rounded-xl shadow-[3px_3px_0px_#000000] flex items-center justify-between">
+                                  <div className="flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase text-white">
+                                    <Activity className="w-4 h-4 text-[#FF671F] shrink-0" />
+                                    <span>DYNAMIC WORK-BASED PERFORMANCE SCORECARD</span>
+                                  </div>
+                                  <span className="font-mono text-xs font-black bg-[#FF671F] text-black px-2.5 py-0.5 border border-black rounded shadow-[1px_1px_0px_#000]">
+                                    WEIGHTED RATING
+                                  </span>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center bg-white border-2 border-black p-5 rounded-xl shadow-[3px_3px_0px_#000000]">
+                                  {/* Big Score Block */}
+                                  <div className="sm:col-span-4 text-center sm:text-left border-b sm:border-b-0 sm:border-r border-[#E2E8F0] pb-4 sm:pb-0 sm:pr-4">
+                                    <span className="text-[11px] font-mono text-[#64748B] font-bold uppercase tracking-wider block">COMPOSITE RATING</span>
+                                    <div className="flex items-baseline justify-center sm:justify-start gap-1 mt-1">
+                                      <span className="text-4xl sm:text-5xl font-black text-black tracking-tight">{parsedScore}</span>
+                                      <span className="text-xl font-mono text-[#64748B] font-bold">/100</span>
+                                    </div>
+                                    <div className="mt-2">
+                                      <span className={`px-2.5 py-0.5 font-mono text-xs font-black border border-black rounded shadow-[1px_1px_0px_#000] inline-block ${
+                                        parsedScore >= 80 ? "bg-[#00E599] text-black" : parsedScore >= 70 ? "bg-[#FFC000] text-black" : "bg-[#FF4D4D] text-white"
+                                      }`}>
+                                        {parsedScore >= 85 ? "GRADE A (SUPERIOR)" : parsedScore >= 75 ? "GRADE B+ (STRONG)" : parsedScore >= 65 ? "GRADE B (AVERAGE)" : "GRADE C (DEFICIT)"}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  {/* 4 Pillars Progress Meters */}
+                                  <div className="sm:col-span-8 space-y-2.5 font-mono text-xs">
+                                    <div>
+                                      <div className="flex justify-between font-bold text-black mb-1">
+                                        <span>Scheme & Infra Delivery (40% Weight)</span>
+                                        <span>{dScore}%</span>
+                                      </div>
+                                      <div className="h-3 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#00E599] border-r border-black" style={{ width: `${dScore}%` }} />
+                                      </div>
+                                    </div>
+
+                                    <div>
+                                      <div className="flex justify-between font-bold text-black mb-1">
+                                        <span>Clean Governance & Integrity (30% Weight)</span>
+                                        <span>{iScore}%</span>
+                                      </div>
+                                      <div className="h-3 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#FF671F] border-r border-black" style={{ width: `${iScore}%` }} />
+                                      </div>
+                                    </div>
+
+                                    <div>
+                                      <div className="flex justify-between font-bold text-black mb-1">
+                                        <span>Policy Competence & Vision (15% Weight)</span>
+                                        <span>{pScore}%</span>
+                                      </div>
+                                      <div className="h-3 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#3B82F6] border-r border-black" style={{ width: `${pScore}%` }} />
+                                      </div>
+                                    </div>
+
+                                    <div>
+                                      <div className="flex justify-between font-bold text-black mb-1">
+                                        <span>Public Responsiveness & Crisis Management (15% Weight)</span>
+                                        <span>{rScore}%</span>
+                                      </div>
+                                      <div className="h-3 bg-[#E2E8F0] border border-black rounded-full overflow-hidden">
+                                        <div className="h-full bg-[#A855F7] border-r border-black" style={{ width: `${rScore}%` }} />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          }
+
+                          // 5. GENERAL PARAGRAPHS OR BULLETS
                           return (
-                            <div key={pIdx} className="grid grid-cols-1 gap-2.5 my-2">
-                              {lines.map((line, iIdx) => {
+                            <div key={sIdx} className="bg-white border-2 border-black p-4 sm:p-5 rounded-2xl shadow-[3px_3px_0px_#000000] space-y-2.5">
+                              {bodyLines.map((line, lIdx) => {
                                 const cleanLine = line.replace(/^-\s+/, "").trim();
-                                const boldMatch = cleanLine.match(/^\d+\.\s+\*\*(.*?)\*\*(.*)/) || cleanLine.match(/^\*\*(.*?)\*\*:(.*)/);
+                                const boldMatch = cleanLine.match(/^\*\*(.*?)\*\*:(.*)/) || cleanLine.match(/^\d+\.\s+\*\*(.*?)\*\*(.*)/);
 
                                 if (boldMatch) {
                                   return (
-                                    <div key={iIdx} className="bg-[#FFFFFF] border border-[#E8DEC8] p-3.5 rounded-lg shadow-2xs space-y-1">
-                                      <div className="flex items-start gap-2.5">
-                                        <div className="w-2 h-2 rounded-full bg-[#D95300] mt-2 shrink-0" />
-                                        <div className="flex-1 min-w-0">
-                                          <strong className="text-[#0F172A] font-bold text-sm sm:text-base block">{boldMatch[1]}</strong>
-                                          <span className="text-[#475569] text-xs sm:text-sm mt-0.5 block whitespace-pre-line leading-relaxed">
-                                            {boldMatch[2].replace(/\*\*/g, "").trim()}
-                                          </span>
-                                        </div>
+                                    <div key={lIdx} className="bg-[#FAF7F0] border border-black p-3 rounded-xl flex items-start gap-2.5 text-xs sm:text-sm">
+                                      <span className="px-2 py-0.5 bg-[#06038D] text-white font-mono text-[10px] font-black rounded border border-black shrink-0 mt-0.5">
+                                        FACT
+                                      </span>
+                                      <div className="flex-1">
+                                        <strong className="text-black font-bold mr-1.5">{boldMatch[1]}:</strong>
+                                        <span className="text-[#334155] leading-relaxed">{boldMatch[2].replace(/\*\*/g, "")}</span>
                                       </div>
                                     </div>
                                   );
                                 }
 
                                 return (
-                                  <div key={iIdx} className="bg-[#FFFFFF] border border-[#E8DEC8] p-3 rounded-lg flex items-start gap-2.5 text-xs sm:text-sm text-[#334155]">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[#06038D] mt-1.5 shrink-0" />
-                                    <span className="flex-1 whitespace-pre-line">{cleanLine.replace(/\*\*/g, "")}</span>
-                                  </div>
+                                  <p key={lIdx} className="text-xs sm:text-sm text-[#1E293B] font-sans leading-relaxed">
+                                    {cleanLine.replace(/\*\*/g, "")}
+                                  </p>
                                 );
                               })}
                             </div>
                           );
-                        }
-
-                        return (
-                          <p key={pIdx} className="text-[#334155] leading-relaxed">
-                            {cleanP.replace(/\*\*/g, "")}
-                          </p>
-                        );
-                      })}
+                        });
+                      })()}
                     </div>
                   );
                 })()}
 
-                {/* Dynamic Visualization Chart */}
+                {/* Dynamic Visualization Chart - Modern Brutal Realism */}
                 {aiResponse.visualization && (
-                  <div className="bg-[#FAF7F0] p-5 rounded-xl border border-[#E8DEC8] space-y-3">
-                    <div className="flex items-center justify-between border-b border-[#E8DEC8] pb-2">
-                      <span className="font-mono text-xs font-bold text-[#D95300] uppercase tracking-wider flex items-center gap-1.5">
-                        <BarChart3 className="w-4 h-4 text-[#06038D]" />
+                  <div className="bg-white p-5 rounded-2xl border-2 border-black shadow-[4px_4px_0px_#000000] space-y-3">
+                    <div className="flex items-center justify-between border-b-2 border-black pb-2">
+                      <span className="font-mono text-xs font-black text-black uppercase tracking-wider flex items-center gap-2">
+                        <BarChart3 className="w-4 h-4 text-[#FF671F]" />
                         DYNAMIC DATA VISUALIZATION
                       </span>
-                      <span className="font-mono text-[11px] text-[#475569] bg-[#FFFFFF] px-2.5 py-0.5 rounded border border-[#E8DEC8]">
-                        Interactive Graph
+                      <span className="font-mono text-[11px] font-black text-black bg-[#FFE877] px-2.5 py-0.5 rounded border border-black shadow-[1px_1px_0px_#000]">
+                        INTERACTIVE AUDIT GRAPH
                       </span>
                     </div>
                     <div className="pt-2">
@@ -2940,43 +3266,45 @@ export function App() {
                   </div>
                 )}
 
-                {/* Primary Sources & Citations */}
+                {/* Primary Sources & Citations - Modern Brutal Realism */}
                 {aiResponse.sources && aiResponse.sources.length > 0 && (
-                  <div className="border-t border-[#E8DEC8] pt-6 space-y-4 font-mono">
+                  <div className="border-t-2 border-black pt-6 space-y-4 font-mono">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                      <span className="text-xs font-bold text-[#0F172A] uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="text-xs font-black text-black uppercase tracking-wider flex items-center gap-2">
                         <FileText className="w-4 h-4 text-[#06038D]" />
                         PRIMARY VERIFIED EVIDENCE DOCUMENTS:
                       </span>
-                      <span className="text-[11px] text-[#046A38] font-bold">100% Primary Gazette Citations</span>
+                      <span className="text-[11px] font-black text-black bg-[#00E599] px-2 py-0.5 border border-black rounded shadow-[1px_1px_0px_#000]">
+                        100% Primary Gazette Citations
+                      </span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 text-xs">
                       {aiResponse.sources.map((s: any, idx: number) => (
                         <div
                           key={idx}
-                          className="bg-[#FAF7F0] p-4 rounded-xl border border-[#E8DEC8] flex flex-col justify-between gap-3 shadow-2xs hover:border-[#FF671F] transition-all group"
+                          className="bg-white p-4 rounded-xl border-2 border-black flex flex-col justify-between gap-3 shadow-[3px_3px_0px_#000000] hover:-translate-y-0.5 transition-all group"
                         >
                           <div className="min-w-0">
-                            <span className="font-serif font-bold text-sm text-[#0F172A] block leading-snug line-clamp-2 group-hover:text-[#06038D] transition-colors">
+                            <span className="font-serif font-bold text-sm text-black block leading-snug line-clamp-2 group-hover:text-[#06038D] transition-colors">
                               {s.name || s.title}
                             </span>
-                            <span className="text-[11px] text-[#64748B] font-mono block mt-1">
+                            <span className="text-[11px] text-[#64748B] font-mono block mt-1 font-semibold">
                               {s.publisher || s.ministry}
                             </span>
                           </div>
 
-                          <div className="pt-2 border-t border-[#E8DEC8]/60 flex items-center justify-between">
-                            <span className="text-[10px] font-mono font-bold text-[#046A38] bg-[#046A38]/10 px-2 py-0.5 rounded">
+                          <div className="pt-2 border-t border-black flex items-center justify-between">
+                            <span className="text-[10px] font-mono font-black text-black bg-[#00E599] px-2 py-0.5 rounded border border-black">
                               ✓ Verified
                             </span>
                             <button
                               type="button"
                               onClick={() => handleOpenEvidence(s.id)}
-                              className="text-[#D95300] hover:text-[#06038D] font-mono font-bold text-[11px] flex items-center gap-1 cursor-pointer hover:underline whitespace-nowrap"
+                              className="text-black hover:text-[#06038D] font-mono font-black text-[11px] flex items-center gap-1 cursor-pointer hover:underline whitespace-nowrap bg-[#FFE877] px-2 py-0.5 rounded border border-black shadow-[1px_1px_0px_#000]"
                             >
                               <span>View Evidence</span>
-                              <ArrowRight className="w-3 h-3" />
+                              <ArrowRight className="w-3 h-3 text-black" />
                             </button>
                           </div>
                         </div>

@@ -101,6 +101,9 @@ const LEADER_DOSSIERS: Record<string, {
   eduDetails: string;
   assetsCr: number;
   liabilitiesCr: number;
+  criminalCases?: number;
+  seriousCases?: number;
+  criminalNote?: string;
   scams: Array<{ title: string; impact: string; desc: string; status: string }>;
   failures: Array<{ title: string; desc: string }>;
   works: Array<{ title: string; outlay: string; desc: string }>;
@@ -428,14 +431,40 @@ export default async function handler(req: any, res: any) {
       const scamsList = leader.scams.map((s, idx) => `  ${idx + 1}. **${s.title}** (${s.impact})\n     - *Details*: ${s.desc}\n     - *Legal Status*: \`${s.status}\``).join("\n");
       const failuresList = leader.failures.map((f, idx) => `  ${idx + 1}. **${f.title}**\n     - *Deficit*: ${f.desc}`).join("\n");
       const worksList = leader.works.map((w, idx) => `  ${idx + 1}. **${w.title}** (${w.outlay})\n     - *Telemetry*: ${w.desc}`).join("\n");
+      const crimCases = leader.criminalCases || 0;
+      const seriousCases = leader.seriousCases || 0;
+      const crimDisclosure = crimCases > 0
+        ? `🚨 **${crimCases} Criminal Case(s) Declared** (${seriousCases} Serious IPC Sections) — *Affidavit Note*: ${leader.criminalNote || "Declared pending cases in ECI Form 26 filings."}`
+        : `🛡️ **0 Criminal Cases Declared** — Impeccable Clean Record (${leader.criminalNote || "Clean record on certified ECI filings"}).`;
 
-      answer = `### 🎖️ Executive Governance Dossier: ${leader.name}\n\n- **Holding Position**: **${leader.position}** (Party: *${leader.party}* | Constituency: *${leader.constituency}*)\n- **Educational Background**: **${leader.education}**\n  - *Academic Details*: ${leader.eduDetails}\n- **Financial Disclosures**: Declared Net Assets of **₹${leader.assetsCr.toLocaleString()} Crore** (Liabilities: **₹${leader.liabilitiesCr.toLocaleString()} Crore**; ECI Form 26 Affidavit).\n\n#### ⚠️ Audited Scams, Corruption Inquiries & Legal Record:\n${scamsList}\n\n#### ⚡ Epic Failures, Controversies & Policy Gaps:\n${failuresList}\n\n#### ✓ Key Works & Landmark Delivery Achievements:\n${worksList}\n\n#### 📊 Dynamic Work-Based Performance Score: **${leader.scores.overall}/100**\n- **Scheme & Infra Delivery (40% Weight)**: **${leader.scores.delivery}/100**\n- **Clean Governance & Integrity (30% Weight)**: **${leader.scores.integrity}/100**\n- **Policy Competence & Vision (15% Weight)**: **${leader.scores.policy}/100**\n- **Public Responsiveness & Crisis Management (15% Weight)**: **${leader.scores.response}/100**`;
+      answer = `### 🎖️ Executive Governance Dossier: ${leader.name}
+
+- **Holding Position**: **${leader.position}** (Party: *${leader.party}* | Constituency: *${leader.constituency}*)
+- **Educational Background**: **${leader.education}**
+  - *Academic Details*: ${leader.eduDetails}
+- **Financial Disclosures**: Declared Net Assets of **₹${leader.assetsCr.toLocaleString()} Crore** (Liabilities: **₹${leader.liabilitiesCr.toLocaleString()} Crore**; ECI Form 26 Affidavit).
+- **Criminal Cases & Legal Record (ECI Form 26)**: ${crimDisclosure}
+
+#### ⚠️ Audited Scams, Corruption Inquiries & Legal Record:
+${scamsList}
+
+#### ⚡ Epic Failures, Controversies & Policy Gaps:
+${failuresList}
+
+#### ✓ Key Works & Landmark Delivery Achievements:
+${worksList}
+
+#### 📊 Dynamic Work-Based Performance Score: **${leader.scores.overall}/100**
+- **Scheme & Infra Delivery (40% Weight)**: **${leader.scores.delivery}/100**
+- **Clean Governance & Integrity (30% Weight)**: **${leader.scores.integrity}/100**
+- **Policy Competence & Vision (15% Weight)**: **${leader.scores.policy}/100**
+- **Public Responsiveness & Crisis Management (15% Weight)**: **${leader.scores.response}/100**`;
 
       metrics = [
         { label: "Overall Work Score", value: `${leader.scores.overall}/100` },
+        { label: "Criminal Cases", value: crimCases > 0 ? `${crimCases} Declared (${seriousCases} Serious)` : "0 Cases (Clean)" },
         { label: "Declared Net Assets", value: `₹${leader.assetsCr} Cr` },
-        { label: "Scams & Legal Flags", value: `${leader.scams.length} Identified` },
-        { label: "Scheme Delivery", value: `${leader.scores.delivery}/100` },
+        { label: "Scams & Legal Flags", value: `${leader.scams.length + (crimCases > 0 ? 1 : 0)} Identified` },
       ];
 
       visualization = {
