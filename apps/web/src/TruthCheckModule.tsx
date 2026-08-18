@@ -382,7 +382,7 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
             </button>
 
             <span className="text-xs font-mono text-[#64748B] text-center sm:text-left">
-              Triangulates linguistic NLP heuristics with Union Budget, CAG audits & PIB releases.
+              Live source check for any claim — sports, news, or government records.
             </span>
           </div>
         </div>
@@ -405,15 +405,15 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
               <div className={`p-3 rounded-lg border-2 border-black flex items-center gap-2 ${scanStep >= 1 ? "bg-[#FFE877]" : "bg-white opacity-60"}`}>
                 <span className="font-black">1.</span>
-                <span>Linguistic & Urgency Scan</span>
+                <span>Language scan</span>
               </div>
               <div className={`p-3 rounded-lg border-2 border-black flex items-center gap-2 ${scanStep >= 2 ? "bg-[#FFE877]" : "bg-white opacity-60"}`}>
                 <span className="font-black">2.</span>
-                <span>Gazette & Scheme Cross-Match</span>
+                <span>Live source check</span>
               </div>
               <div className={`p-3 rounded-lg border-2 border-black flex items-center gap-2 ${scanStep >= 3 ? "bg-[#00E599]" : "bg-white opacity-60"}`}>
                 <span className="font-black">3.</span>
-                <span>Verdict & Counter-Evidence</span>
+                <span>Verdict</span>
               </div>
             </div>
           </div>
@@ -475,25 +475,18 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
                 </div>
               </div>
 
-              {/* Detailed Debunk Explanation */}
-              <div className="bg-white border-2 border-black p-5 rounded-xl space-y-2.5">
-                <span className="font-mono text-xs font-black text-[#06038D] uppercase tracking-wider block">
-                  DETAILED FACT-CHECK & REGULATORY DEBUNK:
-                </span>
-                <p className="text-sm font-sans text-[#334155] leading-relaxed">
-                  {scanResult.detailedDebunk}
-                </p>
-                {scanResult.methodology && (
-                  <p className="text-xs font-mono text-[#64748B] pt-2 border-t border-black/10">
-                    METHOD: {scanResult.methodology}
+              {/* Why + sources (plain language; no pipeline dump) */}
+              {scanResult.detailedDebunk &&
+                scanResult.detailedDebunk !== scanResult.groundReality && (
+                <div className="bg-white border-2 border-black p-5 rounded-xl space-y-2">
+                  <span className="font-mono text-xs font-black text-[#06038D] uppercase tracking-wider block">
+                    Why this verdict
+                  </span>
+                  <p className="text-sm font-sans text-[#334155] leading-relaxed">
+                    {scanResult.detailedDebunk}
                   </p>
-                )}
-                {scanResult.limitations && scanResult.limitations.length > 0 && (
-                  <p className="text-xs font-sans text-[#92400E]">
-                    Limitations: {scanResult.limitations.join(" ")}
-                  </p>
-                )}
-              </div>
+                </div>
+              )}
 
               {scanResult.atomicClaims && scanResult.atomicClaims.length > 1 && (
                 <div className="bg-[#FAF7F0] border-2 border-black p-4 rounded-xl space-y-2">

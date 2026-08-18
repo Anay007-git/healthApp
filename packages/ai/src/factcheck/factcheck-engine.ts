@@ -267,21 +267,17 @@ export async function runFactCheck(rawClaimText: string, options: FactCheckEngin
       : []
   );
 
-  const limitations = [
-    "LLM internal knowledge is not used as evidence.",
-    "Anonymous Google News / DuckDuckGo hits are discovery only and never independently yield VERIFIED_TRUE.",
-    ...(agg.limitations || []),
-  ];
+  const limitations = [...(agg.limitations || [])];
 
-  const methodology =
-    "Pipeline: claim understanding → atomic decomposition → topic classification → dynamic source planning → evidence retrieval (parallel, timeouts) → extraction → source-quality scoring → claim↔evidence matching (entities, dates, numbers) → contradiction detection → verdict/confidence. Anonymous discovery feeds never independently yield VERIFIED_TRUE.";
+  const methodology = "Checked against live named sources (not a writing-style fake-news classifier).";
 
   if (atomicResults.length > 1) {
     truthSummary = agg.truthSummary;
-    detailedDebunk = `${agg.detailedDebunk} ${detailedDebunk}`;
+    detailedDebunk = agg.detailedDebunk || detailedDebunk;
   } else if (atomicResults[0]) {
-    truthSummary = computeVerdict(atomicResults[0].claim, atomicResults[0].evidence, primaryTopic).truthSummary;
-    detailedDebunk = `${computeVerdict(atomicResults[0].claim, atomicResults[0].evidence, primaryTopic).detailedDebunk} ${methodology}`;
+    const one = computeVerdict(atomicResults[0].claim, atomicResults[0].evidence, primaryTopic);
+    truthSummary = one.truthSummary;
+    detailedDebunk = one.detailedDebunk;
   }
 
   const result = buildResult({
@@ -330,7 +326,7 @@ function buildResult(args: {
   const sources = args.evidence.filter((e) => e.stance !== "INSUFFICIENT" || e.sourceTier <= 2).slice(0, 6);
   const primarySources = (sources.length ? sources : args.evidence.slice(0, 3)).map(toSource);
 
-  const shareableDebunkText = `${icon} *CIVICLENS TRUTHCHECK*\n\n⚖️ *VERDICT*: ${args.verdict}\n📊 *CONFIDENCE*: ${args.confidenceScore}/100\n📌 *CLAIM*: "${args.text}"\n\n${icon} *WHY*: ${args.truthSummary}\n\n🔎 *METHOD*: Evidence-first matching (not news-presence).\n🛡️ CivicLens.in`;
+  const shareableDebunkText = `${icon} *CIVICLENS TRUTHCHECK*\n\n⚖️ *VERDICT*: ${args.verdict}\n📊 *CONFIDENCE*: ${args.confidenceScore}/100\n📌 *CLAIM*: "${args.text}"\n\n${icon} *WHY*: ${args.truthSummary}\n🛡️ CivicLens.in`;
 
   return {
     verdict: args.verdict,

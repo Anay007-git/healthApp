@@ -74,9 +74,14 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
   } else if (indepSupport >= 2 && highSupport.length >= 2 && contradicts.length === 0 && !anonymousOnly) {
     verdict = "VERIFIED_TRUE";
     confidence = Math.min(88, 58 + indepSupport * 8);
-    truthSummary = `Multiple independent high-quality secondary sources support the claim, without a retrieved primary document.`;
-    detailedDebunk = "Secondary corroboration is weaker than a primary gazette/order. Confidence is capped without a primary source.";
-    limitations.push("No primary official document was successfully retrieved.");
+    truthSummary = `Independent reporting supports the claim. ${highSupport
+      .slice(0, 3)
+      .map((e) => e.publisher)
+      .join(", ")}.`;
+    detailedDebunk = highSupport.map((e) => `${e.publisher}: ${e.evidenceSummary}`).join(" ");
+    if (!sportsOrScience) {
+      limitations.push("No primary official document was successfully retrieved.");
+    }
   } else if (
     sportsOrScience &&
     highSupport.length >= 1 &&
@@ -88,7 +93,7 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
     confidence = Math.min(82, 58 + highSupport[0].sourceQualityScore * 0.2 + (wikiSupport.length ? 6 : 0));
     truthSummary = `Named sports/science reporting supports the claim. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`;
     detailedDebunk = supports.map((e) => `${e.publisher}: ${e.evidenceSummary}`).join(" ");
-    limitations.push("Confidence is capped without a primary federation/agency document.");
+    limitations.push("Confidence is capped without a sports-federation primary document.");
   } else if (sportsOrScience && wikiSupport.length >= 1 && highSupport.length === 0 && contradicts.length === 0 && !political) {
     verdict = "PARTIALLY_TRUE";
     confidence = 58;

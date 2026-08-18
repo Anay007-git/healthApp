@@ -39,6 +39,8 @@
 
 Google News, Wikipedia, and DuckDuckGo Instant Answers are **discovery/context**. They never independently produce `VERIFIED_TRUE`. `FACT_CHECK_CLAIMS` is a high-value cache used only on strong semantic match (entities, dates, numbers, direction)—not keyword overlap.
 
+Do **not** replace this with a Hugging Face writing-style classifier (including `ThomasTschinkel/fake-news-detector`). That model scores REAL/FAKE *prose style* on a Kaggle news dataset; its own card says it is not a factual truth oracle. It also needs `trust_remote_code`, ~0.4B weights, and is not available on HF Inference Providers, so it cannot run in this Vite/Vercel TypeScript app. Linguistic sensationalism is already scored separately (`sensationalismScore`).
+
 ### Environment
 
 | Variable | Required | Purpose |
