@@ -32,6 +32,27 @@ interface TruthCheckModuleProps {
   onOpenEvidence: (evidenceId?: string) => void;
 }
 
+function sourceHostname(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
+
+function stanceBadge(stance: string): { label: string; className: string } {
+  switch (stance) {
+    case "SUPPORTS":
+      return { label: "Supports", className: "bg-[#DCFCE7] text-[#166534] border-[#166534]" };
+    case "CONTRADICTS":
+      return { label: "Contradicts", className: "bg-[#FEE2E2] text-[#991B1B] border-[#991B1B]" };
+    case "NEUTRAL":
+      return { label: "Mentions topic", className: "bg-[#E2E8F0] text-[#1E293B] border-[#334155]" };
+    default:
+      return { label: "Limited match", className: "bg-[#FEF3C7] text-[#92400E] border-[#B45309]" };
+  }
+}
+
 const SAMPLE_VIRAL_CLAIMS = [
   {
     label: "📱 Free ₹5,000 Scheme Link",
@@ -294,7 +315,7 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
       </section>
 
       {/* SECTION 1: INTERACTIVE CLAIM SCANNER WORKBENCH (DEEPSCAN STUDIO) */}
-      <section className="bg-white border-2 border-black p-4 sm:p-7 md:p-9 rounded-2xl shadow-[6px_6px_0px_#000000] space-y-6">
+      <section className="bg-white border-2 border-black p-4 sm:p-7 md:p-9 rounded-2xl shadow-[6px_6px_0px_#000000] space-y-6 min-w-0 overflow-hidden">
         <div className="border-b-2 border-black pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-[#FF671F] flex items-center justify-center rounded-xl border-2 border-black shadow-[2px_2px_0px_#000]">
@@ -425,7 +446,7 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
           const BadgeIcon = badge.icon;
 
           return (
-            <div className="bg-[#FFFDF9] border-2 border-black p-5 sm:p-7 rounded-2xl shadow-[6px_6px_0px_#000000] space-y-6 animate-in fade-in duration-300">
+            <div className="bg-[#FFFDF9] border-2 border-black p-5 sm:p-7 rounded-2xl shadow-[6px_6px_0px_#000000] space-y-6 animate-in fade-in duration-300 min-w-0 overflow-hidden">
               {/* Verdict Header Banner */}
               <div className={`${badge.bg} ${badge.textColor} border-2 border-black p-4 sm:p-5 rounded-xl shadow-[4px_4px_0px_#000] flex flex-col sm:flex-row sm:items-center justify-between gap-4`}>
                 <div className="flex items-center gap-3">
@@ -482,7 +503,7 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
                   <span className="font-mono text-xs font-black text-[#06038D] uppercase tracking-wider block">
                     Why this verdict
                   </span>
-                  <p className="text-sm font-sans text-[#334155] leading-relaxed">
+                  <p className="text-sm font-sans text-[#1E293B] leading-relaxed break-words">
                     {scanResult.detailedDebunk}
                   </p>
                 </div>
@@ -546,12 +567,12 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
 
               {/* Primary Gazette & Live Knowledge Evidence Links */}
               {scanResult.primarySources && scanResult.primarySources.length > 0 && (
-                <div className="border-t-2 border-black pt-4 space-y-3 font-mono text-xs">
+                <div className="border-t-2 border-black pt-5 space-y-4 min-w-0">
                   <div className="flex items-center gap-2">
                     <FileText className="w-4 h-4 text-[#06038D] shrink-0" />
-                    <span className="font-black text-black">EVIDENCE & SOURCES:</span>
+                    <span className="font-mono text-xs font-black text-[#0F172A] tracking-wider">EVIDENCE & SOURCES</span>
                   </div>
-                  <ul className="space-y-2">
+                  <ul className="space-y-3 min-w-0">
                     {((scanResult.structuredEvidence && scanResult.structuredEvidence.length > 0)
                       ? scanResult.structuredEvidence
                       : scanResult.primarySources.map((s) => ({
@@ -564,22 +585,50 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
                           whyItMatters: s.name,
                           evidenceSummary: s.name,
                         }))
-                    ).slice(0, 5).map((ev) => (
-                      <li key={ev.id} className="bg-white border border-black/20 rounded-lg p-2.5 space-y-0.5">
-                        <div className="flex flex-wrap gap-2 items-center">
-                          <strong>{ev.sourceName}</strong>
-                          <span className="text-[#64748B]">{ev.publisher}</span>
-                          {ev.publicationDate && <span className="text-[#64748B]">{ev.publicationDate}</span>}
-                          <span className="uppercase text-[10px] px-1.5 py-0.5 border border-black rounded">{ev.stance}</span>
-                        </div>
-                        <p className="font-sans text-[11px] text-[#475569]">{ev.whyItMatters || ev.evidenceSummary}</p>
-                        {ev.sourceUrl && (
-                          <a href={ev.sourceUrl} target="_blank" rel="noreferrer" className="text-[#06038D] underline">
-                            {ev.sourceUrl}
-                          </a>
-                        )}
-                      </li>
-                    ))}
+                    ).slice(0, 6).map((ev) => {
+                      const badge = stanceBadge(ev.stance);
+                      const host = ev.sourceUrl ? sourceHostname(ev.sourceUrl) : "";
+                      const viaGoogle = /news\.google\.com/i.test(ev.sourceUrl || "");
+                      return (
+                        <li
+                          key={ev.id}
+                          className="bg-white border-2 border-black rounded-xl p-4 sm:p-5 space-y-3 min-w-0 overflow-hidden shadow-[3px_3px_0px_#000]"
+                        >
+                          <div className="flex items-start justify-between gap-3 min-w-0">
+                            <h5 className="font-sans text-sm sm:text-[15px] font-bold text-[#0F172A] leading-snug break-words min-w-0">
+                              {ev.sourceName}
+                            </h5>
+                            <span className={`shrink-0 font-mono text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded-md border ${badge.className}`}>
+                              {badge.label}
+                            </span>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-sans text-xs text-[#334155]">
+                            <span className="font-semibold text-[#0F172A]">{ev.publisher}</span>
+                            {ev.publicationDate && <span>{ev.publicationDate}</span>}
+                            {host && !viaGoogle && <span className="text-[#475569]">{host}</span>}
+                            {viaGoogle && <span className="text-[#475569]">via Google News</span>}
+                          </div>
+                          {(ev.evidenceSummary || ev.whyItMatters) && (
+                            <p className="font-sans text-sm text-[#1E293B] leading-relaxed break-words">
+                              {ev.evidenceSummary || ev.whyItMatters}
+                            </p>
+                          )}
+                          {ev.sourceUrl && (
+                            <a
+                              href={ev.sourceUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1.5 max-w-full font-sans text-sm font-semibold text-[#06038D] hover:text-[#1D4ED8] hover:underline"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                              <span className="truncate">
+                                {viaGoogle ? `Open ${ev.publisher} article` : `Open on ${ev.publisher || host || "source"}`}
+                              </span>
+                            </a>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                   {scanResult.evidenceId && (
                     <button
