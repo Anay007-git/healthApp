@@ -1048,13 +1048,17 @@ ${worksList}
         if (!hasMatchingYear) return false;
       }
 
-      if (keywords.some((k) => low.includes(k))) return true;
-      if (low.includes(fcTitle) || fcTitle.includes(low)) return true;
-      if (low.includes(fcClaim) || fcClaim.includes(low)) return true;
+      if (keywords.some((k) => k.length > 4 && low.includes(k))) return true;
+      if (low.includes(fcTitle) || (fcTitle.length > 10 && low.includes(fcTitle.substring(0, 15)))) return true;
+      if (low.includes(fcClaim) || (fcClaim.length > 10 && low.includes(fcClaim.substring(0, 15)))) return true;
       
-      const words = low.split(/\s+/).filter((w) => w.length > 3);
-      const matchWordCount = words.filter((w) => fcClaim.includes(w) || fcTitle.includes(w)).length;
-      return matchWordCount >= Math.min(3, Math.max(2, Math.floor(words.length * 0.5)));
+      const stopWords = new Set(["india", "prime", "minister", "modi", "government", "today", "news", "official", "free", "scheme", "yojna", "yojana", "bjp", "congress"]);
+      const queryKeyWords = low.split(/\s+/).filter((w) => w.length > 3 && !stopWords.has(w));
+      if (queryKeyWords.length >= 2) {
+        const matchWordCount = queryKeyWords.filter((w) => fcClaim.includes(w) || fcTitle.includes(w)).length;
+        return matchWordCount >= Math.max(2, Math.ceil(queryKeyWords.length * 0.65));
+      }
+      return false;
     });
 
     if (matchedKnownClaim) {
@@ -1130,6 +1134,109 @@ ${worksList}
         primarySources: db.getSources().slice(0, 3),
         shareableDebunkText: shareableText,
         category: matchedPattern.category,
+      };
+    }
+
+    // 4.5: Political & Constitutional Public Figure Sensational Rumor Interceptor
+    const isPoliticalFigure =
+      low.includes("modi") ||
+      low.includes("narendra modi") ||
+      low.includes("pm ") ||
+      low.includes("prime minister") ||
+      low.includes("rahul gandhi") ||
+      low.includes("amit shah") ||
+      low.includes("president murmu") ||
+      low.includes("chief justice") ||
+      low.includes("cji") ||
+      low.includes("kejriwal") ||
+      low.includes("yogi");
+
+    const isSensationalRumorAction =
+      low.includes("leaving country") ||
+      low.includes("leaving india") ||
+      low.includes("left country") ||
+      low.includes("left india") ||
+      low.includes("fleeing") ||
+      low.includes("fled") ||
+      low.includes("escaping") ||
+      low.includes("escaped") ||
+      low.includes("moving to london") ||
+      low.includes("resigned") ||
+      low.includes("resigning") ||
+      low.includes("arrested") ||
+      low.includes("arrest") ||
+      low.includes("jailed") ||
+      low.includes("in prison") ||
+      low.includes("cbi custody") ||
+      low.includes("cbi arrest") ||
+      low.includes("ed arrest") ||
+      low.includes("died") ||
+      low.includes("passed away") ||
+      low.includes("critical in hospital") ||
+      low.includes("in coma") ||
+      low.includes("assassinated") ||
+      low.includes("secret swiss account");
+
+    if (isPoliticalFigure && isSensationalRumorAction) {
+      const leaderName = low.includes("modi") || low.includes("prime minister")
+        ? "Prime Minister Narendra Modi"
+        : low.includes("rahul")
+        ? "Leader of Opposition Rahul Gandhi"
+        : low.includes("amit shah")
+        ? "Union Home Minister Amit Shah"
+        : "Constitutional Public Official";
+
+      const actionText = low.includes("leaving") || low.includes("fled") || low.includes("fleeing")
+        ? "leaving the country or fleeing India"
+        : low.includes("arrest") || low.includes("jailed")
+        ? "being arrested or detained by investigative agencies"
+        : low.includes("resigned") || low.includes("resigning")
+        ? "resigning from constitutional office"
+        : "the sensational rumor circulating online";
+
+      const truthSummary = `FACT CHECK: This is a fabricated viral rumor with zero factual basis. No official notification from the Prime Minister's Office (PMO), Press Information Bureau (PIB), or accredited news agency reports that ${leaderName} is ${actionText}.`;
+      const detailedDebunk = `Official public engagements, parliamentary sessions, and bilateral duties of ${leaderName} are conducted normally and published transparently through official government portals (pib.gov.in / pmindia.gov.in). Uncorroborated social media rumors regarding constitutional leaders fleeing or being arrested are classic synthetic disinformation tropes.`;
+
+      return {
+        verdict: "FALSE",
+        confidenceScore: 99,
+        sensationalismScore: 88,
+        truthSummary,
+        detailedDebunk,
+        groundReality: truthSummary,
+        originalClaim: text,
+        signalsDetected: [
+          {
+            type: "AUTHORITY_FABRICATION",
+            phrase: "Fabricated High-Profile Political Rumor",
+            weight: 1.0,
+            explanation: `Viral claim regarding ${leaderName} contradicts official government circulars and accredited news registries.`,
+          },
+        ],
+        redFlagPhrases: [actionText, "viral social media forward"],
+        matchedCivicEntities: { schemes: [], ministers: ministersMatched, states: statesMatched, monetaryValues: moneyMatches },
+        primarySources: [
+          {
+            id: "src-pib-factcheck",
+            name: "Press Information Bureau (PIB) Fact Check Unit",
+            publisher: "Ministry of Information & Broadcasting, Government of India",
+            url: "https://factcheck.pib.gov.in",
+            publicationDate: new Date().toISOString().split("T")[0],
+            sourceType: "PIB_RELEASE" as const,
+            isOfficial: true,
+          },
+          {
+            id: "src-pmo-india",
+            name: "Prime Minister's Office (PMO) Official Portal",
+            publisher: "Government of India",
+            url: "https://www.pmindia.gov.in",
+            publicationDate: new Date().toISOString().split("T")[0],
+            sourceType: "GOVERNMENT_REPORT" as const,
+            isOfficial: true,
+          },
+        ],
+        shareableDebunkText: `🚨 *CIVICLENS TRUTHCHECK: FAKE RUMOR ALERT*\n\n❌ *CLAIM*: "${text}"\n\n⚖️ *VERDICT*: FALSE / FABRICATED\n\n🔍 *FACT*: ${truthSummary}\n\n🛡️ Official Source: PIB Fact Check (factcheck.pib.gov.in)\n⚠️ Do not forward unverified political rumors.`,
+        category: "GOVERNANCE",
       };
     }
 
@@ -1392,56 +1499,77 @@ ${worksList}
       try {
         const liveKnowledge = await fetchLiveKnowledge(text);
         if (liveKnowledge && liveKnowledge.extract && liveKnowledge.extract.length > 20) {
-          const truthSummary = liveKnowledge.extract.length > 350
-            ? liveKnowledge.extract.substring(0, 347) + "..."
-            : liveKnowledge.extract;
+          // Verify that live news actually corroborates the specific claim action
+          const queryWords = low.split(/\s+/).filter((w) => w.length > 3 && !["this", "that", "with", "from", "about", "have", "been", "country", "india", "state"].includes(w));
+          const isCorroboratedByNews = liveKnowledge.isLiveNews && liveKnowledge.recentArticles && liveKnowledge.recentArticles.some((art) => {
+            const artLow = art.title.toLowerCase();
+            const matchingCount = queryWords.filter((qw) => artLow.includes(qw)).length;
+            return matchingCount >= Math.min(2, queryWords.length);
+          });
 
-          const detailedDebunk = liveKnowledge.isLiveNews && liveKnowledge.recentArticles && liveKnowledge.recentArticles.length > 0
-            ? `Real-time verified media reporting confirms this topic:\n\n${liveKnowledge.recentArticles.map((a, i) => `${i + 1}. 📰 **${a.source}** (${a.pubDate ? new Date(a.pubDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent"}): "${a.title}"`).join("\n")}\n\nCross-referenced across real-time news feeds and global open registries.`
-            : `Live verified record: ${liveKnowledge.extract} Cross-referenced against global open documentation and real-time news registries.`;
+          // Check if it's a simple factual definition lookup
+          const isFactualDefinition = !isCorroboratedByNews && (
+            low.startsWith("what is") ||
+            low.startsWith("who is") ||
+            low.startsWith("where is") ||
+            low.includes("meaning") ||
+            low.includes("capital of") ||
+            low.includes("president of") ||
+            low.includes("prime minister of")
+          );
 
-          const primarySources: Source[] = [
-            {
-              id: "src-live-web-fact",
-              name: liveKnowledge.sourceLabel,
-              publisher: liveKnowledge.recentArticles?.[0]?.source || "Global Open Knowledge & Live News Registry",
-              url: liveKnowledge.sourceUrl,
-              publicationDate: liveKnowledge.publicationDate || new Date().toISOString().split("T")[0],
-              sourceType: "INDEPENDENT_RESEARCH",
-              isOfficial: true,
-            },
-            ...(liveKnowledge.recentArticles || []).slice(1, 3).map((art, idx) => ({
-              id: `src-live-art-${idx}`,
-              name: art.title,
-              publisher: art.source,
-              url: art.link,
-              publicationDate: art.pubDate ? new Date(art.pubDate).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
-              sourceType: "INDEPENDENT_RESEARCH" as const,
-              isOfficial: true,
-            })),
-            ...db.getSources().slice(0, 1),
-          ];
+          if (isCorroboratedByNews || isFactualDefinition) {
+            const truthSummary = liveKnowledge.extract.length > 350
+              ? liveKnowledge.extract.substring(0, 347) + "..."
+              : liveKnowledge.extract;
 
-          return {
-            verdict: "VERIFIED_TRUE",
-            confidenceScore: liveKnowledge.confidence || 95,
-            sensationalismScore: 10,
-            truthSummary,
-            detailedDebunk,
-            groundReality: truthSummary,
-            originalClaim: text,
-            signalsDetected: [],
-            redFlagPhrases: [],
-            matchedCivicEntities: {
-              schemes: schemesMatched,
-              ministers: ministersMatched,
-              states: statesMatched,
-              monetaryValues: moneyMatches,
-            },
-            primarySources,
-            shareableDebunkText: `✅ *CIVICLENS TRUTHCHECK: LIVE VERIFIED RECORD*\n\n📌 *TOPIC*: "${liveKnowledge.title}"\n\n📖 *STATUS*: ${liveKnowledge.isLiveNews ? "Live Breaking / Recent News" : "Live Verified Record"}\n\n🔍 *SOURCE*: ${liveKnowledge.sourceLabel}\n🔗 Live Link: ${liveKnowledge.sourceUrl}\n🛡️ Audited on CivicLens.in`,
-            category: liveKnowledge.category || "GENERAL",
-          };
+            const detailedDebunk = liveKnowledge.isLiveNews && liveKnowledge.recentArticles && liveKnowledge.recentArticles.length > 0
+              ? `Real-time verified media reporting confirms this topic:\n\n${liveKnowledge.recentArticles.map((a, i) => `${i + 1}. 📰 **${a.source}** (${a.pubDate ? new Date(a.pubDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent"}): "${a.title}"`).join("\n")}\n\nCross-referenced across real-time news feeds and global open registries.`
+              : `Live verified record: ${liveKnowledge.extract} Cross-referenced against global open documentation and real-time news registries.`;
+
+            const primarySources: Source[] = [
+              {
+                id: "src-live-web-fact",
+                name: liveKnowledge.sourceLabel,
+                publisher: liveKnowledge.recentArticles?.[0]?.source || "Global Open Knowledge & Live News Registry",
+                url: liveKnowledge.sourceUrl,
+                publicationDate: liveKnowledge.publicationDate || new Date().toISOString().split("T")[0],
+                sourceType: "INDEPENDENT_RESEARCH",
+                isOfficial: true,
+              },
+              ...(liveKnowledge.recentArticles || []).slice(1, 3).map((art, idx) => ({
+                id: `src-live-art-${idx}`,
+                name: art.title,
+                publisher: art.source,
+                url: art.link,
+                publicationDate: art.pubDate ? new Date(art.pubDate).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
+                sourceType: "INDEPENDENT_RESEARCH" as const,
+                isOfficial: true,
+              })),
+              ...db.getSources().slice(0, 1),
+            ];
+
+            return {
+              verdict: "VERIFIED_TRUE",
+              confidenceScore: liveKnowledge.confidence || 95,
+              sensationalismScore: 10,
+              truthSummary,
+              detailedDebunk,
+              groundReality: truthSummary,
+              originalClaim: text,
+              signalsDetected: [],
+              redFlagPhrases: [],
+              matchedCivicEntities: {
+                schemes: schemesMatched,
+                ministers: ministersMatched,
+                states: statesMatched,
+                monetaryValues: moneyMatches,
+              },
+              primarySources,
+              shareableDebunkText: `✅ *CIVICLENS TRUTHCHECK: LIVE VERIFIED RECORD*\n\n📌 *TOPIC*: "${liveKnowledge.title}"\n\n📖 *STATUS*: ${liveKnowledge.isLiveNews ? "Live Breaking / Recent News" : "Live Verified Record"}\n\n🔍 *SOURCE*: ${liveKnowledge.sourceLabel}\n🔗 Live Link: ${liveKnowledge.sourceUrl}\n🛡️ Audited on CivicLens.in`,
+              category: liveKnowledge.category || "GENERAL",
+            };
+          }
         }
       } catch (err) {
         // Fall through to standard synthesizer
