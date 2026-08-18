@@ -510,13 +510,25 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
                 </pre>
               </div>
 
-              {/* Primary Gazette Evidence Links */}
+              {/* Primary Gazette & Live Knowledge Evidence Links */}
               {scanResult.primarySources && scanResult.primarySources.length > 0 && (
                 <div className="border-t-2 border-black pt-4 flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-[#06038D]" />
-                    <span className="font-black text-black">PRIMARY EVIDENCE CITATION:</span>
-                    <span className="text-[#475569]">{scanResult.primarySources[0]?.name || "Official PIB Fact Check Archive"}</span>
+                  <div className="flex items-center gap-2 min-w-0 flex-wrap">
+                    <FileText className="w-4 h-4 text-[#06038D] shrink-0" />
+                    <span className="font-black text-black shrink-0">PRIMARY EVIDENCE CITATION:</span>
+                    <span className="text-[#475569]">{scanResult.primarySources[0]?.name || "Official Fact Check Archive"}</span>
+                    {scanResult.primarySources[0]?.url && (
+                      <a
+                        href={scanResult.primarySources[0].url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="px-2 py-0.5 bg-[#FAF7F0] border border-black rounded hover:bg-[#FFE877] text-black inline-flex items-center gap-1 shrink-0 font-bold text-[10.5px]"
+                        title="Open verified source link"
+                      >
+                        <ExternalLink className="w-3 h-3 text-[#06038D]" />
+                        <span>Open Live Source ↗</span>
+                      </a>
+                    )}
                   </div>
                   {scanResult.evidenceId && (
                     <button
