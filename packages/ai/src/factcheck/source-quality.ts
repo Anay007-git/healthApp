@@ -1,4 +1,5 @@
 import { SourceTier } from "@civiclens/types";
+import { celebrityObituaryClaim } from "./query-expansion";
 
 const TIER1_HOSTS = [
   "rbi.org.in",
@@ -68,7 +69,8 @@ function hostOf(url: string): string {
   }
 }
 
-const SPORTS_NAMED_PUBLISHERS = [
+/** Named desks found via Google News still count as journalism for sports and celebrity obituaries. */
+const NEWS_DESK_PUBLISHERS = [
   "hindustan times",
   "times of india",
   "india today",
@@ -88,16 +90,18 @@ const SPORTS_NAMED_PUBLISHERS = [
   "abc.net.au",
 ];
 
-/** Named sports desks found via Google News still count as journalism, not anonymous RSS. */
 export function classifySourceForTopic(
   url: string,
   publisher: string | undefined,
-  topic: string
+  topic: string,
+  claim = ""
 ): { tier: SourceTier; quality: number; type: string } {
   const base = classifySource(url, publisher);
-  if (topic !== "SPORTS" || base.tier <= 2) return base;
+  if (base.tier <= 2) return base;
   const pub = (publisher || "").toLowerCase();
-  if (SPORTS_NAMED_PUBLISHERS.some((p) => pub.includes(p))) {
+  const namedDesk = NEWS_DESK_PUBLISHERS.some((p) => pub.includes(p));
+  if (!namedDesk) return base;
+  if (topic === "SPORTS" || celebrityObituaryClaim(claim)) {
     return { tier: 2, quality: 76, type: "QUALITY_JOURNALISM" };
   }
   return base;

@@ -12,6 +12,7 @@ import { planSources } from "./source-planner";
 import { expandSearchQueries, retirementAttributedToClaim } from "./query-expansion";
 import { extractClaimRelevantPassages } from "./passages";
 import { parseGoogleNewsRss, articlesFromRss2Json } from "./live-knowledge";
+import { classifySourceForTopic } from "./source-quality";
 
 function ev(partial: Partial<StructuredEvidence> & { evidenceText: string; sourceName: string }): StructuredEvidence {
   return {
@@ -494,5 +495,92 @@ describe("CivicLens evidence-first factcheck pipeline", () => {
       }),
     ]);
     assert.equal(result.verdict, "FALSE");
+  });
+
+  test("named desks reporting a celebrity death can support the claim", async () => {
+    const claim = "Dharmendra Deol died";
+    const q = expandSearchQueries(claim);
+    assert.ok(q.some((x) => /dharmendra/i.test(x) && /death|died/i.test(x)));
+    const desk = classifySourceForTopic(
+      "https://news.google.com/rss/articles/abc",
+      "India Today",
+      "GENERAL",
+      claim
+    );
+    assert.equal(desk.tier, 2);
+    const politicalDesk = classifySourceForTopic(
+      "https://news.google.com/rss/articles/abc",
+      "India Today",
+      "GENERAL",
+      "Modi died"
+    );
+    assert.equal(politicalDesk.tier, 4);
+
+    const matched = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName: "Sanjeeda Shaikh praises Sunny Deol's professionalism after Dharmendra's death - India Today",
+        publisher: "India Today",
+        sourceUrl: "https://news.google.com/rss/articles/india-today-dharmendra",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Sanjeeda Shaikh praises Sunny Deol's professionalism after Dharmendra's death",
+      })
+    );
+    assert.equal(matched.stance, "SUPPORTS");
+
+    const result = await check(claim, [
+      ev({
+        sourceName: "Sanjeeda Shaikh praises Sunny Deol's professionalism after Dharmendra's death - India Today",
+        publisher: "India Today",
+        sourceUrl: "https://www.indiatoday.in/entertainment/dharmendra",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Sanjeeda Shaikh praises Sunny Deol's professionalism after Dharmendra's death",
+      }),
+      ev({
+        sourceName: "Hema Malini reveals Dharmendra's last message before death - Hindustan Times",
+        publisher: "Hindustan Times",
+        sourceUrl: "https://www.hindustantimes.com/entertainment/dharmendra",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Hema Malini reveals Dharmendra's last message before death",
+      }),
+    ]);
+    assert.ok(["VERIFIED_TRUE", "PARTIALLY_TRUE"].includes(result.verdict));
+    assert.notEqual(result.verdict, "UNVERIFIED");
+    assert.ok(result.confidenceScore > 50);
+  });
+
+  test("political death rumours stay unverified without a primary record", async () => {
+    const result = await check("Modi died", [
+      ev({
+        sourceName: "PM Modi died, rumours flood social media - Hindustan Times",
+        publisher: "Hindustan Times",
+        sourceUrl: "https://news.google.com/rss/articles/modi",
+        sourceTier: 4,
+        sourceQualityScore: 18,
+        sourceType: "GOOGLE_NEWS_DISCOVERY",
+        isDiscoveryOnly: true,
+        evidenceText: "PM Modi died, rumours flood social media after a fake video",
+      }),
+      ev({
+        sourceName: "Death hoax: Narendra Modi is not dead - India Today",
+        publisher: "India Today",
+        sourceUrl: "https://www.indiatoday.in/modi-hoax",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Death hoax: Narendra Modi is not dead. The viral claim is false.",
+      }),
+    ]);
+    assert.notEqual(result.verdict, "VERIFIED_TRUE");
   });
 });

@@ -1,4 +1,5 @@
 import { extractSportsTeams } from "./sports-result";
+import { informalDeathSubject, isDeathClaim } from "./query-expansion";
 
 export interface ClaimEntities {
   people: string[];
@@ -42,12 +43,14 @@ const PERSON_HINTS = [
   "messi",
   "kohli",
   "rohit",
+  "dharmendra",
 ];
 
 const STOP = new Set([
   "india", "indian", "government", "the", "and", "did", "this", "that", "with", "from",
   "about", "have", "been", "were", "was", "will", "would", "could", "should", "official",
   "today", "news", "claim", "true", "false", "whether",
+  "died", "dies", "dead", "death", "passed", "demise", "obituary",
 ]);
 
 export function extractEntities(text: string): ClaimEntities {
@@ -65,6 +68,10 @@ export function extractEntities(text: string): ClaimEntities {
   const people = PERSON_HINTS.filter((n) => low.includes(n)).map((n) =>
     n.replace(/\b\w/g, (c) => c.toUpperCase())
   );
+  if (isDeathClaim(text) && people.length === 0) {
+    const guessed = informalDeathSubject(text);
+    if (guessed) people.push(guessed);
+  }
 
   const schemeMatch = text.match(/\b([A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+){0,4}\s(?:Yojana|Yojna|Scheme|Mission|Abhiyan))\b/g) || [];
   const schemes = Array.from(new Set(schemeMatch));
@@ -97,19 +104,31 @@ export function extractEntities(text: string): ClaimEntities {
 export function entityOverlapScore(claim: ClaimEntities, evidenceText: string): number {
   const elow = evidenceText.toLowerCase();
   const named = [...claim.people, ...claim.organizations, ...claim.schemes, ...claim.locations];
-  const nameHit = (n: string) => {
+  const nameHit = (n: string, allowNameParts: boolean) => {
     const k = n.toLowerCase();
     if (elow.includes(k)) return true;
     const stripped = k.replace(/\s+of india\b/, "").trim();
-    return stripped.length > 3 && elow.includes(stripped);
+    if (stripped.length > 3 && elow.includes(stripped)) return true;
+    if (!allowNameParts) return false;
+    return k
+      .split(/\s+/)
+      .filter((p) => p.length > 3)
+      .some((p) => elow.includes(p));
   };
   if (named.length === 0) {
     const hits = claim.distinctiveTokens.filter((t) => elow.includes(t)).length;
     const ratio = claim.distinctiveTokens.length ? hits / claim.distinctiveTokens.length : 0.4;
     return Math.round(ratio * 70);
   }
-  const hits = named.filter((n) => nameHit(n)).length;
-  return Math.round((hits / named.length) * 100);
+  const peopleHits = claim.people.filter((n) => nameHit(n, true)).length;
+  const otherNamed = [...claim.organizations, ...claim.schemes, ...claim.locations];
+  const otherHits = otherNamed.filter((n) => nameHit(n, false)).length;
+  const denom = claim.people.length + otherNamed.length;
+  const hits = peopleHits + otherHits;
+  if (claim.people.length && peopleHits > 0 && otherNamed.length === 0) {
+    return Math.max(80, Math.round((hits / denom) * 100));
+  }
+  return Math.round((hits / denom) * 100);
 }
 
 export function claimDirection(text: string): "increase" | "decrease" | "ban" | "launch" | "win" | "neutral" {
