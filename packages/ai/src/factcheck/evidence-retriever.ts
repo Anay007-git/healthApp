@@ -75,48 +75,70 @@ export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) 
   const discoveryP = (async () => {
     const live = await fetchLiveKnowledge(claim);
     if (!live) return [] as StructuredEvidence[];
+    const items: StructuredEvidence[] = [];
     if (live.recentArticles?.length) {
-      return live.recentArticles.slice(0, 5).map((art, idx) => {
+      for (const [idx, art] of live.recentArticles.slice(0, 5).entries()) {
         const meta = classifySource(art.link, art.source);
-        const quality = meta.tier <= 3 ? meta.quality : 22;
-        return baseEvidence({
-          id: `gn-${idx}-${art.source}`,
-          atomicClaim: claim,
-          sourceName: art.title,
-          sourceUrl: art.link,
-          publisher: art.source,
-          publicationDate: art.pubDate ? safeDate(art.pubDate) : undefined,
-          sourceTier: meta.tier <= 3 ? meta.tier : 4,
-          sourceQualityScore: Math.min(quality, meta.tier >= 4 ? 28 : quality),
-          evidenceText: art.title,
-          evidenceSummary: art.title,
-          isDiscoveryOnly: true,
-          whyItMatters:
-            "Google News is a discovery channel. An article existing or discussing the topic does not prove the claim is true.",
-        });
-      });
+        const knownOutlet = meta.tier <= 2;
+        items.push(
+          baseEvidence({
+            id: `gn-${idx}-${art.source}`,
+            atomicClaim: claim,
+            sourceName: art.title,
+            sourceUrl: art.link,
+            publisher: art.source,
+            publicationDate: art.pubDate ? safeDate(art.pubDate) : undefined,
+            sourceTier: meta.tier,
+            sourceType: meta.type,
+            sourceQualityScore: meta.quality,
+            evidenceText: art.title,
+            evidenceSummary: art.title,
+            isDiscoveryOnly: !knownOutlet,
+            whyItMatters: knownOutlet
+              ? `${art.source} was found via Google News discovery, then scored as a named publisher. The headline is compared to the claim; coverage alone is not proof.`
+              : "Google News is a discovery channel. An unknown outlet mentioning the topic does not prove the claim is true.",
+          })
+        );
+      }
     }
-    return [
-      baseEvidence({
-        id: `live-${live.channel}`,
-        atomicClaim: claim,
-        sourceName: live.title,
-        sourceUrl: live.sourceUrl,
-        publisher: live.sourceLabel,
-        publicationDate: live.publicationDate,
-        sourceTier: 4,
-        sourceQualityScore: live.channel === "WIKIPEDIA" ? 50 : 18,
-        evidenceText: live.extract,
-        evidenceSummary: live.extract.slice(0, 280),
-        isDiscoveryOnly: true,
-        whyItMatters:
-          live.channel === "WIKIPEDIA"
-            ? "Wikipedia is background context and cannot independently verify time-sensitive political/government claims."
-            : live.channel === "DUCKDUCKGO"
-              ? "DuckDuckGo Instant Answer is discovery only, not verification."
-              : "Discovery result only.",
-      }),
-    ];
+    if (live.wikiExtract || live.channel === "WIKIPEDIA") {
+      const extract = live.wikiExtract || live.extract;
+      items.push(
+        baseEvidence({
+          id: "wiki-background",
+          atomicClaim: claim,
+          sourceName: live.wikiTitle || live.title,
+          sourceUrl: live.wikiUrl || live.sourceUrl,
+          publisher: "Wikipedia",
+          sourceTier: 4,
+          sourceType: "WIKIPEDIA_CONTEXT",
+          sourceQualityScore: 50,
+          evidenceText: extract,
+          evidenceSummary: extract.slice(0, 280),
+          isDiscoveryOnly: false,
+          whyItMatters:
+            "Wikipedia is background context. It may support stable sports/science records if the extract states the fact, but cannot independently verify time-sensitive political/government claims.",
+        })
+      );
+    } else if (!live.recentArticles?.length) {
+      items.push(
+        baseEvidence({
+          id: `live-${live.channel}`,
+          atomicClaim: claim,
+          sourceName: live.title,
+          sourceUrl: live.sourceUrl,
+          publisher: live.sourceLabel,
+          publicationDate: live.publicationDate,
+          sourceTier: 4,
+          sourceQualityScore: 18,
+          evidenceText: live.extract,
+          evidenceSummary: live.extract.slice(0, 280),
+          isDiscoveryOnly: true,
+          whyItMatters: "DuckDuckGo Instant Answer is discovery only, not verification.",
+        })
+      );
+    }
+    return items;
   })();
 
   const civicP = Promise.resolve().then(() => {

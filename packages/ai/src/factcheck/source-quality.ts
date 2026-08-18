@@ -33,6 +33,23 @@ const TIER2_HOSTS = [
   "indianexpress.com",
   "ptinews.com",
   "pti.in",
+  "espncricinfo.com",
+  "cricinfo.com",
+];
+
+const TIER2_PUBLISHERS = [
+  "reuters",
+  "associated press",
+  "ap",
+  "bbc",
+  "the hindu",
+  "indian express",
+  "pti",
+  "espncricinfo",
+  "cricinfo",
+  "espn cricinfo",
+  "icc",
+  "bcci",
 ];
 
 const TIER3_HOSTS = [
@@ -63,12 +80,6 @@ export function classifySource(url: string, publisher?: string): {
   if (blob.includes("wikipedia.org")) {
     return { tier: 4, quality: 50, type: "WIKIPEDIA_CONTEXT" };
   }
-  if (blob.includes("news.google.com") || blob.includes("google.com/rss")) {
-    return { tier: 4, quality: 18, type: "GOOGLE_NEWS_DISCOVERY" };
-  }
-  if (blob.includes("duckduckgo.com")) {
-    return { tier: 4, quality: 16, type: "DDG_DISCOVERY" };
-  }
   if (/(twitter|x\.com|facebook|instagram|telegram|whatsapp|reddit)/.test(blob)) {
     return { tier: 4, quality: 10, type: "SOCIAL_MEDIA" };
   }
@@ -76,11 +87,20 @@ export function classifySource(url: string, publisher?: string): {
   if (TIER3_HOSTS.some((h) => blob.includes(h)) || /fact.?check/.test(blob)) {
     return { tier: 3, quality: 82, type: "FACT_CHECK_ORG" };
   }
-  if (TIER2_HOSTS.some((h) => host.endsWith(h) || host === h)) {
+  if (
+    TIER2_HOSTS.some((h) => host.endsWith(h) || host === h) ||
+    TIER2_PUBLISHERS.some((p) => pub.includes(p) || blob.includes(p))
+  ) {
     return { tier: 2, quality: 80, type: "QUALITY_JOURNALISM" };
   }
-  if (TIER1_HOSTS.some((h) => host.endsWith(h) || host === h)) {
+  if (TIER1_HOSTS.some((h) => host.endsWith(h) || host === h) || /\bicc\b|\bbcci\b/.test(pub)) {
     return { tier: 1, quality: 94, type: "PRIMARY_OFFICIAL" };
+  }
+  if (blob.includes("news.google.com") || blob.includes("google.com/rss")) {
+    return { tier: 4, quality: 18, type: "GOOGLE_NEWS_DISCOVERY" };
+  }
+  if (blob.includes("duckduckgo.com")) {
+    return { tier: 4, quality: 16, type: "DDG_DISCOVERY" };
   }
 
   return { tier: 4, quality: 22, type: "DISCOVERY" };

@@ -361,4 +361,22 @@ describe("CivicLens evidence-first factcheck pipeline", () => {
     assert.notEqual(computed.verdict, "VERIFIED_TRUE");
     assert.ok(computed.confidenceScore < 60);
   });
+
+  test("named sports outlet asserting Kohli Test retirement is not mere news presence", async () => {
+    const result = await check("kohli retired from test", [
+      ev({
+        sourceName: "Virat Kohli announces retirement from Test cricket",
+        publisher: "ESPNcricinfo",
+        sourceUrl: "https://www.espncricinfo.com/story/virat-kohli-retires-from-tests",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Virat Kohli announced his retirement from Test cricket.",
+      }),
+    ]);
+    assert.ok(["VERIFIED_TRUE", "PARTIALLY_TRUE"].includes(result.verdict));
+    assert.ok(result.confidenceScore > 50);
+    assert.notEqual(result.verdict, "UNVERIFIED");
+  });
 });

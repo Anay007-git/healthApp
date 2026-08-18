@@ -3,7 +3,7 @@ import { extractEntities, entityOverlapScore, claimDirection } from "./entities"
 import { extractNumbers, extractYears, numbersAlign, isAllocationLanguage, isExpenditureLanguage } from "./numbers";
 import { containsPromptInjection, sanitizeEvidenceText } from "./sanitize";
 
-const SUPPORT_CUES = /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing)\b/i;
+const SUPPORT_CUES = /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|stepped down)\b/i;
 const CONTRADICT_CUES = /\b(denied|debunk|false|not true|no such|did not|didn't|has not|never|rejected|refuted|incorrect|no gst|remains free|is not|not a)\b/i;
 const DISCUSS_CUES = /\b(said|claimed|alleged|rumour|rumor|unverified|reportedly|according to social)\b/i;
 
@@ -64,7 +64,15 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
     if (stance === "SUPPORTS") stance = "NEUTRAL";
   }
 
-  if (evidence.isDiscoveryOnly && stance === "SUPPORTS" && evidence.sourceTier === 4) {
+  // Anonymous Google News / social discovery cannot SUPPORT merely by mentioning the topic.
+  // Named quality publishers (ESPNcricinfo, BBC, Reuters, ICC) and Wikipedia extracts that
+  // actually assert the fact may SUPPORT after matching.
+  const anonymousDiscovery =
+    evidence.isDiscoveryOnly &&
+    evidence.sourceTier === 4 &&
+    evidence.sourceQualityScore < 40 &&
+    evidence.sourceType !== "WIKIPEDIA_CONTEXT";
+  if (anonymousDiscovery && stance === "SUPPORTS") {
     stance = "NEUTRAL";
   }
 

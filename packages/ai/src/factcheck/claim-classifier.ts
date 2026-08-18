@@ -14,7 +14,7 @@ const SIGNALS: TopicSignal[] = [
   { topic: "COURTS", weight: 3, patterns: [/supreme court/, /high court/, /judgment/, /verdict/, /bench/] },
   { topic: "LEGAL", weight: 2, patterns: [/ban(ned)?/, /act 20\d{2}/, /notified/, /gazette/, /traffic police/, /digilocker/] },
   { topic: "GOVERNMENT_SCHEMES", weight: 3, patterns: [/yojana/, /yojna/, /scheme/, /pm-?kisan/, /ayushman/, /pmay/, /mgnrega/, /jal jeevan/] },
-  { topic: "SPORTS", weight: 3, patterns: [/cricket/, /fifa/, /world cup/, /test match/, /ipl/, /olympic/, /football/, /messi/, /wicket/] },
+  { topic: "SPORTS", weight: 3, patterns: [/cricket/, /fifa/, /world cup/, /test match/, /\btests\b/, /ipl/, /olympic/, /football/, /messi/, /kohli/, /wicket/, /retired from test/, /test cricket/] },
   { topic: "SCIENCE", weight: 3, patterns: [/isro/, /nasa/, /chandrayaan/, /satellite/, /vaccine trial/, /peer-reviewed/] },
   { topic: "TECHNOLOGY", weight: 2, patterns: [/\bai\b/, /chatgpt/, /smartphone/, /app store/] },
   { topic: "HEALTH", weight: 3, patterns: [/who /, /covid/, /vaccine/, /hospital/, /lockdown/, /pandemic/, /medical/] },
@@ -43,6 +43,9 @@ export function classifyClaim(claim: string): InternalClaimTopic {
     if (org === "PIB" || org === "Parliament of India" || org === "Lok Sabha") bump("GOVERNANCE", 3);
   }
   if (entities.schemes.length) bump("GOVERNMENT_SCHEMES", 5);
+  if (entities.people.some((p) => /kohli|rohit|messi/i.test(p)) && /\b(test|odi|t20|cricket|retired|retire)\b/i.test(low)) {
+    bump("SPORTS", 5);
+  }
 
   for (const s of SIGNALS) {
     for (const p of s.patterns) {

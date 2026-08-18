@@ -11,24 +11,33 @@ export interface VerdictComputation {
   limitations: string[];
 }
 
-export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence[]): VerdictComputation {
+export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence[], topic = "GENERAL"): VerdictComputation {
   const usable = evidence.filter((e) => e.stance !== "INSUFFICIENT" || e.sourceTier === 1);
   const supports = evidence.filter((e) => e.stance === "SUPPORTS");
   const contradicts = evidence.filter((e) => e.stance === "CONTRADICTS");
   const discoveryOnly = evidence.filter((e) => e.isDiscoveryOnly);
   const primarySupport = supports.filter((e) => e.sourceTier === 1);
   const highSupport = supports.filter((e) => e.sourceQualityScore >= 70);
+  const wikiSupport = supports.filter((e) => e.sourceType === "WIKIPEDIA_CONTEXT" || /wikipedia/i.test(e.publisher));
   const highContra = contradicts.filter((e) => e.sourceQualityScore >= 70);
   const conflicts = detectConflicts(evidence);
   const limitations: string[] = [];
 
-  const googleOnly =
+  const anonymousOnly =
     evidence.length > 0 &&
-    evidence.every((e) => e.isDiscoveryOnly || e.sourceType === "GOOGLE_NEWS_DISCOVERY" || e.sourceTier === 4);
+    evidence.every(
+      (e) =>
+        (e.isDiscoveryOnly && e.sourceQualityScore < 40) ||
+        e.sourceType === "GOOGLE_NEWS_DISCOVERY" ||
+        e.sourceType === "DDG_DISCOVERY"
+    );
 
-  if (googleOnly) {
-    limitations.push("Discovery sources (Google News / Wikipedia / DuckDuckGo) cannot by themselves prove a claim true.");
+  if (anonymousOnly) {
+    limitations.push("Anonymous discovery feeds cannot by themselves prove a claim true.");
   }
+
+  const political = ["POLITICS", "GOVERNANCE", "ELECTIONS", "GOVERNMENT_SCHEMES"].includes(topic);
+  const sportsOrScience = ["SPORTS", "SCIENCE", "TECHNOLOGY"].includes(topic);
 
   const indepSupport = independentSourceCount(highSupport);
   const indepContra = independentSourceCount(highContra);
@@ -62,13 +71,31 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
     confidence = Math.min(96, 70 + primarySupport.length * 8 + indepSupport * 4);
     truthSummary = `Primary/official evidence supports the claim. ${primarySupport[0].publisher}: ${primarySupport[0].evidenceSummary}`;
     detailedDebunk = supports.map((e) => `${e.publisher} (${e.publicationDate || "undated"}): ${e.evidenceSummary}`).join(" ");
-  } else if (indepSupport >= 2 && highSupport.length >= 2 && contradicts.length === 0 && !googleOnly) {
+  } else if (indepSupport >= 2 && highSupport.length >= 2 && contradicts.length === 0 && !anonymousOnly) {
     verdict = "VERIFIED_TRUE";
     confidence = Math.min(88, 58 + indepSupport * 8);
     truthSummary = `Multiple independent high-quality secondary sources support the claim, without a retrieved primary document.`;
     detailedDebunk = "Secondary corroboration is weaker than a primary gazette/order. Confidence is capped without a primary source.";
     limitations.push("No primary official document was successfully retrieved.");
-  } else if (highSupport.length === 1 && contradicts.length === 0 && !googleOnly && highSupport[0].sourceTier <= 2) {
+  } else if (
+    sportsOrScience &&
+    highSupport.length >= 1 &&
+    contradicts.length === 0 &&
+    !anonymousOnly &&
+    !political
+  ) {
+    verdict = "VERIFIED_TRUE";
+    confidence = Math.min(82, 58 + highSupport[0].sourceQualityScore * 0.2 + (wikiSupport.length ? 6 : 0));
+    truthSummary = `Named sports/science reporting supports the claim. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`;
+    detailedDebunk = supports.map((e) => `${e.publisher}: ${e.evidenceSummary}`).join(" ");
+    limitations.push("Confidence is capped without a primary federation/agency document.");
+  } else if (sportsOrScience && wikiSupport.length >= 1 && highSupport.length === 0 && contradicts.length === 0 && !political) {
+    verdict = "PARTIALLY_TRUE";
+    confidence = 58;
+    truthSummary = `Wikipedia background states the sports/science fact, but no primary or high-quality secondary outlet was independently retrieved.`;
+    detailedDebunk = wikiSupport[0].evidenceSummary;
+    limitations.push("Wikipedia cannot independently close a political/government claim and is only supporting context here.");
+  } else if (highSupport.length === 1 && contradicts.length === 0 && !anonymousOnly && highSupport[0].sourceTier <= 2) {
     verdict = "PARTIALLY_TRUE";
     confidence = 62;
     truthSummary = "Some high-quality evidence supports part of the claim, but corroboration is limited.";
@@ -81,11 +108,17 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
     detailedDebunk = "Google News / Wikipedia / Instant Answers were used only as discovery. Mentioning a claim is not the same as supporting it.";
   }
 
-  if (verdict === "VERIFIED_TRUE" && googleOnly) {
+  if (verdict === "VERIFIED_TRUE" && anonymousOnly) {
     verdict = "UNVERIFIED";
     confidence = 30;
     truthSummary = "Discovery hits were not accepted as verification.";
-    limitations.push("Blocked invalid path: discovery-only sources cannot yield VERIFIED_TRUE.");
+    limitations.push("Blocked invalid path: anonymous discovery-only sources cannot yield VERIFIED_TRUE.");
+  }
+
+  if (political && wikiSupport.length && highSupport.length === 0 && primarySupport.length === 0 && verdict === "VERIFIED_TRUE") {
+    verdict = "UNVERIFIED";
+    confidence = 32;
+    truthSummary = "Wikipedia cannot independently establish a time-sensitive political or government claim.";
   }
 
   if (usable.length === 0 && evidence.length === 0) {

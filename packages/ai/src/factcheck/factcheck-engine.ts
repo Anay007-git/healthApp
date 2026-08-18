@@ -184,7 +184,7 @@ export async function runFactCheck(rawClaimText: string, options: FactCheckEngin
     }
 
     const matched = rankEvidence(pool.map((e) => matchEvidenceToClaim(atomic.text, { ...e, atomicClaim: atomic.text })));
-    let computed = computeVerdict(atomic.text, matched);
+    let computed = computeVerdict(atomic.text, matched, topics[i]);
 
     const liveIsWeak = live.every((e) => e.isDiscoveryOnly || e.sourceTier === 4);
     if (known && (live.length === 0 || liveIsWeak)) {
@@ -269,21 +269,19 @@ export async function runFactCheck(rawClaimText: string, options: FactCheckEngin
 
   const limitations = [
     "LLM internal knowledge is not used as evidence.",
-    "Google News, Wikipedia, and DuckDuckGo Instant Answers are discovery/context only.",
+    "Anonymous Google News / DuckDuckGo hits are discovery only and never independently yield VERIFIED_TRUE.",
     ...(agg.limitations || []),
   ];
 
   const methodology =
-    "Pipeline: claim understanding → atomic decomposition → topic classification → dynamic source planning → evidence retrieval (parallel, timeouts) → extraction → source-quality scoring → claim↔evidence matching (entities, dates, numbers) → contradiction detection → verdict/confidence. Discovery sources never independently yield VERIFIED_TRUE.";
+    "Pipeline: claim understanding → atomic decomposition → topic classification → dynamic source planning → evidence retrieval (parallel, timeouts) → extraction → source-quality scoring → claim↔evidence matching (entities, dates, numbers) → contradiction detection → verdict/confidence. Anonymous discovery feeds never independently yield VERIFIED_TRUE.";
 
   if (atomicResults.length > 1) {
     truthSummary = agg.truthSummary;
     detailedDebunk = `${agg.detailedDebunk} ${detailedDebunk}`;
   } else if (atomicResults[0]) {
-    truthSummary = atomicResults[0].verdict === "UNVERIFIED"
-      ? computeVerdict(atomicResults[0].claim, atomicResults[0].evidence).truthSummary
-      : computeVerdict(atomicResults[0].claim, atomicResults[0].evidence).truthSummary;
-    detailedDebunk = `${computeVerdict(atomicResults[0].claim, atomicResults[0].evidence).detailedDebunk} ${methodology}`;
+    truthSummary = computeVerdict(atomicResults[0].claim, atomicResults[0].evidence, primaryTopic).truthSummary;
+    detailedDebunk = `${computeVerdict(atomicResults[0].claim, atomicResults[0].evidence, primaryTopic).detailedDebunk} ${methodology}`;
   }
 
   const result = buildResult({

@@ -17,6 +17,9 @@ export interface LiveKnowledgeResult {
   recentArticles?: LiveNewsArticle[];
   channel: "GOOGLE_NEWS" | "WIKIPEDIA" | "DUCKDUCKGO";
   isDiscoveryOnly: true;
+  wikiTitle?: string;
+  wikiExtract?: string;
+  wikiUrl?: string;
 }
 
 function decodeXml(s: string): string {
@@ -37,16 +40,20 @@ export async function fetchLiveKnowledge(query: string): Promise<LiveKnowledgeRe
   const cleanQ = query.replace(/[^\w\s-]/gi, " ").trim();
   if (!cleanQ || cleanQ.length < 3) return null;
 
-  const news = await fetchGoogleNews(cleanQ);
-  if (news) return news;
+  const [news, wiki, ddg] = await Promise.all([fetchGoogleNews(cleanQ), fetchWikipedia(cleanQ), fetchDuckDuckGo(cleanQ)]);
+  if (!news && !wiki && !ddg) return null;
 
-  const wiki = await fetchWikipedia(cleanQ);
-  if (wiki) return wiki;
-
-  const ddg = await fetchDuckDuckGo(cleanQ);
-  if (ddg) return ddg;
-
-  return null;
+  if (news && wiki) {
+    return {
+      ...news,
+      extract: `${news.extract}\n\n${wiki.extract}`,
+      title: news.title,
+      wikiTitle: wiki.title,
+      wikiExtract: wiki.extract,
+      wikiUrl: wiki.sourceUrl,
+    };
+  }
+  return news || wiki || ddg;
 }
 
 async function fetchGoogleNews(cleanQ: string): Promise<LiveKnowledgeResult | null> {

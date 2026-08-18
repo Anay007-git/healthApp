@@ -126,7 +126,25 @@ export function planSources(claim: string, topic: string): PlannedSource[] {
   if (/\bnasa\b/.test(t)) primary.push(NASA);
   if (/\bwho\b|pandemic|vaccine/.test(t) && topic === "HEALTH") primary.push(WHO);
   if (/fifa|world cup|messi/.test(t)) primary.push(FIFA);
-  if (/cricket|icc|test match/.test(t)) primary.push(ICC);
+  if (/cricket|icc|test cricket|\btests\b|kohli|bcci/.test(t) || topic === "SPORTS") {
+    primary.push(ICC);
+    primary.push({
+      name: "BCCI",
+      publisher: "Board of Control for Cricket in India",
+      homepage: "https://www.bcci.tv",
+      searchUrl: "https://www.bcci.tv",
+      tier: 1,
+      sourceType: "GOVERNMENT_REPORT",
+    });
+    primary.push({
+      name: "ESPNcricinfo",
+      publisher: "ESPNcricinfo",
+      homepage: "https://www.espncricinfo.com",
+      searchUrl: "https://www.espncricinfo.com",
+      tier: 2,
+      sourceType: "INDEPENDENT_RESEARCH",
+    });
+  }
   if (/gst|finance ministry|budget|insurance/.test(t)) {
     primary.push({
       name: "Ministry of Finance",
