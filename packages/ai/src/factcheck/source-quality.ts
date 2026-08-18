@@ -1,0 +1,94 @@
+import { SourceTier } from "@civiclens/types";
+
+const TIER1_HOSTS = [
+  "rbi.org.in",
+  "pib.gov.in",
+  "eci.gov.in",
+  "cag.gov.in",
+  "sci.gov.in",
+  "main.sci.gov.in",
+  "isro.gov.in",
+  "india.gov.in",
+  "nic.in",
+  "gov.in",
+  "sebi.gov.in",
+  "irdai.gov.in",
+  "trai.gov.in",
+  "who.int",
+  "nasa.gov",
+  "fifa.com",
+  "icc-cricket.com",
+  "egazette.gov.in",
+  "indiabudget.gov.in",
+  "loksabha.nic.in",
+  "rajyasabha.nic.in",
+];
+
+const TIER2_HOSTS = [
+  "reuters.com",
+  "apnews.com",
+  "bbc.com",
+  "bbc.co.uk",
+  "thehindu.com",
+  "indianexpress.com",
+  "ptinews.com",
+  "pti.in",
+];
+
+const TIER3_HOSTS = [
+  "altnews.in",
+  "boomlive.in",
+  "factly.in",
+  "factcheck.afp.com",
+  "reuters.com/fact-check",
+];
+
+function hostOf(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "").toLowerCase();
+  } catch {
+    return "";
+  }
+}
+
+export function classifySource(url: string, publisher?: string): {
+  tier: SourceTier;
+  quality: number;
+  type: string;
+} {
+  const host = hostOf(url);
+  const pub = (publisher || "").toLowerCase();
+  const blob = `${host} ${pub} ${url.toLowerCase()}`;
+
+  if (blob.includes("wikipedia.org")) {
+    return { tier: 4, quality: 50, type: "WIKIPEDIA_CONTEXT" };
+  }
+  if (blob.includes("news.google.com") || blob.includes("google.com/rss")) {
+    return { tier: 4, quality: 18, type: "GOOGLE_NEWS_DISCOVERY" };
+  }
+  if (blob.includes("duckduckgo.com")) {
+    return { tier: 4, quality: 16, type: "DDG_DISCOVERY" };
+  }
+  if (/(twitter|x\.com|facebook|instagram|telegram|whatsapp|reddit)/.test(blob)) {
+    return { tier: 4, quality: 10, type: "SOCIAL_MEDIA" };
+  }
+
+  if (TIER3_HOSTS.some((h) => blob.includes(h)) || /fact.?check/.test(blob)) {
+    return { tier: 3, quality: 82, type: "FACT_CHECK_ORG" };
+  }
+  if (TIER2_HOSTS.some((h) => host.endsWith(h) || host === h)) {
+    return { tier: 2, quality: 80, type: "QUALITY_JOURNALISM" };
+  }
+  if (TIER1_HOSTS.some((h) => host.endsWith(h) || host === h)) {
+    return { tier: 1, quality: 94, type: "PRIMARY_OFFICIAL" };
+  }
+
+  return { tier: 4, quality: 22, type: "DISCOVERY" };
+}
+
+export function qualityBandLabel(score: number): string {
+  if (score >= 90) return "primary/official";
+  if (score >= 70) return "high-quality secondary";
+  if (score >= 40) return "background context";
+  return "discovery only";
+}

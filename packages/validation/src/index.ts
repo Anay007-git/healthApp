@@ -51,7 +51,10 @@ export const evidenceCreateSchema = z.object({
 });
 
 export const claimVerifySchema = z.object({
-  text: z.string().min(3, "Claim text must be at least 3 characters long"),
+  text: z
+    .string()
+    .min(3, "Claim text must be at least 3 characters long")
+    .max(4000, "Claim text must be at most 4000 characters"),
   category: z.enum(["SCHEMES", "ELECTIONS", "ECONOMY", "HEALTH", "CAG_CORRUPTION", "GOVERNANCE", "LEGAL", "SPORTS", "SCIENCE_TECH", "WORLD_NEWS", "GENERAL"]).optional(),
 });
 

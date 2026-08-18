@@ -24,6 +24,15 @@
 ### 5. Newsletter
 - `POST /api/newsletter/subscribe`: Subscribe email to The Civic Brief.
 
+### 6. TruthCheck fact verification
+- `POST /api/factcheck/verify`
+  - **Body**: `{ "text": "Did RBI increase the repo rate in 2025?" }`
+  - **Response**: `ClaimAnalysisResult` (`verdict`, `confidenceScore`, `truthSummary`, `detailedDebunk`, `primarySources`, plus optional `atomicClaims`, `methodology`, `structuredEvidence`).
+  - Discovery sources (Google News / Wikipedia / DuckDuckGo) never independently yield `VERIFIED_TRUE`.
+- `GET /api/factcheck/feed` — indexed fact-check cards
+- `GET /api/factcheck/trending`
+- `POST /api/factcheck/submit` — crowd submission queue
+
 ## Admin Endpoints (Header `X-Admin-Token` Required)
 
 - `GET /api/admin/dashboard`: Administrative metrics and counts.

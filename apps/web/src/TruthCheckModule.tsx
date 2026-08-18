@@ -231,6 +231,24 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
           pillBg: "bg-[#F3E8FF] text-[#7E22CE] border-[#D8B4FE]",
           icon: Sparkles,
         };
+      case "PARTIALLY_TRUE":
+        return {
+          label: "PARTIALLY TRUE (आंशिक रूप से सत्य)",
+          bg: "bg-[#0D9488]",
+          textColor: "text-white",
+          border: "border-black",
+          pillBg: "bg-[#CCFBF1] text-[#0F766E] border-[#5EEAD4]",
+          icon: CheckCircle2,
+        };
+      case "CONFLICTING_EVIDENCE":
+        return {
+          label: "CONFLICTING EVIDENCE (विरोधी साक्ष्य)",
+          bg: "bg-[#B45309]",
+          textColor: "text-white",
+          border: "border-black",
+          pillBg: "bg-[#FEF3C7] text-[#92400E] border-[#FCD34D]",
+          icon: Scale,
+        };
       default:
         return {
           label: "UNVERIFIED / NO OFFICIAL RECORD (अपुष्ट)",
@@ -465,7 +483,30 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
                 <p className="text-sm font-sans text-[#334155] leading-relaxed">
                   {scanResult.detailedDebunk}
                 </p>
+                {scanResult.methodology && (
+                  <p className="text-xs font-mono text-[#64748B] pt-2 border-t border-black/10">
+                    METHOD: {scanResult.methodology}
+                  </p>
+                )}
+                {scanResult.limitations && scanResult.limitations.length > 0 && (
+                  <p className="text-xs font-sans text-[#92400E]">
+                    Limitations: {scanResult.limitations.join(" ")}
+                  </p>
+                )}
               </div>
+
+              {scanResult.atomicClaims && scanResult.atomicClaims.length > 1 && (
+                <div className="bg-[#FAF7F0] border-2 border-black p-4 rounded-xl space-y-2">
+                  <span className="font-mono text-xs font-black text-[#06038D] uppercase">Atomic claims (verified independently)</span>
+                  <ul className="space-y-1.5 text-sm font-sans text-[#334155]">
+                    {scanResult.atomicClaims.map((a, i) => (
+                      <li key={i} className="bg-white border border-black/20 rounded-lg p-2">
+                        <strong className="font-mono text-xs">{a.verdict}</strong> ({a.confidenceScore}%) — {a.claim}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* Red-Flag Trigger Phrases & Linguistic Signals */}
               {scanResult.signalsDetected && scanResult.signalsDetected.length > 0 && (
@@ -512,24 +553,41 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
 
               {/* Primary Gazette & Live Knowledge Evidence Links */}
               {scanResult.primarySources && scanResult.primarySources.length > 0 && (
-                <div className="border-t-2 border-black pt-4 flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
-                  <div className="flex items-center gap-2 min-w-0 flex-wrap">
+                <div className="border-t-2 border-black pt-4 space-y-3 font-mono text-xs">
+                  <div className="flex items-center gap-2">
                     <FileText className="w-4 h-4 text-[#06038D] shrink-0" />
-                    <span className="font-black text-black shrink-0">PRIMARY EVIDENCE CITATION:</span>
-                    <span className="text-[#475569]">{scanResult.primarySources[0]?.name || "Official Fact Check Archive"}</span>
-                    {scanResult.primarySources[0]?.url && (
-                      <a
-                        href={scanResult.primarySources[0].url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="px-2 py-0.5 bg-[#FAF7F0] border border-black rounded hover:bg-[#FFE877] text-black inline-flex items-center gap-1 shrink-0 font-bold text-[10.5px]"
-                        title="Open verified source link"
-                      >
-                        <ExternalLink className="w-3 h-3 text-[#06038D]" />
-                        <span>Open Live Source ↗</span>
-                      </a>
-                    )}
+                    <span className="font-black text-black">EVIDENCE & SOURCES:</span>
                   </div>
+                  <ul className="space-y-2">
+                    {((scanResult.structuredEvidence && scanResult.structuredEvidence.length > 0)
+                      ? scanResult.structuredEvidence
+                      : scanResult.primarySources.map((s) => ({
+                          id: s.id,
+                          sourceName: s.name,
+                          publisher: s.publisher,
+                          publicationDate: s.publicationDate,
+                          sourceUrl: s.url || "",
+                          stance: "INSUFFICIENT" as const,
+                          whyItMatters: s.name,
+                          evidenceSummary: s.name,
+                        }))
+                    ).slice(0, 5).map((ev) => (
+                      <li key={ev.id} className="bg-white border border-black/20 rounded-lg p-2.5 space-y-0.5">
+                        <div className="flex flex-wrap gap-2 items-center">
+                          <strong>{ev.sourceName}</strong>
+                          <span className="text-[#64748B]">{ev.publisher}</span>
+                          {ev.publicationDate && <span className="text-[#64748B]">{ev.publicationDate}</span>}
+                          <span className="uppercase text-[10px] px-1.5 py-0.5 border border-black rounded">{ev.stance}</span>
+                        </div>
+                        <p className="font-sans text-[11px] text-[#475569]">{ev.whyItMatters || ev.evidenceSummary}</p>
+                        {ev.sourceUrl && (
+                          <a href={ev.sourceUrl} target="_blank" rel="noreferrer" className="text-[#06038D] underline">
+                            {ev.sourceUrl}
+                          </a>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
                   {scanResult.evidenceId && (
                     <button
                       onClick={() => onOpenEvidence(scanResult.evidenceId)}

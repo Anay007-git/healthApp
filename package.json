@@ -8,7 +8,8 @@
     "dev:admin": "npx pnpm --filter @civiclens/admin run dev",
     "dev:api": "npx pnpm --filter @civiclens/api run dev",
     "dev": "npx pnpm dev:web",
-    "build": "npx pnpm -r --if-present run build"
+    "build": "npx pnpm -r --if-present run build",
+    "test": "npx tsx --test packages/ai/src/factcheck/pipeline.test.ts"
   },
   "devDependencies": {
     "prettier": "^3.5.0",

@@ -312,7 +312,74 @@ export type FactCheckVerdict =
   | "MISLEADING"
   | "UNVERIFIED"
   | "VERIFIED_TRUE"
-  | "SATIRE";
+  | "SATIRE"
+  | "PARTIALLY_TRUE"
+  | "CONFLICTING_EVIDENCE";
+
+export type SourceTier = 1 | 2 | 3 | 4;
+
+export type EvidenceStance = "SUPPORTS" | "CONTRADICTS" | "NEUTRAL" | "INSUFFICIENT";
+
+export type InternalClaimTopic =
+  | "GOVERNANCE"
+  | "POLITICS"
+  | "ELECTIONS"
+  | "ECONOMY"
+  | "FINANCE"
+  | "HEALTH"
+  | "SCIENCE"
+  | "TECHNOLOGY"
+  | "SPORTS"
+  | "LEGAL"
+  | "COURTS"
+  | "GOVERNMENT_SCHEMES"
+  | "EDUCATION"
+  | "INTERNATIONAL"
+  | "CRIME"
+  | "GENERAL";
+
+export interface StructuredEvidence {
+  id: string;
+  atomicClaim: string;
+  sourceName: string;
+  sourceUrl: string;
+  sourceTier: SourceTier;
+  sourceType: string;
+  publisher: string;
+  publicationDate?: string;
+  eventDate?: string;
+  retrievedAt: string;
+  evidenceText: string;
+  evidenceSummary: string;
+  supportsClaim: boolean;
+  contradictsClaim: boolean;
+  stance: EvidenceStance;
+  relevanceScore: number;
+  sourceQualityScore: number;
+  temporalMatchScore: number;
+  entityMatchScore: number;
+  numericMatchScore: number;
+  overallEvidenceScore: number;
+  whyItMatters?: string;
+  isDiscoveryOnly?: boolean;
+  syndicateGroup?: string;
+}
+
+export interface AtomicClaimResult {
+  claim: string;
+  verdict: FactCheckVerdict;
+  confidenceScore: number;
+  evidence: StructuredEvidence[];
+  topic?: InternalClaimTopic;
+}
+
+export interface EvidenceConflict {
+  summary: string;
+  sourceA: string;
+  sourceB: string;
+  authorityNote: string;
+  possibleExplanation?: string;
+}
 
 export type ClaimCategory =
   | "SCHEMES"
@@ -375,6 +442,12 @@ export interface ClaimAnalysisResult {
   evidenceId?: string;
   shareableDebunkText: string;
   category: ClaimCategory;
+  /** Optional evidence-first pipeline fields (backward compatible). */
+  atomicClaims?: AtomicClaimResult[];
+  methodology?: string;
+  conflicts?: EvidenceConflict[];
+  limitations?: string[];
+  structuredEvidence?: StructuredEvidence[];
 }
 
 export interface FactCheckSubmission {

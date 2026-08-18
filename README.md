@@ -56,6 +56,19 @@ npx pnpm dev:admin
 npx pnpm dev:api
 ```
 
+### Environment variables (TruthCheck)
+
+```bash
+# Optional. Without this key the fact-check engine stays fully deterministic.
+AI_API_KEY=
+AI_PROVIDER=openai
+AI_MODEL=gpt-4o-mini
+# Optional reserved search key; public discovery endpoints are used if unset.
+SEARCH_API_KEY=
+```
+
+Do not expose these variables to the browser.
+
 ---
 
 ## Attribution & License
