@@ -7,13 +7,16 @@ import {
   deathAttributedToClaim,
   isDeathClaim,
   isPoliticalDeathRumour,
+  isResignationClaim,
+  ministerResignationClaim,
+  resignationAttributedToClaim,
   retirementAttributedToClaim,
 } from "./query-expansion";
 import { sportsResultConflict, parseSportsResult, sportsSubjects, sportsSubjectsOverlap } from "./sports-result";
 import { isOffTopicSportsEvidence } from "./sport-discipline";
 
 const SUPPORT_CUES =
-  /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|stepped down|won|beat|defeated|victory|thrashed|lift(?:s|ed)?|champion|died|dies|dead|death|passed away|demise|obituar(?:y|ies)?)\b/i;
+  /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|resign(?:s|ed|ation)?|stepped down|quits?|quit|won|beat|defeated|victory|thrashed|lift(?:s|ed)?|champion|died|dies|dead|death|passed away|demise|obituar(?:y|ies)?)\b/i;
 const CONTRADICT_CUES = /\b(denied|debunk|false|not true|no such|did not|didn't|has not|never (?:happened|occurred|took place)|rejected|refuted|incorrect|no gst|remains free|is not|not a|still alive|death hoax|fake death|not dead)\b/i;
 const DISCUSS_CUES = /\b(said|claimed|alleged|rumour|rumor|unverified|reportedly|according to social)\b/i;
 
@@ -94,6 +97,9 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
     stance = "NEUTRAL";
   }
   if (isDeathClaim(claim) && stance === "SUPPORTS" && !deathAttributedToClaim(claim, text)) {
+    stance = "NEUTRAL";
+  }
+  if (isResignationClaim(claim) && stance === "SUPPORTS" && !resignationAttributedToClaim(claim, text)) {
     stance = "NEUTRAL";
   }
   if (

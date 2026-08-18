@@ -1,5 +1,5 @@
 import { SourceTier } from "@civiclens/types";
-import { celebrityObituaryClaim } from "./query-expansion";
+import { celebrityObituaryClaim, ministerResignationClaim } from "./query-expansion";
 
 const TIER1_HOSTS = [
   "rbi.org.in",
@@ -88,6 +88,10 @@ const NEWS_DESK_PUBLISHERS = [
   "cricket.com.au",
   "abc news",
   "abc.net.au",
+  "news on air",
+  "akashvani",
+  "all india radio",
+  "air news",
 ];
 
 export function classifySourceForTopic(
@@ -101,7 +105,7 @@ export function classifySourceForTopic(
   const pub = (publisher || "").toLowerCase();
   const namedDesk = NEWS_DESK_PUBLISHERS.some((p) => pub.includes(p));
   if (!namedDesk) return base;
-  if (topic === "SPORTS" || celebrityObituaryClaim(claim)) {
+  if (topic === "SPORTS" || celebrityObituaryClaim(claim) || ministerResignationClaim(claim)) {
     return { tier: 2, quality: 76, type: "QUALITY_JOURNALISM" };
   }
   return base;

@@ -729,4 +729,65 @@ describe("CivicLens evidence-first factcheck pipeline", () => {
     );
     assert.equal(hockey.stance, "INSUFFICIENT");
   });
+
+  test("minister resignation with multiple named desks is not stuck at partial true", async () => {
+    const claim = "Dharmendra Pradhan resigns as minister";
+    const hindu = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName:
+          "Union Education Minister Dharmendra Pradhan’s resignation signals the beginning of the end of Modi era: M.B. Patil - The Hindu",
+        publisher: "The Hindu",
+        sourceUrl: "https://www.thehindu.com/news/national/pradhan-resigns",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText:
+          "Union Education Minister Dharmendra Pradhan’s resignation signals the beginning of the end of Modi era: M.B. Patil",
+      })
+    );
+    const air = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName: "Education Minister Dharmendra Pradhan resigns | Akashvani News - News On AIR",
+        publisher: "News On AIR",
+        sourceUrl: "https://news.google.com/rss/pradhan-resigns",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Education Minister Dharmendra Pradhan resigns",
+      })
+    );
+    assert.equal(hindu.stance, "SUPPORTS");
+    assert.equal(air.stance, "SUPPORTS");
+
+    const result = await check(claim, [
+      ev({
+        sourceName:
+          "Union Education Minister Dharmendra Pradhan’s resignation signals the beginning of the end of Modi era: M.B. Patil - The Hindu",
+        publisher: "The Hindu",
+        sourceUrl: "https://www.thehindu.com/news/national/pradhan-resigns",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText:
+          "Union Education Minister Dharmendra Pradhan’s resignation signals the beginning of the end of Modi era: M.B. Patil",
+      }),
+      ev({
+        sourceName: "Education Minister Dharmendra Pradhan resigns | Akashvani News - News On AIR",
+        publisher: "News On AIR",
+        sourceUrl: "https://news.google.com/rss/pradhan-resigns",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Education Minister Dharmendra Pradhan resigns",
+      }),
+    ]);
+    assert.equal(result.verdict, "VERIFIED_TRUE");
+    assert.ok(result.confidenceScore > 65);
+  });
 });

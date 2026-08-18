@@ -29,6 +29,28 @@ export function isPoliticalDeathRumour(claim: string): boolean {
   return isDeathClaim(claim) && POLITICAL_DEATH_SUBJECT.test(claim);
 }
 
+const RESIGN_EVENT =
+  /\b(resign(?:s|ed|ation)?|stepped down|stepping down|quits?|quit)\b/i;
+
+export function isResignationClaim(claim: string): boolean {
+  return RESIGN_EVENT.test(claim);
+}
+
+/** PM/CM death-or-resign hoaxes stay on the primary-record bar. */
+export function isHighStakesPoliticalRumour(claim: string): boolean {
+  if (isPoliticalDeathRumour(claim)) return true;
+  const low = claim.toLowerCase();
+  const aboutLeader =
+    /\b(modi|narendra modi|prime minister|pm modi|amit shah|rahul gandhi|mamata|banerjee|kejriwal|president|vice president|chief minister)\b/.test(
+      low
+    );
+  return aboutLeader && (isResignationClaim(claim) || isDeathClaim(claim));
+}
+
+export function ministerResignationClaim(claim: string): boolean {
+  return isResignationClaim(claim) && !isHighStakesPoliticalRumour(claim);
+}
+
 export function celebrityObituaryClaim(claim: string): boolean {
   return isDeathClaim(claim) && !isPoliticalDeathRumour(claim);
 }
@@ -174,14 +196,55 @@ export function deathAttributedToClaim(claim: string, evidenceText: string): boo
   const people = canonicalPersonNames(claim);
   const keys = people.length
     ? people.flatMap((p) => p.toLowerCase().split(/\s+/).filter((w) => w.length > 3))
-    : informalDeathSubject(claim)
-        .toLowerCase()
-        .split(/\s+/)
-        .filter((w) => w.length > 3);
+    : informalNameKeys(claim);
 
   if (!keys.length) return DEATH_EVENT.test(blob);
   return keys.some((n) => blob.includes(n));
 }
+
+export function resignationAttributedToClaim(claim: string, evidenceText: string): boolean {
+  if (!isResignationClaim(claim)) return true;
+  const blob = evidenceText.toLowerCase();
+  if (!RESIGN_EVENT.test(blob)) return false;
+  const keys = informalNameKeys(claim);
+  if (!keys.length) return RESIGN_EVENT.test(blob);
+  return keys.some((n) => blob.includes(n));
+}
+
+function informalNameKeys(claim: string): string[] {
+  const words = claim
+    .toLowerCase()
+    .replace(/[^\p{L}\s]/gu, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 3 && !NAME_STOP.has(w));
+  const keys = new Set<string>();
+  for (const w of words) keys.add(w);
+  for (let i = 0; i < words.length - 1; i++) {
+    if (!NAME_STOP.has(words[i]) && !NAME_STOP.has(words[i + 1])) {
+      keys.add(words[i]);
+      keys.add(words[i + 1]);
+    }
+  }
+  return [...keys];
+}
+
+const NAME_STOP = new Set([
+  ...DEATH_STOP,
+  "resigns",
+  "resigned",
+  "resignation",
+  "minister",
+  "chief",
+  "prime",
+  "union",
+  "education",
+  "government",
+  "cabinet",
+  "stepped",
+  "stepping",
+  "quits",
+  "quit",
+]);
 
 /**
  * For retirement claims, require the evidence to attribute retirement to the

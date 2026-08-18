@@ -1,5 +1,5 @@
 import { extractSportsTeams } from "./sports-result";
-import { informalDeathSubject, isDeathClaim } from "./query-expansion";
+import { informalDeathSubject, isDeathClaim, isResignationClaim } from "./query-expansion";
 
 export interface ClaimEntities {
   people: string[];
@@ -44,6 +44,7 @@ const PERSON_HINTS = [
   "kohli",
   "rohit",
   "dharmendra",
+  "pradhan",
 ];
 
 const STOP = new Set([
@@ -51,6 +52,22 @@ const STOP = new Set([
   "about", "have", "been", "were", "was", "will", "would", "could", "should", "official",
   "today", "news", "claim", "true", "false", "whether",
   "died", "dies", "dead", "death", "passed", "demise", "obituary",
+]);
+
+const RESIGN_STOP = new Set([
+  "resigns",
+  "resigned",
+  "resignation",
+  "minister",
+  "chief",
+  "prime",
+  "union",
+  "education",
+  "government",
+  "cabinet",
+  "stepped",
+  "quits",
+  "quit",
 ]);
 
 export function extractEntities(text: string): ClaimEntities {
@@ -71,6 +88,12 @@ export function extractEntities(text: string): ClaimEntities {
   if (isDeathClaim(text) && people.length === 0) {
     const guessed = informalDeathSubject(text);
     if (guessed) people.push(guessed);
+  }
+  if (isResignationClaim(text)) {
+    const pair = text.match(/\b([A-Za-z]{3,})\s+([A-Za-z]{3,})\b/);
+    if (pair && !RESIGN_STOP.has(pair[1].toLowerCase()) && !RESIGN_STOP.has(pair[2].toLowerCase())) {
+      people.push(`${pair[1].replace(/^\w/, (c) => c.toUpperCase())} ${pair[2].replace(/^\w/, (c) => c.toUpperCase())}`);
+    }
   }
 
   const schemeMatch = text.match(/\b([A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+){0,4}\s(?:Yojana|Yojna|Scheme|Mission|Abhiyan))\b/g) || [];

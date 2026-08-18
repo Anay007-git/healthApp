@@ -1,7 +1,7 @@
 import { FactCheckVerdict, StructuredEvidence, AtomicClaimResult, EvidenceConflict } from "@civiclens/types";
 import { independentSourceCount } from "./evidence-ranker";
 import { detectConflicts } from "./contradiction-detector";
-import { celebrityObituaryClaim } from "./query-expansion";
+import { celebrityObituaryClaim, ministerResignationClaim } from "./query-expansion";
 import { parseSportsResult, sportsSubjectsOverlap } from "./sports-result";
 
 export interface VerdictComputation {
@@ -17,6 +17,7 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
   const usable = evidence.filter((e) => e.stance !== "INSUFFICIENT" || e.sourceTier === 1);
   const supports = evidence.filter((e) => e.stance === "SUPPORTS");
   const political = ["POLITICS", "GOVERNANCE", "ELECTIONS", "GOVERNMENT_SCHEMES"].includes(topic);
+  const ministerResignation = ministerResignationClaim(atomicClaim);
   const celebrityObituary = celebrityObituaryClaim(atomicClaim) && !political;
   let contradicts = evidence.filter((e) => e.stance === "CONTRADICTS");
   if (parseSportsResult(atomicClaim).winner) {
@@ -95,22 +96,34 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
       limitations.push("No primary official document was successfully retrieved.");
     }
   } else if (
-    sportsOrScience &&
+    (sportsOrScience || ministerResignation) &&
     highSupport.length >= 1 &&
     contradicts.length === 0 &&
     !anonymousOnly &&
-    !political
+    (!political || ministerResignation)
   ) {
-    verdict = "VERIFIED_TRUE";
-    confidence = Math.min(82, 58 + highSupport[0].sourceQualityScore * 0.2 + (wikiSupport.length ? 6 : 0));
-    truthSummary = celebrityObituary
-      ? `Named news desks report the death. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`
-      : `Named sports/science reporting supports the claim. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`;
-    detailedDebunk = supports.map((e) => `${e.publisher}: ${e.evidenceSummary}`).join(" ");
+    const multi = indepSupport >= 2 || highSupport.length >= 2;
+    verdict = multi ? "VERIFIED_TRUE" : "PARTIALLY_TRUE";
+    confidence = multi
+      ? Math.min(84, 62 + indepSupport * 7)
+      : Math.min(68, 58 + highSupport[0].sourceQualityScore * 0.12);
+    truthSummary = ministerResignation
+      ? multi
+        ? `Independent reporting confirms the resignation. ${highSupport
+            .slice(0, 3)
+            .map((e) => e.publisher)
+            .join(", ")}.`
+        : `Some reporting indicates the resignation, but corroboration is limited. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`
+      : celebrityObituary
+        ? `Named news desks report the death. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`
+        : `Named sports/science reporting supports the claim. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`;
+    detailedDebunk = highSupport.map((e) => `${e.publisher}: ${e.evidenceSummary}`).join(" ");
     limitations.push(
-      celebrityObituary
-        ? "Confidence is capped without a primary official record (gazette, hospital, or family statement on an official channel)."
-        : "Confidence is capped without a sports-federation primary document."
+      ministerResignation
+        ? "Confidence is capped without a primary official record (PIB release or ministry order)."
+        : celebrityObituary
+          ? "Confidence is capped without a primary official record (gazette, hospital, or family statement on an official channel)."
+          : "Confidence is capped without a sports-federation primary document."
     );
   } else if (sportsOrScience && wikiSupport.length >= 1 && highSupport.length === 0 && contradicts.length === 0 && !political) {
     verdict = "PARTIALLY_TRUE";

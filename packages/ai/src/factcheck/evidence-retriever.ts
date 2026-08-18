@@ -7,7 +7,7 @@ import { sanitizeEvidenceText } from "./sanitize";
 import { cacheGet, cacheSet, ttlForTopic } from "./cache";
 import { db } from "@civiclens/database";
 import { extractEntities } from "./entities";
-import { deathAttributedToClaim, isDeathClaim, retirementAttributedToClaim } from "./query-expansion";
+import { deathAttributedToClaim, isDeathClaim, isResignationClaim, ministerResignationClaim, retirementAttributedToClaim, resignationAttributedToClaim } from "./query-expansion";
 import { isOffTopicSportsEvidence } from "./sport-discipline";
 
 export type EvidenceRetriever = (claim: string, topic: string) => Promise<StructuredEvidence[]>;
@@ -44,7 +44,7 @@ function baseEvidence(
 }
 
 export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) => {
-  const key = `ev:v7:${topic}:${claim.toLowerCase().slice(0, 180)}`;
+  const key = `ev:v8:${topic}:${claim.toLowerCase().slice(0, 180)}`;
   const cached = cacheGet<StructuredEvidence[]>(key);
   if (cached) return cached;
 
@@ -118,7 +118,8 @@ export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) 
           sourceType: "WIKIPEDIA_CONTEXT",
           sourceQualityScore:
             (/\bretir/i.test(claim) && retirementAttributedToClaim(claim, extract)) ||
-            (isDeathClaim(claim) && deathAttributedToClaim(claim, extract))
+            (isDeathClaim(claim) && deathAttributedToClaim(claim, extract)) ||
+            (isResignationClaim(claim) && resignationAttributedToClaim(claim, extract))
               ? 72
               : 50,
           evidenceText: extract,
