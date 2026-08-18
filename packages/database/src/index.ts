@@ -1159,6 +1159,19 @@ export class CivicLensDatabase {
 export const db = new CivicLensDatabase();
 export { COMPREHENSIVE_LEADERS, LEADER_PHOTOS };
 export type { CivicDatasetSnapshot, CivicDatasetSubmission } from "./pg/datasets";
+export {
+  buildAdminDatasetsPayload,
+  flattenCagFindings,
+  schemeWorkflowStatus,
+  sourceWorkflowStatus,
+  cagFindingWorkflowStatus,
+} from "./admin-datasets";
+export type {
+  AdminDatasetsPayload,
+  AdminCagFindingRow,
+  AdminDatasetCounts,
+  AdminWorkflowStatus,
+} from "./admin-datasets";
 
 /** Browser-safe: hydrate in-memory DB from a JSON snapshot (no Postgres). */
 export function hydrateDatabaseFromSnapshot(

@@ -6,6 +6,7 @@ import { aiEngine } from "@civiclens/ai";
 import { newsletterSubscribeSchema, askQuerySchema, claimVerifySchema, claimSubmitSchema } from "@civiclens/validation";
 import { brandConfig } from "@civiclens/config";
 import { ensurePostgresReady, getPostgresTableCounts, isPostgresUrl } from "@civiclens/database/server";
+import { createAdminDatasetsResponse } from "@civiclens/database/src/admin-api";
 
 const app = express();
 app.use(cors());
@@ -210,6 +211,10 @@ const adminAuth = (req: express.Request, res: express.Response, next: express.Ne
   next();
 };
 
+app.get("/api/admin/datasets", adminAuth, (req, res) => {
+  res.json(createAdminDatasetsResponse(db));
+});
+
 app.post("/api/admin/seed", adminAuth, async (req, res) => {
   if (!isPostgresUrl(process.env.DATABASE_URL)) {
     return res.status(400).json({
@@ -234,15 +239,14 @@ app.post("/api/admin/seed", adminAuth, async (req, res) => {
 });
 
 app.get("/api/admin/dashboard", adminAuth, (req, res) => {
+  const payload = createAdminDatasetsResponse(db);
   res.json({
     success: true,
     data: {
-      schemesCount: db.getSchemes().length,
-      cagReportsCount: db.getCAGReports().length,
-      indicatorsCount: 4,
-      sourcesCount: db.getSources().length,
+      ...payload.counts,
       subscribersCount: 8921,
-      dataSource: process.env.DATABASE_URL?.startsWith("postgres") ? "postgresql" : "memory",
+      dataSource: payload.dataSource,
+      syncedAt: payload.syncedAt,
     },
   });
 });
