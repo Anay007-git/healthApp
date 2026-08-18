@@ -1040,13 +1040,21 @@ ${worksList}
       const fcClaim = fc.claim.toLowerCase();
       const keywords = (fc.highlightedRedFlags || []).map((k) => k.toLowerCase());
 
+      // Year consistency check: do not match 2022 queries to 2026 debunks and vice versa
+      const queryYears: string[] = low.match(/\b(19\d\d|20\d\d)\b/g) || [];
+      const fcYears: string[] = (fcTitle + " " + fcClaim).match(/\b(19\d\d|20\d\d)\b/g) || [];
+      if (queryYears.length > 0 && fcYears.length > 0) {
+        const hasMatchingYear = queryYears.some((qy: string) => fcYears.indexOf(qy) !== -1);
+        if (!hasMatchingYear) return false;
+      }
+
       if (keywords.some((k) => low.includes(k))) return true;
       if (low.includes(fcTitle) || fcTitle.includes(low)) return true;
       if (low.includes(fcClaim) || fcClaim.includes(low)) return true;
       
       const words = low.split(/\s+/).filter((w) => w.length > 3);
       const matchWordCount = words.filter((w) => fcClaim.includes(w) || fcTitle.includes(w)).length;
-      return matchWordCount >= Math.min(3, Math.max(2, words.length * 0.4));
+      return matchWordCount >= Math.min(3, Math.max(2, Math.floor(words.length * 0.5)));
     });
 
     if (matchedKnownClaim) {
@@ -1078,7 +1086,20 @@ ${worksList}
           states: statesMatched,
           monetaryValues: moneyMatches,
         },
-        primarySources: db.getSources().filter((s) => s.isOfficial).slice(0, 3),
+        primarySources: matchedKnownClaim.officialClarificationUrl
+          ? [
+              {
+                id: `src-${matchedKnownClaim.id}`,
+                name: matchedKnownClaim.officialSourceLabel || "Official Verification Record",
+                publisher: matchedKnownClaim.claimant || "Official Governing Authority",
+                url: matchedKnownClaim.officialClarificationUrl,
+                publicationDate: matchedKnownClaim.dateReported || new Date().toISOString().split("T")[0],
+                sourceType: "GOVERNMENT_REPORT" as const,
+                isOfficial: true,
+              },
+              ...db.getSources().filter((s) => s.id === "src-fifa-official" || s.id === "src-icc-archives" || s.id === "src-isro-missions" || s.id === "src-pib-factcheck" || s.id === "src-rbi-press"),
+            ].slice(0, 3)
+          : db.getSources().filter((s) => s.isOfficial).slice(0, 3),
         evidenceId: matchedKnownClaim.evidenceId,
         shareableDebunkText: shareableText,
         category: matchedKnownClaim.category,
@@ -1213,26 +1234,108 @@ ${worksList}
         };
       }
 
-      // Generic Clean Sports News Outcome
-      const truthSummary = `This sports statement conforms to standard competitive reporting. Real-time sports outcomes should be cross-referenced with official governing body scorecards (ICC, FIFA, Olympics.com).`;
-      return {
-        verdict: "VERIFIED_TRUE",
-        confidenceScore: 88,
-        sensationalismScore: 12,
-        truthSummary,
-        detailedDebunk: `Linguistic and domain analysis indicates legitimate sports reporting with zero manipulation markers, phishing URLs, or synthetic viral forward triggers.`,
-        groundReality: truthSummary,
-        originalClaim: text,
-        signalsDetected: [],
-        redFlagPhrases: [],
-        matchedCivicEntities: { schemes: [], ministers: [], states: [], monetaryValues: [] },
-        primarySources: db.getSources().filter((s) => s.id === "src-icc-archives" || s.isOfficial),
-        shareableDebunkText: `✅ *CIVICLENS TRUTHCHECK: SPORTS EVENT*\n\n📌 *CLAIM*: "${text}"\n\n📊 *STATUS*: Checked against sports scorecards and official tournament registries.`,
-        category: "SPORTS",
-      };
+      // 5B: Football & International Sports Records
+      if (low.includes("messi") && (low.includes("world cup") || low.includes("cup") || low.includes("fifa") || low.includes("trophy") || low.includes("lift") || low.includes("2026") || low.includes("2022"))) {
+        const is2026Claim = low.includes("2026") || low.includes("lifts the 2026") || low.includes("won 2026") || low.includes("next world cup");
+        if (is2026Claim) {
+          const truthSummary = "FACT CHECK: Lionel Messi has NOT won the 2026 FIFA World Cup. Messi captained Argentina to victory in the 2022 FIFA World Cup in Qatar. The 2026 FIFA World Cup has not concluded, making any claim declaring a 2026 winner factually false and premature.";
+          const detailedDebunk = "Official FIFA match records confirm that Lionel Messi won the 2022 FIFA World Cup in Qatar on December 18, 2022, defeating France 4-2 on penalties after a 3-3 draw. The 2026 FIFA World Cup is hosted across the USA, Mexico, and Canada. Claiming that Messi or Argentina has already lifted the 2026 World Cup is factually incorrect and premature.";
+          return {
+            verdict: "FALSE",
+            confidenceScore: 100,
+            sensationalismScore: 40,
+            truthSummary,
+            detailedDebunk,
+            groundReality: truthSummary,
+            originalClaim: text,
+            signalsDetected: [
+              {
+                type: "AUTHORITY_FABRICATION",
+                phrase: "Premature / Factually False Tournament Claim",
+                weight: 0.95,
+                explanation: "The 2026 FIFA World Cup has not concluded; declaring a winner before completion is factually false.",
+              },
+            ],
+            redFlagPhrases: ["2026 World Cup", "lifts the 2026 World Cup"],
+            matchedCivicEntities: { schemes: [], ministers: [], states: [], monetaryValues: [] },
+            primarySources: [
+              {
+                id: "src-fifa-official",
+                name: "FIFA Official World Cup History & Match Archives",
+                publisher: "Fédération Internationale de Football Association (FIFA)",
+                url: "https://www.fifa.com/tournaments/mens/worldcup",
+                publicationDate: "2026-08-01",
+                sourceType: "GOVERNMENT_REPORT",
+                isOfficial: true,
+              },
+            ],
+            shareableDebunkText: `❌ *CIVICLENS TRUTHCHECK: FACT CHECK*\n\n📌 *CLAIM*: "${text}"\n\n⚖️ *VERDICT*: FALSE\n\n🔍 *GROUND REALITY*: ${truthSummary}\n🔗 Source: FIFA Official Records (fifa.com)`,
+            category: "SPORTS",
+          };
+        }
+
+        if (low.includes("2022") || low.includes("qatar") || low.includes("france") || low.includes("argentina") || !low.includes("2026")) {
+          const truthSummary = "VERIFIED FACT: Lionel Messi captained Argentina to victory in the 2022 FIFA World Cup in Qatar on December 18, 2022, defeating France 4-2 on penalties following a 3-3 draw.";
+          return {
+            verdict: "VERIFIED_TRUE",
+            confidenceScore: 100,
+            sensationalismScore: 10,
+            truthSummary,
+            detailedDebunk: "Official FIFA tournament records confirm Argentina's 3rd World Cup championship with Lionel Messi awarded the Golden Ball after scoring 7 goals in the 2022 tournament in Qatar.",
+            groundReality: truthSummary,
+            originalClaim: text,
+            signalsDetected: [],
+            redFlagPhrases: [],
+            matchedCivicEntities: { schemes: [], ministers: [], states: [], monetaryValues: [] },
+            primarySources: [
+              {
+                id: "src-fifa-official",
+                name: "FIFA Official World Cup 2022 Qatar Final Record",
+                publisher: "FIFA",
+                url: "https://www.fifa.com/tournaments/mens/worldcup/qatar2022",
+                publicationDate: "2022-12-18",
+                sourceType: "GOVERNMENT_REPORT",
+                isOfficial: true,
+              },
+            ],
+            shareableDebunkText: `✅ *CIVICLENS TRUTHCHECK: VERIFIED RECORD*\n\n🏆 *EVENT*: Argentina 2022 World Cup Champions\n\n📊 *RECORD*: Defeated France 4-2 on penalties in Qatar.\n🔗 Source: FIFA.com`,
+            category: "SPORTS",
+          };
+        }
+      }
+
+      // Future Unheld Tournament Detection
+      const futureYearMatch = text.match(/\b(202[7-9]|203\d)\b/);
+      const hasPastWinningVerb = /(?:won|lifted|defeated|beat|champion|clinched|scored|gold medal|trophy)\b/i.test(text);
+      if (futureYearMatch && hasPastWinningVerb) {
+        const year = futureYearMatch[1];
+        const truthSummary = `FACT CHECK: The ${year} tournament/event has not occurred or produced an official result. Any statement asserting a winner for ${year} is speculative or factually untrue.`;
+        return {
+          verdict: "MISLEADING",
+          confidenceScore: 95,
+          sensationalismScore: 40,
+          truthSummary,
+          detailedDebunk: `Cross-checking official governing body calendars confirms the ${year} tournament has not taken place. No official title or award has been bestowed for ${year}.`,
+          groundReality: truthSummary,
+          originalClaim: text,
+          signalsDetected: [
+            {
+              type: "AUTHORITY_FABRICATION",
+              phrase: `Unconfirmed ${year} Event Outcome`,
+              weight: 0.85,
+              explanation: "Predictive or speculative outcome framed as a completed historical fact.",
+            },
+          ],
+          redFlagPhrases: [futureYearMatch[0]],
+          matchedCivicEntities: { schemes: [], ministers: [], states: [], monetaryValues: [] },
+          primarySources: db.getSources().slice(0, 2),
+          shareableDebunkText: `⚠️ *CIVICLENS TRUTHCHECK: SPECULATIVE CLAIM*\n\n📌 *CLAIM*: "${text}"\n\n⚖️ *VERDICT*: MISLEADING\n\n🔍 *FACT*: ${truthSummary}`,
+          category: "SPORTS",
+        };
+      }
     }
 
-    // 5B: Space & Science Domain
+    // 5C: Space & Science Domain
     const isSpaceQuery =
       low.includes("isro") ||
       low.includes("chandrayaan") ||
@@ -1284,7 +1387,7 @@ ${worksList}
       }
     }
 
-    // 5C: Real-time Live Web Knowledge & Global Fact-Check API Search
+    // 5D: Real-time Live Web Knowledge & Global Fact-Check API Search
     if (signalsDetected.length === 0) {
       try {
         const liveKnowledge = await fetchLiveKnowledge(text);
@@ -1345,10 +1448,10 @@ ${worksList}
       }
     }
 
-    // 5D: General / Civic Synthesizer
+    // 5E: General / Civic Synthesizer (Default to UNVERIFIED, NEVER to fake VERIFIED_TRUE)
     let verdict: FactCheckVerdict = "UNVERIFIED";
-    let truthSummary = "No official government gazette, statutory order, or verified national repository corroborates this claim.";
-    let detailedDebunk = "Cross-referencing across Union Budget allocations, CAG audit paragraphs, and official departmental registries found zero official documentation for this viral claim.";
+    let truthSummary = "No official government gazette, statutory order, or verified tournament/registry record corroborates this statement.";
+    let detailedDebunk = "Cross-referencing across Union Budget allocations, CAG audit paragraphs, official sports governing bodies, and departmental registries found zero official documentation for this claim. Unverified claims should be treated with caution.";
     let confidenceScore = 75;
     let category: ClaimCategory = "GENERAL";
 
@@ -1372,19 +1475,12 @@ ${worksList}
       truthSummary = "Discrepancy figures in viral circulation are heavily inflated or conflate software audit notes with fiscal embezzlement.";
       detailedDebunk = "CAG audit findings are tabled before the Public Accounts Committee (PAC). Verified figures must be checked against Parliamentary audit volumes.";
       confidenceScore = 85;
-    } else if (signalsDetected.length === 0 && text.length > 10 && !low.includes("scheme") && !low.includes("yojna") && !low.includes("free")) {
-      // Clean non-hoax general statement without red flags
-      verdict = "VERIFIED_TRUE";
-      truthSummary = "Neutral factual or general event statement without viral manipulation markers, phishing links, or fabricated urgency.";
-      detailedDebunk = "NLP heuristic analysis detected zero hallmarks of viral disinformation (no chain forward demands, no scam domains, no synthetic panic). For ongoing news events, verify with accredited news agencies (PTI, ANI, Reuters).";
-      confidenceScore = 85;
-      sensationalismScore = 10;
     }
 
-    const isConfirmedTrue = verdict === "VERIFIED_TRUE";
+    const isConfirmedTrue = (verdict as FactCheckVerdict) === "VERIFIED_TRUE";
     const shareableText = isConfirmedTrue
       ? `✅ *CIVICLENS TRUTHCHECK SCAN: VERIFIED*\n\n📌 *STATEMENT*: "${text}"\n\n🔍 *FINDING*: ${truthSummary}\n🛡️ Audited on CivicLens.in`
-      : `🔍 *CIVICLENS TRUTHCHECK SCAN*\n\n⚖️ *VERDICT*: ${verdict}\n\n📝 *ANALYSIS*: ${truthSummary}\n\n🛡️ *VERIFICATION*: Cross-referenced against 100% verifiable Union Budget & CAG audit databases.\n🔗 Check live evidence: CivicLens.in`;
+      : `🔍 *CIVICLENS TRUTHCHECK SCAN*\n\n⚖️ *VERDICT*: ${verdict}\n\n📝 *ANALYSIS*: ${truthSummary}\n\n🛡️ *VERIFICATION*: Audited via CivicLens Evidence Desk.\n🔗 Check live evidence: CivicLens.in`;
 
     return {
       verdict,
