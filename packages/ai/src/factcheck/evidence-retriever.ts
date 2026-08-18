@@ -1,11 +1,13 @@
 import { StructuredEvidence } from "@civiclens/types";
 import { fetchLiveKnowledge } from "./live-knowledge";
 import { planSources } from "./source-planner";
-import { classifySource } from "./source-quality";
+import { classifySource, classifySourceForTopic } from "./source-quality";
 import { fetchSafeText } from "./ssrf";
 import { sanitizeEvidenceText } from "./sanitize";
 import { cacheGet, cacheSet, ttlForTopic } from "./cache";
 import { db } from "@civiclens/database";
+import { extractEntities } from "./entities";
+import { retirementAttributedToClaim } from "./query-expansion";
 
 export type EvidenceRetriever = (claim: string, topic: string) => Promise<StructuredEvidence[]>;
 
@@ -41,11 +43,12 @@ function baseEvidence(
 }
 
 export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) => {
-  const key = `ev:${topic}:${claim.toLowerCase().slice(0, 180)}`;
+  const key = `ev:v3:${topic}:${claim.toLowerCase().slice(0, 180)}`;
   const cached = cacheGet<StructuredEvidence[]>(key);
   if (cached) return cached;
 
   const planned = planSources(claim, topic);
+  const claimEnts = extractEntities(claim);
 
   const primaryP = Promise.all(
     planned
@@ -56,6 +59,7 @@ export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) 
         if (!html) return null;
         const text = sanitizeEvidenceText(html);
         if (text.length < 40) return null;
+        if (!homepageUsefulForClaim(text, claimEnts)) return null;
         return baseEvidence({
           id: `primary-${p.name}`,
           atomicClaim: claim,
@@ -77,8 +81,8 @@ export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) 
     if (!live) return [] as StructuredEvidence[];
     const items: StructuredEvidence[] = [];
     if (live.recentArticles?.length) {
-      for (const [idx, art] of live.recentArticles.slice(0, 5).entries()) {
-        const meta = classifySource(art.link, art.source);
+      for (const [idx, art] of live.recentArticles.slice(0, 6).entries()) {
+        const meta = classifySourceForTopic(art.link, art.source, topic);
         const knownOutlet = meta.tier <= 2;
         items.push(
           baseEvidence({
@@ -112,7 +116,7 @@ export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) 
           publisher: "Wikipedia",
           sourceTier: 4,
           sourceType: "WIKIPEDIA_CONTEXT",
-          sourceQualityScore: 50,
+          sourceQualityScore: retirementAttributedToClaim(claim, extract) ? 72 : 50,
           evidenceText: extract,
           evidenceSummary: extract.slice(0, 280),
           isDiscoveryOnly: false,
@@ -193,9 +197,23 @@ export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) 
   }
 
   const unique = dedupe(collected);
-  cacheSet(key, unique, ttlForTopic(topic));
+  const ttl = unique.length === 0 ? 60 * 1000 : ttlForTopic(topic);
+  cacheSet(key, unique, ttl);
   return unique;
 };
+
+function homepageUsefulForClaim(
+  text: string,
+  ents: ReturnType<typeof extractEntities>
+): boolean {
+  const low = text.toLowerCase();
+  if (ents.people.length) {
+    const personHit = ents.people.some((p) => low.includes(p.toLowerCase()));
+    const factHit = /\b(retir|announc|confirm|gazette|notified|won\b|defeat|champion)\b/i.test(low);
+    return personHit && factHit;
+  }
+  return true;
+}
 
 function safeDate(raw: string): string | undefined {
   const d = new Date(raw);

@@ -15,7 +15,7 @@ export function clampClaim(raw: string): string {
   return (raw || "").replace(/\u0000/g, "").trim().slice(0, MAX_CLAIM_CHARS);
 }
 
-export function sanitizeEvidenceText(raw: string): string {
+export function stripMarkup(raw: string, maxChars = 200_000): string {
   let text = (raw || "")
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
@@ -33,7 +33,11 @@ export function sanitizeEvidenceText(raw: string): string {
     text = text.replace(pattern, "[instruction-ignored]");
   }
 
-  return text.slice(0, MAX_EVIDENCE_CHARS);
+  return text.slice(0, maxChars);
+}
+
+export function sanitizeEvidenceText(raw: string): string {
+  return stripMarkup(raw, MAX_EVIDENCE_CHARS);
 }
 
 export function wrapUntrustedEvidence(text: string): string {

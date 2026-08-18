@@ -2,9 +2,10 @@ import { EvidenceStance, StructuredEvidence } from "@civiclens/types";
 import { extractEntities, entityOverlapScore, claimDirection } from "./entities";
 import { extractNumbers, extractYears, numbersAlign, isAllocationLanguage, isExpenditureLanguage } from "./numbers";
 import { containsPromptInjection, sanitizeEvidenceText } from "./sanitize";
+import { cricketFormatsMentioned, retirementAttributedToClaim } from "./query-expansion";
 
 const SUPPORT_CUES = /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|stepped down)\b/i;
-const CONTRADICT_CUES = /\b(denied|debunk|false|not true|no such|did not|didn't|has not|never|rejected|refuted|incorrect|no gst|remains free|is not|not a)\b/i;
+const CONTRADICT_CUES = /\b(denied|debunk|false|not true|no such|did not|didn't|has not|never (?:happened|occurred|took place)|rejected|refuted|incorrect|no gst|remains free|is not|not a)\b/i;
 const DISCUSS_CUES = /\b(said|claimed|alleged|rumour|rumor|unverified|reportedly|according to social)\b/i;
 
 export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEvidence): StructuredEvidence {
@@ -58,6 +59,30 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
     stance = "SUPPORTS";
   } else if (entityMatchScore >= 50) {
     stance = "NEUTRAL";
+  }
+
+  const claimFormats = cricketFormatsMentioned(claim);
+  const evidenceFormats = cricketFormatsMentioned(text);
+  const retirementClaim = /\bretir/i.test(claim);
+  if (retirementClaim && stance === "SUPPORTS" && !retirementAttributedToClaim(claim, text)) {
+    stance = "NEUTRAL";
+  }
+  if (
+    retirementClaim &&
+    claimFormats.has("test") &&
+    !claimFormats.has("t20") &&
+    !claimFormats.has("odi") &&
+    !claimFormats.has("all") &&
+    evidenceFormats.has("t20") &&
+    !evidenceFormats.has("test") &&
+    !evidenceFormats.has("all") &&
+    /\bretir/i.test(text)
+  ) {
+    if (/\b(continues? to play|remains? (?:an? )?test|available for test)/i.test(text)) {
+      stance = "CONTRADICTS";
+    } else if (stance === "SUPPORTS") {
+      stance = "NEUTRAL";
+    }
   }
 
   if (injection) {

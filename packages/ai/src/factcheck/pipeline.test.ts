@@ -9,6 +9,9 @@ import { matchEvidenceToClaim } from "./evidence-matcher";
 import { containsPromptInjection, sanitizeEvidenceText } from "./sanitize";
 import { computeVerdict } from "./verdict-engine";
 import { planSources } from "./source-planner";
+import { expandSearchQueries, retirementAttributedToClaim } from "./query-expansion";
+import { extractClaimRelevantPassages } from "./passages";
+import { parseGoogleNewsRss } from "./live-knowledge";
 
 function ev(partial: Partial<StructuredEvidence> & { evidenceText: string; sourceName: string }): StructuredEvidence {
   return {
@@ -378,5 +381,63 @@ describe("CivicLens evidence-first factcheck pipeline", () => {
     assert.ok(["VERIFIED_TRUE", "PARTIALLY_TRUE"].includes(result.verdict));
     assert.ok(result.confidenceScore > 50);
     assert.notEqual(result.verdict, "UNVERIFIED");
+  });
+
+  test("informal Kohli Test-retirement query expands and attributes correctly", () => {
+    const q = expandSearchQueries("kohli retired from test");
+    assert.ok(q.some((x) => /virat kohli/i.test(x)));
+    assert.ok(q.some((x) => /test cricket/i.test(x)));
+    assert.equal(classifyClaim("kohli retired from test"), "SPORTS");
+    assert.equal(
+      retirementAttributedToClaim(
+        "kohli retired from test",
+        "On 12 May 2025 Kohli announced his retirement from T20Is. He announced his retirement from the Test cricket."
+      ),
+      true
+    );
+    const wikiLike = extractClaimRelevantPassages(
+      "Virat Kohli is an Indian cricketer. Kohli announced his retirement from T20Is. On 12 May 2025, at the age of 36, he announced his retirement from the Test cricket. He plays IPL for RCB.",
+      "kohli retired from test"
+    );
+    assert.match(wikiLike, /retirement from the Test/i);
+    const padded = `${"<p>nav</p>".repeat(4000)}<p>On 12 May 2025, Kohli announced his retirement from the Test cricket.</p>`;
+    assert.match(extractClaimRelevantPassages(padded, "kohli retired from test"), /retirement from the Test/i);
+    const rss = parseGoogleNewsRss(
+      `<rss><channel><item><title>Virat Kohli's Test retirement came too soon - Hindustan Times</title><link>https://news.google.com/rss/articles/x</link><guid>g</guid><pubDate>Wed, 22 Jul 2026 07:00:00 GMT</pubDate><description>long</description><source url="https://www.hindustantimes.com">Hindustan Times</source></item></channel></rss>`
+    );
+    assert.equal(rss[0]?.source, "Hindustan Times");
+  });
+
+  test("T20-only retirement does not verify a Test-retirement claim", async () => {
+    const result = await check("kohli retired from test", [
+      ev({
+        sourceName: "Kohli retires from T20Is",
+        publisher: "ESPNcricinfo",
+        sourceUrl: "https://www.espncricinfo.com/story/kohli-t20i",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Virat Kohli announced his retirement from T20 internationals and will continue limited-overs cricket.",
+      }),
+    ]);
+    assert.notEqual(result.verdict, "VERIFIED_TRUE");
+  });
+
+  test("teammate retirement headline is not treated as Kohli Test retirement", () => {
+    const matched = matchEvidenceToClaim(
+      "kohli retired from test",
+      ev({
+        sourceName: "Virat Kohli hails Ajinkya Rahane after retirement",
+        publisher: "The Times of India",
+        sourceUrl: "https://timesofindia.indiatimes.com/sports/rahane",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Virat Kohli hails Ajinkya Rahane after retirement as his favourite Test batting partner.",
+      })
+    );
+    assert.notEqual(matched.stance, "SUPPORTS");
   });
 });

@@ -68,6 +68,37 @@ function hostOf(url: string): string {
   }
 }
 
+const SPORTS_NAMED_PUBLISHERS = [
+  "hindustan times",
+  "times of india",
+  "india today",
+  "ndtv",
+  "livemint",
+  "mint",
+  "cricbuzz",
+  "wisden",
+  "sky sports",
+  "skysports",
+  "the guardian",
+  "news18",
+  "ani",
+];
+
+/** Named sports desks found via Google News still count as journalism, not anonymous RSS. */
+export function classifySourceForTopic(
+  url: string,
+  publisher: string | undefined,
+  topic: string
+): { tier: SourceTier; quality: number; type: string } {
+  const base = classifySource(url, publisher);
+  if (topic !== "SPORTS" || base.tier <= 2) return base;
+  const pub = (publisher || "").toLowerCase();
+  if (SPORTS_NAMED_PUBLISHERS.some((p) => pub.includes(p))) {
+    return { tier: 2, quality: 76, type: "QUALITY_JOURNALISM" };
+  }
+  return base;
+}
+
 export function classifySource(url: string, publisher?: string): {
   tier: SourceTier;
   quality: number;
