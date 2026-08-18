@@ -11,7 +11,9 @@
     "build": "npx pnpm -r --if-present run build",
     "test": "npx tsx --test packages/ai/src/factcheck/pipeline.test.ts",
     "db:migrate": "npx pnpm --filter @civiclens/database run db:migrate",
-    "db:seed": "npx pnpm --filter @civiclens/database run db:seed"
+    "db:seed": "npx pnpm --filter @civiclens/database run db:seed",
+    "db:setup": "npx pnpm --filter @civiclens/database run db:setup",
+    "db:status": "npx pnpm --filter @civiclens/database run db:status"
   },
   "devDependencies": {
     "prettier": "^3.5.0",

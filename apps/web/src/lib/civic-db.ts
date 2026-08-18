@@ -35,6 +35,7 @@ export async function hydrateCivicDbFromApi(baseUrl = "/api"): Promise<CivicLens
           sources: json.data.sources ?? [],
           evidences: [],
           schemes: json.data.schemes ?? [],
+          states: json.data.states ?? [],
           state_facts: json.data.stateFacts ?? [],
           state_audited_metrics: {},
           cag_reports: json.data.cagReports ?? [],

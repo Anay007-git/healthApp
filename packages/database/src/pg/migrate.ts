@@ -2,8 +2,11 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { closePool, getPool, isPostgresUrl } from "./client";
+import { loadEnvFiles } from "./env";
 
 async function migrate(): Promise<void> {
+  loadEnvFiles();
+
   if (!isPostgresUrl(process.env.DATABASE_URL)) {
     console.error("DATABASE_URL must be set to a PostgreSQL connection string.");
     process.exit(1);

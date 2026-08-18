@@ -15,6 +15,7 @@ export const DATASET_KEYS = [
   "sources",
   "evidences",
   "schemes",
+  "states",
   "state_facts",
   "state_audited_metrics",
   "cag_reports",
@@ -36,6 +37,7 @@ export interface CivicDatasetSnapshot {
   sources: Source[];
   evidences: Evidence[];
   schemes: Scheme[];
+  states: unknown[];
   state_facts: unknown[];
   state_audited_metrics: Record<string, StateAuditedMetrics>;
   cag_reports: CAGReport[];

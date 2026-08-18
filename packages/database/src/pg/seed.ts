@@ -5,6 +5,8 @@ import { BONDS_META } from "../funding_data";
 import { STATE_AUDITED_METRICS_DATA } from "../index";
 import { DATASET_KEYS, type DatasetKey } from "./datasets";
 import { closePool, getPool, isPostgresUrl } from "./client";
+import { loadEnvFiles } from "./env";
+import { printTableCounts, seedNormalizedTables } from "./seed-normalized";
 
 function collectSnapshot(db: CivicLensDatabase): Record<DatasetKey, unknown> {
   const memory = db as unknown as {
@@ -25,6 +27,7 @@ function collectSnapshot(db: CivicLensDatabase): Record<DatasetKey, unknown> {
     sources: memory.sources,
     evidences: memory.evidences,
     schemes: memory.schemes,
+    states: db.getStates(),
     state_facts: memory.stateFactsData,
     state_audited_metrics: STATE_AUDITED_METRICS_DATA,
     cag_reports: memory.cagReports,
@@ -41,91 +44,18 @@ function collectSnapshot(db: CivicLensDatabase): Record<DatasetKey, unknown> {
   };
 }
 
-async function seedNormalizedTables(pool: ReturnType<typeof getPool>, snapshot: Record<DatasetKey, unknown>) {
-  const schemes = snapshot.schemes as Array<Record<string, unknown>>;
-  for (const scheme of schemes) {
-    await pool.query(
-      `INSERT INTO schemes (
-        id, slug, name, hindi_name, ministry, launch_year, budget_allocated_cr,
-        expenditure_cr, beneficiaries_count, coverage_target, cag_verdict, evidence_score, summary
-      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
-      ON CONFLICT (id) DO UPDATE SET
-        slug = EXCLUDED.slug,
-        name = EXCLUDED.name,
-        hindi_name = EXCLUDED.hindi_name,
-        ministry = EXCLUDED.ministry,
-        launch_year = EXCLUDED.launch_year,
-        budget_allocated_cr = EXCLUDED.budget_allocated_cr,
-        expenditure_cr = EXCLUDED.expenditure_cr,
-        beneficiaries_count = EXCLUDED.beneficiaries_count,
-        coverage_target = EXCLUDED.coverage_target,
-        cag_verdict = EXCLUDED.cag_verdict,
-        evidence_score = EXCLUDED.evidence_score,
-        summary = EXCLUDED.summary`,
-      [
-        scheme.id,
-        scheme.slug,
-        scheme.name,
-        scheme.hindiName ?? null,
-        scheme.ministry,
-        scheme.launchYear,
-        scheme.budgetAllocatedCr,
-        scheme.expenditureCr,
-        scheme.beneficiariesCount ?? 0,
-        scheme.coverageTarget ?? "",
-        scheme.cagVerdict ?? "UNAUDITED",
-        scheme.evidenceScore ?? 85,
-        scheme.summary,
-      ]
-    );
-  }
-
-  const stateFacts = snapshot.state_facts as Array<Record<string, unknown>>;
-  for (const st of stateFacts) {
-    const code = String(st.stateCode || st.code || "").toUpperCase();
-    if (!code) continue;
-    await pool.query(
-      `INSERT INTO state_facts (state_code, state_name, payload)
-       VALUES ($1, $2, $3::jsonb)
-       ON CONFLICT (state_code) DO UPDATE SET
-         state_name = EXCLUDED.state_name,
-         payload = EXCLUDED.payload,
-         updated_at = CURRENT_TIMESTAMP`,
-      [code, st.name || code, JSON.stringify(st)]
-    );
-  }
-
-  const claims = snapshot.fact_check_claims as Array<Record<string, unknown>>;
-  for (const claim of claims) {
-    const slug = String(claim.id || claim.slug || "").replace(/^fc-/, "");
-    await pool.query(
-      `INSERT INTO fact_check_claims (id, slug, title, claim, category, verdict, payload)
-       VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb)
-       ON CONFLICT (id) DO UPDATE SET
-         slug = EXCLUDED.slug,
-         title = EXCLUDED.title,
-         claim = EXCLUDED.claim,
-         category = EXCLUDED.category,
-         verdict = EXCLUDED.verdict,
-         payload = EXCLUDED.payload`,
-      [
-        claim.id,
-        slug || claim.id,
-        claim.title,
-        claim.claim,
-        claim.category,
-        claim.verdict,
-        JSON.stringify(claim),
-      ]
-    );
-  }
-}
-
 async function seed(): Promise<void> {
+  loadEnvFiles();
+
   if (!isPostgresUrl(process.env.DATABASE_URL)) {
     console.error("DATABASE_URL must be set to a PostgreSQL connection string.");
+    console.error("Create a .env file in the repo root or export DATABASE_URL before running db:seed.");
     process.exit(1);
   }
+
+  const dbUrl = process.env.DATABASE_URL!;
+  const hostHint = dbUrl.includes("@") ? dbUrl.split("@")[1]?.split("/")[0] : "configured host";
+  console.log(`Seeding Postgres at ${hostHint} ...`);
 
   const memoryDb = new CivicLensDatabase();
   const snapshot = collectSnapshot(memoryDb);
@@ -143,9 +73,11 @@ async function seed(): Promise<void> {
     console.log(`Seeded dataset: ${key}`);
   }
 
+  console.log("Seeding normalized tables...");
   await seedNormalizedTables(pool, snapshot);
+  await printTableCounts(pool);
   await closePool();
-  console.log("All civic datasets seeded to PostgreSQL.");
+  console.log("\nAll civic datasets seeded to PostgreSQL.");
 }
 
 seed().catch((err) => {
