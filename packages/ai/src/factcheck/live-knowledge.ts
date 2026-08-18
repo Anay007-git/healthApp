@@ -1,7 +1,5 @@
 import { ClaimCategory } from "@civiclens/types";
-import { extractClaimRelevantPassages } from "./passages";
 import { canonicalPersonNames, expandSearchQueries } from "./query-expansion";
-import { fetchSafeText } from "./ssrf";
 
 export interface LiveNewsArticle {
   title: string;
@@ -72,14 +70,13 @@ export async function fetchLiveKnowledge(query: string): Promise<LiveKnowledgeRe
   if (!cleanQ || cleanQ.length < 3) return null;
 
   const newsQueries = queries.slice(0, 2);
-  const [newsSettled, wiki, ddg] = await Promise.all([
+  const [newsSettled, wiki] = await Promise.all([
     Promise.all(newsQueries.map((q) => fetchGoogleNews(q))),
     fetchWikipedia(query, queries),
-    fetchDuckDuckGo(queries[1] || cleanQ),
   ]);
 
   const news = mergeNews(newsSettled.filter(Boolean) as LiveKnowledgeResult[]);
-  if (!news && !wiki && !ddg) return null;
+  if (!news && !wiki) return null;
 
   if (news && wiki) {
     return {
@@ -91,7 +88,7 @@ export async function fetchLiveKnowledge(query: string): Promise<LiveKnowledgeRe
       wikiUrl: wiki.sourceUrl,
     };
   }
-  return news || wiki || ddg;
+  return news || wiki;
 }
 
 function mergeNews(results: LiveKnowledgeResult[]): LiveKnowledgeResult | null {
@@ -167,40 +164,42 @@ async function fetchGoogleNews(cleanQ: string): Promise<LiveKnowledgeResult | nu
 
 async function fetchWikipedia(originalClaim: string, queries: string[]): Promise<LiveKnowledgeResult | null> {
   try {
-    const pageTitle = await findWikipediaTitle(queries, originalClaim);
-    if (!pageTitle) return null;
+    const searchHits = await wikipediaSearch(queries[0] || originalClaim);
+    const pageTitle = pickWikipediaTitle(searchHits, originalClaim) || (await findWikipediaTitle(queries, originalClaim));
+    if (!pageTitle && !searchHits.length) return null;
 
-    const summaryUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(pageTitle)}`;
-    const pageUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle.replace(/ /g, "_"))}`;
-
-    const [summaryRes, html] = await Promise.all([
-      fetch(summaryUrl, { headers: WIKI_UA, signal: AbortSignal.timeout(3500) }),
-      fetchSafeText(pageUrl, 8000, 450_000),
-    ]);
+    const snippets = searchHits
+      .map((h) => h.snippet.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim())
+      .filter((s) => s.length > 40)
+      .slice(0, 3)
+      .join(" ");
 
     let summaryExtract = "";
-    let canonicalUrl = pageUrl;
-    let title = pageTitle;
-    if (summaryRes.ok) {
-      const summaryData = (await summaryRes.json()) as {
-        title?: string;
-        extract?: string;
-        content_urls?: { desktop?: { page?: string } };
-      };
-      summaryExtract = summaryData?.extract || "";
-      title = summaryData.title || pageTitle;
-      canonicalUrl = summaryData.content_urls?.desktop?.page || pageUrl;
+    let canonicalUrl = pageTitle
+      ? `https://en.wikipedia.org/wiki/${encodeURIComponent((pageTitle || "").replace(/ /g, "_"))}`
+      : "https://en.wikipedia.org";
+    let title = pageTitle || originalClaim;
+    if (pageTitle) {
+      const summaryUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(pageTitle)}`;
+      const summaryRes = await fetch(summaryUrl, { headers: WIKI_UA, signal: AbortSignal.timeout(3000) });
+      if (summaryRes.ok) {
+        const summaryData = (await summaryRes.json()) as {
+          title?: string;
+          extract?: string;
+          content_urls?: { desktop?: { page?: string } };
+        };
+        summaryExtract = summaryData?.extract || "";
+        title = summaryData.title || pageTitle;
+        canonicalUrl = summaryData.content_urls?.desktop?.page || canonicalUrl;
+      }
     }
 
-    const passages = html ? extractClaimRelevantPassages(html, originalClaim, 2800) : "";
-    const combined = [passages, summaryExtract ? `Lead summary: ${summaryExtract}` : ""]
-      .filter(Boolean)
-      .join("\n\n");
+    const combined = [snippets, summaryExtract].filter(Boolean).join(" ");
     if (!combined) return null;
 
     return {
       title,
-      extract: `Wikipedia background context (not independent verification of time-sensitive political claims): ${combined}`,
+      extract: combined.slice(0, 3500),
       sourceUrl: canonicalUrl,
       sourceLabel: `Wikipedia (background): ${title}`,
       category: "GENERAL",
@@ -210,6 +209,22 @@ async function fetchWikipedia(originalClaim: string, queries: string[]): Promise
   } catch {
     return null;
   }
+}
+
+async function wikipediaSearch(q: string): Promise<Array<{ title: string; snippet: string }>> {
+  const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srprop=snippet&srsearch=${encodeURIComponent(q)}&utf8=&format=json&origin=*`;
+  const searchRes = await fetch(searchUrl, { headers: WIKI_UA, signal: AbortSignal.timeout(3000) });
+  if (!searchRes.ok) return [];
+  const searchData = (await searchRes.json()) as {
+    query?: { search?: Array<{ title: string; snippet?: string }> };
+  };
+  return (searchData?.query?.search || []).map((r) => ({ title: r.title, snippet: r.snippet || "" }));
+}
+
+function pickWikipediaTitle(hits: Array<{ title: string }>, originalClaim: string): string | null {
+  const preferred = canonicalPersonNames(originalClaim).map((n) => n.toLowerCase());
+  const named = hits.find((r) => preferred.some((p) => r.title.toLowerCase().includes(p)));
+  return (named || hits[0])?.title || null;
 }
 
 async function findWikipediaTitle(queries: string[], originalClaim: string): Promise<string | null> {

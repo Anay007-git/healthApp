@@ -82,6 +82,10 @@ const SPORTS_NAMED_PUBLISHERS = [
   "the guardian",
   "news18",
   "ani",
+  "al jazeera",
+  "cricket.com.au",
+  "abc news",
+  "abc.net.au",
 ];
 
 /** Named sports desks found via Google News still count as journalism, not anonymous RSS. */

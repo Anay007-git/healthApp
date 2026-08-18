@@ -1,3 +1,5 @@
+import { extractSportsTeams } from "./sports-result";
+
 export interface ClaimEntities {
   people: string[];
   organizations: string[];
@@ -73,6 +75,9 @@ export function extractEntities(text: string): ClaimEntities {
     /\b(west bengal|uttar pradesh|madhya pradesh|andhra pradesh|tamil nadu|maharashtra|karnataka|kerala|bihar|delhi|gujarat|rajasthan|odisha|punjab|haryana|telangana|assam)\b/gi;
   let sm: RegExpExecArray | null;
   while ((sm = stateRe.exec(text)) !== null) locations.push(sm[1]);
+  for (const team of extractSportsTeams(text)) {
+    locations.push(team);
+  }
 
   const distinctiveTokens = low
     .replace(/[^\p{L}\p{N}\s₹%]/gu, " ")

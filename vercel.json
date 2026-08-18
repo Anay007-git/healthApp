@@ -1,4 +1,12 @@
 {
+  "functions": {
+    "api/factcheck/verify.ts": {
+      "maxDuration": 30
+    },
+    "apps/web/api/factcheck/verify.ts": {
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
     {
       "source": "/admin/:path*",

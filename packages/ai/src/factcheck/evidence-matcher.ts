@@ -3,8 +3,10 @@ import { extractEntities, entityOverlapScore, claimDirection } from "./entities"
 import { extractNumbers, extractYears, numbersAlign, isAllocationLanguage, isExpenditureLanguage } from "./numbers";
 import { containsPromptInjection, sanitizeEvidenceText } from "./sanitize";
 import { cricketFormatsMentioned, retirementAttributedToClaim } from "./query-expansion";
+import { sportsResultConflict, parseSportsResult } from "./sports-result";
 
-const SUPPORT_CUES = /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|stepped down)\b/i;
+const SUPPORT_CUES =
+  /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|stepped down|won|beat|defeated|victory|thrashed)\b/i;
 const CONTRADICT_CUES = /\b(denied|debunk|false|not true|no such|did not|didn't|has not|never (?:happened|occurred|took place)|rejected|refuted|incorrect|no gst|remains free|is not|not a)\b/i;
 const DISCUSS_CUES = /\b(said|claimed|alleged|rumour|rumor|unverified|reportedly|according to social)\b/i;
 
@@ -83,6 +85,13 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
     } else if (stance === "SUPPORTS") {
       stance = "NEUTRAL";
     }
+  }
+
+  const sportsSides = sportsResultConflict(claim, text);
+  if (sportsSides === "CONTRADICTS") stance = "CONTRADICTS";
+  else if (sportsSides === "SUPPORTS" && relevant && !num.contradicted) stance = "SUPPORTS";
+  else if (parseSportsResult(claim).winner && stance === "SUPPORTS" && sportsSides !== "SUPPORTS") {
+    stance = /\b(won|beat|defeated|victory|win)\b/i.test(text) ? stance : "NEUTRAL";
   }
 
   if (injection) {
