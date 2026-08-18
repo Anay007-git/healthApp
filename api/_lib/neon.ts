@@ -1,8 +1,6 @@
 const DEFAULT_DATABASE_URL =
   "postgresql://neondb_owner:npg_OBj2LtShf1Rv@ep-gentle-king-axtrdlfg-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
 
-const NEON_HTTP_URL = "https://ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/sql";
-
 export function getDatabaseUrl(): string {
   return (process.env.DATABASE_URL || DEFAULT_DATABASE_URL).trim();
 }
@@ -12,14 +10,28 @@ export function isPostgresConfigured(): boolean {
   return url.startsWith("postgres://") || url.startsWith("postgresql://");
 }
 
-function getNeonHttpConfig() {
-  const dbUrl = getDatabaseUrl();
-  const connectionString = dbUrl
+function normalizeConnectionString(dbUrl: string): string {
+  return dbUrl
     .replace("-pooler", "")
     .replace("&channel_binding=require", "")
     .replace("?channel_binding=require", "?sslmode=require");
+}
 
-  return { httpUrl: NEON_HTTP_URL, connectionString };
+function getNeonHttpUrl(dbUrl: string): string {
+  const hostMatch = dbUrl.match(/@([^/?:]+)/);
+  if (hostMatch?.[1]) {
+    const host = hostMatch[1].replace("-pooler", "");
+    return `https://${host}/sql`;
+  }
+
+  return "https://ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/sql";
+}
+
+function getNeonHttpConfig() {
+  const dbUrl = getDatabaseUrl();
+  const connectionString = normalizeConnectionString(dbUrl);
+  const httpUrl = getNeonHttpUrl(dbUrl);
+  return { httpUrl, connectionString };
 }
 
 export interface NeonQueryResult<T = Record<string, unknown>> {
