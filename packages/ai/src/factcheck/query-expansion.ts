@@ -3,6 +3,8 @@
  * Does not hard-code verdicts — only retrieval queries.
  */
 
+import { extractSportsTeams } from "./sports-result";
+
 const PERSON_ALIASES: Array<{ match: RegExp; canonical: string }> = [
   { match: /\bkohli\b/i, canonical: "Virat Kohli" },
   { match: /\brohit\b/i, canonical: "Rohit Sharma" },
@@ -36,6 +38,14 @@ export function expandSearchQueries(claim: string): string[] {
   const people = canonicalPersonNames(claim);
   const formats = cricketFormatsMentioned(claim);
   const retiring = /\bretir/i.test(claim);
+  const teams = extractSportsTeams(claim);
+  const resultClaim = /\b(won|win|beat|defeat|lost|lose|victory)\b/i.test(claim);
+
+  if (teams.length >= 2 && (formats.has("test") || resultClaim)) {
+    const fmt = formats.has("test") ? "Test cricket" : formats.has("odi") ? "ODI" : formats.has("t20") ? "T20" : "cricket";
+    queries.unshift(`${teams[0]} vs ${teams[1]} ${fmt}`);
+    if (resultClaim) queries.push(`${teams[0]} beat ${teams[1]} ${fmt}`);
+  }
 
   for (const person of people) {
     let rest = base;

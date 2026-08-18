@@ -43,7 +43,7 @@ function baseEvidence(
 }
 
 export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) => {
-  const key = `ev:v3:${topic}:${claim.toLowerCase().slice(0, 180)}`;
+  const key = `ev:v4:${topic}:${claim.toLowerCase().slice(0, 180)}`;
   const cached = cacheGet<StructuredEvidence[]>(key);
   if (cached) return cached;
 
@@ -51,10 +51,7 @@ export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) 
   const claimEnts = extractEntities(claim);
 
   const primaryP = Promise.all(
-    planned
-      .filter((p) => p.tier === 1)
-      .slice(0, 3)
-      .map(async (p) => {
+    (topic === "SPORTS" ? [] : planned.filter((p) => p.tier === 1).slice(0, 3)).map(async (p) => {
         const html = await fetchSafeText(p.homepage, 4000);
         if (!html) return null;
         const text = sanitizeEvidenceText(html);
@@ -116,7 +113,8 @@ export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) 
           publisher: "Wikipedia",
           sourceTier: 4,
           sourceType: "WIKIPEDIA_CONTEXT",
-          sourceQualityScore: retirementAttributedToClaim(claim, extract) ? 72 : 50,
+          sourceQualityScore:
+            /\bretir/i.test(claim) && retirementAttributedToClaim(claim, extract) ? 72 : 50,
           evidenceText: extract,
           evidenceSummary: extract.slice(0, 280),
           isDiscoveryOnly: false,

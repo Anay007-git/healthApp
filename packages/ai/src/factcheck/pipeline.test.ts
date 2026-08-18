@@ -440,4 +440,48 @@ describe("CivicLens evidence-first factcheck pipeline", () => {
     );
     assert.notEqual(matched.stance, "SUPPORTS");
   });
+
+  test("named outlets reporting Bangladesh beat Australia in a Test can verify", async () => {
+    const result = await check("Bangladesh won test against Australia", [
+      ev({
+        sourceName: "Bangladesh beat Australia by nine wickets on day four of first Test",
+        publisher: "The Guardian",
+        sourceUrl: "https://www.theguardian.com/sport/bangladesh-australia-test",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Bangladesh beat Australia by nine wickets to win the first Test.",
+      }),
+      ev({
+        sourceName: "Bangladesh notch historic first Test win in Australia",
+        publisher: "ICC",
+        sourceUrl: "https://www.icc-cricket.com/news/bangladesh-test",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Bangladesh notch historic first Test win in Australia.",
+      }),
+    ]);
+    assert.ok(["VERIFIED_TRUE", "PARTIALLY_TRUE"].includes(result.verdict));
+    assert.notEqual(result.verdict, "UNVERIFIED");
+    assert.notEqual(result.verdict, "FALSE");
+  });
+
+  test("opposite sports result contradicts", async () => {
+    const result = await check("Bangladesh won test against Australia", [
+      ev({
+        sourceName: "Australia beat Bangladesh inside three days",
+        publisher: "ESPNcricinfo",
+        sourceUrl: "https://www.espncricinfo.com/series/aus-v-ban",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Australia beat Bangladesh by an innings in the Test match.",
+      }),
+    ]);
+    assert.equal(result.verdict, "FALSE");
+  });
 });
