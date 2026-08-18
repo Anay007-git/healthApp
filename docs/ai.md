@@ -43,10 +43,11 @@ Google News, Wikipedia, and DuckDuckGo Instant Answers are **discovery/context**
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
+| *(none)* | — | Live TruthCheck retrieval uses public Google News RSS / Wikipedia. No key required. |
 | `AI_API_KEY` | No | If set, LLM reasons over structured evidence only. Missing key → deterministic engine. |
 | `AI_PROVIDER` | No | Default `openai` |
 | `AI_MODEL` | No | Default `gpt-4o-mini` |
-| `SEARCH_API_KEY` | No | Reserved; discovery uses public Google News RSS / Wikipedia / DuckDuckGo |
+| `SEARCH_API_KEY` | No | Unused. Discovery does not require a search vendor key. |
 
 Never put API keys in frontend code.
 

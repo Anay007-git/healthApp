@@ -11,7 +11,7 @@ import { computeVerdict } from "./verdict-engine";
 import { planSources } from "./source-planner";
 import { expandSearchQueries, retirementAttributedToClaim } from "./query-expansion";
 import { extractClaimRelevantPassages } from "./passages";
-import { parseGoogleNewsRss } from "./live-knowledge";
+import { parseGoogleNewsRss, articlesFromRss2Json } from "./live-knowledge";
 
 function ev(partial: Partial<StructuredEvidence> & { evidenceText: string; sourceName: string }): StructuredEvidence {
   return {
@@ -406,6 +406,17 @@ describe("CivicLens evidence-first factcheck pipeline", () => {
       `<rss><channel><item><title>Virat Kohli's Test retirement came too soon - Hindustan Times</title><link>https://news.google.com/rss/articles/x</link><guid>g</guid><pubDate>Wed, 22 Jul 2026 07:00:00 GMT</pubDate><description>long</description><source url="https://www.hindustantimes.com">Hindustan Times</source></item></channel></rss>`
     );
     assert.equal(rss[0]?.source, "Hindustan Times");
+    const viaJson = articlesFromRss2Json({
+      items: [
+        {
+          title: "Bangladesh beat Australia by nine wickets - The Guardian",
+          link: "https://www.theguardian.com/sport/x",
+          pubDate: "2025-08-01T00:00:00Z",
+          author: "",
+        },
+      ],
+    });
+    assert.equal(viaJson[0]?.source, "The Guardian");
   });
 
   test("T20-only retirement does not verify a Test-retirement claim", async () => {

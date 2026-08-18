@@ -124,39 +124,82 @@ function mergeNews(results: LiveKnowledgeResult[]): LiveKnowledgeResult | null {
 }
 
 async function fetchGoogleNews(cleanQ: string): Promise<LiveKnowledgeResult | null> {
+  const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(cleanQ)}&hl=en-IN&gl=IN&ceid=IN:en`;
+  const inBrowser = typeof window !== "undefined";
+  const items = inBrowser
+    ? (await fetchNewsViaRss2Json(rssUrl)) || (await fetchNewsViaRssXml(rssUrl))
+    : (await fetchNewsViaRssXml(rssUrl)) || (await fetchNewsViaRss2Json(rssUrl));
+  if (!items?.length) return null;
+  return newsResultFromItems(items);
+}
+
+function newsResultFromItems(items: LiveNewsArticle[]): LiveKnowledgeResult {
+  const topItem = items[0];
+  const dateStr = topItem.pubDate
+    ? new Date(topItem.pubDate).toISOString().split("T")[0]
+    : undefined;
+  const bullets = items
+    .map(
+      (it) =>
+        `• ${it.source} (${it.pubDate ? new Date(it.pubDate).toISOString().split("T")[0] : "undated"}): "${it.title}"`
+    )
+    .join("\n");
+  return {
+    title: topItem.title,
+    extract: `Google News discovery (not verification):\n${bullets}`,
+    sourceUrl: topItem.link,
+    sourceLabel: `${topItem.source} (via Google News discovery)`,
+    publicationDate: dateStr,
+    category: "GENERAL",
+    recentArticles: items,
+    channel: "GOOGLE_NEWS",
+    isDiscoveryOnly: true,
+  };
+}
+
+async function fetchNewsViaRssXml(rssUrl: string): Promise<LiveNewsArticle[] | null> {
   try {
-    const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(cleanQ)}&hl=en-IN&gl=IN&ceid=IN:en`;
-    const newsRes = await fetch(rssUrl, {
-      headers: {
-        "User-Agent": "CivicLensFactChecker/2.0 (discovery-only; research@civiclens.in)",
-      },
-      signal: AbortSignal.timeout(4000),
-    });
+    const headers: Record<string, string> = {};
+    if (typeof window === "undefined") {
+      headers["User-Agent"] = "CivicLensFactChecker/2.0 (discovery-only; research@civiclens.in)";
+    }
+    const newsRes = await fetch(rssUrl, { headers, signal: AbortSignal.timeout(4000) });
     if (!newsRes.ok) return null;
-    const xml = await newsRes.text();
-    const items = parseGoogleNewsRss(xml);
-    if (items.length === 0) return null;
-    const topItem = items[0];
-    const dateStr = topItem.pubDate
-      ? new Date(topItem.pubDate).toISOString().split("T")[0]
-      : undefined;
-    const bullets = items
-      .map(
-        (it) =>
-          `• ${it.source} (${it.pubDate ? new Date(it.pubDate).toISOString().split("T")[0] : "undated"}): "${it.title}"`
-      )
-      .join("\n");
-    return {
-      title: topItem.title,
-      extract: `Google News discovery (not verification):\n${bullets}`,
-      sourceUrl: topItem.link,
-      sourceLabel: `${topItem.source} (via Google News discovery)`,
-      publicationDate: dateStr,
-      category: "GENERAL",
-      recentArticles: items,
-      channel: "GOOGLE_NEWS",
-      isDiscoveryOnly: true,
-    };
+    const items = parseGoogleNewsRss(await newsRes.text());
+    return items.length ? items : null;
+  } catch {
+    return null;
+  }
+}
+
+export function articlesFromRss2Json(data: {
+  items?: Array<{ title?: string; link?: string; pubDate?: string; author?: string }>;
+}): LiveNewsArticle[] {
+  const items: LiveNewsArticle[] = [];
+  for (const it of data.items || []) {
+    const title = (it.title || "").trim();
+    if (!title) continue;
+    const fromTitle = title.split(/\s+[-|]\s+/).pop()?.trim() || "";
+    items.push({
+      title,
+      link: it.link || "",
+      pubDate: it.pubDate || "",
+      source: (it.author || "").trim() || fromTitle || "News Media",
+    });
+    if (items.length >= 8) break;
+  }
+  return items;
+}
+
+async function fetchNewsViaRss2Json(rssUrl: string): Promise<LiveNewsArticle[] | null> {
+  try {
+    const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(4500) });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { status?: string; items?: Array<{ title?: string; link?: string; pubDate?: string; author?: string }> };
+    if (data.status && data.status !== "ok") return null;
+    const items = articlesFromRss2Json(data);
+    return items.length ? items : null;
   } catch {
     return null;
   }
