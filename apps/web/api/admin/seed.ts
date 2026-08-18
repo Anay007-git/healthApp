@@ -1,4 +1,4 @@
-import { ensurePostgresReady, getPostgresTableCounts, isPostgresUrl } from "@civiclens/database";
+import { ensurePostgresReady, getPostgresTableCounts, isPostgresUrl } from "@civiclens/database/server";
 
 export default async function handler(req: any, res: any) {
   res.setHeader("Access-Control-Allow-Origin", "*");

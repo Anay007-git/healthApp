@@ -1,4 +1,4 @@
-import type { CivicDatasetSnapshot } from "./datasets";
+import type { CivicDatasetSnapshot, CivicDatasetSubmission } from "./datasets";
 import { DATASET_KEYS, type DatasetKey } from "./datasets";
 import { getPool, isPostgresUrl } from "./client";
 
@@ -30,18 +30,7 @@ export async function loadCivicDatasetsFromPostgres(): Promise<CivicDatasetSnaps
   return snapshot;
 }
 
-export async function loadFactCheckSubmissionsFromPostgres(): Promise<
-  Array<{
-    id: string;
-    claimText: string;
-    sourcePlatform: string;
-    url?: string;
-    userContact?: string;
-    submittedAt: string;
-    upvotes: number;
-    status: string;
-  }>
-> {
+export async function loadFactCheckSubmissionsFromPostgres(): Promise<CivicDatasetSubmission[]> {
   if (!isPostgresUrl(process.env.DATABASE_URL)) {
     return [];
   }
@@ -70,7 +59,7 @@ export async function loadFactCheckSubmissionsFromPostgres(): Promise<
     userContact: row.user_contact ?? undefined,
     submittedAt: row.submitted_at.toISOString().split("T")[0],
     upvotes: row.upvotes,
-    status: row.status,
+    status: row.status as CivicDatasetSubmission["status"],
   }));
 }
 

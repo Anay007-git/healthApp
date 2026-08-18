@@ -2,6 +2,7 @@ import type {
   CAGReport,
   Evidence,
   FactCheckClaim,
+  FactCheckSubmission,
   ManifestoPromise,
   MinisterProfile,
   Scheme,
@@ -10,6 +11,13 @@ import type {
 } from "@civiclens/types";
 import type { PartyAnnualIncomeRecord } from "../party_income_history";
 import type { StateAuditedMetrics } from "../index";
+import { BONDS_META, PARTY_FUNDING, TOP_DONORS } from "../funding_data";
+import { PARTY_META_MAP } from "../party_income_history";
+
+export type PartyFundingData = typeof PARTY_FUNDING;
+export type CorporateDonorsData = typeof TOP_DONORS;
+export type PartyMetaMap = typeof PARTY_META_MAP;
+export type BondsMeta = typeof BONDS_META;
 
 export const DATASET_KEYS = [
   "sources",
@@ -44,13 +52,15 @@ export interface CivicDatasetSnapshot {
   manifesto_promises: ManifestoPromise[];
   ministers: MinisterProfile[];
   stories: Story[];
-  party_funding: unknown[];
-  corporate_donors: unknown[];
+  party_funding: PartyFundingData;
+  corporate_donors: CorporateDonorsData;
   party_annual_income: PartyAnnualIncomeRecord[];
-  party_meta_map: Record<string, unknown>;
-  bonds_meta: Record<string, unknown>;
+  party_meta_map: PartyMetaMap;
+  bonds_meta: BondsMeta;
   fact_check_claims: FactCheckClaim[];
   viral_patterns: unknown[];
 }
 
 export type CivicDatasetPayload = CivicDatasetSnapshot[DatasetKey];
+
+export type CivicDatasetSubmission = FactCheckSubmission;

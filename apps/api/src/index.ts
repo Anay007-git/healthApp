@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
 import type { CivicLensDatabase } from "@civiclens/database";
-import { initDatabase } from "@civiclens/database";
+import { initDatabase } from "@civiclens/database/server";
 import { aiEngine } from "@civiclens/ai";
 import { newsletterSubscribeSchema, askQuerySchema, claimVerifySchema, claimSubmitSchema } from "@civiclens/validation";
 import { brandConfig } from "@civiclens/config";
-import { ensurePostgresReady, getPostgresTableCounts, isPostgresUrl } from "@civiclens/database";
+import { ensurePostgresReady, getPostgresTableCounts, isPostgresUrl } from "@civiclens/database/server";
 
 const app = express();
 app.use(cors());

@@ -1,34 +1,17 @@
 import type { CivicLensDatabase } from "./index";
-import type { CivicDatasetSnapshot } from "./pg/datasets";
+import type { CivicDatasetSnapshot, CivicDatasetSubmission } from "./pg/datasets";
 import { loadCivicDatasetsFromPostgres, loadFactCheckSubmissionsFromPostgres } from "./pg/load";
 import { isPostgresUrl } from "./pg/client";
-import { ensurePostgresReady } from "./pg/seed-data";
+import { hydrateDatabaseFromSnapshot } from "./index";
 
 let databasePromise: Promise<CivicLensDatabase> | null = null;
 let resolvedDatabase: CivicLensDatabase | null = null;
 
 export async function createDatabaseFromSnapshot(
   snapshot: CivicDatasetSnapshot,
-  submissions: unknown[] = []
+  submissions: CivicDatasetSubmission[] = []
 ): Promise<CivicLensDatabase> {
-  const { CivicLensDatabase: DbClass } = await import("./index");
-  return new DbClass({
-    sources: snapshot.sources,
-    evidences: snapshot.evidences,
-    schemes: snapshot.schemes,
-    stateFactsData: snapshot.state_facts,
-    cagReports: snapshot.cag_reports,
-    manifestoPromises: snapshot.manifesto_promises,
-    ministersData: snapshot.ministers,
-    stories: snapshot.stories,
-    partyFundingData: snapshot.party_funding,
-    corporateDonorsData: snapshot.corporate_donors,
-    partyAnnualIncomeData: snapshot.party_annual_income,
-    partyMetaMap: snapshot.party_meta_map,
-    bondsMeta: snapshot.bonds_meta,
-    factCheckClaims: snapshot.fact_check_claims,
-    userSubmissions: submissions,
-  });
+  return hydrateDatabaseFromSnapshot(snapshot, submissions);
 }
 
 export async function initDatabase(): Promise<CivicLensDatabase> {
@@ -44,6 +27,7 @@ export async function initDatabase(): Promise<CivicLensDatabase> {
         let snapshot = await loadCivicDatasetsFromPostgres();
         if (!snapshot) {
           try {
+            const { ensurePostgresReady } = await import("./pg/seed-data");
             await ensurePostgresReady();
             snapshot = await loadCivicDatasetsFromPostgres();
           } catch (error) {
@@ -53,7 +37,7 @@ export async function initDatabase(): Promise<CivicLensDatabase> {
 
         if (snapshot) {
           const submissions = await loadFactCheckSubmissionsFromPostgres();
-          resolvedDatabase = await createDatabaseFromSnapshot(snapshot, submissions);
+          resolvedDatabase = hydrateDatabaseFromSnapshot(snapshot, submissions);
           console.log("[database] Loaded civic datasets from PostgreSQL");
           return resolvedDatabase;
         }

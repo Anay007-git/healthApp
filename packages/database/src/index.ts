@@ -1158,6 +1158,28 @@ export class CivicLensDatabase {
 
 export const db = new CivicLensDatabase();
 export { COMPREHENSIVE_LEADERS, LEADER_PHOTOS };
-export { initDatabase, getDatabase, createDatabaseFromSnapshot, isPostgresUrl } from "./create-database";
-export { ensurePostgresReady, seedPostgresFromMemory, getPostgresTableCounts } from "./pg/seed-data";
-export type { CivicDatasetSnapshot } from "./pg/datasets";
+export type { CivicDatasetSnapshot, CivicDatasetSubmission } from "./pg/datasets";
+
+/** Browser-safe: hydrate in-memory DB from a JSON snapshot (no Postgres). */
+export function hydrateDatabaseFromSnapshot(
+  snapshot: import("./pg/datasets").CivicDatasetSnapshot,
+  submissions: FactCheckSubmission[] = []
+): CivicLensDatabase {
+  return new CivicLensDatabase({
+    sources: snapshot.sources,
+    evidences: snapshot.evidences,
+    schemes: snapshot.schemes,
+    stateFactsData: snapshot.state_facts,
+    cagReports: snapshot.cag_reports,
+    manifestoPromises: snapshot.manifesto_promises,
+    ministersData: snapshot.ministers,
+    stories: snapshot.stories,
+    partyFundingData: snapshot.party_funding,
+    corporateDonorsData: snapshot.corporate_donors,
+    partyAnnualIncomeData: snapshot.party_annual_income,
+    partyMetaMap: snapshot.party_meta_map,
+    bondsMeta: snapshot.bonds_meta,
+    factCheckClaims: snapshot.fact_check_claims,
+    userSubmissions: submissions,
+  });
+}

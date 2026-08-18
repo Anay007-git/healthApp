@@ -1,5 +1,5 @@
-import { CivicLensDatabase, createDatabaseFromSnapshot, db as seedDb } from "@civiclens/database";
-import type { CivicDatasetSnapshot } from "@civiclens/database";
+import { hydrateDatabaseFromSnapshot, db as seedDb } from "@civiclens/database";
+import type { CivicDatasetSnapshot, CivicLensDatabase } from "@civiclens/database";
 
 let hydratedDb: CivicLensDatabase | null = null;
 let hydratePromise: Promise<CivicLensDatabase> | null = null;
@@ -31,7 +31,7 @@ export async function hydrateCivicDbFromApi(baseUrl = "/api"): Promise<CivicLens
           return seedDb;
         }
 
-        const snapshot: CivicDatasetSnapshot = {
+        const snapshot = {
           sources: json.data.sources ?? [],
           evidences: [],
           schemes: json.data.schemes ?? [],
@@ -49,9 +49,9 @@ export async function hydrateCivicDbFromApi(baseUrl = "/api"): Promise<CivicLens
           bonds_meta: json.data.bondsMeta ?? {},
           fact_check_claims: json.data.factChecks ?? [],
           viral_patterns: [],
-        };
+        } as CivicDatasetSnapshot;
 
-        hydratedDb = await createDatabaseFromSnapshot(snapshot);
+        hydratedDb = hydrateDatabaseFromSnapshot(snapshot);
         dataSource = json.dataSource === "postgresql" ? "api" : "memory";
         return hydratedDb;
       } catch {
