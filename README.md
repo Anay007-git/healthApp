@@ -58,16 +58,18 @@ npx pnpm dev:api
 
 ### Environment variables (TruthCheck)
 
+**You do not need any API key or environment variable for live fact-checking.**
+
+Discovery uses public Google News RSS, Wikipedia, and (in the browser) a CORS-safe RSS JSON fallback. `AI_API_KEY` is optional and only used if you want an LLM to *rephrase* already-retrieved evidence.
+
 ```bash
 # Optional. Without this key the fact-check engine stays fully deterministic.
-AI_API_KEY=
-AI_PROVIDER=openai
-AI_MODEL=gpt-4o-mini
-# Optional reserved search key; public discovery endpoints are used if unset.
-SEARCH_API_KEY=
+# AI_API_KEY=
+# AI_PROVIDER=openai
+# AI_MODEL=gpt-4o-mini
 ```
 
-Do not expose these variables to the browser.
+Do not put these variables in frontend `VITE_*` env. They are unused for TruthCheck live sports/news retrieval.
 
 ---
 
