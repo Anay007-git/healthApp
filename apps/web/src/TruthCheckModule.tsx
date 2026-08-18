@@ -42,12 +42,16 @@ const SAMPLE_VIRAL_CLAIMS = [
     text: "Breaking: Govt announced 18% GST tax on all GPay, PhonePe, and UPI payments above ₹2,000 starting from next week. Share with all shopkeepers.",
   },
   {
-    label: "💵 ₹500 Note Green Strip",
-    text: "Audio from bank manager: RBI declared all ₹500 notes where the green strip is near Gandhi photo fake and invalid from today. Check your notes immediately.",
+    label: "🏏 Bangladesh Test Win vs Australia",
+    text: "Bangladesh won test against Australia",
   },
   {
-    label: "🗳️ SC Banned EVMs",
-    text: "Supreme Court 5-judge bench ordered immediate ban on EVMs and mandated 100% paper ballots for all upcoming elections in landmark order.",
+    label: "🚀 Chandrayaan-3 Moon Landing",
+    text: "India Chandrayaan-3 successfully soft-landed on Moon south pole",
+  },
+  {
+    label: "💵 ₹500 Note Green Strip",
+    text: "Audio from bank manager: RBI declared all ₹500 notes where the green strip is near Gandhi photo fake and invalid from today. Check your notes immediately.",
   },
   {
     label: "🏥 CAG ₹7.5L Cr Ayushman Scam",
@@ -60,9 +64,11 @@ const SAMPLE_VIRAL_CLAIMS = [
 ];
 
 const CATEGORY_TABS: { id: ClaimCategory | "ALL"; label: string }[] = [
-  { id: "ALL", label: "All Radar (10)" },
+  { id: "ALL", label: "All Radar" },
   { id: "SCHEMES", label: "Schemes & Subsidies" },
   { id: "ECONOMY", label: "Economy & Currency" },
+  { id: "SPORTS", label: "Sports & Records" },
+  { id: "SCIENCE_TECH", label: "Science & Space" },
   { id: "CAG_CORRUPTION", label: "CAG & Corruption" },
   { id: "ELECTIONS", label: "Elections & Voting" },
   { id: "HEALTH", label: "Health & Alerts" },

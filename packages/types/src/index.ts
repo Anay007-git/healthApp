@@ -322,6 +322,9 @@ export type ClaimCategory =
   | "CAG_CORRUPTION"
   | "GOVERNANCE"
   | "LEGAL"
+  | "SPORTS"
+  | "SCIENCE_TECH"
+  | "WORLD_NEWS"
   | "GENERAL";
 
 export interface LinguisticSignal {
