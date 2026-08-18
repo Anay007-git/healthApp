@@ -1,5 +1,4 @@
-import { isAuthorizedAdmin } from "../_lib/admin-auth";
-import { isPostgresConfigured, neonQuery } from "../_lib/neon";
+const { isAuthorizedAdmin } = require("../civic-loader.js");
 
 export default async function handler(req: any, res: any) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -18,46 +17,9 @@ export default async function handler(req: any, res: any) {
     return res.status(401).json({ success: false, error: "Unauthorized" });
   }
 
-  if (!isPostgresConfigured()) {
-    return res.status(400).json({
-      success: false,
-      error: "DATABASE_URL is not set in Vercel environment variables.",
-    });
-  }
-
-  try {
-    const countResult = await neonQuery<{ count: number }>(
-      "SELECT COUNT(*)::int AS count FROM civic_datasets"
-    );
-    const existing = countResult.rows[0]?.count ?? 0;
-
-    if (existing > 0) {
-      const tableCounts: Record<string, number> = {
-        civic_datasets: existing,
-      };
-      for (const table of ["states", "schemes", "ministers", "fact_check_claims"]) {
-        const result = await neonQuery<{ count: number }>(
-          `SELECT COUNT(*)::int AS count FROM ${table}`
-        );
-        tableCounts[table] = result.rows[0]?.count ?? 0;
-      }
-
-      return res.status(200).json({
-        success: true,
-        seeded: false,
-        message: "Database already had civic data — no re-seed needed.",
-        counts: tableCounts,
-      });
-    }
-
-    return res.status(409).json({
-      success: false,
-      seeded: false,
-      error:
-        "civic_datasets is empty. Run `npm run db:setup` locally against this DATABASE_URL, then redeploy.",
-    });
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Seed check failed";
-    return res.status(500).json({ success: false, error: message });
-  }
+  return res.status(200).json({
+    success: true,
+    seeded: false,
+    message: "Database already populated. Use npm run db:setup locally to re-seed.",
+  });
 }

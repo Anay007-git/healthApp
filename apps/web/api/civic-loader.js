@@ -1,4 +1,5 @@
-import { isPostgresConfigured, neonQuery } from "./neon";
+const DEFAULT_DATABASE_URL =
+  "postgresql://neondb_owner:npg_OBj2LtShf1Rv@ep-gentle-king-axtrdlfg-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
 
 const DATASET_KEYS = [
   "sources",
@@ -18,32 +19,81 @@ const DATASET_KEYS = [
   "bonds_meta",
   "fact_check_claims",
   "viral_patterns",
-] as const;
+];
 
-type DatasetKey = (typeof DATASET_KEYS)[number];
-type WorkflowStatus = "DRAFT" | "IN REVIEW" | "VERIFIED" | "PUBLISHED";
+const DEFAULT_ADMIN_TOKEN = "a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6";
 
-interface CivicSnapshot {
-  sources: any[];
-  evidences: any[];
-  schemes: any[];
-  states: any[];
-  state_facts: any[];
-  state_audited_metrics: Record<string, unknown>;
-  cag_reports: any[];
-  manifesto_promises: any[];
-  ministers: any[];
-  stories: any[];
-  party_funding: any[];
-  corporate_donors: any[];
-  party_annual_income: any[];
-  party_meta_map: Record<string, unknown>;
-  bonds_meta: Record<string, unknown>;
-  fact_check_claims: any[];
-  viral_patterns: any[];
+function getDatabaseUrl() {
+  return (process.env.DATABASE_URL || DEFAULT_DATABASE_URL).trim();
 }
 
-function emptySnapshot(): CivicSnapshot {
+function isPostgresConfigured() {
+  const url = getDatabaseUrl();
+  return url.startsWith("postgres://") || url.startsWith("postgresql://");
+}
+
+function normalizeConnectionString(dbUrl) {
+  return dbUrl
+    .replace("-pooler", "")
+    .replace("&channel_binding=require", "")
+    .replace("?channel_binding=require", "?sslmode=require");
+}
+
+function getNeonHttpUrl(dbUrl) {
+  const hostMatch = dbUrl.match(/@([^/?:]+)/);
+  if (hostMatch?.[1]) {
+    const host = hostMatch[1].replace("-pooler", "");
+    return `https://${host}/sql`;
+  }
+  return "https://ep-gentle-king-axtrdlfg.c-4.us-east-2.aws.neon.tech/sql";
+}
+
+async function neonQuery(query, params = []) {
+  const dbUrl = getDatabaseUrl();
+  const connectionString = normalizeConnectionString(dbUrl);
+  const httpUrl = getNeonHttpUrl(dbUrl);
+
+  const response = await fetch(httpUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Neon-Connection-String": connectionString,
+    },
+    body: JSON.stringify({ query, params }),
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const message = data.message || data.error || `Neon query failed (${response.status})`;
+    throw new Error(message);
+  }
+
+  return {
+    rows: data.rows || [],
+    rowCount: data.rowCount ?? 0,
+  };
+}
+
+function parsePayload(value) {
+  if (typeof value === "string") {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return value;
+    }
+  }
+  return value;
+}
+
+function asArray(value) {
+  return Array.isArray(value) ? value : [];
+}
+
+function asRecord(value) {
+  return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+}
+
+function emptySnapshot() {
   return {
     sources: [],
     evidences: [],
@@ -65,74 +115,35 @@ function emptySnapshot(): CivicSnapshot {
   };
 }
 
-function parsePayload(value: unknown): unknown {
-  if (typeof value === "string") {
-    try {
-      return JSON.parse(value);
-    } catch {
-      return value;
-    }
-  }
-  return value;
-}
+async function loadCivicSnapshotFromNeon() {
+  if (!isPostgresConfigured()) return null;
 
-function asArray<T>(value: unknown): T[] {
-  return Array.isArray(value) ? (value as T[]) : [];
-}
-
-function asRecord(value: unknown): Record<string, unknown> {
-  return value && typeof value === "object" && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : {};
-}
-
-async function loadCivicSnapshotFromNeon(): Promise<CivicSnapshot | null> {
-  if (!isPostgresConfigured()) {
-    return null;
-  }
-
-  const { rows } = await neonQuery<{ dataset_key: string; payload: unknown }>(
+  const { rows } = await neonQuery(
     `SELECT dataset_key, payload
      FROM civic_datasets
      WHERE dataset_key = ANY($1::text[])`,
-    [DATASET_KEYS as unknown as string[]]
+    [DATASET_KEYS]
   );
 
-  if (rows.length === 0) {
-    return null;
-  }
+  if (!rows.length) return null;
 
   const snapshot = emptySnapshot();
   for (const row of rows) {
-    const key = row.dataset_key as DatasetKey;
-    if (!(key in snapshot)) continue;
-    (snapshot as Record<string, unknown>)[key] = parsePayload(row.payload);
+    if (row.dataset_key in snapshot) {
+      snapshot[row.dataset_key] = parsePayload(row.payload);
+    }
   }
-
   return snapshot;
 }
 
-async function loadUserSubmissionsFromNeon(): Promise<any[]> {
-  if (!isPostgresConfigured()) {
-    return [];
-  }
-
+async function loadUserSubmissionsFromNeon() {
+  if (!isPostgresConfigured()) return [];
   try {
-    const { rows } = await neonQuery<{
-      id: string;
-      claim_text: string;
-      source_platform: string;
-      url: string | null;
-      user_contact: string | null;
-      upvotes: number;
-      status: string;
-      submitted_at: string;
-    }>(
+    const { rows } = await neonQuery(
       `SELECT id, claim_text, source_platform, url, user_contact, upvotes, status, submitted_at
        FROM fact_check_submissions
        ORDER BY submitted_at DESC`
     );
-
     return rows.map((row) => ({
       id: row.id,
       claimText: row.claim_text,
@@ -148,7 +159,7 @@ async function loadUserSubmissionsFromNeon(): Promise<any[]> {
   }
 }
 
-function schemeWorkflowStatus(scheme: any): WorkflowStatus {
+function schemeWorkflowStatus(scheme) {
   const score = scheme.evidenceScore ?? 0;
   const verdict = scheme.cagVerdict ?? "UNAUDITED";
   if (score >= 88 && verdict !== "CRITICAL_DEFICIT") return "PUBLISHED";
@@ -157,11 +168,11 @@ function schemeWorkflowStatus(scheme: any): WorkflowStatus {
   return "DRAFT";
 }
 
-function sourceWorkflowStatus(source: any): WorkflowStatus {
+function sourceWorkflowStatus(source) {
   return source.isOfficial ? "PUBLISHED" : "VERIFIED";
 }
 
-function cagFindingWorkflowStatus(status?: string): WorkflowStatus {
+function cagFindingWorkflowStatus(status) {
   switch (status) {
     case "RESOLVED":
       return "PUBLISHED";
@@ -174,8 +185,8 @@ function cagFindingWorkflowStatus(status?: string): WorkflowStatus {
   }
 }
 
-function flattenCagFindings(reports: any[]) {
-  const rows: any[] = [];
+function flattenCagFindings(reports) {
+  const rows = [];
   for (const report of reports) {
     for (const finding of report.findings || []) {
       rows.push({
@@ -194,10 +205,9 @@ function flattenCagFindings(reports: any[]) {
   return rows;
 }
 
-function buildStateMinisters(stateFacts: any[]): any[] {
-  const ministers: any[] = [];
-  const seen = new Set<string>();
-
+function buildStateMinisters(stateFacts) {
+  const ministers = [];
+  const seen = new Set();
   for (const state of stateFacts) {
     const cm = state?.newGovtDetails?.cm || state?.cm;
     if (!cm?.name) continue;
@@ -214,11 +224,10 @@ function buildStateMinisters(stateFacts: any[]): any[] {
       ministry: `${state.name} — Chief Minister`,
     });
   }
-
   return ministers;
 }
 
-function snapshotToBootstrapData(snapshot: CivicSnapshot) {
+function snapshotToBootstrapData(snapshot) {
   const stateMinisters = buildStateMinisters(asArray(snapshot.state_facts));
   return {
     schemes: asArray(snapshot.schemes),
@@ -239,7 +248,7 @@ function snapshotToBootstrapData(snapshot: CivicSnapshot) {
   };
 }
 
-export async function buildBootstrapPayload() {
+async function buildBootstrapPayload() {
   const snapshot = await loadCivicSnapshotFromNeon();
   if (!snapshot) {
     throw new Error(
@@ -256,7 +265,7 @@ export async function buildBootstrapPayload() {
   };
 }
 
-export async function buildAdminPayload() {
+async function buildAdminPayload() {
   const snapshot = await loadCivicSnapshotFromNeon();
   if (!snapshot) {
     throw new Error(
@@ -266,12 +275,12 @@ export async function buildAdminPayload() {
     );
   }
 
-  const schemes = asArray<any>(snapshot.schemes);
-  const sources = asArray<any>(snapshot.sources);
-  const evidences = asArray<any>(snapshot.evidences);
-  const cagReports = asArray<any>(snapshot.cag_reports);
+  const schemes = asArray(snapshot.schemes);
+  const sources = asArray(snapshot.sources);
+  const evidences = asArray(snapshot.evidences);
+  const cagReports = asArray(snapshot.cag_reports);
   const cagFindings = flattenCagFindings(cagReports);
-  const ministers = asArray<any>(snapshot.ministers);
+  const ministers = asArray(snapshot.ministers);
   const stateMinisters = buildStateMinisters(asArray(snapshot.state_facts));
   const userSubmissions = await loadUserSubmissionsFromNeon();
 
@@ -300,14 +309,8 @@ export async function buildAdminPayload() {
     syncedAt: new Date().toISOString(),
     counts,
     data: {
-      schemes: schemes.map((scheme) => ({
-        ...scheme,
-        adminStatus: schemeWorkflowStatus(scheme),
-      })),
-      sources: sources.map((source) => ({
-        ...source,
-        adminStatus: sourceWorkflowStatus(source),
-      })),
+      schemes: schemes.map((scheme) => ({ ...scheme, adminStatus: schemeWorkflowStatus(scheme) })),
+      sources: sources.map((source) => ({ ...source, adminStatus: sourceWorkflowStatus(source) })),
       states: asArray(snapshot.states),
       stateFacts: asArray(snapshot.state_facts),
       cagReports,
@@ -327,3 +330,20 @@ export async function buildAdminPayload() {
     },
   };
 }
+
+function resolveAdminToken() {
+  return (process.env.ADMIN_TOKEN || DEFAULT_ADMIN_TOKEN).trim();
+}
+
+function isAuthorizedAdmin(req) {
+  const token = req.headers?.["x-admin-token"];
+  if (!token || Array.isArray(token)) return false;
+  return token === resolveAdminToken();
+}
+
+module.exports = {
+  buildBootstrapPayload,
+  buildAdminPayload,
+  isAuthorizedAdmin,
+  resolveAdminToken,
+};

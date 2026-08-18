@@ -1,4 +1,7 @@
-import { buildBootstrapPayload } from "./_lib/civic-data";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const { buildBootstrapPayload } = require("./civic-loader.js");
 
 export default async function handler(req: any, res: any) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -17,6 +20,7 @@ export default async function handler(req: any, res: any) {
     return res.status(200).json(await buildBootstrapPayload());
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Bootstrap failed";
+    console.error("[bootstrap]", message);
     return res.status(500).json({ success: false, error: message });
   }
 }

@@ -1,7 +1,6 @@
 import {
   hydrateDatabaseFromSnapshot,
   db as seedDb,
-  buildAdminDatasetsPayload,
   type CivicLensDatabase,
   type CivicDatasetSnapshot,
   type AdminDatasetsPayload,
@@ -9,75 +8,51 @@ import {
 
 export type { AdminDatasetsPayload, AdminCagFindingRow, AdminDatasetCounts, AdminWorkflowStatus } from "@civiclens/database";
 
-async function fetchBootstrapFallback(): Promise<AdminDatasetsPayload> {
-  const res = await fetch("/api/bootstrap");
-  if (!res.ok) {
-    throw new Error(`Bootstrap fallback failed (${res.status})`);
+async function fetchJsonWithFallback(urls: string[], init?: RequestInit) {
+  let lastError = "Request failed";
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, init);
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        lastError = body.error ? String(body.error) : `HTTP ${res.status} from ${url}`;
+        continue;
+      }
+      const json = await res.json();
+      if (json?.success && json?.data) {
+        return json;
+      }
+      lastError = `Invalid response from ${url}`;
+    } catch (err: unknown) {
+      lastError = err instanceof Error ? err.message : `Failed to fetch ${url}`;
+    }
   }
+  throw new Error(lastError);
+}
 
-  const json = await res.json();
-  if (!json?.success || !json?.data) {
-    throw new Error("Invalid bootstrap response");
-  }
+async function fetchBootstrapPayload() {
+  return fetchJsonWithFallback(["/api/bootstrap", "/civic-bootstrap.json"]);
+}
 
-  const data = json.data;
-  const snapshot: CivicDatasetSnapshot = {
-    sources: data.sources || [],
-    evidences: [],
-    schemes: data.schemes || [],
-    states: data.states || [],
-    state_facts: data.stateFacts || [],
-    state_audited_metrics: {},
-    cag_reports: data.cagReports || [],
-    manifesto_promises: data.manifestoPromises || [],
-    ministers: data.ministers || [],
-    stories: data.stories || [],
-    party_funding: data.partyFunding || [],
-    corporate_donors: data.corporateDonors || [],
-    party_annual_income: data.partyAnnualIncome || [],
-    party_meta_map: data.partyMetaMap || {},
-    bonds_meta: data.bondsMeta || {},
-    fact_check_claims: data.factChecks || [],
-    viral_patterns: [],
-  };
-
-  const db = hydrateDatabaseFromSnapshot(snapshot);
-  return buildAdminDatasetsPayload(db);
+async function fetchAdminPayload(adminToken: string) {
+  return fetchJsonWithFallback(["/api/admin/datasets", "/civic-admin.json"], {
+    headers: { "X-Admin-Token": adminToken },
+  });
 }
 
 export async function fetchAdminDatasets(adminToken: string): Promise<AdminDatasetsPayload> {
-  const res = await fetch("/api/admin/datasets", {
-    headers: {
-      "X-Admin-Token": adminToken,
-    },
-  });
-
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    const detail = body.error ? String(body.error) : `Failed to sync admin datasets (${res.status})`;
-
-    if (res.status >= 500) {
-      try {
-        return await fetchBootstrapFallback();
-      } catch {
-        throw new Error(detail);
-      }
-    }
-
-    throw new Error(detail);
+  try {
+    const json = await fetchAdminPayload(adminToken);
+    return {
+      dataSource: json.dataSource,
+      syncedAt: json.syncedAt,
+      counts: json.counts,
+      data: json.data,
+    };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to sync datasets";
+    throw new Error(message);
   }
-
-  const json = await res.json();
-  if (!json?.success || !json?.data) {
-    throw new Error("Invalid admin datasets response");
-  }
-
-  return {
-    dataSource: json.dataSource,
-    syncedAt: json.syncedAt,
-    counts: json.counts,
-    data: json.data,
-  };
 }
 
 function snapshotFromPayload(payload: AdminDatasetsPayload): CivicDatasetSnapshot {
