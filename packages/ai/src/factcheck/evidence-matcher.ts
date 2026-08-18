@@ -10,6 +10,7 @@ import {
   retirementAttributedToClaim,
 } from "./query-expansion";
 import { sportsResultConflict, parseSportsResult, sportsSubjects, sportsSubjectsOverlap } from "./sports-result";
+import { isOffTopicSportsEvidence } from "./sport-discipline";
 
 const SUPPORT_CUES =
   /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|stepped down|won|beat|defeated|victory|thrashed|lift(?:s|ed)?|champion|died|dies|dead|death|passed away|demise|obituar(?:y|ies)?)\b/i;
@@ -20,6 +21,23 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
   const claim = atomicClaim;
   const text = sanitizeEvidenceText(`${evidence.evidenceText} ${evidence.evidenceSummary} ${evidence.sourceName}`);
   const injection = containsPromptInjection(evidence.evidenceText || "");
+
+  if (isOffTopicSportsEvidence(claim, text)) {
+    return {
+      ...evidence,
+      atomicClaim: claim,
+      evidenceText: text,
+      supportsClaim: false,
+      contradictsClaim: false,
+      stance: "INSUFFICIENT",
+      relevanceScore: 0,
+      temporalMatchScore: 20,
+      entityMatchScore: 15,
+      numericMatchScore: 50,
+      overallEvidenceScore: 5,
+      whyItMatters: "Headline is a different sport or unrelated football story, not evidence for this tournament result.",
+    };
+  }
 
   const claimEnt = extractEntities(claim);
   const entityMatchScore = entityOverlapScore(claimEnt, text);

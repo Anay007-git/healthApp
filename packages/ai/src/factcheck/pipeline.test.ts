@@ -15,6 +15,7 @@ import { expandSearchQueries, retirementAttributedToClaim } from "./query-expans
 import { extractClaimRelevantPassages } from "./passages";
 import { parseGoogleNewsRss, articlesFromRss2Json } from "./live-knowledge";
 import { classifySourceForTopic } from "./source-quality";
+import { isOffTopicSportsEvidence } from "./sport-discipline";
 
 function ev(partial: Partial<StructuredEvidence> & { evidenceText: string; sourceName: string }): StructuredEvidence {
   return {
@@ -699,5 +700,33 @@ describe("CivicLens evidence-first factcheck pipeline", () => {
     assert.ok(["VERIFIED_TRUE", "PARTIALLY_TRUE"].includes(result.verdict));
     assert.notEqual(result.verdict, "FALSE");
     assert.ok(result.confidenceScore > 55);
+  });
+
+  test("fifa world cup claim ignores hockey and transfer gossip headlines", () => {
+    const claim = "Spain lifts 2026 fifa world cup";
+    assert.equal(
+      isOffTopicSportsEvidence(claim, "FIH Hockey Men's World Cup 2026, Game 6: Spain vs South Africa"),
+      true
+    );
+    assert.equal(isOffTopicSportsEvidence(claim, "Spain Women's Hockey World Cup 2026 Squad & History"), true);
+    assert.equal(isOffTopicSportsEvidence(claim, "Rodri arrives at Barcelona to complete dream move"), true);
+    assert.equal(
+      isOffTopicSportsEvidence(claim, "Key takeaways from the World Cup 2026 final as Spain beat Argentina"),
+      false
+    );
+
+    const hockey = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName: "FIH Hockey Men's World Cup 2026: Spain vs South Africa",
+        publisher: "FIH",
+        sourceUrl: "https://news.google.com/rss/hockey",
+        sourceTier: 4,
+        sourceQualityScore: 18,
+        isDiscoveryOnly: true,
+        evidenceText: "FIH Hockey Men's World Cup 2026, Game 6: Spain vs South Africa",
+      })
+    );
+    assert.equal(hockey.stance, "INSUFFICIENT");
   });
 });

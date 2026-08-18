@@ -9,6 +9,7 @@ import { db } from "@civiclens/database";
 import { clampClaim } from "./sanitize";
 import { decomposeClaim } from "./claim-decomposer";
 import { classifyClaim, toClaimCategory, isTimeSensitive } from "./claim-classifier";
+import { isOffTopicSportsEvidence } from "./sport-discipline";
 import { detectLinguisticSignals } from "./linguistic";
 import { matchKnownFactChecks, matchViralPhrase } from "./cache-matcher";
 import { sportsSubjectsOverlap } from "./sports-result";
@@ -307,6 +308,19 @@ function computeTopSummary(a: AtomicClaimResult): string {
   return top ? `${a.verdict}: ${top.evidenceSummary}` : a.claim;
 }
 
+function evidenceForDisplay(claim: string, items: StructuredEvidence[]): StructuredEvidence[] {
+  const ranked = [...items]
+    .filter((e) => !isOffTopicSportsEvidence(claim, `${e.sourceName} ${e.evidenceText}`))
+    .sort((a, b) => {
+      const order: Record<string, number> = { SUPPORTS: 0, CONTRADICTS: 1, NEUTRAL: 2, INSUFFICIENT: 9 };
+      const stanceDiff = (order[a.stance] ?? 8) - (order[b.stance] ?? 8);
+      if (stanceDiff !== 0) return stanceDiff;
+      return b.overallEvidenceScore - a.overallEvidenceScore;
+    });
+  const useful = ranked.filter((e) => e.stance !== "INSUFFICIENT" || e.overallEvidenceScore >= 45);
+  return (useful.length ? useful : ranked.filter((e) => e.stance !== "INSUFFICIENT")).slice(0, 6);
+}
+
 function buildResult(args: {
   text: string;
   verdict: FactCheckVerdict;
@@ -324,8 +338,9 @@ function buildResult(args: {
   evidenceId?: string;
 }): ClaimAnalysisResult {
   const icon = args.verdict === "VERIFIED_TRUE" || args.verdict === "PARTIALLY_TRUE" ? "✅" : args.verdict === "UNVERIFIED" ? "🔍" : "❌";
-  const sources = args.evidence.filter((e) => e.stance !== "INSUFFICIENT" || e.sourceTier <= 2).slice(0, 6);
-  const primarySources = (sources.length ? sources : args.evidence.slice(0, 3)).map(toSource);
+  const displayEvidence = evidenceForDisplay(args.text, args.evidence);
+  const sources = displayEvidence.filter((e) => e.stance !== "INSUFFICIENT" || e.sourceTier <= 2).slice(0, 6);
+  const primarySources = (sources.length ? sources : displayEvidence.slice(0, 3)).map(toSource);
 
   const shareableDebunkText = `${icon} *CIVICLENS TRUTHCHECK*\n\n⚖️ *VERDICT*: ${args.verdict}\n📊 *CONFIDENCE*: ${args.confidenceScore}/100\n📌 *CLAIM*: "${args.text}"\n\n${icon} *WHY*: ${args.truthSummary}\n🛡️ CivicLens.in`;
 
@@ -348,6 +363,6 @@ function buildResult(args: {
     methodology: args.methodology,
     conflicts: args.conflicts,
     limitations: args.limitations,
-    structuredEvidence: args.evidence.slice(0, 12),
+    structuredEvidence: displayEvidence,
   };
 }

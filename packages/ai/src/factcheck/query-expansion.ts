@@ -73,10 +73,13 @@ export function expandSearchQueries(claim: string): string[] {
   }
 
   if (sides.winner && (worldCup || sides.tournament)) {
-    const tourney = worldCup ? "World Cup" : "final";
+    const tourney = worldCup && /\bfifa\b/i.test(claim) ? "FIFA World Cup" : worldCup ? "World Cup" : "final";
     const y = year ? String(year) : "";
     queries.unshift(`${sides.winner} won ${y} ${tourney}`.replace(/\s+/g, " ").trim());
-    queries.push(`${y} ${tourney} winner ${sides.winner}`.replace(/\s+/g, " ").trim());
+    queries.push(`${y} ${tourney} final winner`.replace(/\s+/g, " ").trim());
+    if (/\bfifa\b/i.test(claim)) {
+      queries.unshift(`FIFA World Cup ${y} final ${sides.winner}`.replace(/\s+/g, " ").trim());
+    }
   }
 
   const playerSide = playerNationalTeam(claim);

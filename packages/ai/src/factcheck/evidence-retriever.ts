@@ -8,6 +8,7 @@ import { cacheGet, cacheSet, ttlForTopic } from "./cache";
 import { db } from "@civiclens/database";
 import { extractEntities } from "./entities";
 import { deathAttributedToClaim, isDeathClaim, retirementAttributedToClaim } from "./query-expansion";
+import { isOffTopicSportsEvidence } from "./sport-discipline";
 
 export type EvidenceRetriever = (claim: string, topic: string) => Promise<StructuredEvidence[]>;
 
@@ -43,7 +44,7 @@ function baseEvidence(
 }
 
 export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) => {
-  const key = `ev:v6:${topic}:${claim.toLowerCase().slice(0, 180)}`;
+  const key = `ev:v7:${topic}:${claim.toLowerCase().slice(0, 180)}`;
   const cached = cacheGet<StructuredEvidence[]>(key);
   if (cached) return cached;
 
@@ -78,22 +79,24 @@ export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) 
     if (!live) return [] as StructuredEvidence[];
     const items: StructuredEvidence[] = [];
     if (live.recentArticles?.length) {
-      for (const [idx, art] of live.recentArticles.slice(0, 6).entries()) {
+      for (const [idx, art] of live.recentArticles.slice(0, 12).entries()) {
+        const title = sanitizeEvidenceText(art.title).slice(0, 280);
+        if (isOffTopicSportsEvidence(claim, title)) continue;
         const meta = classifySourceForTopic(art.link, art.source, topic, claim);
         const knownOutlet = meta.tier <= 2;
         items.push(
           baseEvidence({
             id: `gn-${idx}-${art.source}`,
             atomicClaim: claim,
-            sourceName: art.title,
+            sourceName: title,
             sourceUrl: art.link,
             publisher: art.source,
             publicationDate: art.pubDate ? safeDate(art.pubDate) : undefined,
             sourceTier: meta.tier,
             sourceType: meta.type,
             sourceQualityScore: meta.quality,
-            evidenceText: art.title,
-            evidenceSummary: art.title,
+            evidenceText: title,
+            evidenceSummary: title,
             isDiscoveryOnly: !knownOutlet,
             whyItMatters: knownOutlet
               ? `${art.source} was found via Google News discovery, then scored as a named publisher. The headline is compared to the claim; coverage alone is not proof.`
