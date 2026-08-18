@@ -1,5 +1,4 @@
-import { initDatabase } from "@civiclens/database/server";
-import { createAdminDatasetsResponse } from "@civiclens/database/src/admin-api";
+import { initDatabase, createAdminDatasetsResponse, resolveAdminToken } from "@civiclens/database/server";
 
 export default async function handler(req: any, res: any) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -15,7 +14,7 @@ export default async function handler(req: any, res: any) {
   }
 
   const token = req.headers["x-admin-token"];
-  const expected = process.env.ADMIN_TOKEN || "civiclens_admin_secret_token_12345";
+  const expected = resolveAdminToken();
   if (!token || token !== expected) {
     return res.status(401).json({ success: false, error: "Unauthorized" });
   }

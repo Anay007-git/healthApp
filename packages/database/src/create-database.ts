@@ -24,25 +24,37 @@ export async function initDatabase(): Promise<CivicLensDatabase> {
       const { CivicLensDatabase: DbClass } = await import("./index");
 
       if (isPostgresUrl(process.env.DATABASE_URL)) {
-        let snapshot = await loadCivicDatasetsFromPostgres();
-        if (!snapshot) {
-          try {
-            const { ensurePostgresReady } = await import("./pg/seed-data");
-            await ensurePostgresReady();
-            snapshot = await loadCivicDatasetsFromPostgres();
-          } catch (error) {
-            console.warn("[database] Auto-seed failed — using in-memory seeds:", error);
+        try {
+          let snapshot = await loadCivicDatasetsFromPostgres();
+          const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+
+          if (!snapshot && !isServerless) {
+            try {
+              const { ensurePostgresReady } = await import("./pg/seed-data");
+              await ensurePostgresReady();
+              snapshot = await loadCivicDatasetsFromPostgres();
+            } catch (error) {
+              console.warn("[database] Auto-seed failed:", error);
+            }
           }
-        }
 
-        if (snapshot) {
-          const submissions = await loadFactCheckSubmissionsFromPostgres();
-          resolvedDatabase = hydrateDatabaseFromSnapshot(snapshot, submissions);
-          console.log("[database] Loaded civic datasets from PostgreSQL");
-          return resolvedDatabase;
-        }
+          if (snapshot) {
+            let submissions: CivicDatasetSubmission[] = [];
+            try {
+              submissions = await loadFactCheckSubmissionsFromPostgres();
+            } catch (error) {
+              console.warn("[database] fact_check_submissions load skipped:", error);
+            }
 
-        console.warn("[database] PostgreSQL configured but civic_datasets empty — using in-memory seeds");
+            resolvedDatabase = hydrateDatabaseFromSnapshot(snapshot, submissions);
+            console.log("[database] Loaded civic datasets from PostgreSQL");
+            return resolvedDatabase;
+          }
+
+          console.warn("[database] PostgreSQL configured but civic_datasets empty — using in-memory seeds");
+        } catch (error) {
+          console.warn("[database] Postgres load failed — using in-memory seeds:", error);
+        }
       }
 
       resolvedDatabase = new DbClass();

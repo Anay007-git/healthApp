@@ -1,12 +1,17 @@
 import express from "express";
 import cors from "cors";
 import type { CivicLensDatabase } from "@civiclens/database";
-import { initDatabase } from "@civiclens/database/server";
+import {
+  createAdminDatasetsResponse,
+  ensurePostgresReady,
+  getPostgresTableCounts,
+  initDatabase,
+  isPostgresUrl,
+  resolveAdminToken,
+} from "@civiclens/database/server";
 import { aiEngine } from "@civiclens/ai";
 import { newsletterSubscribeSchema, askQuerySchema, claimVerifySchema, claimSubmitSchema } from "@civiclens/validation";
 import { brandConfig } from "@civiclens/config";
-import { ensurePostgresReady, getPostgresTableCounts, isPostgresUrl } from "@civiclens/database/server";
-import { createAdminDatasetsResponse } from "@civiclens/database/src/admin-api";
 
 const app = express();
 app.use(cors());
@@ -205,7 +210,7 @@ app.post("/api/newsletter/subscribe", (req, res) => {
 // ADMIN ENDPOINTS (Headers protected)
 const adminAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const token = req.headers["x-admin-token"];
-  if (!token || token !== (process.env.ADMIN_TOKEN || "civiclens_admin_secret_token_12345")) {
+  if (!token || token !== resolveAdminToken()) {
     return res.status(401).json({ success: false, error: "Unauthorized: Invalid admin token" });
   }
   next();

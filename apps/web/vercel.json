@@ -1,5 +1,14 @@
 {
   "functions": {
+    "api/admin/datasets.ts": {
+      "maxDuration": 60
+    },
+    "api/bootstrap.ts": {
+      "maxDuration": 60
+    },
+    "api/admin/seed.ts": {
+      "maxDuration": 60
+    },
     "api/factcheck/verify.ts": {
       "maxDuration": 30
     }
