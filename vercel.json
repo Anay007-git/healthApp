@@ -27,6 +27,10 @@
   },
   "rewrites": [
     {
+      "source": "/favicon.ico",
+      "destination": "/favicon.svg"
+    },
+    {
       "source": "/admin/:path*",
       "destination": "/admin/index.html"
     },
