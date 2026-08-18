@@ -1,7 +1,7 @@
 import { FactCheckVerdict, StructuredEvidence, AtomicClaimResult, EvidenceConflict } from "@civiclens/types";
 import { independentSourceCount } from "./evidence-ranker";
 import { detectConflicts } from "./contradiction-detector";
-import { celebrityObituaryClaim, ministerResignationClaim } from "./query-expansion";
+import { celebrityObituaryClaim, isHighStakesPoliticalRumour, ministerResignationClaim } from "./query-expansion";
 import { parseSportsResult, sportsSubjectsOverlap } from "./sports-result";
 
 export interface VerdictComputation {
@@ -84,7 +84,13 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
     confidence = Math.min(96, 70 + primarySupport.length * 8 + indepSupport * 4);
     truthSummary = `Primary/official evidence supports the claim. ${primarySupport[0].publisher}: ${primarySupport[0].evidenceSummary}`;
     detailedDebunk = supports.map((e) => `${e.publisher} (${e.publicationDate || "undated"}): ${e.evidenceSummary}`).join(" ");
-  } else if (indepSupport >= 2 && highSupport.length >= 2 && contradicts.length === 0 && !anonymousOnly) {
+  } else if (
+    indepSupport >= 2 &&
+    highSupport.length >= 2 &&
+    contradicts.length === 0 &&
+    !anonymousOnly &&
+    !isHighStakesPoliticalRumour(atomicClaim)
+  ) {
     verdict = "VERIFIED_TRUE";
     confidence = Math.min(88, 58 + indepSupport * 8);
     truthSummary = `Independent reporting supports the claim. ${highSupport
@@ -155,6 +161,14 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
     verdict = "UNVERIFIED";
     confidence = 32;
     truthSummary = "Wikipedia cannot independently establish a time-sensitive political or government claim.";
+  }
+
+  if (isHighStakesPoliticalRumour(atomicClaim) && primarySupport.length === 0 && (verdict === "VERIFIED_TRUE" || verdict === "PARTIALLY_TRUE")) {
+    verdict = "UNVERIFIED";
+    confidence = Math.min(confidence, 38);
+    truthSummary =
+      "No primary official record (PIB/PMO/Rashtrapati Bhavan) confirms this. News that demands resignation or reports a colleague's resignation is not proof the leader resigned.";
+    limitations.push("High-stakes political resignation rumours require a primary government source, not opinion headlines.");
   }
 
   if (usable.length === 0 && evidence.length === 0) {

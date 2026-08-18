@@ -7,6 +7,7 @@ import {
   deathAttributedToClaim,
   isDeathClaim,
   isPoliticalDeathRumour,
+  isHighStakesPoliticalRumour,
   isResignationClaim,
   ministerResignationClaim,
   resignationAttributedToClaim,
@@ -160,6 +161,9 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
     stance = "NEUTRAL";
   }
   if (isPoliticalDeathRumour(claim) && stance === "SUPPORTS" && evidence.sourceTier > 1) {
+    stance = "NEUTRAL";
+  }
+  if (isHighStakesPoliticalRumour(claim) && stance === "SUPPORTS" && evidence.sourceTier > 1) {
     stance = "NEUTRAL";
   }
 

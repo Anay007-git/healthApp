@@ -134,7 +134,7 @@ export async function runFactCheck(rawClaimText: string, options: FactCheckEngin
     });
   }
 
-  const cacheKey = `fc:v5:${normalizeClaimKey(text)}`;
+  const cacheKey = `fc:v6:${normalizeClaimKey(text)}`;
   const cachedResult = cacheGet<ClaimAnalysisResult>(cacheKey);
 
   const atomics = decomposeClaim(text);

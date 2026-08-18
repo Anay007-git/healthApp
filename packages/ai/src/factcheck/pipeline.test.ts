@@ -16,6 +16,7 @@ import { extractClaimRelevantPassages } from "./passages";
 import { parseGoogleNewsRss, articlesFromRss2Json } from "./live-knowledge";
 import { classifySourceForTopic } from "./source-quality";
 import { isOffTopicSportsEvidence } from "./sport-discipline";
+import { isHighStakesPoliticalRumour } from "./query-expansion";
 
 function ev(partial: Partial<StructuredEvidence> & { evidenceText: string; sourceName: string }): StructuredEvidence {
   return {
@@ -789,5 +790,67 @@ describe("CivicLens evidence-first factcheck pipeline", () => {
     ]);
     assert.equal(result.verdict, "VERIFIED_TRUE");
     assert.ok(result.confidenceScore > 65);
+  });
+
+  test("pm resignation hoax is not verified from demand headlines or a minister quitting", async () => {
+    const claim = "Narendra Modi resigns";
+    assert.equal(isHighStakesPoliticalRumour(claim), true);
+    const hindu = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName:
+          "PM Modi must apologise, resign along with Shah: Rahul on police crackdown on CJP protest - The Hindu",
+        publisher: "The Hindu",
+        sourceUrl: "https://www.thehindu.com/news/national/modi-resign-demand",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "PM Modi must apologise, resign along with Shah: Rahul on police crackdown on CJP protest",
+      })
+    );
+    const reuters = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName:
+          "Modi's education minister quits as jubilant Indian youth protesters claim victory, end protest - Reuters",
+        publisher: "Reuters",
+        sourceUrl: "https://www.reuters.com/world/india/pradhan-quits",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Modi's education minister quits as jubilant Indian youth protesters claim victory, end protest",
+      })
+    );
+    assert.notEqual(hindu.stance, "SUPPORTS");
+    assert.notEqual(reuters.stance, "SUPPORTS");
+
+    const result = await check(claim, [
+      ev({
+        sourceName:
+          "PM Modi must apologise, resign along with Shah: Rahul on police crackdown on CJP protest - The Hindu",
+        publisher: "The Hindu",
+        sourceUrl: "https://www.thehindu.com/news/national/modi-resign-demand",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "PM Modi must apologise, resign along with Shah: Rahul on police crackdown on CJP protest",
+      }),
+      ev({
+        sourceName:
+          "Modi's education minister quits as jubilant Indian youth protesters claim victory, end protest - Reuters",
+        publisher: "Reuters",
+        sourceUrl: "https://www.reuters.com/world/india/pradhan-quits",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Modi's education minister quits as jubilant Indian youth protesters claim victory, end protest",
+      }),
+    ]);
+    assert.equal(result.verdict, "UNVERIFIED");
+    assert.notEqual(result.verdict, "VERIFIED_TRUE");
   });
 });

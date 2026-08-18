@@ -12,6 +12,7 @@ const PERSON_ALIASES: Array<{ match: RegExp; canonical: string }> = [
   { match: /\bmessi\b/i, canonical: "Lionel Messi" },
   { match: /\bdhoni\b|\bmsd\b/i, canonical: "MS Dhoni" },
   { match: /\bdharmendra(?:\s+deol)?\b/i, canonical: "Dharmendra" },
+  { match: /\bmodi\b|\bnarendra modi\b/i, canonical: "Narendra Modi" },
 ];
 
 const DEATH_EVENT =
@@ -206,9 +207,48 @@ export function resignationAttributedToClaim(claim: string, evidenceText: string
   if (!isResignationClaim(claim)) return true;
   const blob = evidenceText.toLowerCase();
   if (!RESIGN_EVENT.test(blob)) return false;
-  const keys = informalNameKeys(claim);
-  if (!keys.length) return RESIGN_EVENT.test(blob);
-  return keys.some((n) => blob.includes(n));
+  if (RESIGN_DEMAND.test(blob)) return false;
+
+  const subjects = resignationSubjects(claim);
+  if (!subjects.length) return RESIGN_EVENT.test(blob) && !RESIGN_DEMAND.test(blob);
+
+  return subjects.some((subject) => factualResignationOf(subject, blob));
+}
+
+function resignationSubjects(claim: string): string[] {
+  const people = canonicalPersonNames(claim).map((p) => p.toLowerCase());
+  if (people.length) return people;
+  const pair = claim.match(/\b([A-Za-z]{3,})\s+([A-Za-z]{3,})\b/i);
+  if (pair && !NAME_STOP.has(pair[1].toLowerCase()) && !NAME_STOP.has(pair[2].toLowerCase())) {
+    return [`${pair[1].toLowerCase()} ${pair[2].toLowerCase()}`, pair[2].toLowerCase()];
+  }
+  return informalNameKeys(claim);
+}
+
+const RESIGN_DEMAND =
+  /\b(?:must|should|ought to|need to|needs to|calls? for|calling for|demand(?:ed|s)?|ask(?:ed|s)?|urge(?:d|s)?|apologis(?:e|e|z)|apologize)[^.]{0,100}\bresign/i;
+
+function factualResignationOf(subject: string, blob: string): boolean {
+  const name = subject.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const parts = subject.split(/\s+/).filter((p) => p.length > 3);
+  const last = parts[parts.length - 1] || subject;
+  const lastPat = last.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  if (new RegExp(`${name}'s\\s+(?:education\\s+|union\\s+)?minister\\b[^.]{0,50}\\b(?:quits?|resign)`, "i").test(blob)) {
+    return false;
+  }
+  if (new RegExp(`${lastPat}'s\\s+(?:education\\s+|union\\s+)?minister\\b[^.]{0,50}\\b(?:quits?|resign)`, "i").test(blob)) {
+    return false;
+  }
+
+  const factual = [
+    new RegExp(`\\b${name}\\b[^.]{0,70}\\b(?:has\\s+)?resign(?:ed|s|ation)\\b`, "i"),
+    new RegExp(`\\b${name}\\b[^.]{0,50}\\b(?:quits?|quit|stepped down)\\b`, "i"),
+    new RegExp(`\\b${lastPat}\\b[^.]{0,50}\\b(?:quits?|quit|stepped down|resign(?:ed|s|ation))\\b`, "i"),
+    new RegExp(`\\b${name}'s\\s+resignation\\b`, "i"),
+    new RegExp(`\\b${lastPat}'s\\s+resignation\\b`, "i"),
+  ];
+  return factual.some((re) => re.test(blob));
 }
 
 function informalNameKeys(claim: string): string[] {
