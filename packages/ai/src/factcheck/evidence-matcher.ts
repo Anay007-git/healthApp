@@ -2,12 +2,18 @@ import { EvidenceStance, StructuredEvidence } from "@civiclens/types";
 import { extractEntities, entityOverlapScore, claimDirection } from "./entities";
 import { extractNumbers, extractYears, numbersAlign, isAllocationLanguage, isExpenditureLanguage } from "./numbers";
 import { containsPromptInjection, sanitizeEvidenceText } from "./sanitize";
-import { cricketFormatsMentioned, retirementAttributedToClaim } from "./query-expansion";
+import {
+  cricketFormatsMentioned,
+  deathAttributedToClaim,
+  isDeathClaim,
+  isPoliticalDeathRumour,
+  retirementAttributedToClaim,
+} from "./query-expansion";
 import { sportsResultConflict, parseSportsResult } from "./sports-result";
 
 const SUPPORT_CUES =
-  /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|stepped down|won|beat|defeated|victory|thrashed)\b/i;
-const CONTRADICT_CUES = /\b(denied|debunk|false|not true|no such|did not|didn't|has not|never (?:happened|occurred|took place)|rejected|refuted|incorrect|no gst|remains free|is not|not a)\b/i;
+  /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|stepped down|won|beat|defeated|victory|thrashed|died|dies|dead|death|passed away|demise|obituar(?:y|ies)?)\b/i;
+const CONTRADICT_CUES = /\b(denied|debunk|false|not true|no such|did not|didn't|has not|never (?:happened|occurred|took place)|rejected|refuted|incorrect|no gst|remains free|is not|not a|still alive|death hoax|fake death|not dead)\b/i;
 const DISCUSS_CUES = /\b(said|claimed|alleged|rumour|rumor|unverified|reportedly|according to social)\b/i;
 
 export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEvidence): StructuredEvidence {
@@ -69,6 +75,9 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
   if (retirementClaim && stance === "SUPPORTS" && !retirementAttributedToClaim(claim, text)) {
     stance = "NEUTRAL";
   }
+  if (isDeathClaim(claim) && stance === "SUPPORTS" && !deathAttributedToClaim(claim, text)) {
+    stance = "NEUTRAL";
+  }
   if (
     retirementClaim &&
     claimFormats.has("test") &&
@@ -107,6 +116,9 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
     evidence.sourceQualityScore < 40 &&
     evidence.sourceType !== "WIKIPEDIA_CONTEXT";
   if (anonymousDiscovery && stance === "SUPPORTS") {
+    stance = "NEUTRAL";
+  }
+  if (isPoliticalDeathRumour(claim) && stance === "SUPPORTS" && evidence.sourceTier > 1) {
     stance = "NEUTRAL";
   }
 

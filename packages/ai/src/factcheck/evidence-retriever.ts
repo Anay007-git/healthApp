@@ -7,7 +7,7 @@ import { sanitizeEvidenceText } from "./sanitize";
 import { cacheGet, cacheSet, ttlForTopic } from "./cache";
 import { db } from "@civiclens/database";
 import { extractEntities } from "./entities";
-import { retirementAttributedToClaim } from "./query-expansion";
+import { deathAttributedToClaim, isDeathClaim, retirementAttributedToClaim } from "./query-expansion";
 
 export type EvidenceRetriever = (claim: string, topic: string) => Promise<StructuredEvidence[]>;
 
@@ -43,7 +43,7 @@ function baseEvidence(
 }
 
 export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) => {
-  const key = `ev:v4:${topic}:${claim.toLowerCase().slice(0, 180)}`;
+  const key = `ev:v5:${topic}:${claim.toLowerCase().slice(0, 180)}`;
   const cached = cacheGet<StructuredEvidence[]>(key);
   if (cached) return cached;
 
@@ -79,7 +79,7 @@ export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) 
     const items: StructuredEvidence[] = [];
     if (live.recentArticles?.length) {
       for (const [idx, art] of live.recentArticles.slice(0, 6).entries()) {
-        const meta = classifySourceForTopic(art.link, art.source, topic);
+        const meta = classifySourceForTopic(art.link, art.source, topic, claim);
         const knownOutlet = meta.tier <= 2;
         items.push(
           baseEvidence({
@@ -114,7 +114,10 @@ export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) 
           sourceTier: 4,
           sourceType: "WIKIPEDIA_CONTEXT",
           sourceQualityScore:
-            /\bretir/i.test(claim) && retirementAttributedToClaim(claim, extract) ? 72 : 50,
+            (/\bretir/i.test(claim) && retirementAttributedToClaim(claim, extract)) ||
+            (isDeathClaim(claim) && deathAttributedToClaim(claim, extract))
+              ? 72
+              : 50,
           evidenceText: extract,
           evidenceSummary: extract.slice(0, 280),
           isDiscoveryOnly: false,
@@ -207,7 +210,7 @@ function homepageUsefulForClaim(
   const low = text.toLowerCase();
   if (ents.people.length) {
     const personHit = ents.people.some((p) => low.includes(p.toLowerCase()));
-    const factHit = /\b(retir|announc|confirm|gazette|notified|won\b|defeat|champion)\b/i.test(low);
+    const factHit = /\b(retir|announc|confirm|gazette|notified|won\b|defeat|champion|died|death|obituar)\b/i.test(low);
     return personHit && factHit;
   }
   return true;

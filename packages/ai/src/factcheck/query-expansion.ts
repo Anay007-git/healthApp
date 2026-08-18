@@ -10,7 +10,27 @@ const PERSON_ALIASES: Array<{ match: RegExp; canonical: string }> = [
   { match: /\brohit\b/i, canonical: "Rohit Sharma" },
   { match: /\bmessi\b/i, canonical: "Lionel Messi" },
   { match: /\bdhoni\b|\bmsd\b/i, canonical: "MS Dhoni" },
+  { match: /\bdharmendra(?:\s+deol)?\b/i, canonical: "Dharmendra" },
 ];
+
+const DEATH_EVENT =
+  /\b(died|dies|dead|death|passed away|passing away|demise|obituar(?:y|ies)?)\b/i;
+
+const POLITICAL_DEATH_SUBJECT =
+  /\b(modi|narendra modi|mamata|banerjee|rahul gandhi|amit shah|kejriwal|prime minister|chief minister)\b/i;
+
+export function isDeathClaim(claim: string): boolean {
+  return DEATH_EVENT.test(claim);
+}
+
+/** Tabloid death rumours about sitting politicians stay on the high evidence bar. */
+export function isPoliticalDeathRumour(claim: string): boolean {
+  return isDeathClaim(claim) && POLITICAL_DEATH_SUBJECT.test(claim);
+}
+
+export function celebrityObituaryClaim(claim: string): boolean {
+  return isDeathClaim(claim) && !isPoliticalDeathRumour(claim);
+}
 
 export type CricketFormat = "test" | "odi" | "t20" | "all";
 
@@ -40,6 +60,7 @@ export function expandSearchQueries(claim: string): string[] {
   const retiring = /\bretir/i.test(claim);
   const teams = extractSportsTeams(claim);
   const resultClaim = /\b(won|win|beat|defeat|lost|lose|victory)\b/i.test(claim);
+  const deathClaim = isDeathClaim(claim);
 
   if (teams.length >= 2 && (formats.has("test") || resultClaim)) {
     const fmt = formats.has("test") ? "Test cricket" : formats.has("odi") ? "ODI" : formats.has("t20") ? "T20" : "cricket";
@@ -63,6 +84,19 @@ export function expandSearchQueries(claim: string): string[] {
     if (retiring && formats.has("odi") && !formats.has("test") && !formats.has("t20")) {
       queries.push(`${person} retired from ODI`);
     }
+    if (deathClaim) {
+      queries.push(`${person} death`);
+      queries.push(`${person} died`);
+      queries.push(`${person} obituary`);
+    }
+  }
+
+  if (deathClaim && people.length === 0) {
+    const nameGuess = informalDeathSubject(claim);
+    if (nameGuess) {
+      queries.push(`${nameGuess} death`);
+      queries.push(`${nameGuess} died`);
+    }
   }
 
   const seen = new Set<string>();
@@ -74,6 +108,60 @@ export function expandSearchQueries(claim: string): string[] {
     out.push(q);
   }
   return out.slice(0, 5);
+}
+
+export function informalDeathSubject(claim: string): string {
+  return claim
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 3 && !DEATH_STOP.has(w))
+    .slice(0, 3)
+    .map((w) => w.replace(/^\w/, (c) => c.toUpperCase()))
+    .join(" ")
+    .trim();
+}
+
+const DEATH_STOP = new Set([
+  "died",
+  "dies",
+  "dead",
+  "death",
+  "passed",
+  "away",
+  "passing",
+  "demise",
+  "obituary",
+  "obituaries",
+  "killed",
+  "rumour",
+  "rumor",
+  "fake",
+  "news",
+  "claim",
+  "true",
+  "false",
+]);
+
+/**
+ * Require obituaries to name the claimed person, not a relative-only headline
+ * that never mentions them.
+ */
+export function deathAttributedToClaim(claim: string, evidenceText: string): boolean {
+  if (!isDeathClaim(claim)) return true;
+  const blob = evidenceText.toLowerCase();
+  if (!DEATH_EVENT.test(blob)) return false;
+
+  const people = canonicalPersonNames(claim);
+  const keys = people.length
+    ? people.flatMap((p) => p.toLowerCase().split(/\s+/).filter((w) => w.length > 3))
+    : informalDeathSubject(claim)
+        .toLowerCase()
+        .split(/\s+/)
+        .filter((w) => w.length > 3);
+
+  if (!keys.length) return DEATH_EVENT.test(blob);
+  return keys.some((n) => blob.includes(n));
 }
 
 /**

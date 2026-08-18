@@ -53,6 +53,15 @@ function stanceBadge(stance: string): { label: string; className: string } {
   }
 }
 
+function redundantEvidenceSnippet(title: string, summary?: string, why?: string): boolean {
+  const snip = (summary || why || "").replace(/\s+/g, " ").trim();
+  const t = title.replace(/\s+/g, " ").trim();
+  if (!snip) return true;
+  if (snip === t) return true;
+  if (t.length > 24 && (snip.startsWith(t) || t.startsWith(snip))) return true;
+  return false;
+}
+
 const SAMPLE_VIRAL_CLAIMS = [
   {
     label: "📱 Free ₹5,000 Scheme Link",
@@ -65,6 +74,10 @@ const SAMPLE_VIRAL_CLAIMS = [
   {
     label: "🏏 Bangladesh Test Win vs Australia",
     text: "Bangladesh won test against Australia",
+  },
+  {
+    label: "🎬 Celebrity death rumour",
+    text: "Dharmendra Deol died",
   },
   {
     label: "🚀 Chandrayaan-3 Moon Landing",
@@ -449,15 +462,15 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
             <div className="bg-[#FFFDF9] border-2 border-black p-5 sm:p-7 rounded-2xl shadow-[6px_6px_0px_#000000] space-y-6 animate-in fade-in duration-300 min-w-0 overflow-hidden">
               {/* Verdict Header Banner */}
               <div className={`${badge.bg} ${badge.textColor} border-2 border-black p-4 sm:p-5 rounded-xl shadow-[4px_4px_0px_#000] flex flex-col sm:flex-row sm:items-center justify-between gap-4`}>
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-black text-white rounded-lg border border-white">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="p-2 bg-black text-white rounded-lg border border-white shrink-0">
                     <BadgeIcon className="w-7 h-7 text-white" />
                   </div>
-                  <div>
-                    <span className="font-mono text-[11px] uppercase tracking-wider block font-bold text-white/90">
+                  <div className="min-w-0">
+                    <span className={`font-mono text-[11px] uppercase tracking-wider block font-bold ${badge.textColor} opacity-80`}>
                       CIVICLENS TRUTHCHECK™ VERDICT
                     </span>
-                    <h4 className="font-serif text-xl sm:text-2xl font-black text-white tracking-tight">
+                    <h4 className={`font-serif text-xl sm:text-2xl font-black tracking-tight leading-snug break-words ${badge.textColor}`}>
                       {badge.label}
                     </h4>
                   </div>
@@ -572,7 +585,7 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
                     <FileText className="w-4 h-4 text-[#06038D] shrink-0" />
                     <span className="font-mono text-xs font-black text-[#0F172A] tracking-wider">EVIDENCE & SOURCES</span>
                   </div>
-                  <ul className="space-y-3 min-w-0">
+                  <ul className="space-y-4 min-w-0">
                     {((scanResult.structuredEvidence && scanResult.structuredEvidence.length > 0)
                       ? scanResult.structuredEvidence
                       : scanResult.primarySources.map((s) => ({
@@ -589,13 +602,14 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
                       const badge = stanceBadge(ev.stance);
                       const host = ev.sourceUrl ? sourceHostname(ev.sourceUrl) : "";
                       const viaGoogle = /news\.google\.com/i.test(ev.sourceUrl || "");
+                      const hideSnippet = redundantEvidenceSnippet(ev.sourceName, ev.evidenceSummary, ev.whyItMatters);
                       return (
                         <li
                           key={ev.id}
-                          className="bg-white border-2 border-black rounded-xl p-4 sm:p-5 space-y-3 min-w-0 overflow-hidden shadow-[3px_3px_0px_#000]"
+                          className="bg-white border-2 border-black rounded-xl p-4 sm:p-5 space-y-3.5 min-w-0 overflow-hidden shadow-[3px_3px_0px_#000]"
                         >
                           <div className="flex items-start justify-between gap-3 min-w-0">
-                            <h5 className="font-sans text-sm sm:text-[15px] font-bold text-[#0F172A] leading-snug break-words min-w-0">
+                            <h5 className="font-sans text-sm sm:text-[15px] font-bold text-[#0F172A] leading-snug break-words min-w-0 pr-1">
                               {ev.sourceName}
                             </h5>
                             <span className={`shrink-0 font-mono text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded-md border ${badge.className}`}>
@@ -608,7 +622,7 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
                             {host && !viaGoogle && <span className="text-[#475569]">{host}</span>}
                             {viaGoogle && <span className="text-[#475569]">via Google News</span>}
                           </div>
-                          {(ev.evidenceSummary || ev.whyItMatters) && (
+                          {!hideSnippet && (
                             <p className="font-sans text-sm text-[#1E293B] leading-relaxed break-words">
                               {ev.evidenceSummary || ev.whyItMatters}
                             </p>
@@ -618,7 +632,7 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
                               href={ev.sourceUrl}
                               target="_blank"
                               rel="noreferrer"
-                              className="inline-flex items-center gap-1.5 max-w-full font-sans text-sm font-semibold text-[#06038D] hover:text-[#1D4ED8] hover:underline"
+                              className="inline-flex items-center gap-1.5 max-w-full pt-1 font-sans text-sm font-semibold text-[#06038D] hover:text-[#1D4ED8] hover:underline"
                             >
                               <ExternalLink className="w-3.5 h-3.5 shrink-0" />
                               <span className="truncate">

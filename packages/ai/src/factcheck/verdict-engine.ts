@@ -1,6 +1,7 @@
 import { FactCheckVerdict, StructuredEvidence, AtomicClaimResult, EvidenceConflict } from "@civiclens/types";
 import { independentSourceCount } from "./evidence-ranker";
 import { detectConflicts } from "./contradiction-detector";
+import { celebrityObituaryClaim } from "./query-expansion";
 
 export interface VerdictComputation {
   verdict: FactCheckVerdict;
@@ -14,7 +15,12 @@ export interface VerdictComputation {
 export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence[], topic = "GENERAL"): VerdictComputation {
   const usable = evidence.filter((e) => e.stance !== "INSUFFICIENT" || e.sourceTier === 1);
   const supports = evidence.filter((e) => e.stance === "SUPPORTS");
-  const contradicts = evidence.filter((e) => e.stance === "CONTRADICTS");
+  const political = ["POLITICS", "GOVERNANCE", "ELECTIONS", "GOVERNMENT_SCHEMES"].includes(topic);
+  const celebrityObituary = celebrityObituaryClaim(atomicClaim) && !political;
+  let contradicts = evidence.filter((e) => e.stance === "CONTRADICTS");
+  if (celebrityObituary && supports.filter((e) => e.sourceQualityScore >= 70).length >= 2) {
+    contradicts = contradicts.filter((e) => e.sourceQualityScore >= 70 && !e.isDiscoveryOnly);
+  }
   const discoveryOnly = evidence.filter((e) => e.isDiscoveryOnly);
   const primarySupport = supports.filter((e) => e.sourceTier === 1);
   const highSupport = supports.filter((e) => e.sourceQualityScore >= 70);
@@ -36,8 +42,7 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
     limitations.push("Anonymous discovery feeds cannot by themselves prove a claim true.");
   }
 
-  const political = ["POLITICS", "GOVERNANCE", "ELECTIONS", "GOVERNMENT_SCHEMES"].includes(topic);
-  const sportsOrScience = ["SPORTS", "SCIENCE", "TECHNOLOGY"].includes(topic);
+  const sportsOrScience = ["SPORTS", "SCIENCE", "TECHNOLOGY"].includes(topic) || celebrityObituary;
 
   const indepSupport = independentSourceCount(highSupport);
   const indepContra = independentSourceCount(highContra);
@@ -91,9 +96,15 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
   ) {
     verdict = "VERIFIED_TRUE";
     confidence = Math.min(82, 58 + highSupport[0].sourceQualityScore * 0.2 + (wikiSupport.length ? 6 : 0));
-    truthSummary = `Named sports/science reporting supports the claim. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`;
+    truthSummary = celebrityObituary
+      ? `Named news desks report the death. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`
+      : `Named sports/science reporting supports the claim. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`;
     detailedDebunk = supports.map((e) => `${e.publisher}: ${e.evidenceSummary}`).join(" ");
-    limitations.push("Confidence is capped without a sports-federation primary document.");
+    limitations.push(
+      celebrityObituary
+        ? "Confidence is capped without a primary official record (gazette, hospital, or family statement on an official channel)."
+        : "Confidence is capped without a sports-federation primary document."
+    );
   } else if (sportsOrScience && wikiSupport.length >= 1 && highSupport.length === 0 && contradicts.length === 0 && !political) {
     verdict = "PARTIALLY_TRUE";
     confidence = 58;
