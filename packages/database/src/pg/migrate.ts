@@ -1,23 +1,18 @@
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { closePool, getPool, isPostgresUrl } from "./client";
 import { loadEnvFiles } from "./env";
+import { applyPostgresSchema } from "./seed-data";
 
 async function migrate(): Promise<void> {
   loadEnvFiles();
 
   if (!isPostgresUrl(process.env.DATABASE_URL)) {
     console.error("DATABASE_URL must be set to a PostgreSQL connection string.");
+    console.error("Set it in your shell, or in Vercel → Project Settings → Environment Variables.");
     process.exit(1);
   }
 
-  const here = dirname(fileURLToPath(import.meta.url));
-  const schemaPath = join(here, "../../../../schema.sql");
-  const sql = readFileSync(schemaPath, "utf8");
-
   const pool = getPool();
-  await pool.query(sql);
+  await applyPostgresSchema(pool);
   await closePool();
   console.log("Schema applied successfully.");
 }

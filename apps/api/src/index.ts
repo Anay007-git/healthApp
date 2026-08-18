@@ -5,6 +5,7 @@ import { initDatabase } from "@civiclens/database";
 import { aiEngine } from "@civiclens/ai";
 import { newsletterSubscribeSchema, askQuerySchema, claimVerifySchema, claimSubmitSchema } from "@civiclens/validation";
 import { brandConfig } from "@civiclens/config";
+import { ensurePostgresReady, getPostgresTableCounts, isPostgresUrl } from "@civiclens/database";
 
 const app = express();
 app.use(cors());
@@ -208,6 +209,29 @@ const adminAuth = (req: express.Request, res: express.Response, next: express.Ne
   }
   next();
 };
+
+app.post("/api/admin/seed", adminAuth, async (req, res) => {
+  if (!isPostgresUrl(process.env.DATABASE_URL)) {
+    return res.status(400).json({
+      success: false,
+      error: "DATABASE_URL is not configured.",
+    });
+  }
+
+  try {
+    const seeded = await ensurePostgresReady();
+    const counts = await getPostgresTableCounts();
+    return res.json({
+      success: true,
+      seeded,
+      message: seeded ? "Database seeded." : "Database already populated.",
+      counts,
+    });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Seed failed";
+    return res.status(500).json({ success: false, error: message });
+  }
+});
 
 app.get("/api/admin/dashboard", adminAuth, (req, res) => {
   res.json({

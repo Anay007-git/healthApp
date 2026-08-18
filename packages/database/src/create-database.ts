@@ -2,6 +2,7 @@ import type { CivicLensDatabase } from "./index";
 import type { CivicDatasetSnapshot } from "./pg/datasets";
 import { loadCivicDatasetsFromPostgres, loadFactCheckSubmissionsFromPostgres } from "./pg/load";
 import { isPostgresUrl } from "./pg/client";
+import { ensurePostgresReady } from "./pg/seed-data";
 
 let databasePromise: Promise<CivicLensDatabase> | null = null;
 let resolvedDatabase: CivicLensDatabase | null = null;
@@ -40,13 +41,23 @@ export async function initDatabase(): Promise<CivicLensDatabase> {
       const { CivicLensDatabase: DbClass } = await import("./index");
 
       if (isPostgresUrl(process.env.DATABASE_URL)) {
-        const snapshot = await loadCivicDatasetsFromPostgres();
+        let snapshot = await loadCivicDatasetsFromPostgres();
+        if (!snapshot) {
+          try {
+            await ensurePostgresReady();
+            snapshot = await loadCivicDatasetsFromPostgres();
+          } catch (error) {
+            console.warn("[database] Auto-seed failed — using in-memory seeds:", error);
+          }
+        }
+
         if (snapshot) {
           const submissions = await loadFactCheckSubmissionsFromPostgres();
           resolvedDatabase = await createDatabaseFromSnapshot(snapshot, submissions);
           console.log("[database] Loaded civic datasets from PostgreSQL");
           return resolvedDatabase;
         }
+
         console.warn("[database] PostgreSQL configured but civic_datasets empty — using in-memory seeds");
       }
 

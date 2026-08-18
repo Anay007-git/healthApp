@@ -1159,4 +1159,5 @@ export class CivicLensDatabase {
 export const db = new CivicLensDatabase();
 export { COMPREHENSIVE_LEADERS, LEADER_PHOTOS };
 export { initDatabase, getDatabase, createDatabaseFromSnapshot, isPostgresUrl } from "./create-database";
+export { ensurePostgresReady, seedPostgresFromMemory, getPostgresTableCounts } from "./pg/seed-data";
 export type { CivicDatasetSnapshot } from "./pg/datasets";
