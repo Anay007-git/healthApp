@@ -25,10 +25,11 @@ import {
   Zap,
 } from "lucide-react";
 import { FactCheckClaim, ClaimAnalysisResult, FactCheckVerdict, ClaimCategory, Evidence } from "@civiclens/types";
-import { db, FACT_CHECK_CLAIMS } from "@civiclens/database";
+import { db as defaultDb, FACT_CHECK_CLAIMS, type CivicLensDatabase } from "@civiclens/database";
 import { aiEngine } from "@civiclens/ai";
 
 interface TruthCheckModuleProps {
+  db?: CivicLensDatabase;
   onOpenEvidence: (evidenceId?: string) => void;
 }
 
@@ -109,7 +110,7 @@ const CATEGORY_TABS: { id: ClaimCategory | "ALL"; label: string }[] = [
   { id: "LEGAL", label: "Legal & Traffic" },
 ];
 
-export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
+export function TruthCheckModule({ db = defaultDb, onOpenEvidence }: TruthCheckModuleProps) {
   // DeepScan Studio Input & State
   const [claimInput, setClaimInput] = useState<string>("");
   const [isScanning, setIsScanning] = useState<boolean>(false);

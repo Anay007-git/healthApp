@@ -9,7 +9,9 @@
     "dev:api": "npx pnpm --filter @civiclens/api run dev",
     "dev": "npx pnpm dev:web",
     "build": "npx pnpm -r --if-present run build",
-    "test": "npx tsx --test packages/ai/src/factcheck/pipeline.test.ts"
+    "test": "npx tsx --test packages/ai/src/factcheck/pipeline.test.ts",
+    "db:migrate": "npx pnpm --filter @civiclens/database run db:migrate",
+    "db:seed": "npx pnpm --filter @civiclens/database run db:seed"
   },
   "devDependencies": {
     "prettier": "^3.5.0",

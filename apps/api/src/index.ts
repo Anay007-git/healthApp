@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import { db } from "@civiclens/database";
+import type { CivicLensDatabase } from "@civiclens/database";
+import { initDatabase } from "@civiclens/database";
 import { aiEngine } from "@civiclens/ai";
 import { newsletterSubscribeSchema, askQuerySchema, claimVerifySchema, claimSubmitSchema } from "@civiclens/validation";
 import { brandConfig } from "@civiclens/config";
@@ -10,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 3001;
+let db: CivicLensDatabase;
 
 // Root info
 app.get("/", (req, res) => {
@@ -18,6 +20,31 @@ app.get("/", (req, res) => {
     tagline: brandConfig.tagline,
     version: "1.0.0",
     status: "healthy",
+    dataSource: process.env.DATABASE_URL?.startsWith("postgres") ? "postgresql" : "memory",
+  });
+});
+
+app.get("/api/bootstrap", (req, res) => {
+  res.json({
+    success: true,
+    dataSource: process.env.DATABASE_URL?.startsWith("postgres") ? "postgresql" : "memory",
+    data: {
+      schemes: db.getSchemes(),
+      states: db.getStates(),
+      stateFacts: db.getStateFacts(),
+      cagReports: db.getCAGReports(),
+      manifestoPromises: db.getManifestoPromises(),
+      ministers: db.getMinisters(),
+      stateMinisters: db.getAllStateMinisters(),
+      stories: db.getStories(),
+      partyFunding: db.getPartyFunding(),
+      corporateDonors: db.getCorporateDonors(),
+      partyAnnualIncome: db.getPartyAnnualIncomeHistory(),
+      partyMetaMap: db.getPartyMetaMap(),
+      bondsMeta: db.getBondsMeta(),
+      factChecks: db.getFactChecks(),
+      sources: db.getSources(),
+    },
   });
 });
 
@@ -42,6 +69,16 @@ app.get("/api/states/:id", (req, res) => {
   res.json({ success: true, data: state });
 });
 
+app.get("/api/state-facts", (req, res) => {
+  res.json({ success: true, data: db.getStateFacts() });
+});
+
+app.get("/api/state-facts/:code", (req, res) => {
+  const fact = db.getStateFactsByCode(req.params.code);
+  if (!fact) return res.status(404).json({ success: false, error: "State facts not found" });
+  res.json({ success: true, data: fact });
+});
+
 app.get("/api/cag", (req, res) => {
   res.json({ success: true, data: db.getCAGReports() });
 });
@@ -53,6 +90,23 @@ app.get("/api/manifestos", (req, res) => {
 
 app.get("/api/ministers", (req, res) => {
   res.json({ success: true, data: db.getMinisters() });
+});
+
+app.get("/api/state-ministers", (req, res) => {
+  res.json({ success: true, data: db.getAllStateMinisters() });
+});
+
+app.get("/api/funding", (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      parties: db.getPartyFunding(),
+      donors: db.getCorporateDonors(),
+      bondsMeta: db.getBondsMeta(),
+      annualIncome: db.getPartyAnnualIncomeHistory(),
+      partyMetaMap: db.getPartyMetaMap(),
+    },
+  });
 });
 
 app.get("/api/evidence/:id", (req, res) => {
@@ -164,12 +218,21 @@ app.get("/api/admin/dashboard", adminAuth, (req, res) => {
       indicatorsCount: 4,
       sourcesCount: db.getSources().length,
       subscribersCount: 8921,
+      dataSource: process.env.DATABASE_URL?.startsWith("postgres") ? "postgresql" : "memory",
     },
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`CivicLens API Server running on port ${PORT}`);
+async function start() {
+  db = await initDatabase();
+  app.listen(PORT, () => {
+    console.log(`CivicLens API Server running on port ${PORT}`);
+  });
+}
+
+start().catch((err) => {
+  console.error("Failed to start API server:", err);
+  process.exit(1);
 });
 
 export default app;

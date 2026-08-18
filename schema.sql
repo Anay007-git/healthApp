@@ -267,7 +267,44 @@ CREATE TABLE IF NOT EXISTS admin_issues (
     reported_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- ── 10. OPTIMIZED INDEXES ───────────────────────────────────────────────────
+-- ── 10. CIVIC DATASET SNAPSHOTS (seed migration from in-memory JSON/TS) ─────
+
+CREATE TABLE IF NOT EXISTS civic_datasets (
+    dataset_key VARCHAR(100) PRIMARY KEY,
+    payload JSONB NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS fact_check_claims (
+    id VARCHAR(100) PRIMARY KEY,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    claim TEXT NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    verdict VARCHAR(50) NOT NULL,
+    payload JSONB NOT NULL DEFAULT '{}'::jsonb,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS fact_check_submissions (
+    id VARCHAR(100) PRIMARY KEY,
+    claim_text TEXT NOT NULL,
+    source_platform VARCHAR(100) NOT NULL,
+    url TEXT,
+    user_contact VARCHAR(255),
+    upvotes INT DEFAULT 1,
+    status VARCHAR(50) DEFAULT 'PENDING_REVIEW' CHECK (status IN ('PENDING_REVIEW', 'IN_REVIEW', 'PUBLISHED', 'REJECTED')),
+    submitted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS state_facts (
+    state_code VARCHAR(10) PRIMARY KEY,
+    state_name VARCHAR(100) NOT NULL,
+    payload JSONB NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ── 11. OPTIMIZED INDEXES ───────────────────────────────────────────────────
 
 CREATE INDEX IF NOT EXISTS idx_schemes_slug ON schemes(slug);
 CREATE INDEX IF NOT EXISTS idx_schemes_ministry ON schemes(ministry);
