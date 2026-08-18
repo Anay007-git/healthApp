@@ -25,8 +25,10 @@ export function decomposeClaim(rawInput: string): AtomicClaim[] {
     .replace(/\band did\b/gi, " and ")
     .replace(/\band does\b/gi, " and ");
 
+  // Split only independent clauses. Do not clone “occurred in YEAR” — that glued
+  // “lifts 2026 world cup” into “liftsworld cup” and forced users to retest every prompt.
   const parts = cleaned
-    .split(/\s+(?:and|;|\u2014|\u2013)\s+|\.(?:\s+|$)|,(?=\s+(?:did|does|this|the|and))/i)
+    .split(/\s+(?:and|;|\u2014|\u2013)\s+|\.(?:\s+|$)|,(?=\s+(?:did|does|and))/i)
     .map((p) => p.trim())
     .filter((p) => p.length > 8);
 
@@ -48,21 +50,6 @@ export function decomposeClaim(rawInput: string): AtomicClaim[] {
 
   for (const clause of clauses) {
     push(clause);
-
-    const years = extractYears(clause);
-    const nums = extractNumbers(clause);
-    const core = clause
-      .replace(/\b(in|during|for)\s+(19|20)\d{2}\b/gi, "")
-      .replace(/(?:₹|rs\.?|inr)?\s*[\d,]+(?:\.\d+)?\s*(?:crore|cr|lakh|million|billion|%|percent)?/gi, "")
-      .replace(/\s+/g, " ")
-      .trim();
-
-    if (years.length && core.length > 12) {
-      push(`${core} occurred in ${years[0]}`);
-    }
-    if (nums.length && core.length > 12) {
-      push(`${core} involved ${nums[0].raw}`);
-    }
   }
 
   if (atomics.length === 0) {

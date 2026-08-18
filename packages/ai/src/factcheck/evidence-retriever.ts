@@ -43,7 +43,7 @@ function baseEvidence(
 }
 
 export const defaultEvidenceRetriever: EvidenceRetriever = async (claim, topic) => {
-  const key = `ev:v5:${topic}:${claim.toLowerCase().slice(0, 180)}`;
+  const key = `ev:v6:${topic}:${claim.toLowerCase().slice(0, 180)}`;
   const cached = cacheGet<StructuredEvidence[]>(key);
   if (cached) return cached;
 

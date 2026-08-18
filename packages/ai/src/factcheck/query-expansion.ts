@@ -3,7 +3,8 @@
  * Does not hard-code verdicts — only retrieval queries.
  */
 
-import { extractSportsTeams } from "./sports-result";
+import { extractSportsTeams, parseSportsResult, playerNationalTeam } from "./sports-result";
+import { extractYears } from "./numbers";
 
 const PERSON_ALIASES: Array<{ match: RegExp; canonical: string }> = [
   { match: /\bkohli\b/i, canonical: "Virat Kohli" },
@@ -59,13 +60,28 @@ export function expandSearchQueries(claim: string): string[] {
   const formats = cricketFormatsMentioned(claim);
   const retiring = /\bretir/i.test(claim);
   const teams = extractSportsTeams(claim);
-  const resultClaim = /\b(won|win|beat|defeat|lost|lose|victory)\b/i.test(claim);
+  const resultClaim = /\b(won|win|beat|defeat|lost|lose|victory|lift(?:s|ed)?|champion|trophy|title)\b/i.test(claim);
   const deathClaim = isDeathClaim(claim);
+  const sides = parseSportsResult(claim);
+  const year = extractYears(claim)[0];
+  const worldCup = /\bworld cups?\b/i.test(claim);
 
   if (teams.length >= 2 && (formats.has("test") || resultClaim)) {
     const fmt = formats.has("test") ? "Test cricket" : formats.has("odi") ? "ODI" : formats.has("t20") ? "T20" : "cricket";
     queries.unshift(`${teams[0]} vs ${teams[1]} ${fmt}`);
     if (resultClaim) queries.push(`${teams[0]} beat ${teams[1]} ${fmt}`);
+  }
+
+  if (sides.winner && (worldCup || sides.tournament)) {
+    const tourney = worldCup ? "World Cup" : "final";
+    const y = year ? String(year) : "";
+    queries.unshift(`${sides.winner} won ${y} ${tourney}`.replace(/\s+/g, " ").trim());
+    queries.push(`${y} ${tourney} winner ${sides.winner}`.replace(/\s+/g, " ").trim());
+  }
+
+  const playerSide = playerNationalTeam(claim);
+  if (playerSide && worldCup) {
+    queries.push(`${playerSide} ${year || ""} World Cup`.replace(/\s+/g, " ").trim());
   }
 
   for (const person of people) {

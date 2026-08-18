@@ -583,4 +583,69 @@ describe("CivicLens evidence-first factcheck pipeline", () => {
     ]);
     assert.notEqual(result.verdict, "VERIFIED_TRUE");
   });
+
+  test("single event claims are not cloned into liftsworld date fragments", () => {
+    const spain = decomposeClaim("Spain lifts 2026 world cup");
+    assert.equal(spain.length, 1);
+    assert.match(spain[0].text, /spain lifts 2026 world cup/i);
+    assert.ok(!spain.some((a) => /liftsworld/i.test(a.text)));
+    const messi = decomposeClaim("Messi lifts 2026 world cup");
+    assert.equal(messi.length, 1);
+  });
+
+  test("tournament winner headlines can support a lifts/won claim", async () => {
+    const claim = "Spain lifts 2026 world cup";
+    assert.equal(classifyClaim(claim), "SPORTS");
+    const q = expandSearchQueries(claim);
+    assert.ok(q.some((x) => /spain/i.test(x) && /world cup/i.test(x)));
+    const matched = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName: "Key takeaways from the World Cup 2026 final as Spain beat Argentina - Al Jazeera",
+        publisher: "Al Jazeera",
+        sourceUrl: "https://www.aljazeera.com/sports/world-cup-2026-final",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        publicationDate: "2026-07-20",
+        evidenceText: "Key takeaways from the World Cup 2026 final as Spain beat Argentina",
+      })
+    );
+    assert.equal(matched.stance, "SUPPORTS");
+    const result = await check(claim, [
+      ev({
+        sourceName: "Key takeaways from the World Cup 2026 final as Spain beat Argentina - Al Jazeera",
+        publisher: "Al Jazeera",
+        sourceUrl: "https://www.aljazeera.com/sports/world-cup-2026-final",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        publicationDate: "2026-07-20",
+        evidenceText: "Key takeaways from the World Cup 2026 final as Spain beat Argentina",
+      }),
+    ]);
+    assert.ok(["VERIFIED_TRUE", "PARTIALLY_TRUE"].includes(result.verdict));
+    assert.notEqual(result.verdict, "UNVERIFIED");
+    assert.ok(!/liftsworld|→/.test(result.truthSummary + result.groundReality + result.detailedDebunk));
+  });
+
+  test("a player trophy claim is contradicted when another nation won that tournament", async () => {
+    const result = await check("Messi lifts 2026 world cup", [
+      ev({
+        sourceName: "Key takeaways from the World Cup 2026 final as Spain beat Argentina - Al Jazeera",
+        publisher: "Al Jazeera",
+        sourceUrl: "https://www.aljazeera.com/sports/world-cup-2026-final",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Key takeaways from the World Cup 2026 final as Spain beat Argentina",
+      }),
+    ]);
+    assert.ok(["FALSE", "CONFLICTING_EVIDENCE"].includes(result.verdict));
+    assert.notEqual(result.verdict, "VERIFIED_TRUE");
+    assert.ok(!/liftsworld|→ CONFLICTING/.test(result.groundReality + result.truthSummary));
+  });
 });

@@ -172,8 +172,8 @@ export function aggregateAtomicVerdicts(original: string, parts: AtomicClaimResu
       truthSummary:
         v === "UNVERIFIED"
           ? "Insufficient reliable evidence to verify or falsify this claim. Absence of evidence is not evidence of falsehood."
-          : parts.map((p) => `${p.claim} → ${p.verdict} (${p.confidenceScore})`).join(" "),
-      detailedDebunk: parts.map((p) => `${p.claim} → ${p.verdict} (${p.confidenceScore})`).join(" "),
+          : `Independent checks of the claim agree: ${v.replace(/_/g, " ").toLowerCase()}.`,
+      detailedDebunk: "Each part of the prompt was checked against the same evidence pool; they reached the same verdict.",
       conflicts: [],
       limitations: [],
     };
@@ -192,8 +192,8 @@ export function aggregateAtomicVerdicts(original: string, parts: AtomicClaimResu
   return {
     verdict,
     confidenceScore: Math.min(avgConf, 80),
-    truthSummary: `The prompt contains multiple atomic claims with mixed evidence. Overall verdict ${verdict} does not replace per-claim results.`,
-    detailedDebunk: parts.map((p, i) => `${i + 1}. "${p.claim}" → ${p.verdict} (${p.confidenceScore}%).`).join(" "),
+    truthSummary: `This prompt mixes more than one fact. Overall verdict ${verdict} does not replace checking each part.`,
+    detailedDebunk: "The prompt was split into independent facts that did not all receive the same verdict.",
     conflicts: [],
     limitations: ["Do not assign one verdict to a compound prompt when atomics differ."],
   };
