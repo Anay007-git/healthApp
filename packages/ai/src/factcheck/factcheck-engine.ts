@@ -11,6 +11,7 @@ import { decomposeClaim } from "./claim-decomposer";
 import { classifyClaim, toClaimCategory, isTimeSensitive } from "./claim-classifier";
 import { detectLinguisticSignals } from "./linguistic";
 import { matchKnownFactChecks, matchViralPhrase } from "./cache-matcher";
+import { sportsSubjectsOverlap } from "./sports-result";
 import { defaultEvidenceRetriever, EvidenceRetriever } from "./evidence-retriever";
 import { matchEvidenceToClaim } from "./evidence-matcher";
 import { rankEvidence } from "./evidence-ranker";
@@ -132,7 +133,7 @@ export async function runFactCheck(rawClaimText: string, options: FactCheckEngin
     });
   }
 
-  const cacheKey = `fc:v4:${normalizeClaimKey(text)}`;
+  const cacheKey = `fc:v5:${normalizeClaimKey(text)}`;
   const cachedResult = cacheGet<ClaimAnalysisResult>(cacheKey);
 
   const atomics = decomposeClaim(text);
@@ -153,7 +154,7 @@ export async function runFactCheck(rawClaimText: string, options: FactCheckEngin
   for (let i = 0; i < atomics.length; i++) {
     const atomic = atomics[i];
     let pool = [...live];
-    if (known) {
+    if (known && sportsSubjectsOverlap(atomic.text, `${known.claim.title} ${known.claim.claim}`)) {
       pool = [
         cacheEvidenceFromKnown(
           atomic.text,

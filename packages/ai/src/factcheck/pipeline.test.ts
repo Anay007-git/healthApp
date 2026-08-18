@@ -9,6 +9,8 @@ import { matchEvidenceToClaim } from "./evidence-matcher";
 import { containsPromptInjection, sanitizeEvidenceText } from "./sanitize";
 import { computeVerdict } from "./verdict-engine";
 import { planSources } from "./source-planner";
+import { matchKnownFactChecks } from "./cache-matcher";
+import { FACT_CHECK_CLAIMS } from "@civiclens/database";
 import { expandSearchQueries, retirementAttributedToClaim } from "./query-expansion";
 import { extractClaimRelevantPassages } from "./passages";
 import { parseGoogleNewsRss, articlesFromRss2Json } from "./live-knowledge";
@@ -647,5 +649,55 @@ describe("CivicLens evidence-first factcheck pipeline", () => {
     assert.ok(["FALSE", "CONFLICTING_EVIDENCE"].includes(result.verdict));
     assert.notEqual(result.verdict, "VERIFIED_TRUE");
     assert.ok(!/liftsworld|→ CONFLICTING/.test(result.groundReality + result.truthSummary));
+  });
+
+  test("messi 2026 debunk cache does not attach to a different nation's winner claim", () => {
+    const hit = matchKnownFactChecks("Spain lifts 2026 fifa world cup", FACT_CHECK_CLAIMS);
+    assert.ok(!hit || !/messi|argentina/i.test(hit.claim.title + hit.claim.claim));
+    const messiHit = matchKnownFactChecks("Messi lifts 2026 world cup", FACT_CHECK_CLAIMS);
+    assert.ok(messiHit && /messi|argentina/i.test(messiHit.claim.title));
+  });
+
+  test("spain winner claim stays true when messi debunk cache is wrongly in the pool", async () => {
+    const messiCache = ev({
+      id: "cache-Lionel Messi / Ar",
+      sourceName: "Lionel Messi / Argentina Won the 2026 FIFA World Cup",
+      publisher: "FIFA Official World Cup History & Tournament Registry",
+      sourceUrl: "https://www.fifa.com/tournaments/mens/worldcup",
+      sourceTier: 3,
+      sourceQualityScore: 88,
+      sourceType: "FACT_CHECK_ORG",
+      isDiscoveryOnly: false,
+      evidenceText:
+        "FACT: Lionel Messi has NOT won the 2026 World Cup. The 2026 FIFA World Cup has not concluded, and any claim declaring a 2026 champion is factually false.",
+    });
+    const wikiFinal = ev({
+      id: "wiki-final",
+      sourceName: "2026 FIFA World Cup final",
+      publisher: "Wikipedia",
+      sourceUrl: "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_final",
+      sourceTier: 4,
+      sourceQualityScore: 50,
+      sourceType: "WIKIPEDIA_CONTEXT",
+      isDiscoveryOnly: false,
+      evidenceText: "The 2026 FIFA World Cup final was the last match of the tournament.",
+    });
+    const result = await check("Spain lifts 2026 fifa world cup", [
+      messiCache,
+      wikiFinal,
+      ev({
+        sourceName: "Key takeaways from the World Cup 2026 final as Spain beat Argentina - Al Jazeera",
+        publisher: "Al Jazeera",
+        sourceUrl: "https://www.aljazeera.com/sports/world-cup-2026-final",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Key takeaways from the World Cup 2026 final as Spain beat Argentina",
+      }),
+    ]);
+    assert.ok(["VERIFIED_TRUE", "PARTIALLY_TRUE"].includes(result.verdict));
+    assert.notEqual(result.verdict, "FALSE");
+    assert.ok(result.confidenceScore > 55);
   });
 });

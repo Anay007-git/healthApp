@@ -9,7 +9,7 @@ import {
   isPoliticalDeathRumour,
   retirementAttributedToClaim,
 } from "./query-expansion";
-import { sportsResultConflict, parseSportsResult } from "./sports-result";
+import { sportsResultConflict, parseSportsResult, sportsSubjects, sportsSubjectsOverlap } from "./sports-result";
 
 const SUPPORT_CUES =
   /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|stepped down|won|beat|defeated|victory|thrashed|lift(?:s|ed)?|champion|died|dies|dead|death|passed away|demise|obituar(?:y|ies)?)\b/i;
@@ -100,7 +100,24 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
   if (sportsSides === "CONTRADICTS") stance = "CONTRADICTS";
   else if (sportsSides === "SUPPORTS" && relevant && !num.contradicted) stance = "SUPPORTS";
   else if (parseSportsResult(claim).winner && stance === "SUPPORTS" && sportsSides !== "SUPPORTS") {
-    stance = /\b(won|beat|defeated|victory|win)\b/i.test(text) ? stance : "NEUTRAL";
+    stance = /\b(won|beat|defeated|victory|win|lift)/i.test(text) ? stance : "NEUTRAL";
+  }
+
+  const claimWinner = parseSportsResult(claim).winner;
+  if (claimWinner) {
+    const claimSubs = sportsSubjects(claim);
+    const evSubs = sportsSubjects(text);
+    if (claimSubs.size > 0 && evSubs.size > 0 && !sportsSubjectsOverlap(claim, text)) {
+      if (stance === "CONTRADICTS" && sportsSides !== "CONTRADICTS") stance = "NEUTRAL";
+    }
+    if (
+      stance === "SUPPORTS" &&
+      sportsSides !== "SUPPORTS" &&
+      !parseSportsResult(text).winner &&
+      (evidence.sourceType === "WIKIPEDIA_CONTEXT" || /wikipedia/i.test(evidence.publisher))
+    ) {
+      stance = "NEUTRAL";
+    }
   }
 
   if (injection) {

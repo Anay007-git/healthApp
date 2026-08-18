@@ -158,6 +158,25 @@ export function parseSportsResult(text: string): SportsResultSides {
   return tournament ? { tournament } : {};
 }
 
+export function sportsSubjects(text: string): Set<string> {
+  const out = new Set<string>();
+  const sides = parseSportsResult(text);
+  if (sides.winner) out.add(sides.winner.toLowerCase());
+  if (sides.loser) out.add(sides.loser.toLowerCase());
+  for (const t of extractSportsTeams(text)) out.add(t.toLowerCase());
+  const mapped = playerNationalTeam(text);
+  if (mapped) out.add(mapped.toLowerCase());
+  return out;
+}
+
+export function sportsSubjectsOverlap(a: string, b: string): boolean {
+  const A = sportsSubjects(a);
+  const B = sportsSubjects(b);
+  if (A.size === 0 || B.size === 0) return true;
+  for (const x of A) if (B.has(x)) return true;
+  return false;
+}
+
 function sameSide(a?: string, b?: string): boolean {
   if (!a || !b) return false;
   return a.toLowerCase() === b.toLowerCase();

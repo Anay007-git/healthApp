@@ -2,6 +2,7 @@ import { FactCheckVerdict, StructuredEvidence, AtomicClaimResult, EvidenceConfli
 import { independentSourceCount } from "./evidence-ranker";
 import { detectConflicts } from "./contradiction-detector";
 import { celebrityObituaryClaim } from "./query-expansion";
+import { parseSportsResult, sportsSubjectsOverlap } from "./sports-result";
 
 export interface VerdictComputation {
   verdict: FactCheckVerdict;
@@ -18,6 +19,12 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
   const political = ["POLITICS", "GOVERNANCE", "ELECTIONS", "GOVERNMENT_SCHEMES"].includes(topic);
   const celebrityObituary = celebrityObituaryClaim(atomicClaim) && !political;
   let contradicts = evidence.filter((e) => e.stance === "CONTRADICTS");
+  if (parseSportsResult(atomicClaim).winner) {
+    contradicts = contradicts.filter((e) => {
+      if (!String(e.id || "").startsWith("cache-")) return true;
+      return sportsSubjectsOverlap(atomicClaim, `${e.evidenceText} ${e.sourceName}`);
+    });
+  }
   if (celebrityObituary && supports.filter((e) => e.sourceQualityScore >= 70).length >= 2) {
     contradicts = contradicts.filter((e) => e.sourceQualityScore >= 70 && !e.isDiscoveryOnly);
   }
