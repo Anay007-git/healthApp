@@ -9,10 +9,14 @@ import { matchEvidenceToClaim } from "./evidence-matcher";
 import { containsPromptInjection, sanitizeEvidenceText } from "./sanitize";
 import { computeVerdict } from "./verdict-engine";
 import { planSources } from "./source-planner";
+import { matchKnownFactChecks } from "./cache-matcher";
+import { FACT_CHECK_CLAIMS } from "@civiclens/database";
 import { expandSearchQueries, retirementAttributedToClaim } from "./query-expansion";
 import { extractClaimRelevantPassages } from "./passages";
 import { parseGoogleNewsRss, articlesFromRss2Json } from "./live-knowledge";
 import { classifySourceForTopic } from "./source-quality";
+import { isOffTopicSportsEvidence } from "./sport-discipline";
+import { isHighStakesPoliticalRumour } from "./query-expansion";
 
 function ev(partial: Partial<StructuredEvidence> & { evidenceText: string; sourceName: string }): StructuredEvidence {
   return {
@@ -581,6 +585,272 @@ describe("CivicLens evidence-first factcheck pipeline", () => {
         evidenceText: "Death hoax: Narendra Modi is not dead. The viral claim is false.",
       }),
     ]);
+    assert.notEqual(result.verdict, "VERIFIED_TRUE");
+  });
+
+  test("single event claims are not cloned into liftsworld date fragments", () => {
+    const spain = decomposeClaim("Spain lifts 2026 world cup");
+    assert.equal(spain.length, 1);
+    assert.match(spain[0].text, /spain lifts 2026 world cup/i);
+    assert.ok(!spain.some((a) => /liftsworld/i.test(a.text)));
+    const messi = decomposeClaim("Messi lifts 2026 world cup");
+    assert.equal(messi.length, 1);
+  });
+
+  test("tournament winner headlines can support a lifts/won claim", async () => {
+    const claim = "Spain lifts 2026 world cup";
+    assert.equal(classifyClaim(claim), "SPORTS");
+    const q = expandSearchQueries(claim);
+    assert.ok(q.some((x) => /spain/i.test(x) && /world cup/i.test(x)));
+    const matched = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName: "Key takeaways from the World Cup 2026 final as Spain beat Argentina - Al Jazeera",
+        publisher: "Al Jazeera",
+        sourceUrl: "https://www.aljazeera.com/sports/world-cup-2026-final",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        publicationDate: "2026-07-20",
+        evidenceText: "Key takeaways from the World Cup 2026 final as Spain beat Argentina",
+      })
+    );
+    assert.equal(matched.stance, "SUPPORTS");
+    const result = await check(claim, [
+      ev({
+        sourceName: "Key takeaways from the World Cup 2026 final as Spain beat Argentina - Al Jazeera",
+        publisher: "Al Jazeera",
+        sourceUrl: "https://www.aljazeera.com/sports/world-cup-2026-final",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        publicationDate: "2026-07-20",
+        evidenceText: "Key takeaways from the World Cup 2026 final as Spain beat Argentina",
+      }),
+    ]);
+    assert.ok(["VERIFIED_TRUE", "PARTIALLY_TRUE"].includes(result.verdict));
+    assert.notEqual(result.verdict, "UNVERIFIED");
+    assert.ok(!/liftsworld|→/.test(result.truthSummary + result.groundReality + result.detailedDebunk));
+  });
+
+  test("a player trophy claim is contradicted when another nation won that tournament", async () => {
+    const result = await check("Messi lifts 2026 world cup", [
+      ev({
+        sourceName: "Key takeaways from the World Cup 2026 final as Spain beat Argentina - Al Jazeera",
+        publisher: "Al Jazeera",
+        sourceUrl: "https://www.aljazeera.com/sports/world-cup-2026-final",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Key takeaways from the World Cup 2026 final as Spain beat Argentina",
+      }),
+    ]);
+    assert.ok(["FALSE", "CONFLICTING_EVIDENCE"].includes(result.verdict));
+    assert.notEqual(result.verdict, "VERIFIED_TRUE");
+    assert.ok(!/liftsworld|→ CONFLICTING/.test(result.groundReality + result.truthSummary));
+  });
+
+  test("messi 2026 debunk cache does not attach to a different nation's winner claim", () => {
+    const hit = matchKnownFactChecks("Spain lifts 2026 fifa world cup", FACT_CHECK_CLAIMS);
+    assert.ok(!hit || !/messi|argentina/i.test(hit.claim.title + hit.claim.claim));
+    const messiHit = matchKnownFactChecks("Messi lifts 2026 world cup", FACT_CHECK_CLAIMS);
+    assert.ok(messiHit && /messi|argentina/i.test(messiHit.claim.title));
+  });
+
+  test("spain winner claim stays true when messi debunk cache is wrongly in the pool", async () => {
+    const messiCache = ev({
+      id: "cache-Lionel Messi / Ar",
+      sourceName: "Lionel Messi / Argentina Won the 2026 FIFA World Cup",
+      publisher: "FIFA Official World Cup History & Tournament Registry",
+      sourceUrl: "https://www.fifa.com/tournaments/mens/worldcup",
+      sourceTier: 3,
+      sourceQualityScore: 88,
+      sourceType: "FACT_CHECK_ORG",
+      isDiscoveryOnly: false,
+      evidenceText:
+        "FACT: Lionel Messi has NOT won the 2026 World Cup. The 2026 FIFA World Cup has not concluded, and any claim declaring a 2026 champion is factually false.",
+    });
+    const wikiFinal = ev({
+      id: "wiki-final",
+      sourceName: "2026 FIFA World Cup final",
+      publisher: "Wikipedia",
+      sourceUrl: "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_final",
+      sourceTier: 4,
+      sourceQualityScore: 50,
+      sourceType: "WIKIPEDIA_CONTEXT",
+      isDiscoveryOnly: false,
+      evidenceText: "The 2026 FIFA World Cup final was the last match of the tournament.",
+    });
+    const result = await check("Spain lifts 2026 fifa world cup", [
+      messiCache,
+      wikiFinal,
+      ev({
+        sourceName: "Key takeaways from the World Cup 2026 final as Spain beat Argentina - Al Jazeera",
+        publisher: "Al Jazeera",
+        sourceUrl: "https://www.aljazeera.com/sports/world-cup-2026-final",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Key takeaways from the World Cup 2026 final as Spain beat Argentina",
+      }),
+    ]);
+    assert.ok(["VERIFIED_TRUE", "PARTIALLY_TRUE"].includes(result.verdict));
+    assert.notEqual(result.verdict, "FALSE");
+    assert.ok(result.confidenceScore > 55);
+  });
+
+  test("fifa world cup claim ignores hockey and transfer gossip headlines", () => {
+    const claim = "Spain lifts 2026 fifa world cup";
+    assert.equal(
+      isOffTopicSportsEvidence(claim, "FIH Hockey Men's World Cup 2026, Game 6: Spain vs South Africa"),
+      true
+    );
+    assert.equal(isOffTopicSportsEvidence(claim, "Spain Women's Hockey World Cup 2026 Squad & History"), true);
+    assert.equal(isOffTopicSportsEvidence(claim, "Rodri arrives at Barcelona to complete dream move"), true);
+    assert.equal(
+      isOffTopicSportsEvidence(claim, "Key takeaways from the World Cup 2026 final as Spain beat Argentina"),
+      false
+    );
+
+    const hockey = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName: "FIH Hockey Men's World Cup 2026: Spain vs South Africa",
+        publisher: "FIH",
+        sourceUrl: "https://news.google.com/rss/hockey",
+        sourceTier: 4,
+        sourceQualityScore: 18,
+        isDiscoveryOnly: true,
+        evidenceText: "FIH Hockey Men's World Cup 2026, Game 6: Spain vs South Africa",
+      })
+    );
+    assert.equal(hockey.stance, "INSUFFICIENT");
+  });
+
+  test("minister resignation with multiple named desks is not stuck at partial true", async () => {
+    const claim = "Dharmendra Pradhan resigns as minister";
+    const hindu = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName:
+          "Union Education Minister Dharmendra Pradhan’s resignation signals the beginning of the end of Modi era: M.B. Patil - The Hindu",
+        publisher: "The Hindu",
+        sourceUrl: "https://www.thehindu.com/news/national/pradhan-resigns",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText:
+          "Union Education Minister Dharmendra Pradhan’s resignation signals the beginning of the end of Modi era: M.B. Patil",
+      })
+    );
+    const air = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName: "Education Minister Dharmendra Pradhan resigns | Akashvani News - News On AIR",
+        publisher: "News On AIR",
+        sourceUrl: "https://news.google.com/rss/pradhan-resigns",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Education Minister Dharmendra Pradhan resigns",
+      })
+    );
+    assert.equal(hindu.stance, "SUPPORTS");
+    assert.equal(air.stance, "SUPPORTS");
+
+    const result = await check(claim, [
+      ev({
+        sourceName:
+          "Union Education Minister Dharmendra Pradhan’s resignation signals the beginning of the end of Modi era: M.B. Patil - The Hindu",
+        publisher: "The Hindu",
+        sourceUrl: "https://www.thehindu.com/news/national/pradhan-resigns",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText:
+          "Union Education Minister Dharmendra Pradhan’s resignation signals the beginning of the end of Modi era: M.B. Patil",
+      }),
+      ev({
+        sourceName: "Education Minister Dharmendra Pradhan resigns | Akashvani News - News On AIR",
+        publisher: "News On AIR",
+        sourceUrl: "https://news.google.com/rss/pradhan-resigns",
+        sourceTier: 2,
+        sourceQualityScore: 76,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Education Minister Dharmendra Pradhan resigns",
+      }),
+    ]);
+    assert.equal(result.verdict, "VERIFIED_TRUE");
+    assert.ok(result.confidenceScore > 65);
+  });
+
+  test("pm resignation hoax is not verified from demand headlines or a minister quitting", async () => {
+    const claim = "Narendra Modi resigns";
+    assert.equal(isHighStakesPoliticalRumour(claim), true);
+    const hindu = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName:
+          "PM Modi must apologise, resign along with Shah: Rahul on police crackdown on CJP protest - The Hindu",
+        publisher: "The Hindu",
+        sourceUrl: "https://www.thehindu.com/news/national/modi-resign-demand",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "PM Modi must apologise, resign along with Shah: Rahul on police crackdown on CJP protest",
+      })
+    );
+    const reuters = matchEvidenceToClaim(
+      claim,
+      ev({
+        sourceName:
+          "Modi's education minister quits as jubilant Indian youth protesters claim victory, end protest - Reuters",
+        publisher: "Reuters",
+        sourceUrl: "https://www.reuters.com/world/india/pradhan-quits",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Modi's education minister quits as jubilant Indian youth protesters claim victory, end protest",
+      })
+    );
+    assert.notEqual(hindu.stance, "SUPPORTS");
+    assert.notEqual(reuters.stance, "SUPPORTS");
+
+    const result = await check(claim, [
+      ev({
+        sourceName:
+          "PM Modi must apologise, resign along with Shah: Rahul on police crackdown on CJP protest - The Hindu",
+        publisher: "The Hindu",
+        sourceUrl: "https://www.thehindu.com/news/national/modi-resign-demand",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "PM Modi must apologise, resign along with Shah: Rahul on police crackdown on CJP protest",
+      }),
+      ev({
+        sourceName:
+          "Modi's education minister quits as jubilant Indian youth protesters claim victory, end protest - Reuters",
+        publisher: "Reuters",
+        sourceUrl: "https://www.reuters.com/world/india/pradhan-quits",
+        sourceTier: 2,
+        sourceQualityScore: 80,
+        sourceType: "QUALITY_JOURNALISM",
+        isDiscoveryOnly: false,
+        evidenceText: "Modi's education minister quits as jubilant Indian youth protesters claim victory, end protest",
+      }),
+    ]);
+    assert.equal(result.verdict, "UNVERIFIED");
     assert.notEqual(result.verdict, "VERIFIED_TRUE");
   });
 });

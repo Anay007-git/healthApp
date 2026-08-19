@@ -297,50 +297,96 @@ function enrichCAGReports(reports: CAGReport[]): CAGReport[] {
   });
 }
 
+export interface CivicLensDatabaseOptions {
+  sources?: Source[];
+  evidences?: Evidence[];
+  schemes?: Scheme[];
+  stateFactsData?: any[];
+  cagReports?: CAGReport[];
+  manifestoPromises?: ManifestoPromise[];
+  factCheckClaims?: FactCheckClaim[];
+  userSubmissions?: FactCheckSubmission[];
+  ministersData?: MinisterProfile[];
+  partyFundingData?: typeof PARTY_FUNDING;
+  corporateDonorsData?: typeof TOP_DONORS;
+  stories?: Story[];
+  partyAnnualIncomeData?: PartyAnnualIncomeRecord[];
+  partyMetaMap?: typeof PARTY_META_MAP;
+  bondsMeta?: typeof BONDS_META;
+}
+
+function buildMinistersData(override?: MinisterProfile[]): MinisterProfile[] {
+  if (override && override.length > 0) {
+    return override;
+  }
+
+  const leaderMap = new Map<string, MinisterProfile>();
+  [PM_PROFILE, ...MINISTERS].forEach((m) => {
+    const slug = m.slug || nameToSlug(m.name || "");
+    leaderMap.set(slug, { ...m, slug, id: m.id || `m-${slug}` } as MinisterProfile);
+  });
+  Object.entries(COMPREHENSIVE_LEADERS).forEach(([slug, leader]: [string, any]) => {
+    if (!leaderMap.has(slug)) {
+      leaderMap.set(slug, {
+        ...leader,
+        id: `comp-${slug}`,
+        slug,
+        stateName: leader.stateName || "National",
+        stateCode: leader.stateCode || "IN",
+        isCM: leader.isCM ?? false,
+        title: leader.title || leader.currentPosition || "Political Leader",
+        ministry: leader.ministry || leader.currentPosition || "Public Office",
+        constituency: leader.constituency || "National",
+        totalAssetsCr: leader.totalAssetsCr ?? leader.declaredAssetsCr ?? 0,
+        liabilitiesCr: leader.liabilitiesCr ?? 0,
+        assetGrowthPercent: leader.assetGrowthPct ?? 15,
+        photoUrl: leader.photoUrl || LEADER_PHOTOS[slug] || `https://ui-avatars.com/api/?name=${encodeURIComponent(leader.name)}&background=06038D&color=fff&size=256`,
+        currentPosition: leader.currentPosition || leader.title || "Political Leader",
+      } as MinisterProfile);
+    } else {
+      const existing = leaderMap.get(slug)!;
+      leaderMap.set(slug, { ...existing, ...leader, photoUrl: leader.photoUrl || LEADER_PHOTOS[slug] || existing.photoUrl });
+    }
+  });
+  return Array.from(leaderMap.values());
+}
+
 export class CivicLensDatabase {
-  private sources: Source[] = [...seedSources, ...FACT_CHECK_SOURCES];
-  private evidences: Evidence[] = [...seedEvidences];
-  private schemes: Scheme[] = [...seedSchemes];
-  private stateFactsData: any[] = Array.isArray(STATE_FACTS) ? STATE_FACTS : Object.values(STATE_FACTS);
-  private states: StateProfile[] = buildStateProfiles(this.stateFactsData, seedStates);
-  private cagReports: CAGReport[] = enrichCAGReports([...seedCAGReports]);
-  private manifestoPromises: ManifestoPromise[] = [...seedManifestoPromises];
-  private factCheckClaims: FactCheckClaim[] = [...FACT_CHECK_CLAIMS];
-  private userSubmissions: FactCheckSubmission[] = [];
-  private ministersData = (() => {
-    const leaderMap = new Map<string, MinisterProfile>();
-    [PM_PROFILE, ...MINISTERS].forEach((m) => {
-      const slug = m.slug || nameToSlug(m.name || "");
-      leaderMap.set(slug, { ...m, slug, id: m.id || `m-${slug}` } as MinisterProfile);
-    });
-    Object.entries(COMPREHENSIVE_LEADERS).forEach(([slug, leader]: [string, any]) => {
-      if (!leaderMap.has(slug)) {
-        leaderMap.set(slug, {
-          ...leader,
-          id: `comp-${slug}`,
-          slug,
-          stateName: leader.stateName || "National",
-          stateCode: leader.stateCode || "IN",
-          isCM: leader.isCM ?? false,
-          title: leader.title || leader.currentPosition || "Political Leader",
-          ministry: leader.ministry || leader.currentPosition || "Public Office",
-          constituency: leader.constituency || "National",
-          totalAssetsCr: leader.totalAssetsCr ?? leader.declaredAssetsCr ?? 0,
-          liabilitiesCr: leader.liabilitiesCr ?? 0,
-          assetGrowthPercent: leader.assetGrowthPct ?? 15,
-          photoUrl: leader.photoUrl || LEADER_PHOTOS[slug] || `https://ui-avatars.com/api/?name=${encodeURIComponent(leader.name)}&background=06038D&color=fff&size=256`,
-          currentPosition: leader.currentPosition || leader.title || "Political Leader",
-        } as MinisterProfile);
-      } else {
-        const existing = leaderMap.get(slug)!;
-        leaderMap.set(slug, { ...existing, ...leader, photoUrl: leader.photoUrl || LEADER_PHOTOS[slug] || existing.photoUrl });
-      }
-    });
-    return Array.from(leaderMap.values());
-  })();
-  private partyFundingData = PARTY_FUNDING;
-  private corporateDonorsData = TOP_DONORS;
-  private stories: Story[] = [...seedStories];
+  private sources: Source[];
+  private evidences: Evidence[];
+  private schemes: Scheme[];
+  private stateFactsData: any[];
+  private states: StateProfile[];
+  private cagReports: CAGReport[];
+  private manifestoPromises: ManifestoPromise[];
+  private factCheckClaims: FactCheckClaim[];
+  private userSubmissions: FactCheckSubmission[];
+  private ministersData: MinisterProfile[];
+  private partyFundingData: typeof PARTY_FUNDING;
+  private corporateDonorsData: typeof TOP_DONORS;
+  private stories: Story[];
+  private partyAnnualIncomeData: PartyAnnualIncomeRecord[];
+  private partyMetaMapData: typeof PARTY_META_MAP;
+  private bondsMetaData: typeof BONDS_META;
+
+  constructor(options: CivicLensDatabaseOptions = {}) {
+    this.sources = options.sources ?? [...seedSources, ...FACT_CHECK_SOURCES];
+    this.evidences = options.evidences ?? [...seedEvidences];
+    this.schemes = options.schemes ?? [...seedSchemes];
+    this.stateFactsData = options.stateFactsData ?? (Array.isArray(STATE_FACTS) ? STATE_FACTS : Object.values(STATE_FACTS));
+    this.states = buildStateProfiles(this.stateFactsData, seedStates);
+    this.cagReports = enrichCAGReports(options.cagReports ? [...options.cagReports] : [...seedCAGReports]);
+    this.manifestoPromises = options.manifestoPromises ?? [...seedManifestoPromises];
+    this.factCheckClaims = options.factCheckClaims ?? [...FACT_CHECK_CLAIMS];
+    this.userSubmissions = options.userSubmissions ?? [];
+    this.ministersData = buildMinistersData(options.ministersData);
+    this.partyFundingData = options.partyFundingData ?? PARTY_FUNDING;
+    this.corporateDonorsData = options.corporateDonorsData ?? TOP_DONORS;
+    this.stories = options.stories ?? [...seedStories];
+    this.partyAnnualIncomeData = options.partyAnnualIncomeData ?? PARTY_ANNUAL_INCOME_DATA;
+    this.partyMetaMapData = options.partyMetaMap ?? PARTY_META_MAP;
+    this.bondsMetaData = options.bondsMeta ?? BONDS_META;
+  }
 
   getStateFacts() {
     return this.stateFactsData;
@@ -925,15 +971,15 @@ export class CivicLensDatabase {
   }
 
   getBondsMeta() {
-    return BONDS_META;
+    return this.bondsMetaData;
   }
 
   getPartyAnnualIncomeHistory(): PartyAnnualIncomeRecord[] {
-    return PARTY_ANNUAL_INCOME_DATA;
+    return this.partyAnnualIncomeData;
   }
 
   getPartyMetaMap() {
-    return PARTY_META_MAP;
+    return this.partyMetaMapData;
   }
 
   // State Schemes (manifesto promises and key issues with normalized status from state_facts_data)
@@ -1070,6 +1116,23 @@ export class CivicLensDatabase {
       status: "PENDING_REVIEW",
     };
     this.userSubmissions.unshift(newSubmission);
+
+    void import("./pg/load")
+      .then(({ insertFactCheckSubmissionToPostgres }) =>
+        insertFactCheckSubmissionToPostgres({
+          id: newSubmission.id,
+          claimText: newSubmission.claimText,
+          sourcePlatform: newSubmission.sourcePlatform,
+          url: newSubmission.url,
+          userContact: newSubmission.userContact,
+          upvotes: newSubmission.upvotes,
+          status: newSubmission.status,
+        })
+      )
+      .catch(() => {
+        // Best-effort persistence when Postgres is unavailable.
+      });
+
     return newSubmission;
   }
 
@@ -1095,3 +1158,41 @@ export class CivicLensDatabase {
 
 export const db = new CivicLensDatabase();
 export { COMPREHENSIVE_LEADERS, LEADER_PHOTOS };
+export type { CivicDatasetSnapshot, CivicDatasetSubmission } from "./pg/datasets";
+export {
+  buildAdminDatasetsPayload,
+  flattenCagFindings,
+  schemeWorkflowStatus,
+  sourceWorkflowStatus,
+  cagFindingWorkflowStatus,
+} from "./admin-datasets";
+export type {
+  AdminDatasetsPayload,
+  AdminCagFindingRow,
+  AdminDatasetCounts,
+  AdminWorkflowStatus,
+} from "./admin-datasets";
+
+/** Browser-safe: hydrate in-memory DB from a JSON snapshot (no Postgres). */
+export function hydrateDatabaseFromSnapshot(
+  snapshot: import("./pg/datasets").CivicDatasetSnapshot,
+  submissions: FactCheckSubmission[] = []
+): CivicLensDatabase {
+  return new CivicLensDatabase({
+    sources: snapshot.sources,
+    evidences: snapshot.evidences,
+    schemes: snapshot.schemes,
+    stateFactsData: snapshot.state_facts,
+    cagReports: snapshot.cag_reports,
+    manifestoPromises: snapshot.manifesto_promises,
+    ministersData: snapshot.ministers,
+    stories: snapshot.stories,
+    partyFundingData: snapshot.party_funding,
+    corporateDonorsData: snapshot.corporate_donors,
+    partyAnnualIncomeData: snapshot.party_annual_income,
+    partyMetaMap: snapshot.party_meta_map,
+    bondsMeta: snapshot.bonds_meta,
+    factCheckClaims: snapshot.fact_check_claims,
+    userSubmissions: submissions,
+  });
+}

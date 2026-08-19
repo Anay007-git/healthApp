@@ -7,12 +7,17 @@ import {
   deathAttributedToClaim,
   isDeathClaim,
   isPoliticalDeathRumour,
+  isHighStakesPoliticalRumour,
+  isResignationClaim,
+  ministerResignationClaim,
+  resignationAttributedToClaim,
   retirementAttributedToClaim,
 } from "./query-expansion";
-import { sportsResultConflict, parseSportsResult } from "./sports-result";
+import { sportsResultConflict, parseSportsResult, sportsSubjects, sportsSubjectsOverlap } from "./sports-result";
+import { isOffTopicSportsEvidence } from "./sport-discipline";
 
 const SUPPORT_CUES =
-  /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|stepped down|won|beat|defeated|victory|thrashed|died|dies|dead|death|passed away|demise|obituar(?:y|ies)?)\b/i;
+  /\b(confirm(?:ed|s)?|officially|announced|notified|gazetted|successfully|verif(?:y|ied)|true that|did (?:increase|launch|win|ban)|upheld|soft landing|retir(?:e|ed|es|ement)|resign(?:s|ed|ation)?|stepped down|quits?|quit|won|beat|defeated|victory|thrashed|lift(?:s|ed)?|champion|died|dies|dead|death|passed away|demise|obituar(?:y|ies)?)\b/i;
 const CONTRADICT_CUES = /\b(denied|debunk|false|not true|no such|did not|didn't|has not|never (?:happened|occurred|took place)|rejected|refuted|incorrect|no gst|remains free|is not|not a|still alive|death hoax|fake death|not dead)\b/i;
 const DISCUSS_CUES = /\b(said|claimed|alleged|rumour|rumor|unverified|reportedly|according to social)\b/i;
 
@@ -20,6 +25,23 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
   const claim = atomicClaim;
   const text = sanitizeEvidenceText(`${evidence.evidenceText} ${evidence.evidenceSummary} ${evidence.sourceName}`);
   const injection = containsPromptInjection(evidence.evidenceText || "");
+
+  if (isOffTopicSportsEvidence(claim, text)) {
+    return {
+      ...evidence,
+      atomicClaim: claim,
+      evidenceText: text,
+      supportsClaim: false,
+      contradictsClaim: false,
+      stance: "INSUFFICIENT",
+      relevanceScore: 0,
+      temporalMatchScore: 20,
+      entityMatchScore: 15,
+      numericMatchScore: 50,
+      overallEvidenceScore: 5,
+      whyItMatters: "Headline is a different sport or unrelated football story, not evidence for this tournament result.",
+    };
+  }
 
   const claimEnt = extractEntities(claim);
   const entityMatchScore = entityOverlapScore(claimEnt, text);
@@ -78,6 +100,9 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
   if (isDeathClaim(claim) && stance === "SUPPORTS" && !deathAttributedToClaim(claim, text)) {
     stance = "NEUTRAL";
   }
+  if (isResignationClaim(claim) && stance === "SUPPORTS" && !resignationAttributedToClaim(claim, text)) {
+    stance = "NEUTRAL";
+  }
   if (
     retirementClaim &&
     claimFormats.has("test") &&
@@ -100,7 +125,24 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
   if (sportsSides === "CONTRADICTS") stance = "CONTRADICTS";
   else if (sportsSides === "SUPPORTS" && relevant && !num.contradicted) stance = "SUPPORTS";
   else if (parseSportsResult(claim).winner && stance === "SUPPORTS" && sportsSides !== "SUPPORTS") {
-    stance = /\b(won|beat|defeated|victory|win)\b/i.test(text) ? stance : "NEUTRAL";
+    stance = /\b(won|beat|defeated|victory|win|lift)/i.test(text) ? stance : "NEUTRAL";
+  }
+
+  const claimWinner = parseSportsResult(claim).winner;
+  if (claimWinner) {
+    const claimSubs = sportsSubjects(claim);
+    const evSubs = sportsSubjects(text);
+    if (claimSubs.size > 0 && evSubs.size > 0 && !sportsSubjectsOverlap(claim, text)) {
+      if (stance === "CONTRADICTS" && sportsSides !== "CONTRADICTS") stance = "NEUTRAL";
+    }
+    if (
+      stance === "SUPPORTS" &&
+      sportsSides !== "SUPPORTS" &&
+      !parseSportsResult(text).winner &&
+      (evidence.sourceType === "WIKIPEDIA_CONTEXT" || /wikipedia/i.test(evidence.publisher))
+    ) {
+      stance = "NEUTRAL";
+    }
   }
 
   if (injection) {
@@ -119,6 +161,9 @@ export function matchEvidenceToClaim(atomicClaim: string, evidence: StructuredEv
     stance = "NEUTRAL";
   }
   if (isPoliticalDeathRumour(claim) && stance === "SUPPORTS" && evidence.sourceTier > 1) {
+    stance = "NEUTRAL";
+  }
+  if (isHighStakesPoliticalRumour(claim) && stance === "SUPPORTS" && evidence.sourceTier > 1) {
     stance = "NEUTRAL";
   }
 

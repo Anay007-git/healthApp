@@ -1,7 +1,8 @@
 import { FactCheckVerdict, StructuredEvidence, AtomicClaimResult, EvidenceConflict } from "@civiclens/types";
 import { independentSourceCount } from "./evidence-ranker";
 import { detectConflicts } from "./contradiction-detector";
-import { celebrityObituaryClaim } from "./query-expansion";
+import { celebrityObituaryClaim, isHighStakesPoliticalRumour, ministerResignationClaim } from "./query-expansion";
+import { parseSportsResult, sportsSubjectsOverlap } from "./sports-result";
 
 export interface VerdictComputation {
   verdict: FactCheckVerdict;
@@ -16,8 +17,15 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
   const usable = evidence.filter((e) => e.stance !== "INSUFFICIENT" || e.sourceTier === 1);
   const supports = evidence.filter((e) => e.stance === "SUPPORTS");
   const political = ["POLITICS", "GOVERNANCE", "ELECTIONS", "GOVERNMENT_SCHEMES"].includes(topic);
+  const ministerResignation = ministerResignationClaim(atomicClaim);
   const celebrityObituary = celebrityObituaryClaim(atomicClaim) && !political;
   let contradicts = evidence.filter((e) => e.stance === "CONTRADICTS");
+  if (parseSportsResult(atomicClaim).winner) {
+    contradicts = contradicts.filter((e) => {
+      if (!String(e.id || "").startsWith("cache-")) return true;
+      return sportsSubjectsOverlap(atomicClaim, `${e.evidenceText} ${e.sourceName}`);
+    });
+  }
   if (celebrityObituary && supports.filter((e) => e.sourceQualityScore >= 70).length >= 2) {
     contradicts = contradicts.filter((e) => e.sourceQualityScore >= 70 && !e.isDiscoveryOnly);
   }
@@ -76,7 +84,13 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
     confidence = Math.min(96, 70 + primarySupport.length * 8 + indepSupport * 4);
     truthSummary = `Primary/official evidence supports the claim. ${primarySupport[0].publisher}: ${primarySupport[0].evidenceSummary}`;
     detailedDebunk = supports.map((e) => `${e.publisher} (${e.publicationDate || "undated"}): ${e.evidenceSummary}`).join(" ");
-  } else if (indepSupport >= 2 && highSupport.length >= 2 && contradicts.length === 0 && !anonymousOnly) {
+  } else if (
+    indepSupport >= 2 &&
+    highSupport.length >= 2 &&
+    contradicts.length === 0 &&
+    !anonymousOnly &&
+    !isHighStakesPoliticalRumour(atomicClaim)
+  ) {
     verdict = "VERIFIED_TRUE";
     confidence = Math.min(88, 58 + indepSupport * 8);
     truthSummary = `Independent reporting supports the claim. ${highSupport
@@ -88,22 +102,34 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
       limitations.push("No primary official document was successfully retrieved.");
     }
   } else if (
-    sportsOrScience &&
+    (sportsOrScience || ministerResignation) &&
     highSupport.length >= 1 &&
     contradicts.length === 0 &&
     !anonymousOnly &&
-    !political
+    (!political || ministerResignation)
   ) {
-    verdict = "VERIFIED_TRUE";
-    confidence = Math.min(82, 58 + highSupport[0].sourceQualityScore * 0.2 + (wikiSupport.length ? 6 : 0));
-    truthSummary = celebrityObituary
-      ? `Named news desks report the death. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`
-      : `Named sports/science reporting supports the claim. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`;
-    detailedDebunk = supports.map((e) => `${e.publisher}: ${e.evidenceSummary}`).join(" ");
+    const multi = indepSupport >= 2 || highSupport.length >= 2;
+    verdict = multi ? "VERIFIED_TRUE" : "PARTIALLY_TRUE";
+    confidence = multi
+      ? Math.min(84, 62 + indepSupport * 7)
+      : Math.min(68, 58 + highSupport[0].sourceQualityScore * 0.12);
+    truthSummary = ministerResignation
+      ? multi
+        ? `Independent reporting confirms the resignation. ${highSupport
+            .slice(0, 3)
+            .map((e) => e.publisher)
+            .join(", ")}.`
+        : `Some reporting indicates the resignation, but corroboration is limited. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`
+      : celebrityObituary
+        ? `Named news desks report the death. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`
+        : `Named sports/science reporting supports the claim. ${highSupport[0].publisher}: ${highSupport[0].evidenceSummary}`;
+    detailedDebunk = highSupport.map((e) => `${e.publisher}: ${e.evidenceSummary}`).join(" ");
     limitations.push(
-      celebrityObituary
-        ? "Confidence is capped without a primary official record (gazette, hospital, or family statement on an official channel)."
-        : "Confidence is capped without a sports-federation primary document."
+      ministerResignation
+        ? "Confidence is capped without a primary official record (PIB release or ministry order)."
+        : celebrityObituary
+          ? "Confidence is capped without a primary official record (gazette, hospital, or family statement on an official channel)."
+          : "Confidence is capped without a sports-federation primary document."
     );
   } else if (sportsOrScience && wikiSupport.length >= 1 && highSupport.length === 0 && contradicts.length === 0 && !political) {
     verdict = "PARTIALLY_TRUE";
@@ -135,6 +161,14 @@ export function computeVerdict(atomicClaim: string, evidence: StructuredEvidence
     verdict = "UNVERIFIED";
     confidence = 32;
     truthSummary = "Wikipedia cannot independently establish a time-sensitive political or government claim.";
+  }
+
+  if (isHighStakesPoliticalRumour(atomicClaim) && primarySupport.length === 0 && (verdict === "VERIFIED_TRUE" || verdict === "PARTIALLY_TRUE")) {
+    verdict = "UNVERIFIED";
+    confidence = Math.min(confidence, 38);
+    truthSummary =
+      "No primary official record (PIB/PMO/Rashtrapati Bhavan) confirms this. News that demands resignation or reports a colleague's resignation is not proof the leader resigned.";
+    limitations.push("High-stakes political resignation rumours require a primary government source, not opinion headlines.");
   }
 
   if (usable.length === 0 && evidence.length === 0) {
@@ -172,8 +206,8 @@ export function aggregateAtomicVerdicts(original: string, parts: AtomicClaimResu
       truthSummary:
         v === "UNVERIFIED"
           ? "Insufficient reliable evidence to verify or falsify this claim. Absence of evidence is not evidence of falsehood."
-          : parts.map((p) => `${p.claim} → ${p.verdict} (${p.confidenceScore})`).join(" "),
-      detailedDebunk: parts.map((p) => `${p.claim} → ${p.verdict} (${p.confidenceScore})`).join(" "),
+          : `Independent checks of the claim agree: ${v.replace(/_/g, " ").toLowerCase()}.`,
+      detailedDebunk: "Each part of the prompt was checked against the same evidence pool; they reached the same verdict.",
       conflicts: [],
       limitations: [],
     };
@@ -192,8 +226,8 @@ export function aggregateAtomicVerdicts(original: string, parts: AtomicClaimResu
   return {
     verdict,
     confidenceScore: Math.min(avgConf, 80),
-    truthSummary: `The prompt contains multiple atomic claims with mixed evidence. Overall verdict ${verdict} does not replace per-claim results.`,
-    detailedDebunk: parts.map((p, i) => `${i + 1}. "${p.claim}" → ${p.verdict} (${p.confidenceScore}%).`).join(" "),
+    truthSummary: `This prompt mixes more than one fact. Overall verdict ${verdict} does not replace checking each part.`,
+    detailedDebunk: "The prompt was split into independent facts that did not all receive the same verdict.",
     conflicts: [],
     limitations: ["Do not assign one verdict to a compound prompt when atomics differ."],
   };

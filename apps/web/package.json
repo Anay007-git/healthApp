@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node ../../scripts/generate-civic-snapshot.mjs",
     "build": "node --max-old-space-size=8192 ../../node_modules/typescript/bin/tsc && vite build && npx pnpm --filter @civiclens/admin run build",
     "preview": "vite preview"
   },

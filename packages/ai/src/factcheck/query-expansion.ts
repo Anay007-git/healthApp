@@ -3,7 +3,8 @@
  * Does not hard-code verdicts — only retrieval queries.
  */
 
-import { extractSportsTeams } from "./sports-result";
+import { extractSportsTeams, parseSportsResult, playerNationalTeam } from "./sports-result";
+import { extractYears } from "./numbers";
 
 const PERSON_ALIASES: Array<{ match: RegExp; canonical: string }> = [
   { match: /\bkohli\b/i, canonical: "Virat Kohli" },
@@ -11,6 +12,7 @@ const PERSON_ALIASES: Array<{ match: RegExp; canonical: string }> = [
   { match: /\bmessi\b/i, canonical: "Lionel Messi" },
   { match: /\bdhoni\b|\bmsd\b/i, canonical: "MS Dhoni" },
   { match: /\bdharmendra(?:\s+deol)?\b/i, canonical: "Dharmendra" },
+  { match: /\bmodi\b|\bnarendra modi\b/i, canonical: "Narendra Modi" },
 ];
 
 const DEATH_EVENT =
@@ -26,6 +28,28 @@ export function isDeathClaim(claim: string): boolean {
 /** Tabloid death rumours about sitting politicians stay on the high evidence bar. */
 export function isPoliticalDeathRumour(claim: string): boolean {
   return isDeathClaim(claim) && POLITICAL_DEATH_SUBJECT.test(claim);
+}
+
+const RESIGN_EVENT =
+  /\b(resign(?:s|ed|ation)?|stepped down|stepping down|quits?|quit)\b/i;
+
+export function isResignationClaim(claim: string): boolean {
+  return RESIGN_EVENT.test(claim);
+}
+
+/** PM/CM death-or-resign hoaxes stay on the primary-record bar. */
+export function isHighStakesPoliticalRumour(claim: string): boolean {
+  if (isPoliticalDeathRumour(claim)) return true;
+  const low = claim.toLowerCase();
+  const aboutLeader =
+    /\b(modi|narendra modi|prime minister|pm modi|amit shah|rahul gandhi|mamata|banerjee|kejriwal|president|vice president|chief minister)\b/.test(
+      low
+    );
+  return aboutLeader && (isResignationClaim(claim) || isDeathClaim(claim));
+}
+
+export function ministerResignationClaim(claim: string): boolean {
+  return isResignationClaim(claim) && !isHighStakesPoliticalRumour(claim);
 }
 
 export function celebrityObituaryClaim(claim: string): boolean {
@@ -59,13 +83,31 @@ export function expandSearchQueries(claim: string): string[] {
   const formats = cricketFormatsMentioned(claim);
   const retiring = /\bretir/i.test(claim);
   const teams = extractSportsTeams(claim);
-  const resultClaim = /\b(won|win|beat|defeat|lost|lose|victory)\b/i.test(claim);
+  const resultClaim = /\b(won|win|beat|defeat|lost|lose|victory|lift(?:s|ed)?|champion|trophy|title)\b/i.test(claim);
   const deathClaim = isDeathClaim(claim);
+  const sides = parseSportsResult(claim);
+  const year = extractYears(claim)[0];
+  const worldCup = /\bworld cups?\b/i.test(claim);
 
   if (teams.length >= 2 && (formats.has("test") || resultClaim)) {
     const fmt = formats.has("test") ? "Test cricket" : formats.has("odi") ? "ODI" : formats.has("t20") ? "T20" : "cricket";
     queries.unshift(`${teams[0]} vs ${teams[1]} ${fmt}`);
     if (resultClaim) queries.push(`${teams[0]} beat ${teams[1]} ${fmt}`);
+  }
+
+  if (sides.winner && (worldCup || sides.tournament)) {
+    const tourney = worldCup && /\bfifa\b/i.test(claim) ? "FIFA World Cup" : worldCup ? "World Cup" : "final";
+    const y = year ? String(year) : "";
+    queries.unshift(`${sides.winner} won ${y} ${tourney}`.replace(/\s+/g, " ").trim());
+    queries.push(`${y} ${tourney} final winner`.replace(/\s+/g, " ").trim());
+    if (/\bfifa\b/i.test(claim)) {
+      queries.unshift(`FIFA World Cup ${y} final ${sides.winner}`.replace(/\s+/g, " ").trim());
+    }
+  }
+
+  const playerSide = playerNationalTeam(claim);
+  if (playerSide && worldCup) {
+    queries.push(`${playerSide} ${year || ""} World Cup`.replace(/\s+/g, " ").trim());
   }
 
   for (const person of people) {
@@ -155,14 +197,94 @@ export function deathAttributedToClaim(claim: string, evidenceText: string): boo
   const people = canonicalPersonNames(claim);
   const keys = people.length
     ? people.flatMap((p) => p.toLowerCase().split(/\s+/).filter((w) => w.length > 3))
-    : informalDeathSubject(claim)
-        .toLowerCase()
-        .split(/\s+/)
-        .filter((w) => w.length > 3);
+    : informalNameKeys(claim);
 
   if (!keys.length) return DEATH_EVENT.test(blob);
   return keys.some((n) => blob.includes(n));
 }
+
+export function resignationAttributedToClaim(claim: string, evidenceText: string): boolean {
+  if (!isResignationClaim(claim)) return true;
+  const blob = evidenceText.toLowerCase();
+  if (!RESIGN_EVENT.test(blob)) return false;
+  if (RESIGN_DEMAND.test(blob)) return false;
+
+  const subjects = resignationSubjects(claim);
+  if (!subjects.length) return RESIGN_EVENT.test(blob) && !RESIGN_DEMAND.test(blob);
+
+  return subjects.some((subject) => factualResignationOf(subject, blob));
+}
+
+function resignationSubjects(claim: string): string[] {
+  const people = canonicalPersonNames(claim).map((p) => p.toLowerCase());
+  if (people.length) return people;
+  const pair = claim.match(/\b([A-Za-z]{3,})\s+([A-Za-z]{3,})\b/i);
+  if (pair && !NAME_STOP.has(pair[1].toLowerCase()) && !NAME_STOP.has(pair[2].toLowerCase())) {
+    return [`${pair[1].toLowerCase()} ${pair[2].toLowerCase()}`, pair[2].toLowerCase()];
+  }
+  return informalNameKeys(claim);
+}
+
+const RESIGN_DEMAND =
+  /\b(?:must|should|ought to|need to|needs to|calls? for|calling for|demand(?:ed|s)?|ask(?:ed|s)?|urge(?:d|s)?|apologis(?:e|e|z)|apologize)[^.]{0,100}\bresign/i;
+
+function factualResignationOf(subject: string, blob: string): boolean {
+  const name = subject.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const parts = subject.split(/\s+/).filter((p) => p.length > 3);
+  const last = parts[parts.length - 1] || subject;
+  const lastPat = last.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  if (new RegExp(`${name}'s\\s+(?:education\\s+|union\\s+)?minister\\b[^.]{0,50}\\b(?:quits?|resign)`, "i").test(blob)) {
+    return false;
+  }
+  if (new RegExp(`${lastPat}'s\\s+(?:education\\s+|union\\s+)?minister\\b[^.]{0,50}\\b(?:quits?|resign)`, "i").test(blob)) {
+    return false;
+  }
+
+  const factual = [
+    new RegExp(`\\b${name}\\b[^.]{0,70}\\b(?:has\\s+)?resign(?:ed|s|ation)\\b`, "i"),
+    new RegExp(`\\b${name}\\b[^.]{0,50}\\b(?:quits?|quit|stepped down)\\b`, "i"),
+    new RegExp(`\\b${lastPat}\\b[^.]{0,50}\\b(?:quits?|quit|stepped down|resign(?:ed|s|ation))\\b`, "i"),
+    new RegExp(`\\b${name}'s\\s+resignation\\b`, "i"),
+    new RegExp(`\\b${lastPat}'s\\s+resignation\\b`, "i"),
+  ];
+  return factual.some((re) => re.test(blob));
+}
+
+function informalNameKeys(claim: string): string[] {
+  const words = claim
+    .toLowerCase()
+    .replace(/[^\p{L}\s]/gu, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 3 && !NAME_STOP.has(w));
+  const keys = new Set<string>();
+  for (const w of words) keys.add(w);
+  for (let i = 0; i < words.length - 1; i++) {
+    if (!NAME_STOP.has(words[i]) && !NAME_STOP.has(words[i + 1])) {
+      keys.add(words[i]);
+      keys.add(words[i + 1]);
+    }
+  }
+  return [...keys];
+}
+
+const NAME_STOP = new Set([
+  ...DEATH_STOP,
+  "resigns",
+  "resigned",
+  "resignation",
+  "minister",
+  "chief",
+  "prime",
+  "union",
+  "education",
+  "government",
+  "cabinet",
+  "stepped",
+  "stepping",
+  "quits",
+  "quit",
+]);
 
 /**
  * For retirement claims, require the evidence to attribute retirement to the

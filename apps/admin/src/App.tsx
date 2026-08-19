@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { brandConfig } from "@civiclens/config";
-import { db } from "@civiclens/database";
 import { Scheme, CAGReport, Source } from "@civiclens/types";
+import { useAdminData } from "./lib/use-admin-data";
+import type { AdminCagFindingRow } from "@civiclens/database";
 import {
   LayoutDashboard,
   Database,
@@ -46,16 +47,7 @@ interface AdminSource extends Source {
   status: "DRAFT" | "IN REVIEW" | "VERIFIED" | "PUBLISHED";
 }
 
-interface CAGFindingItem {
-  id: string;
-  reportTitle: string;
-  ministry: string;
-  summary: string;
-  discrepancyCr: number;
-  severity: "CRITICAL" | "HIGH" | "MEDIUM";
-  status: "DRAFT" | "IN REVIEW" | "VERIFIED" | "PUBLISHED";
-  cagReportNo: string;
-}
+interface CAGFindingItem extends AdminCagFindingRow {}
 
 interface NewsletterEdition {
   id: string;
@@ -212,10 +204,17 @@ export function App() {
         setIsAuthenticated(true);
         setAuthError("");
         setFailedAttempts(0);
+        const resolvedToken =
+          authMethod === "TOKEN"
+            ? tokenInput.trim()
+            : expectedToken;
+        setSessionToken(resolvedToken);
         try {
           sessionStorage.setItem("civiclens_admin_auth", "true");
+          sessionStorage.setItem("civiclens_admin_token", resolvedToken);
           if (rememberMe) {
             localStorage.setItem("civiclens_admin_auth", "true");
+            localStorage.setItem("civiclens_admin_token", resolvedToken);
           }
         } catch {}
       } else {
@@ -235,9 +234,12 @@ export function App() {
     setIsAuthenticated(false);
     setAdminPassword("");
     setTokenInput("");
+    setSessionToken("");
     try {
       sessionStorage.removeItem("civiclens_admin_auth");
+      sessionStorage.removeItem("civiclens_admin_token");
       localStorage.removeItem("civiclens_admin_auth");
+      localStorage.removeItem("civiclens_admin_token");
     } catch {}
   };
 
@@ -250,6 +252,25 @@ export function App() {
     }
   };
 
+  const [sessionToken, setSessionToken] = useState<string>(() => {
+    try {
+      return sessionStorage.getItem("civiclens_admin_token") || "";
+    } catch {
+      return "";
+    }
+  });
+
+  const {
+    payload,
+    db: civicDb,
+    loading: dataLoading,
+    error: dataError,
+    refresh: refreshDatasets,
+    counts,
+    dataSource,
+    syncedAt,
+  } = useAdminData(isAuthenticated, sessionToken || expectedToken);
+
   const [activeSection, setActiveSection] = useState<string>("dashboard");
   const [verificationFilter, setVerificationFilter] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -257,55 +278,57 @@ export function App() {
   const [selectedMinister, setSelectedMinister] = useState<any | null>(null);
   const [promiseFilter, setPromiseFilter] = useState<string>("ALL");
 
-  // Dynamic State Initializations
-  const [schemes, setSchemes] = useState<AdminScheme[]>(() =>
-    db.getSchemes().map((s, idx) => ({
-      ...s,
-      status: idx % 4 === 0 ? "DRAFT" : idx % 3 === 0 ? "IN REVIEW" : "PUBLISHED",
-    }))
-  );
+  // Dynamic State Initializations (synced from API / Postgres)
+  const [schemes, setSchemes] = useState<AdminScheme[]>([]);
+  const [sources, setSources] = useState<AdminSource[]>([]);
+  const [ministers, setMinisters] = useState<any[]>([]);
+  const [cagFindings, setCagFindings] = useState<CAGFindingItem[]>([]);
+  const [aiDocs, setAiDocs] = useState<AIKnowledgeDoc[]>([]);
 
-  const [sources, setSources] = useState<AdminSource[]>(() =>
-    db.getSources().map((src, idx) => ({
-      ...src,
-      status: idx % 3 === 0 ? "VERIFIED" : "PUBLISHED",
-    }))
-  );
+  useEffect(() => {
+    if (!payload?.data) return;
 
-  const [ministers] = useState(() => [...db.getMinisters(), ...db.getAllStateMinisters()]);
-
-  const [cagFindings, setCagFindings] = useState<CAGFindingItem[]>([
-    {
-      id: "cag-f1",
-      reportTitle: "Performance Audit on Jal Jeevan Mission Implementation",
-      cagReportNo: "Report No. 14 of 2024",
-      ministry: "Ministry of Jal Shakti",
-      summary: "Delay in commissioning water testing labs and non-utilisation of ₹3,420 Cr allocated funds.",
-      discrepancyCr: 3420,
-      severity: "CRITICAL",
-      status: "VERIFIED",
-    },
-    {
-      id: "cag-f2",
-      reportTitle: "Compliance Audit on National Health Mission Spending",
-      cagReportNo: "Report No. 8 of 2024",
-      ministry: "Ministry of Health & Family Welfare",
-      summary: "Equipment worth ₹840 Cr lying unutilised in district hospitals across 8 states.",
-      discrepancyCr: 840,
-      severity: "HIGH",
-      status: "IN REVIEW",
-    },
-    {
-      id: "cag-f3",
-      reportTitle: "Financial Audit of PM Awas Yojana (Urban)",
-      cagReportNo: "Report No. 21 of 2023",
-      ministry: "Ministry of Housing and Urban Affairs",
-      summary: "Duplication of beneficiary claims amounting to ₹185 Cr in state nodal agencies.",
-      discrepancyCr: 185,
-      severity: "MEDIUM",
-      status: "PUBLISHED",
-    },
-  ]);
+    setSchemes(
+      payload.data.schemes.map((scheme: Scheme & { adminStatus?: AdminScheme["status"] }) => ({
+        ...scheme,
+        status: scheme.adminStatus || "IN REVIEW",
+      }))
+    );
+    setSources(
+      payload.data.sources.map((source: Source & { adminStatus?: AdminSource["status"] }) => ({
+        ...source,
+        status: source.adminStatus || "PUBLISHED",
+      }))
+    );
+    setMinisters([...payload.data.ministers, ...payload.data.stateMinisters]);
+    setCagFindings(payload.data.cagFindings as CAGFindingItem[]);
+    setAiDocs([
+      ...payload.data.sources.slice(0, 6).map((source: Source, idx: number) => ({
+        id: `aidoc-src-${source.id}`,
+        title: source.name,
+        category: source.sourceType.replace(/_/g, " "),
+        chunks: 120 + idx * 40,
+        status: "INDEXED" as const,
+        lastSynced: "Synced from database",
+      })),
+      ...payload.data.evidences.slice(0, 4).map((evidence: { id: string; claim: string; verificationStatus: string }, idx: number) => ({
+        id: `aidoc-ev-${evidence.id}`,
+        title: evidence.claim.slice(0, 80),
+        category: "Evidence Ledger",
+        chunks: 80 + idx * 25,
+        status: "INDEXED" as const,
+        lastSynced: evidence.verificationStatus,
+      })),
+      ...payload.data.stories.map((story: { id: string; title: string }) => ({
+        id: `aidoc-story-${story.id}`,
+        title: story.title,
+        category: "Investigative Story",
+        chunks: 220,
+        status: "INDEXED" as const,
+        lastSynced: "Synced from database",
+      })),
+    ]);
+  }, [payload]);
 
   const [newsletters, setNewsletters] = useState<NewsletterEdition[]>([
     {
@@ -340,13 +363,6 @@ export function App() {
     { id: "sub-2", email: "ananya.sen@civictech.org", name: "Ananya Sen", location: "Bengaluru", joinedDate: "2026-02-04", status: "ACTIVE" },
     { id: "sub-3", email: "vikram.singh@journalism.co.in", name: "Vikram Singh", location: "Mumbai", joinedDate: "2026-03-11", status: "ACTIVE" },
     { id: "sub-4", email: "priya.mehta@research.edu", name: "Priya Mehta", location: "Ahmedabad", joinedDate: "2026-04-22", status: "ACTIVE" },
-  ]);
-
-  const [aiDocs, setAiDocs] = useState<AIKnowledgeDoc[]>([
-    { id: "aidoc-1", title: "Union Budget 2024-25 Expenditure Statement 2", category: "Budget", chunks: 1420, status: "INDEXED", lastSynced: "2 hours ago" },
-    { id: "aidoc-2", title: "CAG Report No. 14 of 2024 (Jal Jeevan Mission)", category: "CAG Audit", chunks: 850, status: "INDEXED", lastSynced: "5 hours ago" },
-    { id: "aidoc-3", title: "NFHS-5 National Factsheet Tables", category: "Health Indicator", chunks: 2100, status: "INDEXED", lastSynced: "1 day ago" },
-    { id: "aidoc-4", title: "PMGSY Phase III State Master Plans", category: "Scheme Ref", chunks: 640, status: "SYNCING", lastSynced: "Just now" },
   ]);
 
   const [aiLogs] = useState<AIQueryLog[]>([
@@ -414,6 +430,7 @@ export function App() {
     } else if (newEntryForm.type === "CAG") {
       const newFinding: CAGFindingItem = {
         id: `cag-${Date.now()}`,
+        reportId: `cag-report-${Date.now()}`,
         reportTitle: newEntryForm.name,
         cagReportNo: "Report No. " + Math.floor(Math.random() * 20 + 1) + " of 2024",
         ministry: newEntryForm.ministry || "Ministry of Audit",
@@ -738,10 +755,24 @@ export function App() {
           </div>
 
           <div className="bg-[#111827] p-2.5 rounded border border-[#374151] font-mono text-[10px] space-y-1">
-            <span className="text-[#CBD5E1] block font-bold">LIVE DATABASE:</span>
-            <span className="text-[#10B981] truncate block font-mono">Neon PostgreSQL 18.4</span>
-            <span className="text-[#9CA3AF] truncate block">db: neondb (Connected)</span>
+            <span className="text-[#CBD5E1] block font-bold">DATA SOURCE:</span>
+            <span className={`truncate block font-mono ${dataSource === "postgresql" ? "text-[#10B981]" : "text-[#F59E0B]"}`}>
+              {dataSource === "postgresql" ? "PostgreSQL (Neon)" : "In-memory fallback"}
+            </span>
+            <span className="text-[#9CA3AF] truncate block">
+              {dataLoading ? "Syncing datasets..." : syncedAt ? `Synced ${new Date(syncedAt).toLocaleString()}` : "Awaiting sync"}
+            </span>
+            {dataError && <span className="text-[#F87171] truncate block">{dataError}</span>}
           </div>
+
+          <button
+            onClick={() => void refreshDatasets()}
+            disabled={dataLoading}
+            className="w-full flex items-center justify-center gap-2 py-2 bg-[#06038D]/30 hover:bg-[#06038D] border border-[#06038D]/40 text-[#93C5FD] hover:text-[#FFFFFF] rounded text-xs font-mono font-bold transition-all cursor-pointer disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${dataLoading ? "animate-spin" : ""}`} />
+            {dataLoading ? "SYNCING..." : "SYNC ALL DATASETS"}
+          </button>
 
           <button
             onClick={handleLogout}
@@ -781,6 +812,15 @@ export function App() {
             </div>
 
             <button
+              onClick={() => void refreshDatasets()}
+              disabled={dataLoading}
+              className="px-3 py-2 bg-[#06038D] hover:bg-[#04026B] text-[#FFFFFF] text-xs font-mono font-bold rounded transition-colors inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+            >
+              <RefreshCw className={`w-4 h-4 ${dataLoading ? "animate-spin" : ""}`} />
+              SYNC
+            </button>
+
+            <button
               onClick={() => setIsNewEntryOpen(true)}
               className="px-4 py-2 bg-[#D95300] hover:bg-[#B34000] text-[#FFFFFF] text-xs font-mono font-bold rounded transition-colors inline-flex items-center gap-1.5 shadow-sm cursor-pointer"
             >
@@ -804,28 +844,28 @@ export function App() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 font-mono">
               <div className="bg-[#1F2937] p-5 rounded border border-[#374151]">
                 <span className="text-xs text-[#9CA3AF] block uppercase">SCHEMES TRACKED</span>
-                <span className="text-3xl font-bold text-[#FBF9F5] mt-1 block">{schemes.length}</span>
+                <span className="text-3xl font-bold text-[#FBF9F5] mt-1 block">{counts?.schemes ?? schemes.length}</span>
                 <span className="text-[10px] text-[#10B981] mt-2 block">✓ {schemes.filter(s => s.status === "VERIFIED" || s.status === "PUBLISHED").length} Verified</span>
               </div>
               <div className="bg-[#1F2937] p-5 rounded border border-[#374151]">
                 <span className="text-xs text-[#9CA3AF] block uppercase">CAG AUDIT DISCREPANCY</span>
-                <span className="text-3xl font-bold text-[#FBF9F5] mt-1 block">₹4,445 Cr</span>
-                <span className="text-[10px] text-[#F59E0B] mt-2 block">{cagFindings.length} Audit Findings Logged</span>
+                <span className="text-3xl font-bold text-[#FBF9F5] mt-1 block">₹{Math.round(counts?.totalCagLossCr ?? 0).toLocaleString()} Cr</span>
+                <span className="text-[10px] text-[#F59E0B] mt-2 block">{counts?.cagFindings ?? cagFindings.length} Audit Findings Logged</span>
               </div>
               <div className="bg-[#1F2937] p-5 rounded border border-[#374151]">
                 <span className="text-xs text-[#9CA3AF] block uppercase">SOURCES INDEXED</span>
-                <span className="text-3xl font-bold text-[#FBF9F5] mt-1 block">{sources.length}</span>
-                <span className="text-[10px] text-[#10B981] mt-2 block">✓ PDF Vector Embeddings</span>
+                <span className="text-3xl font-bold text-[#FBF9F5] mt-1 block">{counts?.sources ?? sources.length}</span>
+                <span className="text-[10px] text-[#10B981] mt-2 block">✓ {counts?.evidences ?? 0} Evidence Records</span>
               </div>
               <div className="bg-[#1F2937] p-5 rounded border border-[#374151]">
-                <span className="text-xs text-[#9CA3AF] block uppercase">AI KNOWLEDGE CHUNKS</span>
-                <span className="text-3xl font-bold text-[#FBF9F5] mt-1 block">5,010</span>
-                <span className="text-[10px] text-[#10B981] mt-2 block">✓ Zero Hallucination Mode</span>
+                <span className="text-xs text-[#9CA3AF] block uppercase">STATES & MINISTERS</span>
+                <span className="text-3xl font-bold text-[#FBF9F5] mt-1 block">{counts?.states ?? 0} / {counts?.ministers ?? ministers.length}</span>
+                <span className="text-[10px] text-[#10B981] mt-2 block">✓ {counts?.factChecks ?? 0} TruthCheck Claims</span>
               </div>
               <div className="bg-[#1F2937] p-5 rounded border border-[#374151]">
-                <span className="text-xs text-[#9CA3AF] block uppercase">NEWSLETTER SUBS</span>
-                <span className="text-3xl font-bold text-[#991B1B] mt-1 block">8,921</span>
-                <span className="text-[10px] text-[#10B981] mt-2 block">+142 this week</span>
+                <span className="text-xs text-[#9CA3AF] block uppercase">MANIFESTO PROMISES</span>
+                <span className="text-3xl font-bold text-[#991B1B] mt-1 block">{counts?.manifestoPromises ?? 0}</span>
+                <span className="text-[10px] text-[#10B981] mt-2 block">{counts?.stories ?? 0} Stories • {counts?.partyFunding ?? 0} Parties</span>
               </div>
             </div>
 
@@ -840,8 +880,8 @@ export function App() {
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 font-mono text-xs">
                 {[
-                  { stage: "DRAFT", count: schemes.filter((s) => s.status === "DRAFT").length + 2, icon: Clock, color: "text-[#F59E0B]", label: "Pending Analyst Citation" },
-                  { stage: "IN REVIEW", count: schemes.filter((s) => s.status === "IN REVIEW").length + 1, icon: Clock, color: "text-[#3B82F6]", label: "Reviewer Checking Page Ref" },
+                  { stage: "DRAFT", count: schemes.filter((s) => s.status === "DRAFT").length, icon: Clock, color: "text-[#F59E0B]", label: "Pending Analyst Citation" },
+                  { stage: "IN REVIEW", count: schemes.filter((s) => s.status === "IN REVIEW").length, icon: Clock, color: "text-[#3B82F6]", label: "Reviewer Checking Page Ref" },
                   { stage: "VERIFIED", count: schemes.filter((s) => s.status === "VERIFIED").length, icon: CheckCircle, color: "text-[#10B981]", label: "Passed Audit Check" },
                   { stage: "PUBLISHED", count: schemes.filter((s) => s.status === "PUBLISHED").length, icon: CheckCircle, color: "text-[#991B1B]", label: "Live on Public Site" },
                 ].map((p) => {
@@ -1261,7 +1301,7 @@ export function App() {
             {/* DYNAMIC MINISTER VITALS & MANIFESTO PROMISES MODAL */}
             {selectedMinister && (() => {
               const m = selectedMinister;
-              const promises = db.getPromisesForMinister(m.ministry || m.title || "", m.name);
+              const promises = civicDb.getPromisesForMinister(m.ministry || m.title || "", m.name);
               const deliveredCount = promises.filter((p) => p.status === "DELIVERED").length;
               const inProgressCount = promises.filter((p) => p.status === "IN_PROGRESS" || p.status === "PARTIALLY_DELIVERED").length;
               const pendingCount = promises.filter((p) => p.status === "NOT_DELIVERED" || p.status === "NOT_VERIFIED").length;

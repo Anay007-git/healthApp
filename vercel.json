@@ -1,13 +1,35 @@
 {
   "functions": {
+    "api/admin/datasets.ts": {
+      "maxDuration": 60
+    },
+    "api/bootstrap.ts": {
+      "maxDuration": 60
+    },
+    "api/admin/seed.ts": {
+      "maxDuration": 60
+    },
     "api/factcheck/verify.ts": {
       "maxDuration": 30
+    },
+    "apps/web/api/admin/datasets.ts": {
+      "maxDuration": 60
+    },
+    "apps/web/api/bootstrap.ts": {
+      "maxDuration": 60
+    },
+    "apps/web/api/admin/seed.ts": {
+      "maxDuration": 60
     },
     "apps/web/api/factcheck/verify.ts": {
       "maxDuration": 30
     }
   },
   "rewrites": [
+    {
+      "source": "/favicon.ico",
+      "destination": "/favicon.svg"
+    },
     {
       "source": "/admin/:path*",
       "destination": "/admin/index.html"

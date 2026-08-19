@@ -3,6 +3,7 @@ import { FACT_CHECK_CLAIMS, VIRAL_PATTERNS_DB } from "@civiclens/database";
 import { extractEntities, claimDirection } from "./entities";
 import { extractNumbers, extractYears } from "./numbers";
 import { normalizeClaimKey } from "./cache";
+import { sportsSubjects } from "./sports-result";
 
 const STOP = new Set([
   "india", "prime", "minister", "modi", "government", "today", "news", "official",
@@ -45,6 +46,19 @@ export function matchKnownFactChecks(userText: string, known: FactCheckClaim[] =
     const fcYears = extractYears(corpus);
     if (qYears.length && fcYears.length && !qYears.some((y) => fcYears.includes(y))) {
       continue;
+    }
+
+    const qSports = sportsSubjects(userText);
+    const fcSports = sportsSubjects(corpus);
+    if (qSports.size > 0 && fcSports.size > 0) {
+      let sportsOverlap = false;
+      for (const s of qSports) {
+        if (fcSports.has(s)) {
+          sportsOverlap = true;
+          break;
+        }
+      }
+      if (!sportsOverlap) continue;
     }
 
     const tSim = jaccard(qTok, tokens(corpus));

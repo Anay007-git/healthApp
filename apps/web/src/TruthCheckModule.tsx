@@ -25,10 +25,11 @@ import {
   Zap,
 } from "lucide-react";
 import { FactCheckClaim, ClaimAnalysisResult, FactCheckVerdict, ClaimCategory, Evidence } from "@civiclens/types";
-import { db, FACT_CHECK_CLAIMS } from "@civiclens/database";
+import { db as defaultDb, FACT_CHECK_CLAIMS, type CivicLensDatabase } from "@civiclens/database";
 import { aiEngine } from "@civiclens/ai";
 
 interface TruthCheckModuleProps {
+  db?: CivicLensDatabase;
   onOpenEvidence: (evidenceId?: string) => void;
 }
 
@@ -72,8 +73,12 @@ const SAMPLE_VIRAL_CLAIMS = [
     text: "Breaking: Govt announced 18% GST tax on all GPay, PhonePe, and UPI payments above ₹2,000 starting from next week. Share with all shopkeepers.",
   },
   {
-    label: "🏏 Bangladesh Test Win vs Australia",
-    text: "Bangladesh won test against Australia",
+    label: "🏆 World Cup winner claim",
+    text: "Spain lifts 2026 world cup",
+  },
+  {
+    label: "🎬 Celebrity death rumour",
+    text: "Dharmendra Deol died",
   },
   {
     label: "🎬 Celebrity death rumour",
@@ -109,7 +114,7 @@ const CATEGORY_TABS: { id: ClaimCategory | "ALL"; label: string }[] = [
   { id: "LEGAL", label: "Legal & Traffic" },
 ];
 
-export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
+export function TruthCheckModule({ db = defaultDb, onOpenEvidence }: TruthCheckModuleProps) {
   // DeepScan Studio Input & State
   const [claimInput, setClaimInput] = useState<string>("");
   const [isScanning, setIsScanning] = useState<boolean>(false);
@@ -522,7 +527,9 @@ export function TruthCheckModule({ onOpenEvidence }: TruthCheckModuleProps) {
                 </div>
               )}
 
-              {scanResult.atomicClaims && scanResult.atomicClaims.length > 1 && (
+              {scanResult.atomicClaims &&
+                scanResult.atomicClaims.length > 1 &&
+                /\s+and\s+|;/.test(scanResult.originalClaim || "") && (
                 <div className="bg-[#FAF7F0] border-2 border-black p-4 rounded-xl space-y-2">
                   <span className="font-mono text-xs font-black text-[#06038D] uppercase">Atomic claims (verified independently)</span>
                   <ul className="space-y-1.5 text-sm font-sans text-[#334155]">

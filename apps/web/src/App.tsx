@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { brandConfig } from "@civiclens/config";
-import { db, STATE_AUDITED_METRICS_DATA, COMPREHENSIVE_LEADERS, LEADER_PHOTOS } from "@civiclens/database";
+import { STATE_AUDITED_METRICS_DATA, COMPREHENSIVE_LEADERS, LEADER_PHOTOS } from "@civiclens/database";
+import { useCivicDb } from "./lib/use-civic-db";
 import { EvidenceDrawer } from "@civiclens/ui";
 import { IndiaMap, GenericBarChart, GenericLineChart, StatCard, PartyIncomeTrendChart } from "@civiclens/charts";
 import { Evidence, AIStructuredResponse, Scheme, StateProfile, PartyFundingRecord, CorporateDonorRecord } from "@civiclens/types";
@@ -84,6 +85,7 @@ function calculateMinisterScore(m: any): number {
 }
 
 export function App() {
+  const { db, ready: civicDataReady, dataSource: civicDataSource } = useCivicDb();
   const [activeTab, setActiveTab] = useState<string>("home");
   const [activeEvidence, setActiveEvidence] = useState<Evidence | null>(null);
   const [isEvidenceDrawerOpen, setIsEvidenceDrawerOpen] = useState<boolean>(false);
@@ -147,13 +149,13 @@ export function App() {
         // Fallback gracefully
       }
       if (active) {
-        setDbStatus("connected");
+        setDbStatus(civicDataReady ? "connected" : "checking");
         setDbLatency(Math.round(performance.now() - t0) || 42);
       }
     }
     checkDbConnection();
     return () => { active = false; };
-  }, []);
+  }, [civicDataReady, civicDataSource]);
 
   // Mobile Navigation state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -2423,7 +2425,7 @@ export function App() {
 
         {/* TRUTHCHECK & FAKE NEWS DETECTOR TAB */}
         {activeTab === "factcheck" && (
-          <TruthCheckModule onOpenEvidence={(evId) => handleOpenEvidence(evId)} />
+          <TruthCheckModule db={db} onOpenEvidence={(evId) => handleOpenEvidence(evId)} />
         )}
 
         {/* NEWSLETTER SUBSCRIPTION TAB */}
@@ -4184,7 +4186,11 @@ export function App() {
             <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[#E8DEC8] bg-[#FAF7F0] text-[11px]">
               <span className={`w-2 h-2 rounded-full ${dbStatus === "connected" ? "bg-[#16A34A] animate-pulse" : dbStatus === "checking" ? "bg-[#F59E0B]" : "bg-[#DC2626]"}`} />
               <span className={dbStatus === "connected" ? "text-[#16A34A] font-bold" : dbStatus === "checking" ? "text-[#D97706]" : "text-[#DC2626]"}>
-                {dbStatus === "connected" ? `Neon DB: Connected (${dbLatency}ms)` : dbStatus === "checking" ? "Neon DB: Connecting..." : "Neon DB: Offline"}
+                {dbStatus === "connected"
+                  ? `Data: ${civicDataSource === "api" ? "PostgreSQL" : "Local"} (${dbLatency}ms)`
+                  : dbStatus === "checking"
+                    ? "Data: Loading..."
+                    : "Data: Offline"}
               </span>
             </span>
             <span className="text-[#06038D] font-bold">{brandConfig.tagline}</span>

@@ -177,7 +177,7 @@ export function articlesFromRss2Json(data: {
 }): LiveNewsArticle[] {
   const items: LiveNewsArticle[] = [];
   for (const it of data.items || []) {
-    const title = (it.title || "").trim();
+    const title = (it.title || "").trim().replace(/&amp;/g, "&").replace(/&#39;/g, "'").replace(/&quot;/g, '"');
     if (!title) continue;
     const fromTitle = title.split(/\s+[-|]\s+/).pop()?.trim() || "";
     items.push({
@@ -265,7 +265,12 @@ async function wikipediaSearch(q: string): Promise<Array<{ title: string; snippe
 }
 
 function pickWikipediaTitle(hits: Array<{ title: string }>, originalClaim: string): string | null {
+  const low = originalClaim.toLowerCase();
   const preferred = canonicalPersonNames(originalClaim).map((n) => n.toLowerCase());
+  if (/\bfifa\b/.test(low) && /\bworld cups?\b/.test(low)) {
+    const fifa = hits.find((r) => /fifa world cup/i.test(r.title));
+    if (fifa) return fifa.title;
+  }
   const named = hits.find((r) => preferred.some((p) => r.title.toLowerCase().includes(p)));
   return (named || hits[0])?.title || null;
 }
