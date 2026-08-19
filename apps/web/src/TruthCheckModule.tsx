@@ -81,6 +81,10 @@ const SAMPLE_VIRAL_CLAIMS = [
     text: "Dharmendra Deol died",
   },
   {
+    label: "🎬 Celebrity death rumour",
+    text: "Dharmendra Deol died",
+  },
+  {
     label: "🚀 Chandrayaan-3 Moon Landing",
     text: "India Chandrayaan-3 successfully soft-landed on Moon south pole",
   },
