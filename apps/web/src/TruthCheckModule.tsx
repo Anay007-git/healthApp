@@ -237,6 +237,7 @@ export function TruthCheckModule({ db = defaultDb, onOpenEvidence }: TruthCheckM
       case "FALSE":
         return {
           label: "FALSE / FABRICATED (नकली / असत्य)",
+          shortLabel: "❌ FALSE / FABRICATED",
           bg: "bg-[#DC2626]",
           textColor: "text-white",
           border: "border-black",
@@ -246,6 +247,7 @@ export function TruthCheckModule({ db = defaultDb, onOpenEvidence }: TruthCheckM
       case "MISLEADING":
         return {
           label: "MISLEADING / OUT OF CONTEXT (भ्रामक)",
+          shortLabel: "⚠️ MISLEADING",
           bg: "bg-[#EA580C]",
           textColor: "text-white",
           border: "border-black",
@@ -255,6 +257,7 @@ export function TruthCheckModule({ db = defaultDb, onOpenEvidence }: TruthCheckM
       case "VERIFIED_TRUE":
         return {
           label: "VERIFIED TRUE / OFFICIAL (सत्यापित)",
+          shortLabel: "✅ VERIFIED TRUE",
           bg: "bg-[#16A34A]",
           textColor: "text-white",
           border: "border-black",
@@ -264,6 +267,7 @@ export function TruthCheckModule({ db = defaultDb, onOpenEvidence }: TruthCheckM
       case "SATIRE":
         return {
           label: "SATIRE / HUMOR (व्यंग्य)",
+          shortLabel: "🎭 SATIRE / HUMOR",
           bg: "bg-[#9333EA]",
           textColor: "text-white",
           border: "border-black",
@@ -273,6 +277,7 @@ export function TruthCheckModule({ db = defaultDb, onOpenEvidence }: TruthCheckM
       case "PARTIALLY_TRUE":
         return {
           label: "PARTIALLY TRUE (आंशिक रूप से सत्य)",
+          shortLabel: "◐ PARTIALLY TRUE",
           bg: "bg-[#0D9488]",
           textColor: "text-white",
           border: "border-black",
@@ -282,6 +287,7 @@ export function TruthCheckModule({ db = defaultDb, onOpenEvidence }: TruthCheckM
       case "CONFLICTING_EVIDENCE":
         return {
           label: "CONFLICTING EVIDENCE (विरोधी साक्ष्य)",
+          shortLabel: "⚖️ CONFLICTING EVIDENCE",
           bg: "bg-[#B45309]",
           textColor: "text-white",
           border: "border-black",
@@ -291,6 +297,7 @@ export function TruthCheckModule({ db = defaultDb, onOpenEvidence }: TruthCheckM
       default:
         return {
           label: "UNVERIFIED / NO OFFICIAL RECORD (अपुष्ट)",
+          shortLabel: "❓ UNVERIFIED",
           bg: "bg-[#EAB308]",
           textColor: "text-black",
           border: "border-black",
@@ -756,8 +763,8 @@ export function TruthCheckModule({ db = defaultDb, onOpenEvidence }: TruthCheckM
                 <div className="space-y-3">
                   {/* Top Badges */}
                   <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <span className={`px-2.5 py-1 rounded-lg border-2 border-black font-mono text-[11px] font-black ${badge.bg} text-white shadow-[1px_1px_0px_#000]`}>
-                      {claim.verdict === "FALSE" ? "❌ FALSE / FABRICATED" : "⚠️ MISLEADING"}
+                    <span className={`px-2.5 py-1 rounded-lg border-2 border-black font-mono text-[11px] font-black ${badge.bg} ${badge.textColor} shadow-[1px_1px_0px_#000]`}>
+                      {badge.shortLabel}
                     </span>
 
                     <div className="flex items-center gap-1.5 font-mono text-[11px]">
