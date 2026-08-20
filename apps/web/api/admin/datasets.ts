@@ -1,7 +1,7 @@
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { buildAdminPayload, isAuthorizedAdmin } = require("./civic-loader.js");
+const { buildAdminPayload, isAuthorizedAdmin } = require("../civic-loader.js");
 
 export default async function handler(req: any, res: any) {
   res.setHeader("Access-Control-Allow-Origin", "*");
